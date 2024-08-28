@@ -16,10 +16,6 @@
 - name: Calculate the dynamic OSA gate scenario
   hosts: all[0]
   vars:
-    scenario_map:
-      aodh: telemetry
-      ceilometer: telemetry
-      gnocchi: telemetry
     install_methods:
       - distro
       - source
@@ -55,10 +51,6 @@
           {%   endif %}
           {%   if role_service_name is defined %}
           {%     set _ = _scenario.append(role_service_name) %}
-          {#     Add special scenarios based on the project name #}
-          {%     if role_service_name in scenario_map %}
-          {%       set _ = _scenario.append(scenario_map[role_service_name]) %}
-          {%     endif %}
           {%   endif %}
           {% endif %}
           {% if zuul.job is match('^openstack-ansible-(deploy|upgrade)-([^-]+)-validate') %}
