@@ -33,6 +33,9 @@
     - name: Disabling haproxy backends
       include_role:
         name: openstack.osa.haproxy_endpoint_manage
+        apply:
+          tags:
+            - always
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: disabled
@@ -118,6 +121,9 @@
     - name: Enabling haproxy backends
       include_role:
         name: openstack.osa.haproxy_endpoint_manage
+        apply:
+          tags:
+            - always
       vars:
         haproxy_backend: cinder_api-back
         haproxy_state: enabled
