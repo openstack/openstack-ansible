@@ -64,7 +64,9 @@
   vars:
     service_group: repo_all
     service_variable: "repo_haproxy_services"
-  when: groups[service_group] | length > 0
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 

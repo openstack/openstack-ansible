@@ -41,7 +41,9 @@
       - nova_console
       - nova_ironic_console
     service_variable: "nova_haproxy_services"
-  when: groups['nova_all'] | length > 0
+  when:
+    - groups['nova_all'] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 

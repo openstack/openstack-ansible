@@ -30,7 +30,9 @@
   vars:
     service_group: cloudkitty_api
     service_variable: "cloudkitty_haproxy_services"
-  when: groups[service_group] | length > 0
+  when:
+    - groups[service_group] | length > 0
+    - groups['haproxy'] | length > 0
   tags:
     - haproxy-service-config
 
