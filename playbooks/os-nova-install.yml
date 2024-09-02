@@ -57,6 +57,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     # Enable execution of ceph_client on the nova compute hosts if cinder RBD
     # backends are used. This is necessary to ensure that volume-backed Nova

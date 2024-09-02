@@ -25,6 +25,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
   roles:
     - role: "os_swift"
       swift_do_setup: False

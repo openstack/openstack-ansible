@@ -30,6 +30,8 @@
       import_role:
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method | default('source') }}"
+      tags:
+        - always
 
     - name: Add service to the keystone service catalog
       openstack.cloud.catalog_service:

@@ -79,6 +79,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
   roles:
     - role: "repo_server"
   environment: "{{ deployment_environment_variables | default({}) }}"

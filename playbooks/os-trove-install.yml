@@ -48,6 +48,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     # In order to ensure that any container, software or
     # config file changes which causes a container/service

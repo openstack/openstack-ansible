@@ -43,6 +43,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     - name: Including container-setup tasks
       include_role:

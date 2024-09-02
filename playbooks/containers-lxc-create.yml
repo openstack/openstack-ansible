@@ -22,6 +22,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
 
     - name: Add hosts to dynamic inventory group
       group_by:
@@ -52,6 +57,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
   roles:
     - role: "lxc_container_create"
   post_tasks:
@@ -84,6 +94,11 @@
         name: openstack.osa.install_defaults
         defaults_from: "{{ install_method }}"
         public: true
+        apply:
+          tags:
+            - always
+      tags:
+        - always
   roles:
     - role: "openstack_hosts"
       is_container: true
