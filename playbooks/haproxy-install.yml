@@ -13,56 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather haproxy facts
-  hosts: haproxy
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tasks:
-    - name: Gather additional facts
-      include_role:
-        name: openstack.osa.gather_extra_facts
-      when: osa_gather_facts | default(True)
-  tags:
-    - always
-
-- name: HAProxy base config
-  hosts: haproxy
-  gather_facts: false
-  serial: "{{ haproxy_serial | default('50%') }}"
-  user: root
-  pre_tasks:
-    - name: Including container-setup tasks
-      include_role:
-        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
-      when: not is_metal
-    - name: Including unbound-clients tasks
-      include_role:
-        name: openstack.osa.unbound_clients
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-    - name: Remove legacy haproxy configuration files
-      file:
-        dest: "/etc/haproxy/conf.d/{{ item.name }}"
-        state: "absent"
-      with_items:
-        - name: "keystone_internal"
-          when: "internal_lb_vip_address == external_lb_vip_address"
-        - name: "heat_api_cloudwatch"
-          when: "yes"
-      when:
-        - "item.when | bool"
-      tags:
-        - haproxy-config  # this tag is present because the task is ONLY a config task
-
-  roles:
-    - role: "keepalived"
-      when: haproxy_use_keepalived | bool
-      tags:
-        - keepalived
-
-    - role: "haproxy_server"
-      haproxy_service_configs: "{{ haproxy_default_services + haproxy_extra_services | default([]) }}"
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - haproxy-config
-    - haproxy
+- name: Importing haproxy_install playbook
+  import_playbook: openstack.osa.haproxy
