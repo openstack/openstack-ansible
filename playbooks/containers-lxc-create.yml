@@ -95,6 +95,7 @@
           - (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bullseye') or
             (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
             (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'jammy') or
+            (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble') or
             (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
         msg: >
           The only supported platforms for this release are Debian 11 (Bullseye), Debian 12 (Bookworm)
