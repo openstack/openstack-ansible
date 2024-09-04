@@ -80,8 +80,34 @@
       tags:
         - always
 
-    - name: Importing ceph-server tasks
-      import_tasks: common-tasks/ceph-server.yml
+    - name: Including container setup role
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
+      when: not is_metal
+      vars:
+        list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
+
+    - name: Including unbound-clients role
+      include_role:
+        name: openstack.osa.unbound_clients
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
+    - name: Set apt package pins
+      include_role:
+        name: apt_package_pinning
+      vars:
+        apt_package_pinning_file_name: "ceph_community_pin.pref"
+        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
+        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+      when:
+        - ansible_facts['pkg_mgr'] == 'apt'
+
+    - name: Install python3-yaml
+      package:
+        name: "{{ (ansible_facts['os_family'] | lower == 'debian') | ternary('python3-yaml', 'python3-pyyaml') }}"
+        state: present
 
     - name: Create systemd service directory
       file:
@@ -171,8 +197,34 @@
       tags:
         - always
 
-    - name: Importing ceph-server tasks
-      import_tasks: common-tasks/ceph-server.yml
+    - name: Including container setup role
+      include_role:
+        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
+      when: not is_metal
+      vars:
+        list_of_bind_mounts: "{{ ceph_container_bind_mounts }}"
+
+    - name: Including unbound-clients tasks
+      include_role:
+        name: openstack.osa.unbound_clients
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | bool
+
+    # Set the priority of the ceph community apt repo either above or below that of UCA or distro sources
+    - name: Set apt package pins
+      include_role:
+        name: apt_package_pinning
+      vars:
+        apt_package_pinning_file_name: "ceph_community_pin.pref"
+        apt_package_pinning_priority: "{{ (ceph_repository == 'community') | ternary(1000, 100) }}"
+        apt_pinned_packages: [{ package: '*', release: 'ceph.com' }]
+      when:
+        - ansible_facts['pkg_mgr'] == 'apt'
+
+    - name: Install python3-yaml
+      package:
+        name: "{{ (ansible_facts['os_family'] | lower == 'debian') | ternary('python3-yaml', 'python3-pyyaml') }}"
+        state: present
 
   roles:
     - role: ceph-defaults
