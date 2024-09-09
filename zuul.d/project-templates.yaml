@@ -48,11 +48,13 @@
         - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
@@ -92,6 +94,9 @@
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
+        - openstack-ansible-deploy-infra_lxc-ubuntu-noble
+        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
+        - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-infra_lxc-rockylinux-9
@@ -100,6 +105,9 @@
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
+        - openstack-ansible-deploy-infra_lxc-ubuntu-noble
+        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
+        - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
@@ -124,11 +132,13 @@
         - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
@@ -140,11 +150,13 @@
         - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
@@ -176,9 +188,12 @@
             voting: false
         - openstack-ansible-deploy-aio_metal-rockylinux-9
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal-ubuntu-noble
         - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
+        - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-noble
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9
@@ -190,8 +205,11 @@
         - openstack-ansible-deploy-aio_metal-rockylinux-9
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal-ubuntu-noble
+        - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-noble
         - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
@@ -202,11 +220,13 @@
         - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
+        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
+        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_metal-jobs
@@ -224,9 +244,11 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_nfs-ubuntu-jammy
+        - openstack-ansible-deploy-aio_nfs-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-aio_nfs-ubuntu-jammy
+        - openstack-ansible-deploy-aio_nfs-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-ceph-jobs
@@ -276,6 +298,9 @@
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-noble
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-noble
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
@@ -284,6 +309,9 @@
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-noble
+        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-noble
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
