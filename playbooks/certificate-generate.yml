@@ -12,21 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Generate any extra user certificates
-  hosts: "{{ openstack_pki_setup_host | default('localhost') }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-  tasks:
-    - name: Create user certificates
-      include_role:
-        name: pki
-        tasks_from: main_certs.yml
-      vars:
-        pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
-        pki_dir: "{{ openstack_pki_dir }}"
-        cert_dir: "{{ pki_dir }}/certs"
-        pki_search_certificates_pattern: "user_pki_certificates_"
-        pki_regen_cert: "{{ user_pki_regen_cert | default(false) }}"
-      when:
-        - pki_create_certificates | default(true)
+- name: Import certificate_generate playbook
+  import_playbook: openstack.osa.certificate_generate

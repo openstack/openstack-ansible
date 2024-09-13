@@ -1,5 +1,5 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
+# Copyright 2024, BBC R&D.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,26 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Importing pre hook playbook
-  import_playbook: "{{ pre_setup_hosts_hook | default('hook-dummy.yml') }}"
-
-- name: Importing certificate-authority playbook
-  import_playbook: certificate-authority.yml
-
-- name: Importing certificate-ssh-authority playbook
-  import_playbook: certificate-ssh-authority.yml
-
-- name: Importing certificate-generate playbook
-  import_playbook: certificate-generate.yml
-
-- name: Importing openstack-hosts-setup playbook
-  import_playbook: openstack-hosts-setup.yml
-
-- name: Importing containers-deploy playbook
-  import_playbook: containers-deploy.yml
-
-- name: Importing security-hardening playbook
-  import_playbook: security-hardening.yml
-
-- name: Importing post hook playbook
-  import_playbook: "{{ post_setup_hosts_hook | default('hook-dummy.yml') }}"
+- name: Importing certificate_authority playbook
+  import_playbook: openstack.osa.setup_hosts

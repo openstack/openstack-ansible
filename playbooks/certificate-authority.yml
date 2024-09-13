@@ -12,18 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create CA certificates
-  hosts: "{{ openstack_pki_setup_host | default('localhost') }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-  tasks:
-    - name: "Create CA certificates"
-      include_role:
-        name: pki
-        tasks_from: main_ca.yml
-      vars:
-        pki_dir: "{{ openstack_pki_dir }}"
-        pki_create_ca: "{{ openstack_pki_authorities | default([]) | length > 0 }}"
-        pki_regen_ca: "{{ openstack_pki_regen_ca }}"
-        pki_authorities: "{{ openstack_pki_authorities }}"
+- name: Import certificate_authority playbook
+  import_playbook: openstack.osa.certificate_authority

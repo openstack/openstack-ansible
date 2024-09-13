@@ -12,19 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create SSHD CA
-  hosts: "{{ openstack_ssh_keypairs_setup_host | default('localhost') }}"
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-    - sshd-ca
-  tasks:
-    - name: "Create SSHD certificate authority"
-      include_role:
-        name: openstack.osa.ssh_keypairs
-      vars:
-        ssh_keypairs_setup_host: "{{ openstack_ssh_keypairs_setup_host | default('localhost') }}"
-        ssh_keypairs_dir: "{{ openstack_ssh_keypairs_dir }}"
-        ssh_keypairs: "{{ openstack_ssh_keypairs_authorities }}"
-        ssh_keypairs_install_authorities: false
-        ssh_keypairs_install_keypairs: false
+- name: Import certificate_ssh_authority playbook
+  import_playbook: openstack.osa.certificate_ssh_authority
