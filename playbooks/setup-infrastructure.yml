@@ -13,51 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Importing pre hook playbook
-  import_playbook: "{{ pre_setup_infrastructure_hook | default('hook-dummy.yml') }}"
-
-- name: Importing unbound-install playbook
-  import_playbook: unbound-install.yml
-
-- name: Importing haproxy-install playbook
-  import_playbook: haproxy-install.yml
-
-- name: Importing repo-install playbook
-  import_playbook: repo-install.yml
-
-- name: Importing memcached-install playbook
-  import_playbook: memcached-install.yml
-
-- name: Importing galera-install playbook
-  import_playbook: galera-install.yml
-
-- name: Importing qdrouterd-install playbook
-  import_playbook: qdrouterd-install.yml
-
-- name: Importing rabbitmq-install playbook
-  import_playbook: rabbitmq-install.yml
-
-- name: Importing utility-install playbook
-  import_playbook: utility-install.yml
-
-- name: Importing zookeeper-install playbook
-  import_playbook: zookeeper-install.yml
-
-- name: Importing ceph-install playbook
-  import_playbook: ceph-install.yml
-
-- name: Importing ceph-pools playbook
-  import_playbook: ceph-pools.yml
-
-- name: Importing ceph-nfs-install playbook
-  import_playbook: ceph-nfs-install.yml
-
-# The journald-remote should be disabled by default until
-# https://github.com/systemd/systemd/issues/2376 has been
-# incorporated in current systemd packages
-- name: Importing infra-journal-remote playbook
-  import_playbook: infra-journal-remote.yml
-  when: journald_remote_enabled | default (false) | bool
-
-- name: Importing post hook playbook
-  import_playbook: "{{ post_setup_infrastructure_hook | default('hook-dummy.yml') }}"
+- name: Importing setup_infrastructure playbook
+  import_playbook: openstack.osa.setup_infrastructure

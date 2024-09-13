@@ -13,32 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather memcached facts
-  hosts: memcached
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-
-- name: Install memcached
-  hosts: memcached
-  gather_facts: false
-  serial: "{{ memcached_serial | default(['1','100%']) }}"
-  user: root
-  pre_tasks:
-    - name: Including container-setup tasks
-      include_role:
-        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
-      when: not is_metal
-    - name: Including unbound-clients tasks
-      include_role:
-        name: openstack.osa.unbound_clients
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-  roles:
-    - role: "memcached_server"
-    - role: "openstack.osa.system_crontab_coordination"
-      tags:
-        - crontab
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  tags:
-    - memcached
+- name: Importing memcached playbook
+  import_playbook: openstack.osa.memcached

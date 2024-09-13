@@ -13,31 +13,5 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-- name: Gather zookeeper facts
-  hosts: zookeeper_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-
-- name: Install zookeeper
-  hosts: zookeeper_all
-  gather_facts: false
-  serial: "{{ zookeeper_serial | default(['1','100%']) }}"
-  user: root
-  environment: "{{ deployment_environment_variables | default({}) }}"
-  pre_tasks:
-    - name: Including container-setup tasks
-      include_role:
-        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
-      when: not is_metal
-      vars:
-        list_of_bind_mounts: "{{ zookeeper_container_bind_mounts }}"
-  roles:
-    - role: zookeeper
-      tags:
-        - zookeeper
-    - role: "openstack.osa.system_crontab_coordination"
-      tags:
-        - crontab
-  tags:
-    - zookeeper
+- name: Importing zookeeper playbook
+  import_playbook: openstack.osa.zookeeper
