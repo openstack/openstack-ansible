@@ -255,6 +255,8 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
+        - openstack-ansible-deploy-aio_ceph-rockylinux-9:
+            voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
