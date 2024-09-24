@@ -3,6 +3,7 @@
   hosts: nova_compute
   vars:
     nova_compute_id_file: /var/lib/nova/compute_id
+    nova_hypervisor_fact_name: "{{ ansible_facts['fqdn'] }}"
   handlers:
 
     - name: Restart nova
@@ -30,7 +31,7 @@
 
         - name: Register hypervisors fact
           ansible.builtin.set_fact:
-            nova_hv: "{{ nova_hypervisors.stdout | from_json | selectattr('Hypervisor Hostname', 'eq', ansible_facts['nodename']) }}"
+            nova_hv: "{{ nova_hypervisors.stdout | from_json | selectattr('Hypervisor Hostname', 'eq', nova_hypervisor_fact_name) }}"
 
         - name: Place node UUID to the expected location
           ansible.builtin.copy:
