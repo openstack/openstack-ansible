@@ -181,12 +181,14 @@
   hosts: galera_all
   user: root
   gather_facts: true
+  vars:
+    _mariadb_client_binary: "{{ galera_mariadb_client_binary | default('mariadb') }}"
   tasks:
     - name: Wait for cluster to be ready
       block:
         - name: Wait for cluster ready state
           command: |
-            mysql -h {{ management_address }} \
+            {{ _mariadb_client_binary }} -h {{ management_address }} \
                   -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
@@ -204,7 +206,7 @@
             state: restarted
         - name: Wait for cluster ready state
           command: |
-            mysql -h {{ management_address }} \
+            {{ _mariadb_client_binary }} -h {{ management_address }} \
                   -u "{{ galera_root_user | default('root') }}" \
                   -p"{{ galera_root_password }}" \
                   -e "show status like 'wsrep_incoming_addresses';" \
@@ -218,7 +220,7 @@
 
     - name: Check cluster local state
       command: |
-        mysql -h {{ management_address }} \
+        {{ _mariadb_client_binary }} -h {{ management_address }} \
               -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_local_state_comment';" \
@@ -231,7 +233,7 @@
 
     - name: Check cluster evs state
       command: |
-        mysql -h {{ management_address }} \
+        {{ _mariadb_client_binary }} -h {{ management_address }} \
               -u "{{ galera_root_user | default('root') }}" \
               -p"{{ galera_root_password }}" \
               -e "show status like 'wsrep_evs_state';" \
@@ -279,7 +281,7 @@
     - name: Try to login with user to DB
       delegate_to: "{{ groups['utility_all'][0] }}"
       command: |
-        mysql -h {{ internal_lb_vip_address }} \
+        {{ _mariadb_client_binary }} -h {{ internal_lb_vip_address }} \
               -p"tester-secrete" \
               -u osa-tester \
               OSA-test \
