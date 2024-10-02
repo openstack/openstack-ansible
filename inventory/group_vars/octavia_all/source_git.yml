@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 26.07.2024 ###
+### HEAD as of 30.09.2024 ###
 
 ## Octavia service
 octavia_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia"
-octavia_git_install_branch: 1c027c840c57c425519542218898fd2d33fda064
-octavia_git_track_branch: master
+octavia_git_install_branch: 20d97469e1047f911347cdb2503612033b9f0075
+octavia_git_track_branch: stable/2024.2
 
 ## Octavia OVN provider
 octavia_ovn_octavia_provider_git_repo: "{{ openstack_opendev_base_url }}/openstack/ovn-octavia-provider"
-octavia_ovn_octavia_provider_git_install_branch: d123e764e1c5efdbde8c04de725a01dca58254e7
-octavia_ovn_octavia_provider_git_track_branch: master
+octavia_ovn_octavia_provider_git_install_branch: 156ca765008943d2f6de4f2d14b23e56fc660945
+octavia_ovn_octavia_provider_git_track_branch: stable/2024.2
