@@ -69,15 +69,14 @@ galera_my_cnf_overrides:
 
 ### Set workers for all services to optimise memory usage
 
-## Repo
-repo_nginx_threads: 2
+# Apache MPM settings
+openstack_apache_start_servers: 3
+openstack_apache_min_spare_threads: 5
+openstack_apache_max_spare_threads: 15
+openstack_apache_thread_limit: 30
+openstack_apache_thread_child: 30
 
 ## Keystone
-keystone_httpd_mpm_start_servers: 2
-keystone_httpd_mpm_min_spare_threads: 5
-keystone_httpd_mpm_max_spare_threads: 10
-keystone_httpd_mpm_thread_limit: 15
-keystone_httpd_mpm_thread_child: 15
 keystone_wsgi_threads: 2
 keystone_wsgi_processes: 2
 
