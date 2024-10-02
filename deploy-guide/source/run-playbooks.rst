@@ -9,16 +9,16 @@ Run playbooks
 
 The installation process requires running three main playbooks:
 
-- The ``setup-hosts.yml`` Ansible foundation playbook prepares the target
+- The ``openstack.osa.setup_hosts`` Ansible foundation playbook prepares the target
   hosts for infrastructure and OpenStack services, builds and restarts
   containers on target hosts, and installs common components into containers
   on target hosts.
 
-- The ``setup-infrastructure.yml`` Ansible infrastructure playbook installs
+- The ``openstack.osa.setup_infrastructure`` Ansible infrastructure playbook installs
   infrastructure services: Memcached, the repository server, Galera and
   RabbitMQ.
 
-- The ``setup-openstack.yml`` OpenStack playbook installs OpenStack services,
+- The ``openstack.osa.setup_openstack`` OpenStack playbook installs OpenStack services,
   including Identity (keystone), Image (glance), Block Storage (cinder),
   Compute (nova), Networking (neutron), etc.
 
@@ -36,12 +36,11 @@ Before running any playbook, check the integrity of the configuration files.
 
       To check your YAML syntax online, you can use the `YAML Lint program <http://www.yamllint.com/>`_.
 
-#. Change to the ``/opt/openstack-ansible/playbooks`` directory, and run the
-   following command:
+#. Run the following command:
 
    .. code-block:: console
 
-      # openstack-ansible setup-infrastructure.yml --syntax-check
+      # openstack-ansible openstack.osa.setup_infrastructure --syntax-check
 
 #. Recheck that all indentation is correct. This is important because the
    syntax of the configuration files can be correct while not being meaningful
@@ -50,13 +49,11 @@ Before running any playbook, check the integrity of the configuration files.
 Run the playbooks to install OpenStack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#. Change to the ``/opt/openstack-ansible/playbooks`` directory.
-
 #. Run the host setup playbook:
 
    .. code-block:: console
 
-       # openstack-ansible setup-hosts.yml
+       # openstack-ansible openstack.osa.setup_hosts
 
    Confirm satisfactory completion with zero items unreachable or
    failed:
@@ -72,7 +69,7 @@ Run the playbooks to install OpenStack
 
    .. code-block:: console
 
-      # openstack-ansible setup-infrastructure.yml
+      # openstack-ansible openstack.osa.setup_infrastructure
 
    Confirm satisfactory completion with zero items unreachable or
    failed:
@@ -85,6 +82,13 @@ Run the playbooks to install OpenStack
 
 
 #. Run the following command to verify the database cluster:
+
+   .. note::
+
+      In order to run ad-hoc commands, you need to execute command from the
+      location of ``openstack-ansible`` repository (ie `/opt/openstack-ansible`)
+      or explicitly load required envirnoment variables for Ansible configuration
+      through ``source /usr/local/bin/openstack-ansible.rc``.
 
    .. code-block:: console
 
@@ -124,7 +128,7 @@ Run the playbooks to install OpenStack
 
    .. code-block:: console
 
-      # openstack-ansible setup-openstack.yml
+      # openstack-ansible openstack.osa.setup_openstack
 
    Confirm satisfactory completion with zero items unreachable or
    failed.

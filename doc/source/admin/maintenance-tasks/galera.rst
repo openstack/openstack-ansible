@@ -149,14 +149,14 @@ one of the nodes.
 Galera cluster recovery
 -----------------------
 
-Run the ``galera-install`` playbook using the ``galera_force_bootstrap`` variable
+Run the ``openstack.osa.galera_server`` playbook using the ``galera_force_bootstrap`` variable
 to automatically recover a node or an entire environment.
 
 #. Run the following Ansible command to show the failed nodes:
 
    .. code-block:: shell-session
 
-       # openstack-ansible galera-install.yml -e galera_force_bootstrap=True --tags galera_server-config
+       # openstack-ansible openstack.osa.galera_server -e galera_force_bootstrap=True --tags galera_server-config
 
 You can additionally define a different bootstrap node through
 ``galera_server_bootstrap_node`` variable, in case current bootstrap node is in
@@ -364,9 +364,8 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
-       # lxc-stop -n node3_galera_container-3ea2cbd3
-       # lxc-destroy -n node3_galera_container-3ea2cbd3
-       # rm -rf /openstack/node3_galera_container-3ea2cbd3/*
+       # openstack-ansible openstack.osa.containers_lxc_destroy \
+       -l node3_galera_container-3ea2cbd3
 
    In this example, node 3 failed.
 
@@ -374,7 +373,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
-       # openstack-ansible setup-hosts.yml -l node3 \
+       # openstack-ansible oopenstack.osa.containers_lxc_create -l node3 \
        -l node3_galera_container-3ea2cbd3
 
 
@@ -385,7 +384,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
-       # openstack-ansible setup-infrastructure.yml \
+       # openstack-ansible openstack.osa.setup_infrastructure \
        --limit node3_galera_container-3ea2cbd3
 
 

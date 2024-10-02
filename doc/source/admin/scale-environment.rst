@@ -38,13 +38,13 @@ needed in an environment, it is possible to create additional nodes.
 
    .. code:: console
 
-      # openstack-ansible playbooks/setup-hosts.yml --limit localhost,infra<node-ID>,infra<node-ID>-host_containers
+      # openstack-ansible openstack.osa.setup_hosts --limit localhost,infra<node-ID>,infra<node-ID>-host_containers
 
 #. In case you're relying on ``/etc/hosts`` content, you should also update it for all hosts
 
    .. code:: console
 
-      # openstack-ansible openstack-hosts-setup.yml -e openstack_hosts_group=all --tags openstack_hosts-file
+      # openstack-ansible openstack.osa.openstack_hosts_setup -e openstack_hosts_group=all --tags openstack_hosts-file
 
 #. Next we need to expand galera/rabbitmq clusters, which is done during
    ``setup-infrastructure.yml``. So we will run this playbook without limits.
@@ -64,7 +64,7 @@ needed in an environment, it is possible to create additional nodes.
 
    .. code:: console
 
-      # openstack-ansible playbooks/setup-infrastructure.yml -e galera_force_bootstrap=true
+      # openstack-ansible openstack.osa.setup_infrastructure -e galera_force_bootstrap=true
 
 #. Once infrastructure playboks are done, it's turn of openstack services to be
    deployed. Most of the services are fine to be ran with limits, but some,
@@ -72,8 +72,8 @@ needed in an environment, it is possible to create additional nodes.
 
    .. code:: console
 
-      # openstack-ansible playbooks/os-keystone-install.yml
-      # openstack-ansible playbooks/setup-openstack.yml --limit '!keystone_all',localhost,infra<node-ID>,infra<node-ID>-host_containers
+      # openstack-ansible openstack.osa.keystone
+      # openstack-ansible openstack.osa.setup_openstack --limit '!keystone_all',localhost,infra<node-ID>,infra<node-ID>-host_containers
 
 
 Test new infra nodes
@@ -113,9 +113,9 @@ cluster.
    .. code-block:: shell-session
 
        # cd /opt/openstack-ansible/playbooks
-       # openstack-ansible setup-hosts.yml --limit localhost,NEW_HOST_NAME
-       # openstack-ansible openstack-hosts-setup.yml -e openstack_hosts_group=nova_compute --tags openstack_hosts-file
-       # openstack-ansible setup-openstack.yml --limit localhost,NEW_HOST_NAME
+       # openstack-ansible openstack.osa.setup_hosts --limit localhost,NEW_HOST_NAME
+       # openstack-ansible openstack.osa.openstack_hosts_setup -e openstack_hosts_group=nova_compute --tags openstack_hosts-file
+       # openstack-ansible openstack.osa.setup_openstack --limit localhost,NEW_HOST_NAME
 
    Alternatively you can try using new compute nodes deployment script
    ``/opt/openstack-ansible/scripts/add-compute.sh``.
@@ -396,8 +396,7 @@ Destroying Containers
 
   .. code-block:: console
 
-     # cd /opt/openstack-ansible/playbooks
-     # openstack-ansible lxc-containers-destroy --limit localhost,<container name|container group>
+     # openstack-ansible openstack.osa.containers_lxc_destroy --limit localhost,<container name|container group>
 
   .. note::
 
@@ -420,7 +419,7 @@ Destroying Containers
    .. code-block:: console
 
       # cd /opt/openstack-ansible/playbooks
-      # openstack-ansible lxc-containers-create --limit localhost,lxc_hosts,<container name|container
+      # openstack-ansible openstack.osa.containers_lxc_create --limit localhost,lxc_hosts,<container name|container
         group>
 
    The lxc_hosts host group must be included as the playbook and roles executed require the

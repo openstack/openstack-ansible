@@ -1,0 +1,26 @@
+---
+prelude: >
+    All playbooks for OpenStack-Ansible were moved under openstack.osa
+    collection, which is being installed as a part of bootstrap-ansible.sh
+    process.
+
+    We left playbooks under their original names and locations for
+    backwards compatability, though they are just importing corresponsive
+    playbooks from the collection.
+
+features:
+  - |
+    Functional code for playbooks were moved from playbooks/ folder of
+    the OpenStack-Ansible repository to a openstack.osa collection.
+
+    This means, you can control versions of playbooks separately from the
+    OpenStack-Ansible repository itself. This also enables to call
+    playbooks without providing explicit path to them, but through FQCN,
+    for example: ``openstack-ansible openstack.osa.setup_openstack``
+
+    We also have renamed some playbooks to better reflect their purpose.
+    For instance ``playbooks/os-nova-install.yml`` become
+    ``openstack.osa.nova``
+
+    For backwards compatability we left old playbooks names/paths, though
+    they contain simple import of corresponsive playbook from the collection.

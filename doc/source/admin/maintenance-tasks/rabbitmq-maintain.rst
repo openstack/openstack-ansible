@@ -234,8 +234,8 @@ onwards.
 
    .. code-block:: console
 
-      $ openstack-ansible rabbitmq-install.yml --tags rabbitmq-config
-      $ openstack-ansible setup-openstack.yml --tags common-mq,post-install
+      $ openstack-ansible openstack.osa.rabbitmq_server --tags rabbitmq-config
+      $ openstack-ansible openstack.osa.setup_openstack --tags common-mq,post-install
 
 In order to take advantage of these steps, we suggest setting
 `oslomsg_rabbit_quorum_queues` to False before upgrading to 2024.1. Then, once
