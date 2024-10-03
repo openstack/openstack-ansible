@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added variable ``openstack_apache_mpm_backend`` which is used as a default
+    value by service-specific variables to define used Apache MPM across the
+    deployment. Defaults MPM ``event`` will be used if not overriden.
+fixes:
+  - |
+    Used Apache MPMs are aligned across services and will not conflict with
+    each other on `metal` deployments. Apache MPM `event` is being used by
+    default.
