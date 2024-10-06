@@ -195,7 +195,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible setup-hosts.yml --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_hosts --limit localhost,reinstalled_host*
 
 #. This step should be executed when you are re-configuring one of haproxy
    hosts
@@ -208,17 +208,17 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible haproxy-install.yml --limit localhost,reinstalled_host --skip-tags keepalived
-      openstack-ansible repo-install.yml --tags haproxy-service-config
-      openstack-ansible galera-install.yml --tags haproxy-service-config
-      openstack-ansible rabbitmq-install.yml --tags haproxy-service-config
-      openstack-ansible setup-openstack.yml --tags haproxy-service-config
+      openstack-ansible openstack.osa.haproxy --limit localhost,reinstalled_host --skip-tags keepalived
+      openstack-ansible openstack.osa.repo --tags haproxy-service-config
+      openstack-ansible openstack.osa.galera_server --tags haproxy-service-config
+      openstack-ansible openstack.osa.rabbitmq_server --tags haproxy-service-config
+      openstack-ansible openstack.osa.setup_openstack --tags haproxy-service-config
 
    Once this is done, you can deploy keepalived again:
 
    .. code:: console
 
-      openstack-ansible haproxy-install.yml --tags keepalived --limit localhost,reinstalled_host
+      openstack-ansible openstack.osa.haproxy --tags keepalived --limit localhost,reinstalled_host
 
    After that you might want to ensure that "local" backends remain disabled.
    You can also use a playbook from `OPS repository`_ for this:
@@ -231,8 +231,8 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible setup-infrastructure.yml --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
-      openstack-ansible setup-openstack.yml --limit localhost,keystone_all,reinstalled_host*
+      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
+      openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,reinstalled_host*
 
    (* because we need to include containers in the limit)
 
@@ -253,7 +253,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         openstack-ansible galera-install.yml --limit localhost,reinstalled_host* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
+         openstack-ansible openstack.osa.galera_server --limit localhost,reinstalled_host* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
 
       You'll now have mariadb running, and it should be synced with
       non-primaries.
@@ -287,20 +287,20 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         openstack-ansible rabbitmq-install.yml -e rabbitmq_primary_cluster_node="{{ hostvars[groups['rabbitmq_all'][-1]]['ansible_facts']['hostname'] }}"
+         openstack-ansible openstack.osa.rabbitmq_server -e rabbitmq_primary_cluster_node="{{ hostvars[groups['rabbitmq_all'][-1]]['ansible_facts']['hostname'] }}"
 
    #. Now the repo host primary
 
       .. code:: console
 
-         openstack-ansible repo-install.yml -e glusterfs_bootstrap_node="{{ groups['repo_all'][-1] }}"
+         openstack-ansible openstack.osa.repo -e glusterfs_bootstrap_node="{{ groups['repo_all'][-1] }}"
 
    #. Everything should now be in a working state and we can finish it off with
 
       .. code:: console
 
-         openstack-ansible setup-infrastructure.yml --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
-         openstack-ansible setup-openstack.yml --limit localhost,keystone_all,reinstalled_host*
+         openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
+         openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,reinstalled_host*
 
 #. Adjust HAProxy status
 
@@ -338,9 +338,9 @@ Deploying Compute & Network Hosts
 
    .. code:: console
 
-      openstack-ansible setup-hosts.yml --limit localhost,reinstalled_host*
-      openstack-ansible setup-infrastructure.yml --limit localhost,reinstalled_host*
-      openstack-ansible setup-openstack.yml --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_hosts --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_openstack --limit localhost,reinstalled_host*
 
    (* because we need to include containers in the limit)
 

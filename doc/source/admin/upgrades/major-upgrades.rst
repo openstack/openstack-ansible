@@ -182,7 +182,7 @@ After that you can proceed with standard OpenStack upgrade steps:
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml --limit '!galera_all:!rabbitmq_all' -e package_state=latest
+    # openstack-ansible openstack.osa.setup_hosts --limit '!galera_all:!rabbitmq_all' -e package_state=latest
 
 This command is the same setting up hosts on a new installation. The
 ``galera_all`` and ``rabbitmq_all`` host groups are excluded to prevent
@@ -194,7 +194,7 @@ container restarts.
 
 .. code-block:: console
 
-    # openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'
+    # openstack-ansible openstack.osa.setup_hosts -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all'
 
 Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +204,7 @@ ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
 
 .. code-block:: console
 
-    # openstack-ansible setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
+    # openstack-ansible openstack.osa.setup_infrastructure -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
 
 With this complete, we can now restart the mariadb containers one at a time,
 ensuring that each is started, responding, and synchronized with the other
@@ -223,7 +223,7 @@ We can now go ahead with the upgrade of all the OpenStack components.
 
 .. code-block:: console
 
-    # openstack-ansible setup-openstack.yml -e package_state=latest
+    # openstack-ansible openstack.osa.setup_openstack -e package_state=latest
 
 Upgrade Ceph
 ~~~~~~~~~~~~
@@ -244,8 +244,8 @@ lab environment before upgrading.
 
 .. warning::
 
-    Ceph related playbooks are included as part of ``setup-infrastructure.yml``
-    and ``setup-openstack.yml`` playbooks, so you should be cautious when
+    Ceph related playbooks are included as part of ``openstack.osa.setup_infrastructure``
+    and ``openstack.osa.setup_openstack`` playbooks, so you should be cautious when
     running them during OpenStack upgrades.
     If you have ``upgrade_ceph_packages: true`` in your user variables or
     provided ``-e upgrade_ceph_packages=true`` as argument and run

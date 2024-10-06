@@ -49,20 +49,20 @@ A minor upgrade typically requires the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible setup-hosts.yml -e package_state=latest
+      # openstack-ansible openstack.osa.setup_hosts -e package_state=latest
 
 #. Update the infrastructure:
 
    .. code-block:: console
 
       # openstack-ansible -e rabbitmq_upgrade=true \
-      setup-infrastructure.yml
+      openstack.osa.setup_infrastructure
 
 #. Update all OpenStack services:
 
    .. code-block:: console
 
-      # openstack-ansible setup-openstack.yml -e package_state=latest
+      # openstack-ansible openstack.osa.setup_openstack -e package_state=latest
 
 .. note::
 
@@ -80,13 +80,13 @@ command:
 
 .. code-block:: console
 
-   # openstack-ansible os-nova-install.yml --limit nova_compute
+   # openstack-ansible openstack.osa.nova --limit nova_compute
 
 To update only a single Compute host, run the following command:
 
 .. code-block:: console
 
-   # openstack-ansible os-nova-install.yml --limit <node-name>
+   # openstack-ansible openstack.osa.nova --limit <node-name>
 
 .. note::
 
@@ -117,23 +117,18 @@ script to show all groups and their hosts. For example:
 To see which hosts a playbook runs against, and to see which tasks are
 performed, run the following commands (for example):
 
-#. Change directory to the repository clone playbooks directory:
-
-   .. code-block:: console
-
-      # cd /opt/openstack-ansible/playbooks
 
 #. See the hosts in the ``nova_compute`` group that a playbook runs against:
 
    .. code-block:: console
 
-      # openstack-ansible os-nova-install.yml --limit nova_compute \
+      # openstack-ansible openstack.osa.nova --limit nova_compute \
                                               --list-hosts
 
 #. See the tasks that are executed on hosts in the ``nova_compute`` group:
 
    .. code-block:: console
 
-     # openstack-ansible os-nova-install.yml --limit nova_compute \
+     # openstack-ansible openstack.osa.nova --limit nova_compute \
                                              --skip-tags 'nova-key' \
                                              --list-tasks

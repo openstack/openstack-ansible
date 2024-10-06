@@ -253,10 +253,9 @@ Finally, run the playbooks by executing:
 
 .. code-block:: shell-session
 
-   # cd /opt/openstack-ansible/playbooks
-   # openstack-ansible setup-hosts.yml
-   # openstack-ansible setup-infrastructure.yml
-   # openstack-ansible setup-openstack.yml
+   # openstack-ansible openstack.osa.setup_hosts
+   # openstack-ansible openstack.osa.setup_infrastructure
+   # openstack-ansible openstack.osa.setup_openstack
 
 The installation process will take a while to complete, but here are some
 general estimates:
