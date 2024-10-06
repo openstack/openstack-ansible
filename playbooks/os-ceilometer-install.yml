@@ -13,45 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather ceilometer facts
-  hosts: ceilometer_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tasks:
-    - name: Gather additional facts
-      include_role:
-        name: openstack.osa.gather_extra_facts
-      when: osa_gather_facts | default(True)
-  tags:
-    - always
-
-- name: Install the ceilometer components
-  hosts: ceilometer_all
-  gather_facts: false
-  serial: "{{ ceilometer_serial | default(['1','100%']) }}"
-  user: root
-  pre_tasks:
-    - name: Setup installation variables
-      include_role:
-        name: openstack.osa.install_defaults
-        defaults_from: "{{ install_method }}"
-        public: true
-        apply:
-          tags:
-            - always
-      tags:
-        - always
-
-    - name: Including container-setup tasks
-      include_role:
-        name: "openstack.osa.{{ container_tech | default('lxc') }}_container_setup"
-      when: not is_metal
-
-    - name: Including unbound-clients tasks
-      include_role:
-        name: openstack.osa.unbound_clients
-      when:
-        - hostvars['localhost']['resolvconf_enabled'] | bool
-  roles:
-    - role: "os_ceilometer"
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
+- name: Importing ceilometer playbook
+  import_playbook: openstack.osa.ceilometer

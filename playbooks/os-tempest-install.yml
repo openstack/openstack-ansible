@@ -13,42 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather tempest facts
-  hosts: utility_all[0]
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tasks:
-    - name: Gather additional facts
-      include_role:
-        name: openstack.osa.gather_extra_facts
-      when: osa_gather_facts | default(True)
-  tags:
-    - always
-
-- name: Installation and setup of Tempest
-  hosts: utility_all[0]
-  gather_facts: false
-  user: root
-  pre_tasks:
-    - name: Setup installation variables
-      include_role:
-        name: openstack.osa.install_defaults
-        defaults_from: "{{ install_method }}"
-        public: true
-        apply:
-          tags:
-            - always
-      tags:
-        - always
-
-    - name: End playbook
-      meta: end_play
-      when:
-        - (not (tempest_install | default(false)) | bool)
-
-  roles:
-    - role: "os_tempest"
-    - role: "openstack.osa.system_crontab_coordination"
-      tags:
-        - crontab
-
-  environment: "{{ deployment_environment_variables | default({}) }}"
+- name: Importing tempest playbook
+  import_playbook: openstack.osa.tempest

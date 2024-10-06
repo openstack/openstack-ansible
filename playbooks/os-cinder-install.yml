@@ -13,56 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather cinder facts
-  hosts: cinder_all
-  gather_facts: false
-  tags:
-    - always
-  tasks:
-    - name: Gather minimal facts for cinder
-      setup:
-        gather_subset:
-          - "!all"
-          - min
-      when: osa_gather_facts | default(True)
-
-    - name: Gather additional facts for cinder
-      setup:
-        gather_subset: "{{ cinder_gather_subset | default('processor_count') }}"
-        filter: "{{ cinder_gather_filter | default('ansible_processor*') }}"
-      when: osa_gather_facts | default(True)
-
-- name: Install cinder scheduler services
-  import_playbook: common-playbooks/cinder.yml
-  vars:
-    cinder_hosts: "cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_scheduler_serial | default(['1', '100%']) }}"
-
-- name: Install cinder volume services
-  import_playbook: common-playbooks/cinder.yml
-  vars:
-    cinder_hosts: "cinder_volume:!cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
-
-- name: Install cinder backup services
-  import_playbook: common-playbooks/cinder.yml
-  vars:
-    cinder_hosts: "cinder_backup:!cinder_volume:!cinder_scheduler:!cinder_api"
-    cinder_serial: "{{ cinder_backend_serial | default(['1', '100%']) }}"
-
-- name: Configure haproxy services
-  import_playbook: openstack.osa.haproxy_service_config
-  vars:
-    service_group: cinder_api
-    service_variable: "cinder_haproxy_services"
-  when:
-    - groups[service_group] | length > 0
-    - groups['haproxy'] | length > 0
-  tags:
-    - haproxy-service-config
-
-- name: Install cinder API services
-  import_playbook: common-playbooks/cinder.yml
-  vars:
-    cinder_hosts: "cinder_api"
-    cinder_serial: "{{ cinder_api_serial | default(['1', '100%']) }}"
+- name: Importing cinder playbook
+  import_playbook: openstack.osa.cinder

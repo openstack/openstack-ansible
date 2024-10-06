@@ -15,23 +15,5 @@
 
 # Playbook will sync the swift ring and ssh keys
 # The services need to be installed first though.
-- name: Synchronisation of swift ring and ssh keys
-  hosts: swift_all:swift_remote_all
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  user: root
-  pre_tasks:
-    - name: Setup installation variables
-      include_role:
-        name: openstack.osa.install_defaults
-        defaults_from: "{{ install_method }}"
-        public: true
-        apply:
-          tags:
-            - always
-      tags:
-        - always
-  roles:
-    - role: "os_swift"
-      swift_do_setup: False
-      swift_do_sync: True
-  environment: "{{ deployment_environment_variables | default({}) }}"
+- name: Importing swift_sync playbook
+  import_playbook: openstack.osa.swift_sync
