@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    Default for Neutron API has been switched from using uWSGI to old
+    eventlet due to found compatability issues for the current OpenStack
+    release.
+    You can find more infromation in Neutron
+    `bug report <https://bugs.launchpad.net/neutron/+bug/2069581>`_
+    You can preserve current behaviour by setting ``neutron_use_uwsgi: True``
+fixes:
+  - |
+    In case of switching Neutron from uWSGI to old eventlet,
+    `neutron-rpc-server` service will be disabled and stopped by the role.

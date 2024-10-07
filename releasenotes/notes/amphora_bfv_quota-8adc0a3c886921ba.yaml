@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Added variables ``octavia_gigabytes`` and ``octavia_num_volumes`` to
+    control quota defenitions for the project where Octavia Amphorae is
+    being spawned.
+fixes:
+  - |
+    Octavia role now handles quota defenition properly when BFV is set for
+    Amphorae by defining ``octavia_cinder_enabled: True``
+upgrade:
+  - |
+    Changed default for ``octavia_cinder_volume_size`` to 20gb in order
+    to align with value of ``octavia_amp_disk``
+  - |
+    Amphorae flavor will have 0 disk set (through variable
+    ``octavia_amp_disk``), when ``octavia_cinder_enabled: True``.

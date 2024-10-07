@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Added variable ``nova_ssh_custom_config`` which allows to apply
+    extra configuration for SSH connection established by Nova Compute
+    while perfroming offline migrations or resizes.
+    Can be leveraged to define a custom SSH port or ProxyJump.

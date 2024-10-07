@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    The configuration of repositories for the ceph_client role through
+    the `ceph_yum_repo_url` and `ceph_repo_url` variable is changed.
+    These variables were replaced by unified `ceph_repo_url` variable.
+    With that `ceph_apt_repos` has bee replaced by `ceph_repos` variable
+    which should follow deb822_repository format for Debian/Ubuntu and
+    `yum_repository` for CentOS Stream/Rocky Linux.
+
+deprecations:
+  - |
+    In order to unify Ceph client installation approaches for EL and Debian
+    platforms following variables were deprecated and are silently ignored:
+
+      * ceph_yum_repo_url
+      * ceph_apt_repo_url
+      * ceph_apt_repos

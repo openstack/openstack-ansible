@@ -1,0 +1,8 @@
+---
+
+upgrade:
+  - |
+    In order to align used Apache MPM across the board, Horizon default
+    MPM is switched from ``worker`` to ``event``.
+    A variable ``horizon_apache_mpm_backend`` was introduced to define
+    the MPM in use.

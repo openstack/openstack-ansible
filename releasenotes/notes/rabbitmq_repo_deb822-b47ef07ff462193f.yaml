@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    The apt repository setup for the rabbitmq_server role is migrated to use
+    the deb822_repository ansible module rather than the legacy apt_key and
+    apt_repository modules. The format of the `rabbitmq_repo` and
+    `rabbitmq_erlang_repo` ole default variables are changed to match the
+    requirements of the new module, and are now lists allowing multiple
+    repositories to be configured if required.
+upgrade:
+  - |
+    The configuration of apt repositories for the rabbitmq_server role through
+    the `rabbitmq_repo` variable is changed to match the deb822_repository
+    ansible module. Any deployments that customise the repository
+    configuration should adjust their `rabbitmq_repo` and `rabbitmq_erlang_repo`
+    overrides to suit.

@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    Changed a default value for a ``neutron_default_availability_zones``
+    variable. From now on role will gather defined ``neutron_availability_zone``
+    across all hosts (which defaults to `nova`) and attempt to schedule
+    on all available Availability Zones by default.
+    Change of the default should not alter behaviour for single-AZ setups.
