@@ -1,0 +1,16 @@
+---
+
+features:
+  - |
+    Added variables to better control SSH keypair generation for Octavia:
+
+      * ``octavia_ssh_key_manage`` (True): Enables an Octavia role to generate
+        and manage SSH keypair to be used for Amphoras.
+      * ``octavia_resources_deploy_host`` (localhost): The host on which SSH key will be
+        created.
+      * ``octavia_ssh_key_dir`` (${HOME}/.ssh): Directory under which keypair
+        will be created on the ``octavia_resources_deploy_host``
+      * ``octavia_ssh_key_comment`` (Generated-by-Nova): Comment for the keypair.
+      * ``octavia_ssh_key_format`` (ssh): Format for the stored private key
+      * ``octavia_ssh_key_type`` (rsa): Type of the SSH keypair generated
+      * ``octavia_ssh_key_size`` (2048): Private key length.
