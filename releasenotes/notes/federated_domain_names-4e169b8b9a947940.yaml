@@ -1,0 +1,13 @@
+---
+issues:
+  - |
+    Due to the underlying `bug <https://bugs.launchpad.net/ansible-collections-openstack/+bug/2065680>`_
+    in Ansible collections for OpenStack, ``Default`` domain name can be
+    renamed to ``default`` under certain conditions.
+    One known example is having ``domain: default`` defenition under
+    ``keystone_sp -> trusted_idp_list -> federated_identities`` structure.
+upgrade:
+  - |
+    Please, make sure that in case of federation usage you define domain
+    name instead of it's ID (ie. ``Default`` instead of ``default``)
+    under ``keystone_sp -> trusted_idp_list -> federated_identities``
