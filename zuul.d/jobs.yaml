@@ -131,6 +131,7 @@
 - job:
     name: openstack-ansible-tox-inventory
     parent: tox
+    nodeset: ubuntu-jammy
     description: |
             Dynamic dynamic_inventory unit tests using tox
     vars:
