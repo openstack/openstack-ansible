@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    As RabbitMQ HA (mirrored) queues are no longer supported with current
+    version of RabbitMQ, please make sure a migration to Quorum Queues was
+    performed before proceeding with the upgrade.
+    Please check the `Migrate between HA and Quorum Queues <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
+    documentation for more details on the migration path.
+deprecations:
+  - |
+    RabbitMQ HA (mirrored) queues are no longer supported by RabbitMQ,
+    so respective policy was deprecated and removed in favor of quorum queues.
+    Migration to Quorum Queues is expected to be performed on 2024.1 (Caracal)
+    release.
+    Please check the `Migrate between HA and Quorum Queues <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
+    documentation for more details on the migration path.
