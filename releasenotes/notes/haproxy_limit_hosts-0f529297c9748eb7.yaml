@@ -1,0 +1,20 @@
+---
+features:
+  - |
+    A mapping ``<service>_haproxy_services`` now can contain a key
+    ``haproxy_limit_hosts``, which can be used to filter out haproxy
+    nodes to which this config should be applied.
+    This behaviour might be useful in case you want to apply a different
+    service configuration to haproxy hosts.
+fixes:
+  - |
+    Functionality of providing different haproxy service settings per haproxy
+    host has been restored through ``haproxy_limit_hosts`` key which provides
+    filtering of target HAProxy hosts, to which this configuration should be
+    applied.
+    Before moving ``<service>_haproxy_services`` from `haproxy_all` group_vars
+    it was possible to supply a completely independent set of backends
+    that will be configured on the HAProxy server.
+    With moving backend defenition to specific service group_vars, this ability
+    was lost, as there was no way to tell what config to apply to which HAProxy
+    server.
