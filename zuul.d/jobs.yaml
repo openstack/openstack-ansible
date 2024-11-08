@@ -132,7 +132,7 @@
 - job:
     name: openstack-ansible-tox-inventory
     parent: tox
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
     description: |
             Dynamic dynamic_inventory unit tests using tox
     vars:
@@ -300,13 +300,13 @@
 - job:
     name: openstack-ansible-varstest-aio
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
 
 # Ensuring SHAs are valid
 - job:
     name: openstack-ansible-shastest-metal
     parent: openstack-ansible-deploy
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
     irrelevant-files: []
     files:
       - ^ansible-collection-requirements\.yml
@@ -346,17 +346,17 @@
 
 # Running linters check
 - job:
-    name: openstack-ansible-linters-ubuntu-jammy
+    name: openstack-ansible-linters-ubuntu-noble
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
     irrelevant-files: []
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
 - job:
-    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-jammy
+    name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-noble
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
@@ -369,7 +369,7 @@
 - job:
     name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
+    nodeset: ubuntu-noble
     branches: ^(devel|master)$
     required-projects:
       - name: github.com/ansible/ansible
