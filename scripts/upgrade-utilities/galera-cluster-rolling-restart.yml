@@ -59,7 +59,7 @@
       delegate_to: "{{ groups['utility_all'][0] }}"
 
     - name: Check that WSREP is ready and Synced
-      shell: "/usr/bin/mysqladmin extended-status | egrep '(wsrep_local_state_comment)'"
+      shell: "/usr/bin/mariadb-admin extended-status | egrep '(wsrep_local_state_comment)'"
       register: mariadb_ready
       until:
         - mariadb_ready.rc == 0
