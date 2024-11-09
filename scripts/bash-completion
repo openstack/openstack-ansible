@@ -1,0 +1,93 @@
+# Bash autocomplete script for `openstack-ansible` command
+
+source /usr/local/bin/openstack-ansible.rc
+COLLECTION_PATH="${ANSIBLE_COLLECTIONS_PATH:-/etc/ansible}/ansible_collections/"
+
+
+_ansible_hosts_inventory(){
+    local hosts current_time cache_creation cache_age cache_lifetime cache_path
+
+    cache_lifetime=86400
+    cache_path="${OSA_CONFIG_DIR}/ansible_facts/openstack-ansible-hosts-completion"
+
+    if [ -f ${cache_path} ]; then
+        cache_creation=$(stat --printf="%Y" ${cache_path})
+        cache_age=$(($(date +%s) - cache_creation))
+
+        if [[ $cache_age -gt $cache_lifetime ]]; then
+            rm ${cache_path}
+            hosts=$(ansible all --list-hosts 2>/dev/null | sed '1d' | awk '{ print $1 }' | tee ${cache_path})
+        else
+            hosts=$(cat ${cache_path})
+        fi
+    else
+        cache_path_dirname=$(dirname ${cache_path})
+        if [ ! -d ${cache_path_dirname} ]; then
+            mkdir -p ${cache_path_dirname}
+        fi
+        hosts=$(ansible all --list-hosts 2>/dev/null | sed '1d' | awk '{ print $1 }' | tee ${cache_path})
+    fi
+    echo "${hosts}"
+}
+
+
+_normalize_collection_playbook_paths(){
+    local converted_paths=()
+    for path in "$@"; do
+        # Remove leading directory path completely
+        path=${path##$COLLECTION_PATH}
+
+        # Remove "playbooks" folder
+        path=${path//playbooks\//}
+
+        # Remove ".yml" extension (if present)
+        path=${path%.yml}
+
+        # Replace slashes with dots
+        path=${path//\//.}
+
+        # Append the converted path
+        converted_paths+=("$path")
+    done
+    echo "${converted_paths[@]}"
+}
+
+
+_openstack_ansible() {
+    local cur prev opts short_opts completions playbooks
+    COMPREPLY=()
+    # Get the current word and the previous word
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="--ask-become-pass --ask-pass --ask-vault-pass
+          --ask-vault-password
+          --become --become-method --become-user
+          --become-password-file --connection-password-file
+          --check --connection --diff --extra-vars
+          --flush-cache --force-handlers --forks --help
+          --inventory --limit --list-hosts
+          --list-tags --list-tasks --module-path
+          --private-key --skip-tags --start-at-task
+          --step --syntax-check
+          --scp-extra-args --sftp-extra-args
+          --ssh-common-args --ssh-extra-args
+          --tags --timeout
+          --user --vault-id --vault-password-file
+          --verbose --version"
+    short_opts="-b -C -c -D -e -f -h -i -J -K -k -l -M  -T -t -u -v"
+
+    if [[ "$cur" == -* ]]; then
+        completions=$(echo ${short_opts} ${opts})
+    elif [[ "$cur" == --* ]]; then
+        completions=$(echo ${opts})
+    elif [[ "$prev" == "-l" ]] || [[ "$prev" == "--limit" ]]; then
+        completions=$(_ansible_hosts_inventory | grep -i "${cur}")
+    else
+        playbooks=$(find ${COLLECTION_PATH} -type f -name "*.yml" | grep playbooks)
+        completions=$(_normalize_collection_playbook_paths ${playbooks[@]} | grep -i "${cur}")
+    fi
+    COMPREPLY=($(compgen -W '${completions}' -- ${cur}))
+}
+
+
+complete -F _openstack_ansible openstack-ansible

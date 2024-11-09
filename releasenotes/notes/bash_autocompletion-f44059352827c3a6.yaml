@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    Added a bash auto-completion script which will assist with running
+    openstack-ansible commands. It is placed as
+    ``/etc/bash_completion.d/openstack-ansible``, so please make sure
+    your .bashrc is configured to load completion scripts from there.
+    As of today it can help with completing playbook names, which are part
+    of collections, Ansible native flags and hosts in case of ``--limit``
+    flag is used.
