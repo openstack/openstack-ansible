@@ -32,17 +32,26 @@ haproxy_package_state: "{{ package_state }}"
 haproxy_security_headers_max_age: 31536000
 # Set CSP headers to report only for testing
 haproxy_security_headers_csp_report_only: False
+haproxy_security_child_src_records:
+  - "{{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }}"
+  - "{{ external_lb_vip_address }}:{{ nova_novncproxy_port }}"
+  - "{{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }}"
+haproxy_security_frame_ancestors_records: []
+haproxy_security_frame_src_records: "{{ haproxy_security_child_src_records }}"
+haproxy_security_connect_src_records:
+  - "{{ external_lb_vip_address }}:*"
+  - "wss://{{ external_lb_vip_address }}:{{ ironic_console_port }}"
 haproxy_security_headers_csp: >
   http-response set-header {{ haproxy_security_headers_csp_report_only | ternary('Content-Security-Policy-Report-Only', 'Content-Security-Policy') }} "
   default-src 'self';
-  frame-ancestors 'self';
+  frame-ancestors 'self' {{ haproxy_security_frame_ancestors_records | join(' ') }};
   form-action 'self';
   upgrade-insecure-requests;
   style-src 'self' 'unsafe-inline';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
-  child-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
-  frame-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
-  connect-src 'self' {{ external_lb_vip_address }}:* wss://{{ external_lb_vip_address }}:{{ ironic_console_port }};
+  child-src 'self' {{ haproxy_security_child_src_records | join(' ') }};
+  frame-src 'self' {{ haproxy_security_frame_src_records | join(' ') }};
+  connect-src 'self' {{ haproxy_security_connect_src_records | join(' ') }};
   img-src 'self' data:;
   worker-src blob:;
   "
