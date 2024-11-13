@@ -266,13 +266,13 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
       ln -s $ZUUL_SRC_PATH /openstack/src
     fi
     # Update AIO config files for certain scenarios
-    for item in "${SCENARIOS_WITH_CONFIG_UPDATE[@]}"; do
-      if [[ "${SCENARIO}" =~ "${item}" ]]; then
-        export BOOTSTRAP_EXTRA_PARAMS="${BOOTSTRAP_EXTRA_PARAMS:-} -t prepare-aio-config"
-        "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
-        break
-      fi
-    done
+    # for item in "${SCENARIOS_WITH_CONFIG_UPDATE[@]}"; do
+    #   if [[ "${SCENARIO}" =~ "${item}" ]]; then
+    export BOOTSTRAP_EXTRA_PARAMS="${BOOTSTRAP_EXTRA_PARAMS:-} -t prepare-aio-config"
+    "${OSA_CLONE_DIR}/scripts/bootstrap-aio.sh"
+    #     break
+    #   fi
+    # done
     # To execute the upgrade script we need to provide
     # an affirmative response to the warning that the
     # upgrade is irreversable.
