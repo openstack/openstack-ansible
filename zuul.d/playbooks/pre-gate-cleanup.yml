@@ -36,3 +36,28 @@
         regexp: "^exclude="
         state: absent
       when: ansible_pkg_mgr == 'dnf'
+
+    - name: Replace mirrorlist with specific mirrors for Rocky
+      when:
+        - ansible_facts['distribution'] | lower == 'rocky'
+      block:
+        - name: Comment out mirrorlist for Rocky
+          replace:
+            path: "/etc/yum.repos.d/{{ item }}"
+            regexp: "^(mirrorlist=.*)$"
+            replace: "#\\1"
+          with_items:
+            - rocky.repo
+            - rocky-extras.repo
+            - rocky-devel.repo
+            - rocky-addons.repo
+        - name: Uncomment baseurl for Rocky
+          replace:
+            path: "/etc/yum.repos.d/{{ item }}"
+            regexp: "^#(baseurl=.*)$"
+            replace: "\\1"
+          with_items:
+            - rocky.repo
+            - rocky-extras.repo
+            - rocky-devel.repo
+            - rocky-addons.repo
