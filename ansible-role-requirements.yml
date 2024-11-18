@@ -68,9 +68,9 @@
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: daa952c0b4679a87be7cd2a40d9ec29772107352
+  version: b6ed4380b35561ba3813a81b58a806d3da961b42
   trackbranch: stable/2024.1
-  shallow_since: '2024-10-02'
+  shallow_since: '2024-11-08'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
@@ -194,9 +194,9 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 81ac8f5ee2089cb28dd76d1f4cb264b4e2121b49
+  version: 54591057cf40c363826e612d8748ee3e85d2c2cc
   trackbranch: stable/2024.1
-  shallow_since: '2024-10-01'
+  shallow_since: '2024-11-08'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
@@ -248,9 +248,9 @@
 - name: os_rally
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_rally
-  version: 80fac9b3376c8e4fddd25345e89d1318c3986600
+  version: e6af01f10a1bb922797fc7f710a45106207e9709
   trackbranch: stable/2024.1
-  shallow_since: '2024-06-03'
+  shallow_since: '2024-11-11'
 - name: os_skyline
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_skyline
@@ -290,15 +290,15 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: b0fee214608a254821f7f3591a2be026cae691b6
+  version: 75ed3bfa920680686aedc64c86addabb6f2c9b94
   trackbranch: stable/2024.1
-  shallow_since: '2024-06-03'
+  shallow_since: '2024-11-17'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
   version: 0898535a044fe2748a9d131674b2bd1358116a31
   trackbranch: stable/2024.1
-  shallow_since: '2024-06-03'
+  shallow_since: '2024-11-03'
 # External dependencies
 - name: etcd
   scm: git
@@ -333,6 +333,6 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 21026ac75f61d0951768b2f156c7b4d281ae730e
+  version: 963464804bff771e57721ff577471740e169e0f3
   trackbranch: stable-7.0
-  shallow_since: '2024-09-01'
+  shallow_since: '2024-10-16'

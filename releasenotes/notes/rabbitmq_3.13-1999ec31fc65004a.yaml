@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    RabbitMQ has been updated to new minor version 3.13.7
+upgrade:
+  - |
+    Upgrade to this release is required before moving forward with
+    Major OpenStack upgrade due to minimal RabbitMQ version requirement
+    of 3.13 for transitioning to 4.0 which happens in 2024.2 (Dalmatian).
+    RabbitMQ 3.12 is being used before this release by default.
