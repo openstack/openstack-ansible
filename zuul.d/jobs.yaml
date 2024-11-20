@@ -431,17 +431,6 @@
     timeout: 10800
 
 - job:
-    name: openstack-ansible-deploy-aio_metal_haqueues-ubuntu-noble
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-noble
-
-- job:
-    name: openstack-ansible-upgrade-aio_metal_haqueues-ubuntu-noble
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-noble
-    timeout: 10800
-
-- job:
     name: openstack-ansible-upgrade-aio_lxc-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
@@ -579,17 +568,6 @@
 
 - job:
     name: openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
-    timeout: 10800
-
-- job:
-    name: openstack-ansible-deploy-aio_metal_haqueues-ubuntu-jammy
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
-
-- job:
-    name: openstack-ansible-upgrade-aio_metal_haqueues-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
     timeout: 10800

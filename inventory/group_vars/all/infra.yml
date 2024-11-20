@@ -25,16 +25,10 @@ rabbitmq_servers: >-
       | list | join(',')
   }}
 
-# If you do not want to use neither quorum queues nor classic mirror queues,
-# set rabbitmq_queue_replication to False
+# If you do not want to use quorum queues, set rabbitmq_queue_replication to False
 rabbitmq_queue_replication: True
 
 rabbitmq_policies:
-  - name: "HA"
-    pattern: '^(?!(amq\.)|(.*_fanout_)).*'
-    priority: 0
-    tags: "ha-mode=all"
-    state: "{{ (oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) | ternary('absent', 'present') }}"
   - name: CQv2
     pattern: '.*'
     priority: 0

@@ -357,10 +357,6 @@ glance_default_store:
   type: cinder
 {% endif %}
 
-{% if 'haqueues' in bootstrap_host_scenarios_expanded %}
-oslomsg_rabbit_quorum_queues: False
-{% endif %}
-
 # NOTE(jrosser) nested virt is not usable in general in opendev.org CI jobs,
 # but if the keyword 'kvm' or 'qemu' is present in the expanded scenario then
 # force the use of that virtualisation type. If neither is specified,
