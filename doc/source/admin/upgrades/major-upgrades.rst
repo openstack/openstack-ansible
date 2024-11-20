@@ -202,6 +202,21 @@ Upgrade infrastructure
 We can now go ahead with the upgrade of all the infrastructure components. To
 ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
 
+.. warning::
+
+    Please make sure you are running RabbitMQ version 3.13 or later before
+    proceeding to this step.
+    Upgrade of RabbitMQ to version 4.0 (default for 2024.2) from prior version
+    will result in playbook failure.
+
+    At this point you can minorly upgrade RabbitMQ with the following command:
+
+    ``openstack-ansible openstack.osa.rabbitmq_server -e rabbitmq_upgrade=true -e rabbitmq_package_version=3.13.7-1``
+
+    Also ensure that you have migrated from mirrored queues (HA queues) to
+    Quorum queues before the upgrade, as mirrored queues are no longer supported
+    after upgrade.
+
 .. code-block:: console
 
     # openstack-ansible openstack.osa.setup_infrastructure -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
