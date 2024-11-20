@@ -118,12 +118,12 @@
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-hosts_lxc-jobs
@@ -166,18 +166,18 @@
     check:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_lxc-jobs
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-debian-bookworm
-        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_metal-jobs
@@ -229,7 +229,7 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
-        - openstack-ansible-deploy-aio_distro_metal-ubuntu-jammy
+        - openstack-ansible-deploy-aio_distro_metal-ubuntu-noble
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-debian-bookworm
