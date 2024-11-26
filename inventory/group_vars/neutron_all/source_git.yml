@@ -13,32 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 08.10.2024 ###
+### HEAD as of 26.11.2024 ###
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: 199ab4e225db8a1da7ed365af0b864ceacd1322f
-neutron_git_track_branch: stable/2023.1
+neutron_git_install_branch: 2023.1-eom
+neutron_git_track_branch: None
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
-neutron_vpnaas_git_install_branch: ed0aebe09928eea6ab34bca2f3cce6b7d82e6a2d
-neutron_vpnaas_git_track_branch: stable/2023.1
+neutron_vpnaas_git_install_branch: 2023.1-eom
+neutron_vpnaas_git_track_branch: None
 
 neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-dynamic-routing"
-neutron_dynamic_routing_git_install_branch: 13e0d8a63dbdbd9e1a863144999794d4fc9af22d
-neutron_dynamic_routing_git_track_branch: stable/2023.1
+neutron_dynamic_routing_git_install_branch: 2023.1-eom
+neutron_dynamic_routing_git_track_branch: None
 
 networking_odl_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-odl"
-networking_odl_git_install_branch: 404db086fccf450f8e485301c8ddfe4191581299
-networking_odl_git_track_branch: stable/2023.1
+networking_odl_git_install_branch: 2023.1-eom
+networking_odl_git_track_branch: None
 
 networking_bgpvpn_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-bgpvpn"
-networking_bgpvpn_git_install_branch: e0150b2efd8f37e843557c60690873c8fc778b1e
-networking_bgpvpn_git_track_branch: stable/2023.1
+networking_bgpvpn_git_install_branch: 2023.1-eom
+networking_bgpvpn_git_track_branch: None
 
 networking_sfc_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-sfc"
-networking_sfc_git_install_branch: a93b4de04b0f1e34119ab306331b211c0c9dd815
-networking_sfc_git_track_branch: stable/2023.1
+networking_sfc_git_install_branch: 2023.1-eom
+networking_sfc_git_track_branch: None
 
 networking_generic_switch_git_repo: "{{ openstack_opendev_base_url}}/openstack/networking-generic-switch"
 networking_generic_switch_git_install_branch: bc4c1789629e789f0d0e425d766fbda034b8a763
@@ -49,7 +49,7 @@ networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: 1fa9910c1ba096d0e1c26fb9f3be417958c95d75
+networking_nsxlib_git_install_branch: 395f3b4c59d63447a9484f157eb6ade722a67ba4
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
