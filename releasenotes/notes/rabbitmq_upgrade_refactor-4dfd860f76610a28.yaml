@@ -1,0 +1,9 @@
+---
+prelude: >
+    Behavior of ``rabbitmq_upgrade`` variable has changed. It no longer can
+    be used to reset the cluster state. It now acts solely as a flag to perform
+    a rolling-upgrade of the existing cluster.
+other:
+  - |
+    Supplying ``rabbitmq_upgrade=true`` no longer re-initialize cluster and
+    will perform regular rolling upgrade of the RabbitMQ cluster.

@@ -1,0 +1,24 @@
+---
+upgrade:
+  - |
+    uWSGI has been re-enabled by default for Neutron one more time. With that
+    new services are introduced which should ensure adequate functionality of
+    Neutron when uWSGI is being used.
+
+      - ``neutron-periodic-workers`` service is enabled for all drivers when
+        WSGI is being used. It runs along with previously existing
+        ``neutron-rpc-server``
+
+      - ``neutron-ovn-maintenance-worker`` service is added only if `ml2.ovn`
+        is being used as ``neutron_plugin_type``. The service will be enabled
+        and running only when WSGI is used for Neutron ``neutron_use_uwsgi`` is
+        set to `True`
+
+  - |
+    If you are using Ubuntu 22.04 Jammy Jellyfish and ``install_method: distro``
+    please make sure to disable ``neutron_use_uwsgi`` as required binaries for
+    this mode to work are missing from packages for this distro.
+fixes:
+  - |
+    Issues with uWSGI mode for Neutron has been addressed and uWSGI be used
+    for the service.

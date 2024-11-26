@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added a variable ``rabbitmq_erlang_package_version`` that can be used to
+    define an erlang version being used when ``external_repo`` is used as
+    package source.
+
+deprecations:
+  - |
+    Variable ``rabbitmq_erlang_version_spec`` has been deprecated and does not
+    have any effect anymore. Please, use ``rabbitmq_erlang_package_version``
+    instead.

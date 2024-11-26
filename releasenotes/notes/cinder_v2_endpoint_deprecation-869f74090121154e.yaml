@@ -1,0 +1,31 @@
+---
+
+deprecations:
+  - |
+    Following deprecated variables were removed and have no effect:
+
+      - `cinder_service_v2_name`
+      - `cinder_service_v2_port`
+      - `cinder_service_v2_proto`
+      - `cinder_service_v2_type`
+      - `cinder_service_v2_description`
+      - `cinder_service_v2_publicuri`
+      - `cinder_service_v2_publicurl`
+      - `cinder_service_v2_adminuri`
+      - `cinder_service_v2_adminurl`
+      - `cinder_service_v2_internaluri`
+      - `cinder_service_v2_internalurl`
+
+  - |
+    Following variables were deprecated and removed in favor of their analogues
+
+      - `cinder_service_description` -> `cinder_service_v3_description`
+      - `cinder_service_publicuri_proto` -> `cinder_service_v3_publicuri_proto`
+      - `cinder_service_adminuri_proto` -> `cinder_service_v3_adminuri_proto`
+      - `cinder_service_internaluri_proto` -> `cinder_service_v3_internaluri_proto`
+      - `cinder_service_type` -> `cinder_service_v3_type`
+      - `cinder_service_publicuri` -> `cinder_service_v3_publicurl`
+      - `cinder_service_adminuri` -> `cinder_service_v3_adminurl`
+      - `cinder_service_internaluri` -> `cinder_service_v3_internalurl`
+      - `cinder_service_v3_port` -> `cinder_service_port`
+      - `cinder_service_v3_proto` -> `cinder_service_proto`

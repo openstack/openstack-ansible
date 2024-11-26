@@ -1,0 +1,16 @@
+---
+features:
+  - |
+    RabbitMQ version is upgraded to a new major version 4.0
+
+upgrade:
+  - |
+    Please, make sure you are running RabbitMQ version of 3.13 before
+    proceeding with the upgrade.
+    In case you RabbitMQ version is lower then 3.13 upgrade to 4.0 will
+    fail.
+    You can run upgrade to 3.13 with same version of role by
+    supplying variable ``rabbitmq_package_version`` during runtime, for
+    example:
+    ``openstack-ansible openstack.osa.rabbitmq_server -e rabbitmq_upgrade=true -e rabbitmq_package_version=3.13.7-1``
+    and then re-running upgrade normally to 4.0.
