@@ -65,22 +65,30 @@
     check:
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
+        - openstack-ansible-upgrade_2024.1-infra_lxc-rockylinux-9
         - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
+        - openstack-ansible-upgrade_2024.1-infra_lxc-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-upgrade-infra_lxc-rockylinux-9
+        - openstack-ansible-upgrade_2024.1-infra_lxc-rockylinux-9
         - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
+        - openstack-ansible-upgrade_2024.1-infra_lxc-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
+        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
+        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
 
 - project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
@@ -193,7 +201,9 @@
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
         - openstack-ansible-upgrade-aio_metal-rockylinux-9
+        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
         - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
         - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9
         - openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy
 
