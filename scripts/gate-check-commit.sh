@@ -65,7 +65,7 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
     # The branch prefix will also change from 'stable/' to 'unmaintained/'
     # in the future, so determine the branch prefix dynamically
     UPGRADE_ACTION_ARRAY=(${ACTION//_/ })
-    export UPGRADE_SOURCE_RELEASE=${UPGRADE_ACTION_ARRAY[1]:-'2024.1'}
+    export UPGRADE_SOURCE_RELEASE=${UPGRADE_ACTION_ARRAY[1]:-'2024.2'}
     export UPGRADE_SOURCE_BRANCH_PREFIX=$(git branch -r --list 'origin/*' | grep $UPGRADE_SOURCE_RELEASE | sort | tail -n 1 | cut -d '/' -f 2)
     export UPGRADE_SOURCE_BRANCH=${UPGRADE_SOURCE_BRANCH:-$UPGRADE_SOURCE_BRANCH_PREFIX/$UPGRADE_SOURCE_RELEASE}
 

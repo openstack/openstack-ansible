@@ -9,10 +9,10 @@ configuration of an OpenStack environment.
 
 Documentation for each of the following releases is available.
 
-2024.2 (Dalmatian): Under development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025.1 (Epoxy): Under development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2024.2 (Dalmatian) is currently Under Development.
+OpenStack-Ansible 2025.1 (Epoxy) is currently Under Development.
 
 .. toctree::
    :maxdepth: 1
@@ -25,10 +25,24 @@ OpenStack-Ansible 2024.2 (Dalmatian) is currently Under Development.
    contributor/index
    reference/index
 
+2024.2 (Dalmatian): Maintained
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible 2024.2 (Dalmatian) was first released with the 30.0.0 tag on
+November 28, 2024.
+
+* `OpenStack-Ansible 2024.2 Documentation`_
+
+* `OpenStack-Ansible 2024.2 series release notes`_
+
+.. _OpenStack-Ansible 2024.2 Documentation: https://docs.openstack.org/openstack-ansible/2024.2/
+.. _OpenStack-Ansible 2024.2 series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/2024.2.html
+
+
 2024.1 (Caracal): Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2024.1 (Bobcat) was first released with the 29.0.0 tag on
+OpenStack-Ansible 2024.1 (Caracal) was first released with the 29.0.0 tag on
 June 6, 2024.
 
 * `OpenStack-Ansible 2024.1 Documentation`_
