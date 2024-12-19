@@ -5,8 +5,7 @@ Hybrid messaging example
 This section provides an overview of hybrid messaging deployment
 concepts and describes the necessary steps for a working
 OpenStack-Ansible (OSA) deployment where RPC and Notify communications
-are separated and integrated with different messaging server backends
-(e.g. rabbitmq and qdrouterd).
+are separated and integrated with different messaging server backends.
 
 oslo.messaging library
 ----------------------
@@ -67,8 +66,6 @@ support.
    +================+===========+===========+=====+========+===========+
    |     rabbit     | AMQP V0.9 | rabbitmq  | yes |   yes  |   queue   |
    +----------------+-----------+-----------+-----+--------+-----------+
-   |      amqp      | AMQP V1.0 | qdrouterd | yes |        |   direct  |
-   +----------------+-----------+-----------+-----+--------+-----------+
    |     kafka      |  kafka    |  kafka    |     |   yes  |   queue   |
    | (experimental) |  binary   |           |     |        |  (stream) |
    +----------------+-----------+-----------+-----+--------+-----------+
@@ -90,18 +87,3 @@ to the rabbitmq server backend.
    :start-after: under the License.
 
 .. _oslo-messaging.yml: https://github.com/openstack/openstack-ansible/blob/master/inventory/group_vars/all/oslo-messaging.yml
-
-Hybrid messaging deployment with qdrouterd server
--------------------------------------------------
-
-In OSA, the deployment of disparate messaging backends is completely
-transparent to the OpenStack services. By managing the inventories for
-the messaging servers, a hybrid messaging configuration will be created.
-The instantiation of the qdrouterd server role in the
-qdrouterd_host_group will automatically setup the oslomsg_rpc*
-variables to use this messaging backend. No additional configuration
-is required. The result is that RPC services will communicate via the
-amqp (V1.0 protocol) driver and the Notify services will communicate
-via the rabbit driver. The separation and use of different messaging
-backends can provide increased scale and resiliency.
-
