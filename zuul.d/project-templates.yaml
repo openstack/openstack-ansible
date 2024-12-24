@@ -315,6 +315,19 @@
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
 
 - project-template:
+    name: openstack-ansible-molecule
+    check:
+      jobs:
+        - openstack-ansible-tox-molecule-centos-9-stream
+        - openstack-ansible-tox-molecule-debian-bookworm
+        - openstack-ansible-tox-molecule-ubuntu-jammy
+    gate:
+      jobs:
+        - openstack-ansible-tox-molecule-centos-9-stream
+        - openstack-ansible-tox-molecule-debian-bookworm
+        - openstack-ansible-tox-molecule-ubuntu-jammy
+
+- project-template:
     name: openstack-ansible-deploy-guide-jobs
     description: |
       Build the deploy-guide document and publish the result

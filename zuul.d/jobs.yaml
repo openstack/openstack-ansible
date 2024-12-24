@@ -635,6 +635,14 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
 
+- job:
+    name: openstack-ansible-tox-molecule-ubuntu-jammy
+    parent: tox-molecule
+    vars:
+      tox_environment:
+        TEST_BRANCH: "{{ zuul.branch }}"
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: ubuntu-systemd:jammy
 
 # centos 9 stream
 - job:
@@ -732,6 +740,15 @@
     parent: openstack-ansible-deploy-aio
     nodeset: centos-9-stream
 
+- job:
+    name: openstack-ansible-tox-molecule-centos-9-stream
+    parent: tox-molecule
+    vars:
+      tox_environment:
+        TEST_BRANCH: "{{ zuul.branch }}"
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: centos-systemd:stream9
+
 # debian bookworm
 
 - job:
@@ -793,6 +810,15 @@
     name: openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
     parent: openstack-ansible-deploy-aio
     nodeset: debian-bookworm
+
+- job:
+    name: openstack-ansible-tox-molecule-debian-bookworm
+    parent: tox-molecule
+    vars:
+      tox_environment:
+        TEST_BRANCH: "{{ zuul.branch }}"
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: debian-systemd:bookworm
 
 # rocky linux 9
 - job:
