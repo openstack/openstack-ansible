@@ -28,3 +28,17 @@
       - check-requirements
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
+    check:
+      jobs:
+        - openstack-ansible-upgrade-aio_metal-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy:
+            voting: false
+        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy:
+            voting: false
