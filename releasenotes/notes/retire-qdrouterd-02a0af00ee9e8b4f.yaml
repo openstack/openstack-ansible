@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    Any deployments using the amqp1 oslo.messaging driver should be migrated
+    to use the default rabbitmq oslo.messaging driver. Previously deprecated
+    support for amqp1 has been removed from oslo.messaging for the Epoxy
+    release, see https://review.opendev.org/c/openstack/oslo.messaging/+/934116.
+    Accordingly, support for amqp1 messaging and deployment of qdrouterd has
+    been removed from OpenStack-Ansible. A migration away from amqp1 is required
+    before any upgrade of OpenStack-Ansible to the Epoxy release. qdrouterd can
+    be removed entirely from the deployment and ansible inventory once the migration
+    to rabbitmq is complete.
+deprecations:
+  - |
+    Use of amqp1 messaging, previously deprecated in oslo.messaging is not
+    supported in the Epoxy release of OpenStack-Ansible. The previously
+    supported provider of amqp1 messaging, qdrouterd, can no longer be deployed
+    using the OpenStack-Ansible playbooks.
