@@ -1,0 +1,8 @@
+---
+
+- name: Noop converge playbook
+  hosts: localhost
+  tasks:
+    - name: Print out hostname
+      ansible.builtin.debug:
+        var: inventory_hostname
