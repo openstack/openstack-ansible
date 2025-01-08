@@ -20,11 +20,11 @@ oslomsg_rabbit_quorum_queues: "{{ rabbitmq_queue_replication }}"
 oslomsg_rabbit_queue_manager: False
 
 # RPC
-oslomsg_rpc_transport: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary('amqp', 'rabbit') }}"
-oslomsg_rpc_port: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_port, rabbitmq_port) }}"
-oslomsg_rpc_servers: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_servers, rabbitmq_servers) }}"
-oslomsg_rpc_use_ssl: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_use_ssl, rabbitmq_use_ssl) }}"
-oslomsg_rpc_host_group: "{{ (groups[qdrouterd_host_group] | length > 0) | ternary(qdrouterd_host_group, rabbitmq_host_group) }}"
+oslomsg_rpc_transport: 'rabbit'
+oslomsg_rpc_port: "{{ rabbitmq_port }}"
+oslomsg_rpc_servers: "{{ rabbitmq_servers }}"
+oslomsg_rpc_use_ssl: "{{ rabbitmq_use_ssl }}"
+oslomsg_rpc_host_group: "{{ rabbitmq_host_group }}"
 oslomsg_rpc_policies: "{{ rabbitmq_policies }}"
 
 # Notify

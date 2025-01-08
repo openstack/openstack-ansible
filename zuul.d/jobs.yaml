@@ -90,7 +90,6 @@
       - name: openstack/openstack-ansible-os_tempest
       - name: openstack/openstack-ansible-os_trove
       - name: openstack/openstack-ansible-plugins
-      - name: openstack/ansible-role-qdrouterd
       - name: openstack/openstack-ansible-rabbitmq_server
       - name: openstack/openstack-ansible-repo_server
       - name: openstack/ansible-role-systemd_service
@@ -205,7 +204,6 @@
       - name: openstack/openstack-ansible-os_tempest
       - name: openstack/openstack-ansible-os_trove
       - name: openstack/openstack-ansible-plugins
-      - name: openstack/ansible-role-qdrouterd
       - name: openstack/openstack-ansible-rabbitmq_server
       - name: openstack/openstack-ansible-repo_server
       - name: openstack/ansible-role-systemd_service
@@ -469,11 +467,6 @@
     nodeset: ubuntu-noble
 
 - job:
-    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-noble
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-noble
-
-- job:
     name: openstack-ansible-deploy-translations-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
@@ -619,11 +612,6 @@
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-jammy
-
-- job:
-    name: openstack-ansible-deploy-aio_qdrouterd-ubuntu-jammy
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-jammy
 
