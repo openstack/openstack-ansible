@@ -329,11 +329,13 @@
       jobs:
         - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
+        - openstack-ansible-tox-molecule-rockylinux-9
         - openstack-ansible-tox-molecule-ubuntu-jammy
     gate:
       jobs:
         - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
+        - openstack-ansible-tox-molecule-rockylinux-9
         - openstack-ansible-tox-molecule-ubuntu-jammy
 
 - project-template:

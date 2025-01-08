@@ -948,3 +948,12 @@
     name: openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
     parent: openstack-ansible-deploy-aio
     nodeset: rockylinux-9
+
+- job:
+    name: openstack-ansible-tox-molecule-rockylinux-9
+    parent: tox-molecule
+    vars:
+      tox_environment:
+        TEST_BRANCH: "{{ zuul.branch }}"
+        DOCKER_REGISTRY: quay.io/rockylinux
+        DOCKER_IMAGE_TAG: rockylinux:9-ubi-init
