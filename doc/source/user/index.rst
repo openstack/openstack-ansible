@@ -36,5 +36,6 @@ For in-depth technical information, see the
    source-overrides/index.rst
    prod/gnocchi_redis.rst
    prod/haproxy_in_lxc.rst
+   prod/pretty_endpoint_naming.rst
    messaging/messaging.rst
    multiarch/multiarch.rst
