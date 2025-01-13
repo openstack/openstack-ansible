@@ -274,13 +274,14 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                 container = hdata['container_name'] = hname
             else:
                 container = hdata['container_name']
+            container_name = re.sub(r'_', '-', f'{container}')
 
             component = hdata.get('component')
             if container.startswith(host_type):
                 if 'physical_host' not in hdata:
                     hdata['physical_host'] = host_type
 
-                if container.startswith('{}-'.format(type_and_name)):
+                if container_name.startswith('{}-'.format(type_and_name)):
                     appended = du.append_if(array=iah, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
@@ -291,7 +292,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
                         if appended:
                             logger.debug("Added is_metal host %s to %s hosts",
                                          container, assignment)
-                if container.startswith('{}-'.format(type_and_name)):
+                if container_name.startswith('{}-'.format(type_and_name)):
                     appended = du.append_if(array=iph, item=container)
                     if appended:
                         logger.debug("Added host %s to %s hosts",
