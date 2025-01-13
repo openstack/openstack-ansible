@@ -256,7 +256,6 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
     # We need this as in stein we were deploying custom
     # /etc/openstack_deploy/env.d/aio_metal.yml for metal installs
     export SKIP_CUSTOM_ENVD_CHECK=true
-    export DROP_ROLE_DIRS=true
 
     # Export ZUUL_SRC_PATH only when integrated repo folder exists. Based on that
     # we make an assumption about if we're in CI or not
@@ -264,6 +263,12 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
       export ZUUL_SRC_PATH="/home/zuul/src"
       # Doing symlinking here, as bootstrap role won't be called
       ln -s $ZUUL_SRC_PATH /openstack/src
+      # Run a zuul playbook to place use zuul-prepared roles/requirements to
+      # respect defined Depends-On on N. action=deploy is set as otherwise tasks will be skipped.
+      export DROP_ROLE_DIRS=true
+      ansible-playbook /home/zuul/src/opendev.org/openstack/openstack-ansible/zuul.d/playbooks/pre-osa-requirements.yml \
+        -e pre_osa_host=localhost -e load_zuul_vars=False -e action=deploy
+      unset DROP_ROLE_DIRS
     fi
     # Update AIO config files for certain scenarios
     # for item in "${SCENARIOS_WITH_CONFIG_UPDATE[@]}"; do
