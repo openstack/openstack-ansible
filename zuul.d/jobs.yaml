@@ -139,6 +139,18 @@
         - ^inventory/.*$
 
 - job:
+    name: openstack-ansible-tox-molecule
+    parent: tox-molecule
+    vars:
+      tox_environment:
+        TEST_BRANCH: "{{ zuul.branch }}"
+        OSA_TEST_REQUIREMENTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible/test-requirements.txt"
+        TOX_CONSTRAINTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt"
+    required-projects:
+      - name: openstack/openstack-ansible
+      - name: openstack/requirements
+
+- job:
     name: openstack-ansible-deploy-aio-infra
     parent: openstack-ansible-deploy
     description: |
@@ -637,10 +649,9 @@
 
 - job:
     name: openstack-ansible-tox-molecule-ubuntu-jammy
-    parent: tox-molecule
+    parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
-        TEST_BRANCH: "{{ zuul.branch }}"
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: ubuntu-systemd:jammy
 
@@ -742,10 +753,9 @@
 
 - job:
     name: openstack-ansible-tox-molecule-centos-9-stream
-    parent: tox-molecule
+    parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
-        TEST_BRANCH: "{{ zuul.branch }}"
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: centos-systemd:stream9
 
@@ -813,10 +823,9 @@
 
 - job:
     name: openstack-ansible-tox-molecule-debian-bookworm
-    parent: tox-molecule
+    parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
-        TEST_BRANCH: "{{ zuul.branch }}"
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: debian-systemd:bookworm
 
@@ -951,9 +960,8 @@
 
 - job:
     name: openstack-ansible-tox-molecule-rockylinux-9
-    parent: tox-molecule
+    parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
-        TEST_BRANCH: "{{ zuul.branch }}"
         DOCKER_REGISTRY: quay.io/rockylinux
         DOCKER_IMAGE_TAG: rockylinux:9-ubi-init
