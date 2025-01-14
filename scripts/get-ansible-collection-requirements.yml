@@ -25,26 +25,7 @@
         state: directory
         recurse: yes
 
-    - name: Read the list of user collections
-      set_fact:
-        user_collection_names: "{{ user_collections.collections | default([]) | map(attribute='name') | list }}"
-
-    - name: Generate a list of required collections excluding user overridden collections
-      set_fact:
-        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [item] }}"
-      when:
-        - item.name not in user_collection_names
-      with_items: "{{ required_collections.collections }}"
-
-    - name: Append user collections to filtered required collections
-      set_fact:
-        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [item] }}"
-      with_items: "{{ user_collections.collections }}"
-      when:
-        - user_collections.collections is defined
-        - "'source' in item"
-
-    - name: Installing resulting collection list
+    - name: Installing required Ansible collections
       block:
         - name: Create temporary file for galaxy collection requirements
           tempfile:
@@ -52,14 +33,17 @@
 
         - name: Copy content into galaxy collection requirements temporary file
           vars:
+            _user_collection_names: "{{ user_collections.collections | default([]) | map(attribute='name') }}"
+            _default_collections: "{{ required_collections.collections | rejectattr('name', 'in', _user_collection_names) }}"
+            _user_collections: "{{ user_collections.collections | default([]) | selectattr('source', 'defined') }}"
             content_var:
-              collections: "{{ galaxy_collections_list }}"
+              collections: "{{ _default_collections + _user_collections }}"
           copy:
             content: "{{ content_var | to_nice_yaml }}"
             dest: "{{ collection_requirements_tmpfile.path }}"
             mode: "0644"
 
-        - name: Install collection requirements with ansible galaxy
+        - name: Install collection requirements with ansible galaxy # noqa: no-changed-when
           command: >
             /opt/ansible-runtime/bin/ansible-galaxy collection install --force
             -r "{{ collection_requirements_tmpfile.path }}"
@@ -71,7 +55,7 @@
 
         - name: Show collection install output
           debug:
-            msg: "{{ collection_install.stdout.split('\n') }}"
+            msg: "{{ collection_install.stdout_lines }}"
 
       always:
         - name: Clean up temporary file
@@ -84,5 +68,5 @@
     required_collections: "{{ lookup('file', collection_file) | from_yaml }}"
     collection_path_default: '/etc/ansible/'
     user_collection_file: 'user-collection-requirements.yml'
-    user_collections: "{{ lookup('file', user_collections_path, errors='ignore')|default([], true) | from_yaml }}"
+    user_collections: "{{ lookup('file', user_collections_path, errors='ignore') | default({}, true) | from_yaml }}"
     user_collections_path: "{{ lookup('env', 'OSA_CONFIG_DIR') | default('/etc/openstack_deploy', true) ~ '/' ~ user_collection_file }}"
