@@ -11,3 +11,7 @@ flake8 # MIT
 ansible-lint==24.12.2 # MIT
 netaddr>=0.7.18 # BSD
 Jinja2>=2.10 # BSD
+
+# NOTE(jrosser) Ensure that we are using the same version of ansible
+# for test cases such as linters, as we do for deployments
+ansible-core==2.17.5
