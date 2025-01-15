@@ -331,12 +331,14 @@
         - openstack-ansible-tox-molecule-debian-bookworm
         - openstack-ansible-tox-molecule-rockylinux-9
         - openstack-ansible-tox-molecule-ubuntu-jammy
+        - openstack-ansible-tox-molecule-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
         - openstack-ansible-tox-molecule-rockylinux-9
         - openstack-ansible-tox-molecule-ubuntu-jammy
+        - openstack-ansible-tox-molecule-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-guide-jobs
