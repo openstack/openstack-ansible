@@ -1,0 +1,208 @@
+---
+# VLAN Mappings
+_az_vlan_mappings:
+  az1:
+    management: 10
+    storage: 20
+    tunnel: 30
+    public-api: 400
+  az2:
+    management: 10
+    storage: 21
+    tunnel: 31
+    public-api: 400
+  az3:
+    management: 10
+    storage: 22
+    tunnel: 32
+    public-api: 400
+
+# Bonding interfaces
+_bond0_interfaces:
+  - eth0
+  - eth1
+
+# NETDEV defenition
+_systemd_networkd_default_devices:
+  - NetDev:
+      Name: vlan-mgmt
+      Kind: vlan
+    VLAN:
+      Id: "{{ _az_vlan_mappings[az_name]['management'] }}"
+    filename: 10-openstack-vlan-mgmt
+  - NetDev:
+      Name: bond0
+      Kind: bond
+    Bond:
+      Mode: 802.3ad
+      TransmitHashPolicy: layer3+4
+      LACPTransmitRate: fast
+      MIIMonitorSec: 100
+    filename: 05-general-bond0
+  - NetDev:
+      Name: "{{ management_bridge }}"
+      Kind: bridge
+    Bridge:
+      ForwardDelaySec: 0
+      HelloTimeSec: 2
+      MaxAgeSec: 12
+      STP: off
+    filename: "11-openstack-{{ management_bridge }}"
+
+_systemd_networkd_storage_devices:
+  - NetDev:
+      Name: vlan-stor
+      Kind: vlan
+    VLAN:
+      Id: "{{ _az_vlan_mappings[az_name]['storage'] }}"
+    filename: 12-openstack-vlan-stor
+  - NetDev:
+      Name: br-storage
+      Kind: bridge
+    Bridge:
+      ForwardDelaySec: 0
+      HelloTimeSec: 2
+      MaxAgeSec: 12
+      STP: off
+    filename: 13-openstack-br-storage
+
+_systemd_networkd_tunnel_devices:
+  - NetDev:
+      Name: vlan-tunnel
+      Kind: vlan
+    VLAN:
+      Id: "{{ _az_vlan_mappings[az_name]['tunnel'] }}"
+    filename: 16-openstack-vlan-tunnel
+
+_systemd_networkd_pub_api_devices:
+  - NetDev:
+      Name: vlan-public-api
+      Kind: vlan
+    VLAN:
+      Id: "{{ _az_vlan_mappings[az_name]['public-api'] }}"
+    filename: 17-openstack-vlan-public-api
+  - NetDev:
+      Name: br-public-api
+      Kind: bridge
+    Bridge:
+      ForwardDelaySec: 0
+      HelloTimeSec: 2
+      MaxAgeSec: 12
+      STP: off
+    filename: 18-openstack-br-public-api
+
+openstack_hosts_systemd_networkd_devices: |-
+  {% set devices = [] %}
+  {% if is_metal %}
+  {%   set _ = devices.extend(_systemd_networkd_default_devices) %}
+  {%   if inventory_hostname in (groups['compute_hosts'] + groups['storage_hosts']) %}
+  {%     set _ = devices.extend(_systemd_networkd_storage_devices) %}
+  {%   endif %}
+  {%   if inventory_hostname in (groups[az_name ~ '_ceph_mon_hosts'] + groups[az_name ~ '_ceph_osd_hosts']) %}
+  {%     set _ = devices.extend(_systemd_networkd_cluster_devices) %}
+  {%   endif %}
+  {%   if inventory_hostname in groups['compute_hosts'] %}
+  {%     set _ = devices.extend(_systemd_networkd_tunnel_devices) %}
+  {%   endif %}
+  {%   if inventory_hostname in groups['haproxy_hosts'] %}
+  {%     set _ = devices.extend(_systemd_networkd_pub_api_devices) %}
+  {%   endif %}
+  {% endif %}
+  {{ devices }}
+
+# NETWORK definition
+
+# NOTE: this can work only in case management network has the same netmask as all other networks
+#       while in example manaement is /22 while rest are /24
+# _management_rank: "{{ management_address | ansible.utils.ipsubnet(hostvars[inventory_hostname]['cidr_networks']['management']) }}"
+_management_rank: "{{ (management_address | split('.'))[-1] }}"
+
+# NOTE: `05` is prefixed to filename to have precedence over netplan
+_systemd_networkd_bonded_networks: |-
+  {% set struct = [] %}
+  {% for interface in _bond0_interfaces %}
+  {%   set interface_data = ansible_facts[interface | replace('-', '_')] %}
+  {%   set _ = struct.append({
+                'interface': interface_data['device'],
+                'filename' : '05-general-' ~ interface_data['device'],
+                'bond': 'bond0',
+                'link_config_overrides': {
+                  'Match': {
+                    'MACAddress': interface_data['macaddress']
+                  }
+                }
+               })
+  %}
+  {% endfor %}
+  {% set bond_vlans = ['vlan-mgmt'] %}
+  {% if inventory_hostname in (groups['compute_hosts'] + groups['storage_hosts']) %}
+  {%   set _ = bond_vlans.append('vlan-stor') %}
+  {% endif %}
+  {% if inventory_hostname in groups['haproxy_hosts'] %}
+  {%   set _ = bond_vlans.append('vlan-public-api') %}
+  {% endif %}
+  {% if inventory_hostname in groups['compute_hosts'] %}
+  {%   set _ = bond_vlans.append('vlan-tunnel') %}
+  {% endif %}
+  {% set _ = struct.append({
+              'interface': 'bond0',
+              'filename': '05-general-bond0',
+              'vlan': bond_vlans
+            })
+  %}
+  {{ struct }}
+
+_systemd_networkd_mgmt_networks:
+  - interface: "vlan-mgmt"
+    bridge: "{{ management_bridge }}"
+    filename: 10-openstack-vlan-mgmt
+  - interface: "{{ management_bridge }}"
+    address: "{{ management_address }}"
+    netmask: "{{ cidr_networks['management'] | ansible.utils.ipaddr('netmask') }}"
+    filename: "11-openstack-{{ management_bridge }}"
+
+_systemd_networkd_storage_networks:
+  - interface: "vlan-stor"
+    bridge: "br-storage"
+    filename: 12-openstack-vlan-stor
+  - interface: "br-storage"
+    address: "{{ cidr_networks['storage_' ~ az_name] | ansible.utils.ipmath(_management_rank) }}"
+    netmask: "{{ cidr_networks['storage_' ~ az_name] | ansible.utils.ipaddr('netmask') }}"
+    filename: "13-openstack-br-storage"
+
+_systemd_networkd_tunnel_networks:
+  - interface: "vlan-tunnel"
+    filename: 16-openstack-vlan-tunnel
+    address: "{{ cidr_networks['tunnel_' ~ az_name] | ansible.utils.ipmath(_management_rank) }}"
+    netmask: "{{ cidr_networks['tunnel_' ~ az_name] | ansible.utils.ipaddr('netmask') }}"
+    static_routes: |-
+      {% set routes = [] %}
+      {% set tunnel_cidrs = cidr_networks | dict2items | selectattr('key', 'match', 'tunnel_az[0-9]') | map(attribute='value') %}
+      {% set gateway = cidr_networks['tunnel_' ~ az_name] | ansible.utils.ipaddr('1') | ansible.utils.ipaddr('address') %}
+      {% for cidr in tunnel_cidrs | reject('eq', cidr_networks['tunnel_' ~ az_name]) %}
+      {%   set _ = routes.append({'cidr': cidr, 'gateway': gateway}) %}
+      {% endfor %}
+      {{ routes }}
+
+_systemd_networkd_pub_api_networks:
+  - interface: "vlan-public-api"
+    bridge: "br-public-api"
+    filename: 17-openstack-vlan-public-api
+  - interface: "br-public-api"
+    filename: "18-openstack-br-public-api"
+
+openstack_hosts_systemd_networkd_networks: |-
+  {% set networks = [] %}
+  {% if is_metal %}
+  {%   set _ = networks.extend(_systemd_networkd_mgmt_networks + _systemd_networkd_bonded_networks) %}
+  {%   if inventory_hostname in (groups['compute_hosts'] + groups['storage_hosts']) %}
+  {%     set _ = networks.extend(_systemd_networkd_storage_networks) %}
+  {%   endif %}
+  {%   if inventory_hostname in groups['compute_hosts'] %}
+  {%     set _ = networks.extend(_systemd_networkd_tunnel_networks) %}
+  {%   endif %}
+  {%   if inventory_hostname in groups['haproxy_hosts'] %}
+  {%     set _ = networks.extend(_systemd_networkd_pub_api_networks) %}
+  {%   endif %}
+  {% endif %}
+  {{ networks }}

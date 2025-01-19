@@ -1,0 +1,118 @@
+---
+# Set a different scheduling AZ name on each controller
+# You can change that to a specific AZ name which will be used as default one
+default_availability_zone: "{{ az_name }}"
+
+# Defining unique internal VIP in hosts per AZ
+_openstack_internal_az_vip: "{{ hostvars[groups['haproxy'][0]]['haproxy_keepalived_internal_vip_cidr_' ~ az_name] | ansible.utils.ipaddr('address') }}"
+openstack_host_custom_hosts_records: "{{ _openstack_services_fqdns['internal'] | map('regex_replace', '^(.*)$', _openstack_internal_az_vip ~ ' \\1') }}"
+
+# Use local to AZ memcached inside of AZ
+memcached_servers: >-
+  {{
+    groups['memcached'] | intersect(groups[az_name ~ '_containers'])
+      | map('extract', hostvars, 'management_address')
+      | map('regex_replace', '(.+)', '\1:' ~ memcached_port)
+      | list | join(',')
+  }}
+
+# Ceph-Ansible variables
+ceph_cluster_name: "ceph-{{ az_name }}"
+ceph_keyrings_dir: "/etc/openstack_deploy/ceph/{{ ceph_cluster_name }}"
+ceph_conf_file: "{{ lookup('file', ceph_keyrings_dir ~ '/ceph.conf') }}"
+cluster: "{{ ceph_cluster_name }}"
+cluster_network: "{{ public_network }}"
+monitor_address: "{{ container_networks['storage_address']['address'] }}"
+mon_group_name: "ceph_mon_{{ az_name }}"
+mgr_group_name: "{{ mon_group_name }}"
+osd_group_name: "ceph_osd_{{ az_name }}"
+public_network: "{{ cidr_networks['storage_' ~ az_name] }}"
+rgw_group_name: "ceph_rgw_{{ az_name }}"
+rgw_zone: "{{ az_name }}"
+
+# Cinder variables
+cinder_active_active_cluster_name: "{{ ceph_cluster_name }}"
+cinder_default_availability_zone: "{{ default_availability_zone }}"
+cinder_storage_availability_zone: "{{ az_name }}"
+
+# Glance to use Swift as a backend
+glance_default_store: swift
+glance_use_uwsgi: False
+
+# Neutron variables
+neutron_availability_zone: "{{ az_name }}"
+neutron_default_availability_zones:
+  - az1
+  - az2
+  - az3
+neutron_ovn_distributed_fip: True
+neutron_plugin_type: ml2.ovn
+neutron_plugin_base:
+  - ovn-router
+  - qos
+  - auto_allocate
+neutron_ml2_drivers_type: geneve,vlan
+neutron_provider_networks:
+  network_types: "{{ neutron_ml2_drivers_type }}"
+  network_geneve_ranges: "1:65000"
+  network_vlan_ranges: >-
+    vlan:100:200
+  network_mappings: "vlan:br-vlan"
+  network_interface_mappings: "br-vlan:bond0"
+
+# Nova variables
+nova_cinder_rbd_inuse: True
+nova_glance_rbd_inuse: false
+nova_libvirt_images_rbd_pool: ""
+nova_libvirt_disk_cachemodes: network=writeback,file=directsync
+nova_libvirt_hw_disk_discard: unmap
+nova_nova_conf_overrides:
+  DEFAULT:
+    default_availability_zone: "{{ default_availability_zone }}"
+    default_schedule_zone: "{{ default_availability_zone }}"
+  cinder:
+    cross_az_attach: false
+
+# Create required aggregates and flavors
+cpu_pinned_flavors:
+  specs:
+    - name: pinned.small
+      vcpus: 2
+      ram: 2048
+    - name: pinned.medium
+      vcpus: 4
+      ram: 8192
+  extra_specs:
+    hw:cpu_policy: dedicated
+    hw:vif_multiqueue_enabled: 'true'
+    trait:CUSTOM_PINNED_CPU: required
+
+cpu_shared_flavors:
+  specs:
+    - name: shared.small
+      vcpus: 1
+      ram: 1024
+    - name: shared.medium
+      vcpus: 2
+      ram: 4096
+
+openstack_user_compute:
+  flavors:
+    - "{{ cpu_shared_flavors }}"
+    - "{{ cpu_pinned_flavors }}"
+  aggregates:
+    - name: az1-shared
+      hosts: "{{ groups['az1_shared_compute_hosts'] }}"
+      availability_zone: az1
+    - name: az1-pinned
+      hosts: "{{ groups['az1_pinned_compute_hosts'] }}"
+      availability_zone: az1
+      metadata:
+        trait:CUSTOM_PINNED_CPU: required
+        pinned-cpu: 'true'
+    - name: az2-shared
+      hosts: "{{ groups['az2_shared_compute_hosts'] }}"
+      availability_zone: az2
+    - name: az3-shared
+      hosts: "{{ groups['az3_shared_compute_hosts'] }}"
+      availability_zone: az3

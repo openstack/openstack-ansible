@@ -1,0 +1,55 @@
+---
+
+haproxy_drain: True
+haproxy_ssl_all_vips: True
+haproxy_bind_external_lb_vip_interface: eth20
+haproxy_bind_internal_lb_vip_interface: eth1
+haproxy_bind_external_lb_vip_address: "*"
+haproxy_bind_internal_lb_vip_address: "*"
+haproxy_vip_binds:
+  - address: "{{ haproxy_bind_external_lb_vip_address }}"
+    interface: "{{ haproxy_bind_external_lb_vip_interface }}"
+    type: external
+  - address: "{{ haproxy_bind_internal_lb_vip_address }}"
+    interface: "{{ haproxy_bind_internal_lb_vip_interface }}"
+    type: internal
+
+haproxy_cinder_api_service_overrides:
+  haproxy_backend_nodes: "{{ groups['cinder_api'] | select('in', groups[az_name ~ '_containers']) | union(groups['cinder_api']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_horizon_service_overrides:
+  haproxy_backend_nodes: "{{ groups['horizon_all'] | select('in', groups[az_name ~ '_containers']) | union(groups['horizon_all']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_keystone_service_overrides:
+  haproxy_backend_nodes: "{{ groups['keystone_all'] | select('in', groups[az_name ~ '_containers']) | union(groups['keystone_all']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_neutron_server_service_overrides:
+  haproxy_backend_nodes: "{{ groups['neutron_server'] | select('in', groups[az_name ~ '_containers']) | union(groups['neutron_server']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_nova_api_compute_service_overrides:
+  haproxy_backend_nodes: "{{ groups['nova_api_os_compute'] | select('in', groups[az_name ~ '_containers']) | union(groups['nova_api_os_compute']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_nova_api_metadata_service_overrides:
+  haproxy_backend_nodes: "{{ groups['nova_api_metadata'] | select('in', groups[az_name ~ '_containers']) | union(groups['nova_api_metadata']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_placement_service_overrides:
+  haproxy_backend_nodes: "{{ groups['placement_all'] | select('in', groups[az_name ~ '_containers']) | union(groups['placement_all']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"
+
+haproxy_repo_service_overrides:
+  haproxy_backend_nodes: "{{ groups['repo_all'] | select('in', groups[az_name ~ '_containers']) | union(groups['repo_all']) | unique | default([]) }}"
+  haproxy_balance_alg: first
+  haproxy_limit_hosts: "{{ groups['haproxy_all'] | intersect(groups[az_name ~ '_all']) }}"

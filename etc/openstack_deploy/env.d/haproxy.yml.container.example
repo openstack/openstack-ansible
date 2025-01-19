@@ -1,0 +1,14 @@
+---
+# This file contains an example to show how to set
+# the cinder-volume service to run in a container.
+#
+# Important note:
+# In most cases you need to ensure that default route inside of the
+# container doesn't go through eth0, which is part of lxcbr0 and
+# SRC nat-ed. You need to pass "public" VIP interface inside of the
+# container and ensure "default" route presence on it.
+
+container_skel:
+  haproxy_container:
+    properties:
+      is_metal: false

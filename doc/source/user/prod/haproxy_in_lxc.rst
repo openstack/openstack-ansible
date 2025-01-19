@@ -1,3 +1,5 @@
+.. _haproxy-in-lxc:
+
 ========================================
 HAProxy and Keepalived in LXC containers
 ========================================
@@ -17,12 +19,7 @@ In order to tell dynamic_inventory to generate a set of containers
 for haproxy, you need to create a file
 ``/etc/openstack_deploy/env.d/haproxy.yml`` with the following content:
 
-.. code:: yaml
-
-  container_skel:
-    haproxy_container:
-      properties:
-        is_metal: false
+.. literalinclude:: ../../../../etc/openstack_deploy/env.d/haproxy.yml.container.example
 
 
 Defining host networking
@@ -103,7 +100,7 @@ with ID ``40``. In your ``user_variables.yml`` define the following variables:
     - interface: "vlan-public-api"
       bridge: "br-public-api"
       filename: 10-openstack-vlan-public-api
-    - interface: "br-pub-api"
+    - interface: "br-public-api"
       filename: "11-openstack-br-public-api"
 
   openstack_hosts_systemd_networkd_networks: |-
@@ -181,15 +178,7 @@ In order to avoid a conflict, you need to ensure that the default route will not
 be set for eth0 inside the container. For that, create a file
 `/etc/openstack_deploy/group_vars/haproxy` with the following content:
 
-.. code:: yaml
-
-  lxc_container_networks:
-    lxcbr0_address:
-      bridge: "{{ lxc_net_bridge | default('lxcbr0') }}"
-      bridge_type: "{{ lxc_net_bridge_type | default('linuxbridge') }}"
-      interface: eth0
-      type: veth
-      dhcp_use_routes: False
+.. literalinclude:: ../../../../etc/openstack_deploy/group_vars/haproxy/lxc_network.yml.example
 
 
 Configuring HAProxy binding inside containers
