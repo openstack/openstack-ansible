@@ -521,6 +521,14 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
 
+- job:
+    name: openstack-ansible-tox-molecule-ubuntu-noble
+    parent: openstack-ansible-tox-molecule
+    vars:
+      tox_environment:
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: ubuntu-systemd:noble
+
 
 # ubuntu jammy
 - job:
