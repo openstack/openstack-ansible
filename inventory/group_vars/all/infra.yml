@@ -39,6 +39,22 @@ rabbitmq_policies:
         ((oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
           ) | ternary('present', 'absent')
       }}
+# The following is an example of an additional policy which applies to fanout/stream queues only
+# By default, each stream uses RabbitMQ's 500MB segment size, and no messages will be discarded
+# until that size is reached. This may result in undesirable disk usage.
+# If using this policy, it must be applied BEFORE any stream queues are created.
+# See also https://bugs.launchpad.net/oslo.messaging/+bug/2089845 and https://www.rabbitmq.com/docs/streams#retention
+#  - name: CQv2F
+#    pattern: '^.*_fanout'
+#    priority: 1
+#    tags:
+#      queue-version: 2
+#      stream-max-segment-size-bytes: 1000000
+#    state: >-
+#      {{
+#        ((oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
+#          ) | ternary('present', 'absent')
+#      }}
 
 ## Galera options
 galera_client_package_state: "{{ package_state }}"

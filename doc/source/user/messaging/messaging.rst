@@ -1,6 +1,6 @@
-========================
-Hybrid messaging example
-========================
+=======================
+Messaging configuration
+=======================
 
 This section provides an overview of hybrid messaging deployment
 concepts and describes the necessary steps for a working
@@ -87,3 +87,32 @@ to the rabbitmq server backend.
    :start-after: under the License.
 
 .. _oslo-messaging.yml: https://github.com/openstack/openstack-ansible/blob/master/inventory/group_vars/all/oslo-messaging.yml
+
+
+Managing RabbitMQ stream policy
+-------------------------------
+
+When deploying RabbitMQ with support for quorum and stream queues, the
+retention behaviour for messages changes. Stream queues maintain an append only
+log on disk of all messages received until a retention policy indicates they
+should be disposed of. By default, this policy is set with a per-stream
+`x-max-age` of 1800 seconds. However, as noted in the `RabbitMQ docs`_, this
+only comes into effect ones a stream has accumulated enough messages to fill a
+segment, which has a default size of 500MB.
+
+If you would like to reduce disk usage, an additional policy can be applied via
+OpenStack Ansible as shown below:
+
+.. literalinclude:: ../../../../inventory/group_vars/all/infra.yml
+   :language: yaml
+   :start-at: rabbitmq_policies
+   :end-before: ## Galera options
+
+Note however, that this policy will only apply if it is in place before any
+stream queues are created. If these already exist, they will need to be
+manually deleted and re-created by the relevant OpenStack service.
+
+This issue is being tracked in an `oslo.messaging bug`_.
+
+.. _RabbitMQ docs: https://www.rabbitmq.com/docs/streams#retention
+.. _oslo.messaging bug: https://bugs.launchpad.net/oslo.messaging/+bug/2089845
