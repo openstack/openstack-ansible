@@ -285,7 +285,7 @@
         - build-openstack-deploy-guide:
             files: &deploy-guide-triggers
               - ^deploy-guide/.*
-              - ansible-role-requirements.yml
+              # - ansible-role-requirements.yml
               - bindep.txt
               - doc/requirements.txt
               - test-requirements.txt

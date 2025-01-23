@@ -28,14 +28,14 @@
 ## NOVNC from source
 novncproxy_git_repo: "{{ openstack_github_base_url }}/novnc/noVNC"
 novncproxy_git_install_branch: 2463ccd08fabdd3a5c8b628d9afe5f539f9168b2
-novncproxy_git_track_branch: master
+novncproxy_git_track_branch: None
 
 ## spice-html5 from source
 spicehtml5_git_repo: "https://gitlab.freedesktop.org/spice/spice-html5"
 spicehtml5_git_install_branch: f279fe81faada11f531a2d88b1b50bb4990deeca
-spicehtml5_git_track_branch: master
+spicehtml5_git_track_branch: None
 
 ## Nova service
 nova_git_repo: "{{ openstack_opendev_base_url }}/openstack/nova"
-nova_git_install_branch: 15b1531f8034f41f8bf4caaa5ac31231446db01d
+nova_git_install_branch: 2023.1-eom
 nova_git_track_branch: None
