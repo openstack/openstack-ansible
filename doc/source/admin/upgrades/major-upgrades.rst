@@ -157,13 +157,11 @@ Please review the contents of the playbook for more information.
 
 .. note::
 
-    With upgrade to 2024.1 (Caracal) release usage of RabbitMQ Quorum Queues
-    is enabled by default. Migration to usage of Quorum Queues results
-    in prolonged downtime for services during upgrade.
-
-    To reduce downtime you might want to set
-    ``oslomsg_rabbit_quorum_queues: false`` at this point and migrate to
-    Quorum Queues usage after OpenStack upgrade is done.
+    With upgrade to 2024.2 (Dalmation) release and beyond, usage of RabbitMQ
+    Quorum Queues is mandatory to ensure high availability of queues. If you
+    had previously set ``oslomsg_rabbit_quorum_queues: false``, please
+    consider migrating before continuing with this upgrade which uses RabbitMQ
+    4.x.
 
     Please, check `RabbitMQ maintenance <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
     for more information about switching between Quourum and HA Queues.
