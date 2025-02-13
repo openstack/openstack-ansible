@@ -1,0 +1,28 @@
+---
+- name: Check prerequisites
+  ansible.builtin.fail:
+    msg: "This role require systemd or upstart as ansible_service_mgr"
+  when: ansible_service_mgr != "systemd" and ansible_service_mgr != "upstart"
+  tags:
+    - exporter-install
+
+- name: Create Prometheus group
+  ansible.builtin.group:
+    name: "{{ prometheus_exporter_group }}"
+    state: present
+    system: yes
+  become: true
+
+- name: Create Prometheus user
+  ansible.builtin.user:
+    name: "{{ prometheus_exporter_user }}"
+    groups: "{{ prometheus_exporter_groups }}"
+    append: yes
+    system: yes
+  become: true
+
+- name: Import node_exporter.yml
+  ansible.builtin.import_tasks: node_exporter.yml
+  tags:
+    - node_exporter-install
+  when: node_exporter_enabled | bool

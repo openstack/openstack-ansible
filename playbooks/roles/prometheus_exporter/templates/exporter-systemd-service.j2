@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description={{ program_name }}
+After=network.target
+
+[Service]
+Type=simple
+User={{ service_user }}
+ExecStart={{ install_dir }}/{{ program_bin }} {{ program_flags }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

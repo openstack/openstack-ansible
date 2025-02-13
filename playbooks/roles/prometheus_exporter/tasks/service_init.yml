@@ -1,0 +1,23 @@
+---
+# Systemd
+- name: Service init block - systemd
+  when: ansible_service_mgr == "systemd"
+  block:
+  - name: Systemd service install
+    ansible.builtin.template:
+      src: exporter-systemd-service.j2
+      dest: "/etc/systemd/system/{{ program_name }}.service"
+      owner: root
+      group: root
+      mode: 0644
+    become: true
+    register: exporter_systemd_conf
+    notify: restart {{ program_name }}
+
+  - name: Enable and (re)start systemd service
+    ansible.builtin.systemd:
+      name: "{{ program_name }}"
+      state: started
+      enabled: yes
+      daemon_reload: yes
+    become: true

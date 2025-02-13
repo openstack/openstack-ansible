@@ -1,0 +1,155 @@
+---
+- name: Create textfile collector pickup dir
+  ansible.builtin.file:
+    path: "{{ node_exporter_textfile_collector_dir }}"
+    state: directory
+    mode: 0755
+  become: true
+
+- name: Check node_exporter version
+  ansible.builtin.shell: "{{ node_exporter_install_dir }}/{{ node_exporter_bin }} --version"
+  failed_when: false
+  changed_when: false
+  check_mode: no
+  register: exporter_version
+
+- name: Node exporter - Install block
+  when: '("version " + node_exporter_version not in exporter_version.stdout) and
+    ("version " + node_exporter_version not in exporter_version.stderr)'
+  ignore_errors: "{{ ansible_check_mode }}"
+  block:
+    - name: Node exporter - Download
+      ansible.builtin.get_url:
+        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: /tmp/
+        checksum: "sha256:{{ node_exporter_download_sha256_checksum }}"
+
+    - name: Node exporter - Extract
+      ansible.builtin.unarchive:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        dest: /tmp/
+        creates: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64"
+        remote_src: yes
+
+    - name: Node exporter - Copy binary
+      ansible.builtin.copy:
+        src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
+        dest: "{{ node_exporter_install_dir }}/{{ node_exporter_bin }}"
+        mode: 0775
+        owner: root
+        group: root
+        remote_src: yes
+      become: yes
+      notify: restart node_exporter
+
+    - name: Node exporter - Remove tar file
+      ansible.builtin.file:
+        path: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        state: absent
+
+- name: Import service_init.yml
+  ansible.builtin.import_tasks: service_init.yml
+  vars:
+    program_name: node_exporter
+    program_bin: "{{ node_exporter_bin }}"
+    program_flags: "{{ node_exporter_flags }}"
+    install_dir: "{{ node_exporter_install_dir }}"
+    service_user: "{{ prometheus_exporter_user }}"
+    service_group: "{{ prometheus_exporter_group }}"
+
+- name: Node exporter - Check exporter functionality
+  ansible.builtin.uri:
+    url: "http://localhost:{{ node_exporter_port }}/metrics"
+    timeout: 5
+  register: exporter_web_test
+  until: exporter_web_test.status == 200
+  check_mode: no
+  retries: 3
+  delay: 2
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create node exporter collectors folder
+  ansible.builtin.file:
+    path: "{{ node_exporter_collector_dir }}"
+    state: directory
+    mode: "0600"
+  become: true
+
+- name: Install node exporter collectors
+  ansible.builtin.template:
+    src: node_exporter_collectors/{{ item.name }}.{{ item.filending }}.j2
+    dest: "{{ node_exporter_collector_dir }}/{{ item.name }}.{{ item.filending }}"
+    owner: root
+    group: root
+    mode: "0700"
+  with_items:
+    - "{{ prometheus_collectors[ansible_distribution] }}"
+  become: true
+  when: prometheus_collectors[ansible_distribution] is defined
+
+- name: Create node exporter collectors cronjob
+  ansible.builtin.cron:
+    name: "node-exporter-collector-{{ item.name }}"
+    minute: "{{ item.minute }}"
+    job: "{{ item.pre_script | default(omit) }}{{ node_exporter_collector_dir }}/{{ item.name }}.{{ item.filending }} > {{ node_exporter_textfile_collector_dir }}/{{ item.name }}.prom"
+    state: present
+    disabled: "{{ item.disabled | default('no') }}"
+  with_items:
+    - "{{ prometheus_collectors[ansible_distribution] }}"
+  become: true
+  when: prometheus_collectors[ansible_distribution] is defined
+
+- name: Remove metric file for disabled collectors
+  ansible.builtin.file:
+    path: "{{ node_exporter_textfile_collector_dir }}/{{ item.name }}.prom"
+    state: absent
+  with_items:
+    - "{{ prometheus_collectors[ansible_distribution] }}"
+  become: true
+  when:
+    - prometheus_collectors[ansible_distribution] is defined
+    - item.disabled|default(False)
+
+- name: Install packages needed for addition node exporter collectors
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+  with_items:
+    - "{{ additional_prometheus_collectors_packages }}"
+  become: true
+  when: additional_prometheus_collectors_packages is defined
+
+- name: Install node exporter collectors
+  ansible.builtin.template:
+    src: node_exporter_collectors/{{ item.name }}.{{ item.filending }}.j2
+    dest: "{{ node_exporter_collector_dir }}/{{ item.name }}.{{ item.filending }}"
+    owner: root
+    group: root
+    mode: "0700"
+  with_items:
+    - "{{ additional_prometheus_collectors }}"
+  become: true
+  when: additional_prometheus_collectors is defined
+
+- name: Create node exporter collectors cronjob
+  ansible.builtin.cron:
+    name: "node-exporter-collector-{{ item.name }}"
+    minute: "{{ item.minute }}"
+    job: "{{ item.pre_script | default(omit) }}{{ node_exporter_collector_dir }}/{{ item.name }}.{{ item.filending }} > {{ node_exporter_textfile_collector_dir }}/{{ item.name }}.prom"
+    state: present
+    disabled: "{{ item.disabled | default('no') }}"
+  with_items:
+    - "{{ additional_prometheus_collectors }}"
+  become: true
+  when: additional_prometheus_collectors is defined
+
+- name: Remove metric file for disabled collectors
+  ansible.builtin.file:
+    path: "{{ node_exporter_textfile_collector_dir }}/{{ item.name }}.prom"
+    state: absent
+  with_items:
+    - "{{ additional_prometheus_collectors }}"
+  become: true
+  when:
+    - additional_prometheus_collectors is defined
+    - item.disabled|default(False)

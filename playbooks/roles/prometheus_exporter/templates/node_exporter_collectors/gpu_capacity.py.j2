@@ -1,0 +1,107 @@
+{% if venv_tag is defined %}
+#!/openstack/venvs/utility-{{ venv_tag }}/bin/python3
+{% else %}
+#!/usr/bin/env python3
+{% endif %}
+
+import os
+from keystoneauth1 import loading
+from keystoneauth1 import session
+from novaclient import client
+
+nova_api_version = "2"
+gpu_flavors = ['g2-c6-m90-d800-g24','g1-c24-m380-d3.2k-g160']
+vms_per_compute = {
+  'g2-c6-m90-d800-g24': 4,
+  'g1-c24-m380-d3.2k-g160': 1
+}
+compute_count = {
+  'g2-c6-m90-d800-g24': {},
+  'g1-c24-m380-d3.2k-g160': {}
+}
+vm_count = {
+  'g2-c6-m90-d800-g24': {},
+  'g1-c24-m380-d3.2k-g160': {}
+}
+
+def get_session():
+  loader = loading.get_plugin_loader('password')
+  # Get user settings from environment variables
+  # https://docs.openstack.org/keystoneauth/yoga/plugin-options.html#password
+  auth = loader.load_from_options(
+    auth_url            = os.environ.get('OS_AUTH_URL'),
+    user_domain_name    = os.environ.get('OS_USER_DOMAIN_NAME'),
+    username            = os.environ.get('OS_USERNAME'),
+    project_domain_name = os.environ.get('OS_PROJECT_DOMAIN_NAME'),
+    password            = os.environ.get('OS_PASSWORD'),
+    project_name        = os.environ.get('OS_PROJECT_NAME'),
+  )
+
+  sess = session.Session(auth=auth)
+  return sess
+
+# https://docs.openstack.org/python-novaclient/yoga/user/python-api.html
+# https://docs.openstack.org/python-novaclient/yoga/reference/index.html
+sess = get_session()
+nova = client.Client(nova_api_version, session=sess)
+
+
+# https://docs.openstack.org/python-novaclient/yoga/reference/api/novaclient.v2.aggregates.html
+aggregates = nova.aggregates.list()
+# Find compute in aggregates matching our gpu flavors
+for aggregate in aggregates:
+  aggregate_dict = aggregate.to_dict()
+  if aggregate_dict['name'] in gpu_flavors:
+    for host in aggregate_dict['hosts']:
+      # https://docs.openstack.org/python-novaclient/yoga/reference/api/novaclient.v2.services.html
+      services = nova.services.list(host=host)
+      for compute_service in services:
+        compute_service_dict = compute_service.to_dict()
+        #print(f"Aggregate: {aggregate_dict['name']}, Host: {compute_service_dict['host']}, AZ: {compute_service_dict['zone']}Status: {compute_service_dict['status']}, State: {compute_service_dict['state']}")
+        if compute_service_dict['zone'] not in compute_count[aggregate_dict['name']]:
+          compute_count[aggregate_dict['name']][compute_service_dict['zone']] = {}
+        compute_count[aggregate_dict['name']][compute_service_dict['zone']][compute_service_dict['host']] = vms_per_compute[aggregate_dict['name']]
+        if compute_service_dict['zone'] not in vm_count[aggregate_dict['name']]:
+          vm_count[aggregate_dict['name']][compute_service_dict['zone']] = {}
+        vm_count[aggregate_dict['name']][compute_service_dict['zone']][compute_service_dict['host']] = 0
+
+# https://docs.openstack.org/python-novaclient/yoga/reference/api/novaclient.v2.flavors.html
+flavors = nova.flavors.list(detailed=True, is_public=None)
+# Find deployed servers in all projects matching our gpu flavors
+for flavor in flavors:
+  flavor_dict = flavor.to_dict()
+  if flavor_dict['name'] in gpu_flavors:
+    #print(f"Flavor: {flavor_dict['name']}")
+    # https://docs.openstack.org/python-novaclient/yoga/reference/api/novaclient.v2.servers.html
+    servers = nova.servers.list(
+      detailed = True,
+      # Available search options and response details can be found here
+      # https://docs.openstack.org/api-ref/compute/#list-servers-detailed
+      search_opts = {'all_tenants': True, 'flavor': flavor_dict['id']},
+      #search_opts = {'all_tenants': True, 'project_id': '60be4fb2ff8b45dfba12bdea633bfb10'},
+    )
+    for server in servers:
+      server_dict = server.to_dict()
+      #print(f"Server ID: {server_dict['id']}, Server Name: {server_dict['name']}, Flavor: {flavor_dict['name']}, Host: {server_dict['OS-EXT-SRV-ATTR:host']}, AZ: {server_dict['OS-EXT-AZ:availability_zone']}")
+      if server_dict['OS-EXT-AZ:availability_zone'] not in vm_count[aggregate_dict['name']]:
+        vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']] = {}
+      if not server_dict['OS-EXT-SRV-ATTR:host'] in vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']]:
+        vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']][server_dict['OS-EXT-SRV-ATTR:host']] = 1
+      else:
+        vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']][server_dict['OS-EXT-SRV-ATTR:host']] += 1
+
+# Create prometheus metrics
+for flavor in gpu_flavors:
+  for az in compute_count[flavor]:
+    for host in compute_count[flavor][az]:
+      if "test" in host:
+        print(f"openstack_gpu_capacity_max_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2test\",hostname=\"{host}\"{{ '}}' }} {compute_count[flavor][az][host]}")
+      else:
+        print(f"openstack_gpu_capacity_max_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2\",hostname=\"{host}\"{{ '}}' }} {compute_count[flavor][az][host]}")
+  for az in vm_count[flavor]:
+    for host in compute_count[flavor][az]:
+      if "test" in host:
+        print(f"openstack_gpu_capacity_running_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2test\",hostname=\"{host}\"{{ '}}' }} {vm_count[flavor][az][host]}")
+      else:
+        print(f"openstack_gpu_capacity_running_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2\",hostname=\"{host}\"{{ '}}' }} {vm_count[flavor][az][host]}")
+

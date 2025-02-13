@@ -1,0 +1,14 @@
+---
+- name: Gather facts
+  hosts: utility_container
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install node exporter
+  hosts: utility_container
+  become: yes
+  roles:
+    - prometheus_exporter
+  tags:
+    - prometheus_exporter

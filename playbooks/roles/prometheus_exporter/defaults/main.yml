@@ -1,0 +1,20 @@
+---
+prometheus_exporter_interface: ens18
+prometheus_exporter_apply_rule: false
+prometheus_exporter_user: prometheus
+prometheus_exporter_group: prometheus
+prometheus_exporter_groups: "{{ prometheus_exporter_group }},adm"
+
+# Node exporter
+node_exporter_enabled: true
+node_exporter_install_dir: /usr/bin
+node_exporter_bin: node_exporter
+node_exporter_version: 1.6.1
+node_exporter_download_sha256_checksum: ecc41b3b4d53f7b9c16a370419a25a133e48c09dfc49499d63bcc0c5e0cf3d01
+node_exporter_port: 9100
+node_exporter_textfile_collector_dir: /var/lib/node_exporter/textfile_collector
+node_exporter_flags: "--collector.textfile.directory {{ node_exporter_textfile_collector_dir }}"
+node_exporter_collector_dir: /var/lib/node_exporter/collectors
+prometheus_collectors:
+  Ubuntu:
+    - { name: "gpu_capacity", filending: "py", pre_script: ". /root/openrc && ", minute: "*/5" }
