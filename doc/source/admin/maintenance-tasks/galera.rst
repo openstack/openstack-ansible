@@ -17,7 +17,7 @@ It should give you information about the status of your cluster.
 
 .. code-block:: shell-session
 
-    # ansible galera_container -m shell -a "mysql \
+    # ansible galera_container -m shell -a "mariadb \
     -e 'show status like \"%wsrep_cluster_%\";'"
     node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
     ERROR 2002 (HY000): Can't connect to local MySQL server
@@ -81,10 +81,10 @@ one of the nodes.
    .. code-block:: shell-session
 
        ## for init
-       # /etc/init.d/mysql start --wsrep-new-cluster
+       # /etc/init.d/mariadb start --wsrep-new-cluster
        ## for systemd
        # systemctl set-environment _WSREP_NEW_CLUSTER='--wsrep-new-cluster'
-       # systemctl start mysql
+       # systemctl start mariadb
        # systemctl set-environment _WSREP_NEW_CLUSTER=''
 
    Please also have a look at `upstream starting a cluster page <https://galeracluster.com/documentation-webpages/startingcluster.html>`_
@@ -94,7 +94,7 @@ one of the nodes.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "/etc/init.d/mysql start --wsrep-new-cluster" --limit galera_container[0]
+       # ansible galera_container -m shell -a "/etc/init.d/mariadb start --wsrep-new-cluster" --limit galera_container[0]
 
    This command results in a cluster containing a single node. The
    ``wsrep_cluster_size`` value shows the number of nodes in the
@@ -186,7 +186,7 @@ continue to process SQL requests.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mariadb \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | FAILED | rc=1 >>
        ERROR 2002 (HY000): Can't connect to local MySQL server through
@@ -212,7 +212,7 @@ continue to process SQL requests.
 #. Restart MariaDB on the failed node and verify that it rejoins the
    cluster.
 
-#. If MariaDB fails to start, run the ``mysqld`` command and perform
+#. If MariaDB fails to start, run the ``mariadbd`` command and perform
    further analysis on the output. As a last resort, rebuild the container
    for the node.
 
@@ -227,7 +227,7 @@ recover cannot join the cluster because it no longer exists.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mariadb \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | FAILED | rc=1 >>
        ERROR 2002 (HY000): Can't connect to local MySQL server
@@ -253,7 +253,7 @@ recover cannot join the cluster because it no longer exists.
 
    .. code-block:: shell-session
 
-       # mysql -e "SET GLOBAL wsrep_provider_options='pc.bootstrap=yes';"
+       # mariadb -e "SET GLOBAL wsrep_provider_options='pc.bootstrap=yes';"
        node4_galera_container-76275635 | success | rc=0 >>
        Variable_name             Value
        wsrep_cluster_conf_id     15
@@ -277,7 +277,7 @@ recover cannot join the cluster because it no longer exists.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mariadb \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
        Variable_name             Value
@@ -301,7 +301,7 @@ recover cannot join the cluster because it no longer exists.
        wsrep_cluster_status      Primary
 
 #. If MariaDB fails to start on any of the failed nodes, run the
-   ``mysqld`` command and perform further analysis on the output. As a
+   ``mariadbd`` command and perform further analysis on the output. As a
    last resort, rebuild the container for the node.
 
 Recover a complete environment failure
@@ -337,7 +337,7 @@ the cluster have failed:
     cert_index:
 
 
-All the nodes have failed if ``mysqld`` is not running on any of the
+All the nodes have failed if ``mariadbd`` is not running on any of the
 nodes and all of the nodes contain a ``seqno`` value of -1.
 
 If any single node has a positive ``seqno`` value, then that node can be
@@ -396,7 +396,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mariadb \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node3_galera_container-3ea2cbd3 | success | rc=0 >>
        Variable_name             Value
@@ -427,7 +427,7 @@ Recovering from certain failures require rebuilding one or more containers.
       In larger deployments, it may take some time for the MariaDB daemon to
       start in the new container. It will be synchronizing data from the other
       MariaDB servers during this time. You can monitor the status during this
-      process by tailing the ``/var/log/mysql_logs/galera_server_error.log``
+      process by tailing the ``journalctl -f -u mariadb``
       log file.
 
       Lines starting with ``WSREP_SST`` will appear during the sync process
@@ -436,7 +436,7 @@ Recovering from certain failures require rebuilding one or more containers.
 
    .. code-block:: shell-session
 
-       # ansible galera_container -m shell -a "mysql \
+       # ansible galera_container -m shell -a "mariadb \
        -e 'show status like \"%wsrep_cluster_%\";'"
        node2_galera_container-49a47d25 | success | rc=0 >>
        Variable_name             Value

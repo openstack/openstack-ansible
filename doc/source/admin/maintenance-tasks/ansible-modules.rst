@@ -64,7 +64,7 @@ To check on the status of your Galera cluster:
 
 .. code-block:: console
 
-   $ ansible galera_container -m shell -a "mysql \
+   $ ansible galera_container -m shell -a "mariadb \
    -e 'show status like \"%wsrep_cluster_%\";'"
 
 When a module is being used as an ad-hoc command, there are a few parameters

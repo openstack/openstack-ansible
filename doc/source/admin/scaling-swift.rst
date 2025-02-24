@@ -23,7 +23,7 @@ backend.
 
    .. code::
 
-      # mysql -e "SELECT default_project_id from keystone.user WHERE \
+      # mariadb -e "SELECT default_project_id from keystone.user WHERE \
         name='admin';"
 
       +----------------------------------+
@@ -39,7 +39,7 @@ backend.
 
    .. code::
 
-      # mysql -e "SELECT default_project_id from keystone.user WHERE \
+      # mariadb -e "SELECT default_project_id from keystone.user WHERE \
         name='admin';"
 
       +----------------------------------+
@@ -56,15 +56,15 @@ backend.
       # export PRIMARY_REGION_TENANT_ID="76ef6df109744a03b64ffaad2a7cf504"
       # export SECONDARY_REGION_TENANT_ID="69c46f8ad1cf4a058aa76640985c"
 
-      # mysql -e "UPDATE keystone.assignment set \
+      # mariadb -e "UPDATE keystone.assignment set \
       target_id='${PRIMARY_REGION_TENANT_ID}' \
       WHERE target_id='${SECONDARY_REGION_TENANT_ID}';"
 
-      # mysql -e "UPDATE keystone.user set \
+      # mariadb -e "UPDATE keystone.user set \
       default_project_id='${PRIMARY_REGION_TENANT_ID}' WHERE \
       default_project_id='${SECONDARY_REGION_TENANT_ID}';"
 
-      # mysql -e "UPDATE keystone.project set \
+      # mariadb -e "UPDATE keystone.project set \
       id='${PRIMARY_REGION_TENANT_ID}' WHERE \
       id='${SECONDARY_REGION_TENANT_ID}';"
 

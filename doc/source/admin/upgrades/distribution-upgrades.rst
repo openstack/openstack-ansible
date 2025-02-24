@@ -263,7 +263,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         mysql -e 'SHOW STATUS LIKE "wsrep_cluster_%";'
+         mariadb -e 'SHOW STATUS LIKE "wsrep_cluster_%";'
 
 
       In case node is not getting synced you might need to restart the
@@ -272,9 +272,9 @@ Deploying Infrastructure Hosts
       .. code:: console
 
          systemctl restart mariadb.service
-         mysql
-         mysql> SHOW STATUS LIKE "wsrep_cluster_%";
-         mysql> SHOW DATABASES;
+         mariadb
+         MariaDB> SHOW STATUS LIKE "wsrep_cluster_%";
+         MariaDB> SHOW DATABASES;
 
       Once MariaDB cluster is healthy you can remove the file that disables
       backend from being used by HAProxy.
