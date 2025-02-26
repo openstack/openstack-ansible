@@ -1,0 +1,17 @@
+---
+upgrade:
+  - |
+    A uWSGI for Neutron has been disabled again by default in favor of eventlet
+    server. This also stops and disables following services needed for uWSGI mode:
+
+    * ``neutron-periodic-workers``
+    * ``neutron-ovn-maintenance-worker``
+    * ``neutron-rpc-server``
+
+fixes:
+  - |
+    A `bug #2096937 <https://bugs.launchpad.net/openstack-ansible/+bug/2096937>`_
+    related to HashRing generation has been reported when using uWSGI
+    with Neutron. In order to quickly address the bug, uWSGI mode has been
+    disabled again by default for Neutron until a proper fix is provided for
+    uWSGI.
