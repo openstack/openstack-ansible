@@ -188,9 +188,9 @@
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: edaf6b221aca7a5021048c9575105d1977b7397a
+  version: 70c2fadf556f20e2d575e80003b8c10c34b30c79
   trackbranch: stable/2024.1
-  shallow_since: '2024-07-09'
+  shallow_since: '2025-01-30'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
@@ -296,9 +296,9 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: 0898535a044fe2748a9d131674b2bd1358116a31
+  version: 14c11d3392440acedf982fd6580e5aed5f581f2e
   trackbranch: stable/2024.1
-  shallow_since: '2024-11-03'
+  shallow_since: '2025-01-12'
 # External dependencies
 - name: etcd
   scm: git
@@ -309,9 +309,9 @@
 - name: keepalived
   scm: git
   src: https://github.com/evrardjp/ansible-keepalived
-  version: a73191c2e49cc7ce1c4a17fd90ef460c76439e94
+  version: c9b1c4a1552816742653fc73010c6b99a1f4855f
   trackbranch: master
-  shallow_since: '2023-05-18'
+  shallow_since: '2025-02-13'
 - name: pacemaker_corosync
   scm: git
   src: https://github.com/noonedeadpunk/ansible-pacemaker-corosync
@@ -333,6 +333,6 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 963464804bff771e57721ff577471740e169e0f3
+  version: 419a862854d48e866a2931e75d10bcb9e994cefe
   trackbranch: stable-7.0
-  shallow_since: '2024-10-16'
+  shallow_since: '2025-01-23'
