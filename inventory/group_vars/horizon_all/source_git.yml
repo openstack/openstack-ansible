@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 10.01.2025 ###
+### HEAD as of 03.03.2025 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: 3dc7781caf1b79f9d95913a17fa8386a8927ade1
+horizon_git_install_branch: c873490d3fe773aa7f75521cf9a66683c0c35f6f
 horizon_git_track_branch: stable/2023.2
 
 ## Adjutant dashboard plugin
@@ -52,7 +52,7 @@ ironic_dashboard_git_track_branch: stable/2023.2
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-ui"
-magnum_dashboard_git_install_branch: b764229b378762e077349cc24eba689cfc8f9200
+magnum_dashboard_git_install_branch: 19c1c153fbc1a2cf5808e77cfa5909b16456e023
 magnum_dashboard_git_track_branch: stable/2023.2
 
 ## Horizon Masakari dashboard plugin
