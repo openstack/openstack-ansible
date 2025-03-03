@@ -401,6 +401,8 @@ haproxy_nova_api_compute_service:
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_port: 8774
   haproxy_balance_type: http
+  haproxy_timeout_client: 5m
+  haproxy_timeout_server: 5m
   haproxy_backend_options:
     - "httpchk HEAD / HTTP/1.0\\r\\nUser-agent:\\ osa-haproxy-healthcheck"
   haproxy_service_enabled: "{{ groups['nova_api_os_compute'] is defined and groups['nova_api_os_compute'] | length > 0 }}"
