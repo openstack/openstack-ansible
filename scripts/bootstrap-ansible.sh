@@ -157,7 +157,7 @@ export CURRENT_OSA_VERSION=$(cd ${OSA_CLONE_DIR}; /opt/ansible-runtime/bin/pytho
 
 # Ensure that Ansible binaries run from the venv
 pushd /opt/ansible-runtime/bin
-  for ansible_bin in $(ls -1 ansible*); do
+  for ansible_bin in $(ls -1 ansible* openstack-ansible-*); do
     if [ "${ansible_bin}" == "ansible" ] || [ "${ansible_bin}" == "ansible-playbook" ]; then
 
       # For the 'ansible' and 'ansible-playbook' commands we want to use our wrapper
