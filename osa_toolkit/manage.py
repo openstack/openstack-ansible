@@ -202,8 +202,12 @@ def print_containers_per_group(inventory):
             continue
 
         # Don't show default group
-        if len(containers) == 1 and '_' not in containers[0]:
-            continue
+        if len(containers) == 1:
+            if containers[0] is None:
+                continue
+
+            if '_' not in containers[0]:
+                continue
 
         # Join with newlines here to avoid having a horrific table with tons
         # of line wrapping.
