@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create requested OpenStack Resources
-  hosts: "{{ openstack_service_setup_host | default('localhost') }}"
+  hosts: "{{ openstack_service_setup_host | default(groups['utility_all'][0] | default('localhost')) }}"
   tasks:
     - name: Setup installation variables
       include_role:
