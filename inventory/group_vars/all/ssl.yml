@@ -45,7 +45,7 @@ openstack_pki_authorities:
      - digitalSignature
      - cRLSign
      - keyCertSign
-   not_after: "+3650d"
+   ttl: "3650d"
  - name: "ExampleCorpIntermediate"
    provider: ownca
    basic_constraints: "CA:TRUE,pathlen:0"
@@ -59,7 +59,7 @@ openstack_pki_authorities:
      - digitalSignature
      - cRLSign
      - keyCertSign
-   not_after: "+3650d"
+   ttl: "3650d"
    signed_by: "ExampleCorpRoot"
 
 #install the root CA certificate on all hosts and containers
