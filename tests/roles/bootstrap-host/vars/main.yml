@@ -61,6 +61,9 @@ bootstrap_host_scenarios_expanded: |-
   {% if 'manila' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['ceph'])  %}
   {% endif %}
+  {% if 'openbao' in bootstrap_host_scenarios %}
+  {%   set _ = scenario_list.extend(['tls'])  %}
+  {% endif %}
   {% if ['telemetry', 'aodh', 'ceilometer', 'gnocchi'] | intersect(bootstrap_host_scenarios) | length > 0 %}
   {%   set _ = scenario_list.extend(['aodh', 'ceilometer', 'gnocchi', 'zookeeper']) %}
   {% endif %}

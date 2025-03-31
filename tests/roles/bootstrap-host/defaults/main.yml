@@ -206,6 +206,26 @@ step_ca_group: step
 step_ca_config_dir: "/etc/step-ca"
 step_ca_binary: /usr/bin/step-ca
 
+# openbao
+openbao_version: "2.5.3"
+openbao_architecture_mapping:
+  x86_64: x86_64
+  ppc64le: ppc64le
+  s390x: s390x
+  armv7l: arm
+  aarch64: arm64
+openbao_arch: "{{ openbao_architecture_mapping.get(ansible_facts['architecture']) }}"
+openbao_file: "bao_{{ openbao_version }}_Linux_{{ openbao_arch }}.tar.gz"
+openbao_url: "https://github.com/openbao/openbao/releases/download/v{{ openbao_version }}/{{ openbao_file }}"
+openbao_install_dir: "/usr/local/bin"
+openbao_role_name: "default"
+openbao_root_token: "{{ lookup('ansible.builtin.password', '/opt/vault_root_token') }}"
+openbao_listen_ip: 127.0.0.1
+openbao_listen_port: 8200
+openbao_listen_address: "{{ openbao_listen_ip }}:{{ openbao_listen_port }}"
+openbao_ip: "{{ openbao_listen_ip }}"
+openbao_address: "http://{{ openbao_ip }}:{{ openbao_listen_port }}"
+
 # CA Info
 step_ca_name: "My Certificate Authority"  # Name used in a self generated intermediate
 step_ca_dns_name:

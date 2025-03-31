@@ -23,6 +23,7 @@ ssl_cipher_suite_tls13: "TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACH
 
 #variables used in OSA roles which call the PKI role
 openstack_pki_dir: "{{ openstack_config_dir }}/pki"
+openstack_pki_backend: standalone
 openstack_pki_service_intermediate_cert_name: "ExampleCorpIntermediate"
 
 openstack_pki_service_intermediate_cert_path: "{{ openstack_pki_dir ~ '/roots/' ~ openstack_pki_service_intermediate_cert_name ~ '/certs/' ~ openstack_pki_service_intermediate_cert_name ~ '.crt' }}"
@@ -33,8 +34,7 @@ openstack_pki_regen_ca: ''
 #example self-signed certificate authority
 openstack_pki_authorities:
  - name: "ExampleCorpRoot"
-   provider: selfsigned
-   basic_constraints: "CA:TRUE"
+   backend: "{{ openstack_pki_backend }}"
    cn: "Example Corp Root CA"
    email_address: "pki@example.com"
    country_name: "GB"
@@ -46,8 +46,13 @@ openstack_pki_authorities:
      - cRLSign
      - keyCertSign
    ttl: "3650d"
+    # standalone backend only
+   provider: selfsigned
+   basic_constraints: "CA:TRUE"
+    # hashi_vault backend only
+   vault_path: pki_root
  - name: "ExampleCorpIntermediate"
-   provider: ownca
+   backend: "{{ openstack_pki_backend }}"
    basic_constraints: "CA:TRUE,pathlen:0"
    cn: "Example Corp Openstack Infrastructure Intermediate CA"
    email_address: "pki@example.com"
@@ -61,7 +66,15 @@ openstack_pki_authorities:
      - keyCertSign
    ttl: "3650d"
    signed_by: "ExampleCorpRoot"
+    # standalone backend only
+   provider: ownca
+    # hashi_vault backend only
+   vault_path: pki_int
 
 #install the root CA certificate on all hosts and containers
 openstack_pki_install_ca:
  - name: "ExampleCorpRoot"
+
+# hashi_vault PKI backend defaults
+openstack_pki_hashi_vault_role: default
+openstack_pki_hashi_vault_engine_mount_point: pki_int

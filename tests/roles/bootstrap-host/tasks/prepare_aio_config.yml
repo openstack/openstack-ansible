@@ -196,6 +196,10 @@
     - src: user_variables_stepca.yml.j2
       dest: user_variables_stepca.yml
       condition: "{{ 'stepca' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_openbao.yml.j2
+      dest: user_variables_openbao.yml
+      condition: "{{ 'openbao' in bootstrap_host_scenarios_expanded }}"
+
     - src: user_variables_tls.yml.j2
       dest: user_variables_tls.yml
       condition: "{{ 'tls' in bootstrap_host_scenarios_expanded }}"
