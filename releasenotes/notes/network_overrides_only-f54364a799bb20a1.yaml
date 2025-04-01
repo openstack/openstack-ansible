@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Implemented flag ``network_overrides_only`` which is applicable to
+    ``systemd_networks``. When this flag is used no .network or .link
+    defenition is created - only ``{{ filename }}.network.d/overrides.conf``
+    configuration file, which contains arbitrary data from ``config_overrides``
+    This can be used to extend existing interface configuration, which is not
+    managed by the role directly (ie managed through ``netplan``).

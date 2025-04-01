@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Keys for ``static_routes`` were liberalized and now can accept any
+    parameter supported by ``[Route]`` section of systemd-networkd.
+upgrade:
+  - |
+    Following keys for ``static_routes`` list were renamed in order to
+    match with options available in systemd-networkd configuration files:
+
+    - ``cidr`` -> ``Destination``
+    - ``gateway`` -> ``Gateway``
+
+    While backwards compatability was kept, it's highly recommended to
+    use new keys as support for old key names will be removed in the future.

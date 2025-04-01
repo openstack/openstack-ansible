@@ -1,0 +1,11 @@
+---
+prelude: >
+    Implemented a standalone role ``httpd`` for Apache Web Server (HTTPD)
+    configuration that aims to be included in various roles that require
+    Apache2 (i.e. keystone, horizon, skyline, etc).
+features:
+  - |
+    Created a common ``httpd`` role to unify approach for managing
+    Apache2 instalaltion and configuration across roles.
+    Role is written in relatively agnostic way and should be suitable
+    for usage outside of OpenStack-Ansible deployments as well.

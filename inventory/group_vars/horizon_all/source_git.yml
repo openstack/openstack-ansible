@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 20.03.2025 ###
+### HEAD as of 03.04.2025 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: fa1e28805c8fb7e0af3c9b5dc5681feb11770d46
+horizon_git_install_branch: e13d934d5c8fb17da400c36c8d35c7e8f1c41112
 horizon_git_track_branch: stable/2025.1
 
 ## Adjutant dashboard plugin
@@ -37,7 +37,7 @@ cloudkitty_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/designate-dashboard"
-designate_dashboard_git_install_branch: 28220fb7207fd070031f2004e4abaf6eda29f350
+designate_dashboard_git_install_branch: cc0efb2d4eb13c8d00ec2876c7b46f8fd01ddb42
 designate_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Heat dashboard plugin
@@ -57,7 +57,7 @@ magnum_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Masakari dashboard plugin
 masakari_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/masakari-dashboard"
-masakari_dashboard_git_install_branch: 03c1ddc1db90e37cbf13082d2ebc49e400d4b748
+masakari_dashboard_git_install_branch: d74eaa6ee49155a642ad9d1a471d4848cec5db65
 masakari_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Trove dashboard plugin
@@ -67,12 +67,12 @@ trove_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-dashboard"
-octavia_dashboard_git_install_branch: 01eefc170bf85645a807c0996289e03af17c00f5
+octavia_dashboard_git_install_branch: 178f86172ac34fe444499d8151d559a6fa8d1e09
 octavia_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Neutron VPNaaS dashboard plugin
 neutron_vpnaas_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas-dashboard"
-neutron_vpnaas_dashboard_git_install_branch: ed7c8b288d6b70084d1394e6735d940fc2efcdb3
+neutron_vpnaas_dashboard_git_install_branch: 87155bb533cb60d8056925785a4d20041919d8cc
 neutron_vpnaas_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Neutron FWaaS dashboard plugin

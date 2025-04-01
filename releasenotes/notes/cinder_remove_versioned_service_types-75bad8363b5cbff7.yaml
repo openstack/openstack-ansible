@@ -1,0 +1,41 @@
+---
+prelude: >
+    In order to support efforts on aligning Cinder service type naming across
+    various deployments and move on from version-specific service type to a
+    generic one, a Cinder service will be named as ``block-storage`` from
+    now on, which will be reflected in Keystone service catalog and endpoints.
+    Please check upgrade notes for more details.
+upgrade:
+  - |
+    In order to align with recommendations on Cinder service naming, os_cinder
+    role will introduce a new service in catalog named ``cinder`` of type
+    ``block-storage`` and corresponding set of endpoints representing them.
+    Upgrade script will create a new file `/etc/openstack_deploy/user_epoxy_upgrade.yml`
+    with defining ``cinder_service_v3_enabled: true`` which aims to keep old
+    version-based service type and endpoints intact.
+    If you want to remove old versioned-based endpoints and service type from
+    catalog you may simply undefine that variable, as it is ``False`` by
+    default.
+
+    All new deployments will not have ``cinderv3``/``volumev3``
+    service unless ``cinder_service_v3_enabled: true`` is defined.
+deprecations:
+  - |
+    In order to accomplish Cinder service naming alignment we had revised our
+    prior decision on deprecating following variables, which was introduced
+    previous cycle. Following variables should NOT be considered as
+    deprecated anymore:
+
+      - `cinder_service_description`
+      - `cinder_service_publicuri_proto`
+      - `cinder_service_adminuri_proto`
+      - `cinder_service_internaluri_proto`
+      - `cinder_service_type`
+      - `cinder_service_publicuri`
+      - `cinder_service_adminuri`
+      - `cinder_service_internaluri`
+
+  - |
+    Usage of version-based (``cinderv3``/``volumev3``) endpoints and service
+    type for Cinder is considered as a deprecated behaviour and will be removed
+    in the future.

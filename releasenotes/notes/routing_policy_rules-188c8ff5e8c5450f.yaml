@@ -1,0 +1,9 @@
+---
+features:
+  - |
+    Added `routing_rules` to manage routing policy rules for the network
+    interface.
+    It is a list of mappings, where each mapping accept keys applicable
+    for section RoutingPolicyRule of systemd.network.
+    You can check documentation for `systemd.network <https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html#%5BRoutingPolicyRule%5D%20Section%20Options>`_
+    for more details.

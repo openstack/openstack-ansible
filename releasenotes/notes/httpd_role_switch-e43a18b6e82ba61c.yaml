@@ -1,0 +1,25 @@
+---
+
+features:
+  - |
+    Added variable ``repo_server_directory_root`` which by default points to
+    ``/var/www/repo`` and used instead of ``repo_service_home_folder`` as
+    Apache DirectoryRoot for the virtual host.
+
+upgrade:
+  - |
+    The ``repo_server`` role was switched to using a standalone HTTPD role
+    from the in-role HTTPD deployment.
+  - |
+    In case of using custom path for the repo server vhost, please ensure
+    to use ``repo_server_directory_root`` variable instead of
+    ``repo_service_home_folder``.
+
+deprecations:
+  - |
+    Variables for the ``repo_server`` role related to Apache (HTTPD)
+    configuration, like ``repo_apache_*``, as well as some ``repo_pki_``
+    and ``repo_ssl_*`` were deprecated and have no effect now on due to
+    migration to a standalone ``httpd`` role.
+    Please, reffer to the ``httpd`` role for more details on how to
+    manage deprecated settings.
