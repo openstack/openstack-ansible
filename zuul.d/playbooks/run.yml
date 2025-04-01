@@ -1,11 +1,12 @@
-- hosts: all[0]
+- name: Run tests
+  hosts: all[0]
   vars_files:
     - "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
   tasks:
-    - name: Run gate-check-commit.sh script
-      become: yes
+    - name: Run gate-check-commit.sh script # noqa: no-changed-when
+      become: true
       become_user: root
-      shell: >-
+      ansible.builtin.shell: >-
         scripts/gate-check-commit.sh
         {{ scenario | quote }}
         {{ action | quote }}
@@ -17,7 +18,7 @@
         skip_bootstrap:
           # NOTE(logan): ARA is already installed in the gate environment by the
           # pre-osa-aio pre-run playbook
-          SETUP_ARA: False
+          SETUP_ARA: False # noqa: yaml[truthy]
           # NOTE(logan): The project is bootstrapped in the pre playbook so the
           # bootstrapping can be skipped here
           SKIP_OSA_RUNTIME_VENV_BUILD: 1

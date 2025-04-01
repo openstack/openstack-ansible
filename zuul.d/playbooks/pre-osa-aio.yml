@@ -21,17 +21,17 @@
     _zuul_src_path: "{{ ansible_user_dir }}/src"
   tasks:
     - name: Mark OSA repository as safe
-      become: yes
+      become: true
       become_user: root
-      git_config:
+      community.general.git_config:
         name: safe.directory
         scope: global
         value: "{{ _zuul_src_path }}/opendev.org/openstack/openstack-ansible"
 
-    - name: Run bootstrap-ansible script
-      become: yes
+    - name: Run bootstrap-ansible script # noqa: no-changed-when
+      become: true
       become_user: root
-      shell: scripts/bootstrap-ansible.sh
+      ansible.builtin.shell: scripts/bootstrap-ansible.sh
       args:
         chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash
@@ -45,10 +45,10 @@
         - "'upgrade' not in action"
         - osa_pre_run_bootstrap | default(True)
 
-    - name: Run bootstrap-aio script
-      become: yes
+    - name: Run bootstrap-aio script # noqa: no-changed-when
+      become: true
       become_user: root
-      shell: scripts/bootstrap-aio.sh
+      ansible.builtin.shell: scripts/bootstrap-aio.sh
       args:
         chdir: "src/opendev.org/openstack/openstack-ansible"
         executable: /bin/bash

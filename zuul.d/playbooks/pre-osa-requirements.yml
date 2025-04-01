@@ -19,13 +19,13 @@
     _zuul_src_path: "{{ lookup('env', 'ZUUL_SRC_PATH') | default(lookup('env', 'HOME') ~ '/src') }}"
   tasks:
     - name: Loading osa-gate-scenario vars
-      include_vars:
+      ansible.builtin.include_vars:
         file: "{{ zuul.executor.work_root | default('') }}/osa-gate-scenario.yml"
       when: load_zuul_vars | default(true) | bool
 
     - name: Ensure required directory exists
       become: true
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         mode: '0755'
@@ -39,25 +39,25 @@
         - "'upgrade' not in action"
       block:
         - name: Check the Zuul src dir for cloned roles
-          stat:
+          ansible.builtin.stat:
             path: "{{ _zuul_src_path }}/{{ item.src.split('/')[-3:] | join('/') }}"
-            get_attributes: no
-            get_checksum: no
-            get_mime: no
+            get_attributes: false
+            get_checksum: false
+            get_mime: false
           register: zuul_roles
           when:
             - item.scm == "git" or item.scm is undefined
           with_items: "{{ lookup('file', playbook_dir | dirname | dirname ~ '/ansible-role-requirements.yml') | from_yaml }}"
 
         - name: Remove target directory if required
-          file:
+          ansible.builtin.file:
             path: "/etc/ansible/roles/{{ item.item.name | default(item.item.src | basename) }}"
             state: absent
           with_items: "{{ (lookup('env', 'DROP_ROLE_DIRS') | bool is true) | ternary(zuul_roles.results | selectattr('stat.exists'), []) }}"
 
         - name: Link the Zuul provided roles
           become: true
-          file:
+          ansible.builtin.file:
             src: "{{ _zuul_src_path }}/{{ item.item.src.split('/')[-3:] | join('/') }}"
             dest: "/etc/ansible/roles/{{ item.item.name | default(item.item.src | basename) }}"
             state: link
@@ -69,7 +69,7 @@
         #               are checked out by Zuul so we hard fail
         #               if any roles are not.
         - name: Fail if any roles were not cloned
-          fail:
+          ansible.builtin.fail:
             msg: |
               The following roles were not cloned automatically by Zuul,
               make sure that they're included in required-projects {{ uncloned_roles | join(',') }}
@@ -84,7 +84,7 @@
 
         - name: Prevent prepared roles from being cloned
           become: true
-          copy:
+          ansible.builtin.copy:
             content: |-
               {% set ignored_roles = [] %}
               {% for role in zuul_roles.results | selectattr('stat.exists') | map(attribute='item') %}
@@ -101,11 +101,11 @@
         - "'upgrade' not in action"
       block:
         - name: Check the Zuul src dir for cloned collections
-          stat:
+          ansible.builtin.stat:
             path: "{{ _zuul_src_path }}/{{ item.source.split('/')[2:] | join('/') | split('#') | first }}"
-            get_attributes: no
-            get_checksum: no
-            get_mime: no
+            get_attributes: false
+            get_checksum: false
+            get_mime: false
           register: zuul_collections
           with_items: "{{ (lookup('file', playbook_dir | dirname | dirname ~ '/ansible-collection-requirements.yml') | from_yaml).collections }}"
 
@@ -126,7 +126,7 @@
                 {%   endif %}
                 {% endfor %}
                 {{ collections }}
-          copy:
+          ansible.builtin.copy:
             content: "{{ content_var | to_nice_yaml }}"
             dest: "/etc/openstack_deploy/user-collection-requirements.yml"
             mode: "0644"

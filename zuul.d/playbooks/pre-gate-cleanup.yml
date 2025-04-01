@@ -15,11 +15,11 @@
 
 - name: Cleanup gate images
   hosts: all
-  become: yes
+  become: true
   become_user: root
   tasks:
     - name: Switch apt source from https to http
-      replace:
+      ansible.builtin.replace:
         path: /etc/apt/sources.list
         regexp: 'https'
         replace: "http"
@@ -27,7 +27,7 @@
         - ansible_facts['distribution_release'] in ['jammy']
 
     - name: Remove package excludes for yum/dnf
-      lineinfile:
+      ansible.builtin.lineinfile:
         dest: '/etc/dnf/dnf.conf'
         regexp: "^exclude="
         state: absent
@@ -38,7 +38,7 @@
         - ansible_facts['distribution'] | lower == 'rocky'
       block:
         - name: Comment out mirrorlist for Rocky
-          replace:
+          ansible.builtin.replace:
             path: "/etc/yum.repos.d/{{ item }}"
             regexp: "^(mirrorlist=.*)$"
             replace: "#\\1"
@@ -49,7 +49,7 @@
             - rocky-addons.repo
 
         - name: Uncomment baseurl for Rocky
-          replace:
+          ansible.builtin.replace:
             path: "/etc/yum.repos.d/{{ item }}"
             regexp: "^#(baseurl=.*)$"
             replace: "\\1"
@@ -68,7 +68,7 @@
             value: "no"
           - name: PasswordAuthentication
             value: "no"
-      blockinfile:
+      ansible.builtin.blockinfile:
         dest: /etc/ssh/sshd_config
         state: present
         marker: "# {mark} MANAGED BY PRE-OSA step"
@@ -82,14 +82,14 @@
         - Restart ssh
 
     - name: Remove motd from pam.d
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/pam.d/sshd
         regexp: '^(session\s*optional\s*pam_motd.so.*)$'
         line: '# \1'
-        backrefs: yes
+        backrefs: true
 
   handlers:
     - name: Restart ssh
-      service:
+      ansible.builtin.service:
         name: "sshd"
         state: restarted

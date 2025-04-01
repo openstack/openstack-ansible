@@ -14,15 +14,16 @@
 # limitations under the License.
 
 - name: Create the required deployment directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: "0755"
   with_items: "{{ bootstrap_host_target_config_paths }}"
   tags:
     - create-directories
 
 - name: Find user conf.d configurations to deploy
-  stat:
+  ansible.builtin.stat:
     path: "{{ bootstrap_host_aio_config_path }}/conf.d/{{ item }}.yml.aio"
   register: conf_d_stat
   with_items: "{{ bootstrap_host_scenarios_expanded }}"
@@ -62,7 +63,7 @@
     - deploy-user-secrets
 
 - name: Generate any missing values in user_secrets
-  command: >
+  ansible.builtin.command: >
     /opt/ansible-runtime/bin/python
     {{ bootstrap_host_aio_script_path }}/pw-token-gen.py
     --file /etc/openstack_deploy/{{ bootstrap_host_user_secrets_filename }}
@@ -88,18 +89,19 @@
           # we only run ceph jobs on ubuntu in CI so this is sufficient
           # NOTE(jrosser)
           # re-enable these local CI repos when the reef release is mirrored
-          #ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef"
+          # ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef"
           # we must set the ceph repo seperatley for the ceph_client role
-          #ceph_apt_repos:
+          # ceph_apt_repos:
           #  ceph:
           #    state: "present"
           #    repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef {{ ansible_facts['distribution_release'] }} main"
-      copy:
+      ansible.builtin.copy:
         dest: /etc/openstack_deploy/user_openstackci.yml
         content: "{{ (nodepool_overrides | combine(_ubuntu_conditional_vars)) | to_nice_yaml }}"
+        mode: "0644"
 
     - name: Set the package cache timeout to 60 mins in OpenStack-CI
-      set_fact:
+      ansible.builtin.set_fact:
         cache_timeout: 3600
       when:
         - cache_timeout is not defined
@@ -108,14 +110,14 @@
 # Enforcing mode by default. While I am normally a supporter of this change,
 # the SELinux policy work for CentOS is not done yet.
 - name: Set SELinux to permissive mode in OpenStack-CI
-  selinux:
+  ansible.posix.selinux:
     policy: targeted
     state: permissive
   when:
     - ansible_facts['selinux']['status'] == "enabled"
 
 - name: Get systemd version
-  command: "rpm -q systemd" # noqa command-instead-of-module
+  ansible.builtin.command: "rpm -q systemd" # noqa command-instead-of-module
   changed_when: false
   register: systemd_version
   when: ansible_facts['os_family'] | lower == 'redhat'
@@ -128,9 +130,10 @@
     config_type: yaml
 
 - name: Set http proxy user variables
-  copy:
+  ansible.builtin.copy:
     src: "user_variables_proxy.yml"
     dest: "/etc/openstack_deploy/user_variables_proxy.yml"
+    mode: "0644"
   when:
     - "lookup('env', 'http_proxy')|length > 0"
 
@@ -193,27 +196,30 @@
       condition: "{{ 'tls' in bootstrap_host_scenarios_expanded }}"
 
 - name: Copy modified cinder-volume env.d file for ceph scenario
-  copy:
+  ansible.builtin.copy:
     src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
     dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
+    mode: "0644"
   when:
     - "'ceph' in bootstrap_host_scenarios_expanded"
 
 - name: Create vars override folders if we need to test them
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: "0755"
   with_items:
     - /etc/openstack_deploy/group_vars
     - /etc/openstack_deploy/host_vars
   when: "(lookup('env','ACTION') | default(false,true)) == 'varstest'"
 
 - name: Create user-space overrides
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ item.path }}"
     state: present
-    line:  "{{ item.line }}"
-    create: yes
+    line: "{{ item.line }}"
+    create: true
+    mode: "0644"
   with_items:
     - path: /etc/openstack_deploy/group_vars/hosts.yml
       line: 'babar: "elephant"'

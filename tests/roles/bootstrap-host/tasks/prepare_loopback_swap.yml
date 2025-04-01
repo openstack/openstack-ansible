@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create swap file
-  command: "dd if=/dev/zero of=/openstack/swap.img bs=1M count={{ bootstrap_host_loopback_swap_size }}"
+  ansible.builtin.command: "dd if=/dev/zero of=/openstack/swap.img bs=1M count={{ bootstrap_host_loopback_swap_size }}"
   args:
     creates: /openstack/swap.img
   register: swap_create
@@ -22,7 +22,7 @@
     - swap-file-create
 
 - name: Format the swap file
-  command: mkswap /openstack/swap.img
+  ansible.builtin.command: mkswap /openstack/swap.img
   when:
     - swap_create  is changed
   tags:
@@ -30,7 +30,7 @@
     - skip_ansible_lint
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:
@@ -44,7 +44,7 @@
     - swap-config
 
 - name: Set system swappiness
-  sysctl:
+  ansible.posix.sysctl:
     name: vm.swappiness
     value: 10
     state: present

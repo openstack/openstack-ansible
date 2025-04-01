@@ -14,14 +14,14 @@
 # limitations under the License.
 
 - name: Create sparse NFS volume
-  command: "truncate -s {{ bootstrap_host_loopback_nfs_size }}G /openstack/nfs.img"
+  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_nfs_size }}G /openstack/nfs.img"
   args:
     creates: /openstack/nfs.img
   tags:
     - nfs-file-create
 
 - name: Format the NFS file
-  filesystem:
+  community.general.filesystem:
     fstype: xfs
     dev: /openstack/nfs.img
     opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
@@ -29,7 +29,7 @@
     - nfs-format-file
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:
@@ -43,19 +43,19 @@
     - nfs-config
 
 - name: Install NFS packages
-  package:
+  ansible.builtin.package:
     name: "{{ nfs_package }}"
     state: present
 
-- name: create the system group for nfs
-  group:
+- name: Create the system group for nfs
+  ansible.builtin.group:
     name: "nfs-user"
     gid: "10000"
     state: "present"
     system: "yes"
 
 - name: Create the system user for nfs
-  user:
+  ansible.builtin.user:
     name: "nfs-user"
     uid: "10000"
     group: "nfs-user"
@@ -66,36 +66,38 @@
     home: "/srv/nfs"
 
 - name: Create base directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: "directory"
     owner: "nfs-user"
     group: "nfs-user"
+    mode: "0755"
   with_items:
     - "/srv/nfs/glance"
     - "/srv/nfs/cinder"
 
 - name: Create exports file
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/exports
     line: '{{ item }} {{ storage_range }}.0/{{ netmask }}(rw,sync,no_subtree_check,insecure,all_squash,anonuid=10000,anongid=10000)'
     owner: root
     group: root
-    mode: 0644
-    create: yes
+    mode: "0644"
+    create: true
   with_items:
     - "/srv/nfs/glance"
     - "/srv/nfs/cinder"
   register: nfs_exportfs
 
-- name: Restart nfs-server
-  systemd:
-    daemon_reload: yes
+- name: Restart nfs-server # noqa: no-handler
+  ansible.builtin.systemd:
+    daemon_reload: true
     name: "nfs-server"
-    enabled: "yes"
+    enabled: true
     state: "restarted"
   when:
     - nfs_exportfs  is changed
 
 - name: Export NFS
-  command: exportfs -rav
+  ansible.builtin.command: exportfs -rav
+  changed_when: false

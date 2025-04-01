@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Ensure the hosts file is templated appropriately
-  copy:
+  ansible.builtin.copy:
     content: |
       127.0.0.1 localhost
 
@@ -32,8 +32,9 @@
       ff02::2 ip6-allrouters
       ff02::3 ip6-allhosts
     dest: /etc/hosts
-    backup: yes
+    backup: true
+    mode: "0644"
 
 - name: Ensure hostname is set
-  hostname:
+  ansible.builtin.hostname:
     name: aio1

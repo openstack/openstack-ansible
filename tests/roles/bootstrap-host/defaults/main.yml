@@ -15,14 +15,14 @@
 
 ## AIO user-space configuration options
 # Scenario used to bootstrap the host
-bootstrap_host_scenario: "{{ lookup('env','SCENARIO') | default('aio_lxc', true) }}"
+bootstrap_host_scenario: "{{ lookup('env', 'SCENARIO') | default('aio_lxc', true) }}"
 #
 # Action used (deploy, upgrade, ...)
 bootstrap_host_action: "{{ lookup('env', 'ACTION') | default('deploy', true) }}"
 #
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
 # Switch to no for a multi-node configuration
-bootstrap_host_aio_config: yes
+bootstrap_host_aio_config: true
 #
 # Path to the location of the bootstrapping configuration files
 bootstrap_host_aio_config_path: "{{ playbook_dir }}/../etc/openstack_deploy"
@@ -50,42 +50,42 @@ bootstrap_user_variables_template: user_variables.aio.yml.j2
 # The size of the loopback volumes can be customized here (in gigabytes).
 #
 # Boolean option to deploy the loopback disk for Swap
-bootstrap_host_loopback_swap: no
+bootstrap_host_loopback_swap: false
 # Size of the Swap loopback disk in gigabytes (GB).
 bootstrap_host_loopback_swap_size: 4096
 #
 # Boolean option to deploy the loopback disk for Cinder
-bootstrap_host_loopback_cinder: yes
+bootstrap_host_loopback_cinder: true
 # Size of the Cinder loopback disk in gigabytes (GB).
 bootstrap_host_loopback_cinder_size: 1024
 #
 # Boolean option to deploy the loopback disk for Swift
-bootstrap_host_loopback_swift: yes
+bootstrap_host_loopback_swift: true
 # Size of the Swift loopback disk in gigabytes (GB).
 bootstrap_host_loopback_swift_size: 1024
 #
 # Boolean option to deploy the loopback disk for Nova
-bootstrap_host_loopback_nova: yes
+bootstrap_host_loopback_nova: true
 # Size of the Nova loopback disk in gigabytes (GB).
 bootstrap_host_loopback_nova_size: 1024
 #
 # Boolean option to deploy the loopback disk for Manila
-bootstrap_host_loopback_manila: yes
+bootstrap_host_loopback_manila: true
 # Size of the Manila loopback disk in gigabytes (GB).
 bootstrap_host_loopback_manila_size: 1024
 #
 # Boolean option to deploy the loopback disk for machines
-bootstrap_host_loopback_machines: yes
+bootstrap_host_loopback_machines: true
 # Size of the machines loopback disk in gigabytes (GB).
 bootstrap_host_loopback_machines_size: 128
 #
 # Boolean option to deploy the loopback disk for btrfs
-bootstrap_host_loopback_btrfs: yes
+bootstrap_host_loopback_btrfs: true
 # Size of the btrfs loopback disk in gigabytes (GB).
 bootstrap_host_loopback_btrfs_size: 1024
 #
 # Boolean option to deploy the loopback disk for zfs
-bootstrap_host_loopback_zfs: yes
+bootstrap_host_loopback_zfs: true
 # Size of the zfs loopback disk in gigabytes (GB).
 bootstrap_host_loopback_zfs_size: 1024
 #
@@ -153,12 +153,12 @@ bootstrap_host_data_disk_device: null
 bootstrap_host_data_disk_fs_type: ext4
 #
 # Boolean value to force the repartitioning of the secondary device.
-bootstrap_host_data_disk_device_force: no
+bootstrap_host_data_disk_device_force: false
 #
 # If the storage capacity on this device is greater than or equal to this
 # size (in GB), the bootstrap process will use it.
 # If metal, we don't need that much storage space.
-bootstrap_host_data_disk_min_size: "{{ (bootstrap_host_scenario is search('metal')) | ternary(10,50) }}"
+bootstrap_host_data_disk_min_size: "{{ (bootstrap_host_scenario is search('metal')) | ternary(10, 50) }}"
 #
 # Set the data disk formats table. If the backing store is set to lvm the option
 # the partition will not actually be formatted however for parted, ext2 is used.
@@ -195,10 +195,10 @@ bootstrap_host_data_disk2_path: '/var/lib/lxc'
 # Specify the public IP address for the host.
 # By default the address will be set to the ipv4 address of the
 # host's network interface that has the default route on it.
-#bootstrap_host_public_address: 0.0.0.0
+# bootstrap_host_public_address: 0.0.0.0
 
 # Set the install method for the deployment. Options are ['source', 'distro']
-bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true)  }}"
+bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true) }}"
 
 # step-ca
 step_ca_user: step

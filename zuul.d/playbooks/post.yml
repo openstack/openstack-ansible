@@ -13,12 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- hosts: all
+- name: Post-run tasks
+  hosts: all
   tasks:
     - name: Run log collection script
-      command: scripts/log-collect.sh
-      become: yes
+      ansible.builtin.command: scripts/log-collect.sh
+      become: true
       become_user: root
+      changed_when: false
       args:
         chdir: "src/opendev.org/openstack/openstack-ansible"
       environment:
@@ -32,15 +34,15 @@
         WORKING_DIR: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible"
 
     - name: Check whether a logs folder exists
-      stat:
+      ansible.builtin.stat:
         path: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible/logs"
-        get_attributes: no
-        get_checksum: no
-        get_mime: no
+        get_attributes: false
+        get_checksum: false
+        get_mime: false
       register: logs_folder
 
     - name: Copy logs back to the executor
-      synchronize:
+      ansible.posix.synchronize:
         src: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible/logs"
         dest: "{{ zuul.executor.log_root }}/"
         mode: pull

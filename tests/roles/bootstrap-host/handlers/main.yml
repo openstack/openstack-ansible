@@ -14,6 +14,6 @@
 # limitations under the License.
 
 - name: Restart squid
-  service:
+  ansible.builtin.service:
     name: squid
     state: restarted
