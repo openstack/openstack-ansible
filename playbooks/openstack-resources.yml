@@ -13,26 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create requested OpenStack Resources
-  hosts: "{{ openstack_service_setup_host | default(groups['utility_all'][0] | default('localhost')) }}"
-  tasks:
-    - name: Setup installation variables
-      include_role:
-        name: openstack.osa.install_defaults
-        defaults_from: "{{ install_method }}"
-        public: true
-        apply:
-          tags:
-            - always
-      tags:
-        - always
-
-    - name: Include openstack_resources role
-      ansible.builtin.include_role:
-        name: openstack.osa.openstack_resources
-      vars:
-        openstack_resources_identity: "{{ openstack_user_identity | default({}) }}"
-        openstack_resources_compute: "{{ openstack_user_compute | default({}) }}"
-        openstack_resources_network: "{{ openstack_user_network | default({}) }}"
-        openstack_resources_image: "{{ openstack_user_image | default({}) }}"
-        openstack_resources_coe: "{{ openstack_user_coe | default({}) }}"
+- name: Import openstack_resources playbook
+  import_playbook: openstack.osa.openstack_resources

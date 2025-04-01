@@ -1,3 +1,4 @@
+---
 # Copyright 2018, BBC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,27 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather listening ports report
-  hosts: all
-  gather_facts: no
-  tasks:
-    - name: Gather listening ports
-      command: netstat -ln --inet --program
-      register: listening_ports
-      changed_when: false
-
-    - name: Create report
-      copy:
-        content: |
-          {% for host in ansible_play_hosts %}
-          hostname: {{ host }}
-          listening_ports:
-          {% for port in hostvars[host].listening_ports['stdout_lines'] %}
-          {{ port }}
-          {% endfor %}
-
-          {% endfor %}
-        dest: /tmp/listening_port_report.txt
-        mode: "0640"
-      delegate_to: localhost
-      run_once: true
+- name: Import listening_ports_report playbook
+  ansible.builtin.import_playbook: openstack.osa.healthcheck.listening_ports_report

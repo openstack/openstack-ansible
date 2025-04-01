@@ -13,18 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gather facts
-  hosts: hosts
-  gather_facts: "{{ osa_gather_facts | default(True) }}"
-  tags:
-    - always
-
-- name: Install Journal-Remote
-  hosts: hosts
-  gather_facts: false
-  tasks:
-    - name: Include journald-remote role
-      include_role:
-        name: openstack.osa.journald_remote
-  tags:
-    - journal-remote
+- name: Import journald_remote playbook
+  ansible.builtin.import_playbook: openstack.osa.journald_remote
