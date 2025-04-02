@@ -234,7 +234,7 @@ container back-end.
 
 .. code-block:: shell-session
 
-   # export SCENARIO='aio_lxc_barbican_ceph_lxb'
+   # export SCENARIO='aio_lxc_barbican_ceph_ovs'
    # scripts/bootstrap-aio.sh
 
 To add any global overrides, over and above the defaults for the applicable
@@ -582,4 +582,4 @@ built for informational purposes only and should **ONLY** be used as such.
       | |          -------------------------|     | |            |      |
       | |          |                              | |            |      |
       | |          V                              | |            *      |
-      ---->[ Compute ]*[ Neutron linuxbridge ]<---| |->[ Swift storage ]-
+      ---->[ Compute ]*[ Neutron OpenvSwitch ]<---| |->[ Swift storage ]-

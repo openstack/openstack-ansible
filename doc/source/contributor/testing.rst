@@ -16,7 +16,7 @@ This folder contains at least the following files:
   by our shell script in our `tests repository`_.
 * ``inventory``. A static inventory for role testing.
   It's possible some roles have multiple inventories. See for example the
-  neutron role with its ``lxb_inventory``.
+  neutron role with its ``ovs_inventory``.
 * ``group_vars`` and ``host_vars``. These folders will hold override the
   necessary files for testing. For example, this is where you override
   the IP addresses, IP ranges, and ansible connection details.

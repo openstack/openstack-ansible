@@ -17,7 +17,6 @@ container_skel:
     belongs_to:
       - zun-compute_containers
     contains:
-      - neutron_linuxbridge_agent
       - neutron_openvswitch_agent
       - neutron_sriov_nic_agent
       - zun_compute

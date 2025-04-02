@@ -36,7 +36,7 @@ global_overrides:
         range: "1:1000"
         net_name: "vxlan"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
     - network:
         container_bridge: "br-vlan"
         container_type: "veth"
@@ -45,7 +45,7 @@ global_overrides:
         type: "flat"
         net_name: "physnet1"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
     - network:
         container_bridge: "br-vlan"
         container_type: "veth"
@@ -54,7 +54,7 @@ global_overrides:
         range: "101:200,301:400"
         net_name: "physnet2"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
     - network:
         container_bridge: "br-storage"
         container_type: "veth"

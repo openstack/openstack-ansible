@@ -198,11 +198,11 @@ The following table lists the commands to restart an OpenStack service.
           # service neutron-dhcp-agent restart
           # service neutron-l3-agent restart
           # service neutron-metadata-agent restart
-          # service neutron-linuxbridge-agent restart
+          # service neutron-openvswitch-agent restart
    * - Networking service (compute node)
      - .. code-block:: console
 
-          # service neutron-linuxbridge-agent restart
+          # service neutron-openvswitch-agent restart
    * - Block Storage service
      - .. code-block:: console
 
@@ -336,7 +336,7 @@ Does the instance's IP address ping from the gateway device
 
 No:
     - Check Neutron L3 agent logs (if applicable).
-    - Check Neutron linuxbridge logs.
+    - Check Neutron openvswitch logs.
     - Check physical interface mappings.
     - Check Neutron Router ports (if applicable).
     - Check that linux bridges contain the proper interfaces

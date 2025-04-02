@@ -269,7 +269,7 @@
 #         ip_from_q: "storage"
 #     - network:
 #         group_binds:
-#           - neutron_linuxbridge_agent
+#           - neutron_openvswitch_agent
 #         container_bridge: "br-vxlan"
 #         container_type: "veth"
 #         container_interface: "eth10"
@@ -280,7 +280,7 @@
 #         net_name: "vxlan"
 #     - network:
 #         group_binds:
-#           - neutron_linuxbridge_agent
+#           - neutron_openvswitch_agent
 #         container_bridge: "br-vlan"
 #         container_type: "veth"
 #         container_interface: "eth11"
@@ -289,7 +289,7 @@
 #         net_name: "physnet1"
 #     - network:
 #         group_binds:
-#           - neutron_linuxbridge_agent
+#           - neutron_openvswitch_agent
 #         container_bridge: "br-vlan"
 #         container_type: "veth"
 #         container_interface: "eth12"

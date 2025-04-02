@@ -174,8 +174,8 @@ To remove a compute host, follow the below procedure.
    .. code-block:: console
 
      # Run these commands on the compute node to be removed
-     # stop nova-compute
-     # stop neutron-linuxbridge-agent
+     # systemctl stop nova-compute
+     # systemctl stop neutron-openvswitch-agent
 
 #. Clone the ``openstack-ansible-ops`` repository to your deployment host:
 
