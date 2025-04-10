@@ -8,8 +8,8 @@ communication between services:
 
 .. _OpenStack Security Guide: https://docs.openstack.org/security-guide/secure-communication.html
 
-All public endpoints reside behind haproxy, resulting in the only certificate
-management for externally visible https services are those for haproxy.
+All public endpoints reside behind HAProxy, resulting in the only certificate
+management for externally visible https services are those for HAProxy.
 Certain internal services such as RabbitMQ also require proper SSL configuration.
 
 When deploying with OpenStack-Ansible, you can either use self-signed
@@ -24,7 +24,7 @@ user-provided certificates for as many services as possible.
    ``/etc/openstack_deploy/user_variables.yml`` file. Do not edit the playbooks
    or roles themselves.
 
-Openstack-Ansible uses an ansible role `ansible_role_pki`_ as a general tool to
+OpenStack-Ansible uses an ansible role `ansible_role_pki`_ as a general tool to
 manage and install self-signed and user provided certificates.
 
 .. _ansible_role_pki: https://opendev.org/openstack/ansible-role-pki
@@ -33,7 +33,7 @@ manage and install self-signed and user provided certificates.
 
    The openstack-ansible example configurations are designed to be minimal
    examples and in test or development use-cases will set ``external_lb_vip_address``
-   to the IP address of the haproxy external endpoint. For a production
+   to the IP address of the HAProxy external endpoint. For a production
    deployment it is advised to set ``external_lb_vip_address`` to be
    the FQDN which resolves via DNS to the IP of the external endpoint.
 
@@ -47,7 +47,7 @@ are used in OpenStack-Ansible. When self-signed certificates are used,
 certificate verification is automatically disabled.
 
 Self-signed certificates can play an important role in securing internal
-services within the Openstack-Ansible deployment, as they can only be issued
+services within the OpenStack-Ansible deployment, as they can only be issued
 by the private CA associated with the deployment. Using mutual TLS between
 backend services such as RabbitMQ and MariaDB with self-signed certificates
 and a robust CA setup can ensure that only correctly authenticated clients
@@ -106,8 +106,8 @@ Generating and regenerating self-signed user certificates
 ---------------------------------------------------------
 
 Self-signed user certificates are generated but not installed for services
-outside of Openstack ansible. These user certificates are signed by the same
-self-signed certificate authority as is used by openstack services
+outside of OpenStack-Ansible. These user certificates are signed by the same
+self-signed certificate authority as is used by OpenStack services
 but are intended to be used by user applications.
 
 To generate user certificates, define a variable with the prefix
@@ -154,7 +154,6 @@ following ways:
   .. code-block:: yaml
 
      user_pki_regen_cert: true
-
 
 User-provided certificates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -223,7 +222,7 @@ The HAProxy ansible role supports using certbot to automatically deploy
 trusted SSL certificates for the public endpoint. Each HAProxy server will
 individually request a SSL certificate using certbot.
 
-Certbot defaults to using LetsEncrypt as the Certificate Authority, other
+Certbot defaults to using Let's Encrypt as the Certificate Authority, other
 Certificate Authorities can be used by setting the
 ``haproxy_ssl_letsencrypt_certbot_server`` variable in the
 ``/etc/openstack_deploy/user_variables.yml`` file:
@@ -236,13 +235,13 @@ The http-01 type challenge is used by certbot to deploy certificates so
 it is required that the public endpoint is accessible directly by the
 Certificate Authority.
 
-Deployment of certificates using LetsEncrypt has been validated for
-openstack-ansible using Ubuntu Jammy. Other distributions should work
+Deployment of certificates using Let's Encrypt has been validated for
+openstack-ansible using Ubuntu 22.04 (Jammy Jellyfish). Other distributions should work
 but are not tested.
 
 To deploy certificates with certbot, add the following to
 ``/etc/openstack_deploy/user_variables.yml`` to enable the
-certbot function in the haproxy ansible role, and to
+certbot function in the HAProxy ansible role, and to
 create a new backend service called ``certbot`` to service
 http-01 challenge requests.
 
@@ -252,10 +251,10 @@ http-01 challenge requests.
     haproxy_ssl_letsencrypt_enable: True
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
-TLS for Haproxy Internal VIP
+TLS for HAProxy Internal VIP
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As well as load balancing public endpoints, haproxy is also used to load balance
+As well as load balancing public endpoints, HAProxy is also used to load balance
 internal connections.
 
 By default, OpenStack-Ansible does not secure connections to the internal VIP.
@@ -269,30 +268,30 @@ To enable this you must set the following variables in the
 
    haproxy_ssl_all_vips: true
 
-Run all playbooks to configure haproxy and openstack services.
+Run all playbooks to configure HAProxy and OpenStack services.
 
-When enabled haproxy will use the same TLS certificate on all interfaces
+When enabled HAProxy will use the same TLS certificate on all interfaces
 (internal and external). It is not currently possible in OpenStack-Ansible to
-use different self-signed or user-provided TLS certificates on different haproxy
+use different self-signed or user-provided TLS certificates on different HAProxy
 interfaces.
 
 The only way to use a different TLS certificates on the internal and external
 VIP is to use certbot.
 
 Enabling TLS on the internal VIP for existing deployments will cause some
-downtime, this is because haproxy only listens on a single well known port for
+downtime, this is because HAProxy only listens on a single well known port for
 each OpenStack service and OpenStack services are configured to use http or
-https. This means once haproxy is updated to only accept HTTPS connections, the
+https. This means once HAProxy is updated to only accept HTTPS connections, the
 OpenStack services will stop working until they are updated to use HTTPS.
 
 To avoid downtime, it is recommended to enable
 ``openstack_service_accept_both_protocols`` until all services are configured
-correctly. It allows haproxy frontends to listen on both HTTP and HTTPS.
+correctly. It allows HAProxy frontends to listen on both HTTP and HTTPS.
 
-TLS for Haproxy Backends
+TLS for HAProxy Backends
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Communication between haproxy and service backends can be encrypted. Currently
+Communication between HAProxy and service backends can be encrypted. Currently
 it is disabled by default. It can be enabled for all services by setting the
 following variable:
 
@@ -344,14 +343,14 @@ TLS for VNC
 ~~~~~~~~~~~
 
 When using VNC for console access there are 3 connections to secure, client to
-haproxy, haproxy to noVNC Proxy and noVNC Proxy to Compute nodes. The `OpenStack
+HAProxy, HAProxy to noVNC Proxy and noVNC Proxy to Compute nodes. The `OpenStack
 Nova Docs for remote console access`_ cover console security in much more
 detail.
 
 .. _OpenStack Nova Docs for remote console access: https://docs.openstack.org/nova/latest/admin/remote-console-access.html#vnc-proxy-security
 
-In OpenStack-Ansible TLS to haproxy is configured in haproxy, TLS from
-haproxy to noVNC is not currently enabled and TLS from nVNC to Compute nodes
+In OpenStack-Ansible TLS to HAProxy is configured in HAProxy, TLS from
+HAProxy to noVNC is not currently enabled and TLS from nVNC to Compute nodes
 is enabled by default.
 
 Changes will not apply to any existing running guests on the compute node,
