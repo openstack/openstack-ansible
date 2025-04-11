@@ -83,7 +83,7 @@ June 1, 2023.
 Zed: EOM (end-of-maintenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible Zed series was EOM-ed on  June 6, 2024
+OpenStack-Ansible Zed series was EOM-ed on June 6, 2024.
 
 * `OpenStack-Ansible Zed Documentation`_
 

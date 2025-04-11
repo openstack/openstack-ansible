@@ -323,7 +323,7 @@ password in the ``/etc/openstack_deploy/user_secrets.yml`` file.
    keystone_auth_admin_password: <redacted>
    radosgw_admin_password: <redacted>
 
-Using this username and password combination, log in to horizon.
+Using this username and password combination, log in to Horizon.
 
 Using a client or library
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -449,7 +449,7 @@ dropdown in the top-right corner and select *⭳ OpenStack RC file*.
 
    Finally, you can also opt to disable SSL certificate configuration during
    initial deployment or opt to use an external certificate authority for
-   signing, such as Lets Encrypt. Both topics are outside the scope of this
+   signing, such as Let's Encrypt. Both topics are outside the scope of this
    document.
 
    More information about SSL certificate configuration can be found in the
