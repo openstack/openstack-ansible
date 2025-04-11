@@ -5,8 +5,8 @@ Deployers do not have to use ``root`` user accounts on deploy or target hosts.
 This approach works out of the box by leveraging `Ansible privilege escalation`_.
 
 
-Deploment hosts
-~~~~~~~~~~~~~~~
+Deployment hosts
+~~~~~~~~~~~~~~~~
 
 You can avoid usage of the ``root`` user on a deployment by following these
 guidelines:
