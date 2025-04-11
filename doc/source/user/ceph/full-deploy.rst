@@ -32,14 +32,14 @@ OpenStack-Ansible allows `Ceph storage <https://ceph.io>`_ cluster
 integration in three ways:
 
 * connecting to your own pre-deployed ceph cluster by pointing to its
-  information in ``user_variables.yml`` and allowing openstack-ansible
+  information in ``user_variables.yml`` and allowing OpenStack-Ansible
   to ssh to the ceph monitors to retrieve the contents of ceph.conf
   and the keyrings.
 
   This method only requires a very small amount of configuration
   in ``user_variables.yml`` to point to the external ceph cluster monitors.
   The whole configuration for ceph-ansible would live outside the
-  openstack-ansible deployment and there is no duplication.
+  OpenStack-Ansible deployment and there is no duplication.
   The ``ceph_mons`` variable expects a list of IP addresses for the
   Ceph Monitor servers in the external ceph deployment:
 
@@ -60,8 +60,8 @@ integration in three ways:
   monitors in ``user_variables.yml`` as above and providing data to
   populate ceph.conf and ceph keyring files on the deploy host.
   This is described `here <https://docs.openstack.org/openstack-ansible-ceph_client/latest/config-from-file.html>`_.
-  No ssh access by openstack-ansible is required to the ceph cluster.
-* deploying a ceph cluster as part of the openstack-ansible deployment
+  No ssh access by OpenStack-Ansible is required to the ceph cluster.
+* deploying a ceph cluster as part of the OpenStack-Ansible deployment
   by using the roles maintained by the `Ceph-Ansible`_ project. Deployers
   can enable the ``ceph-install.yml`` playbook by adding hosts to the
   ``ceph-mon_hosts`` and ``ceph-osd_hosts`` groups in
@@ -79,7 +79,7 @@ integration in three ways:
 
 .. warning::
 
-  Deploying ceph cluster as part of openstack-ansible is not recommended since
+  Deploying ceph cluster as part of OpenStack-Ansible is not recommended since
   ceph-ansible upgrade path is not tested or supported. This option is mainly
   used for CI and AIO deployments to test and demonstrate a sample integration
   of the software stack.

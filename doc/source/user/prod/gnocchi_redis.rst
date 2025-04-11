@@ -2,7 +2,7 @@
 Telemetry with Gnocchi, Ceph and Redis example
 ==============================================
 
-The default openstack-ansible installation configures gnocchi to use a file as
+The default OpenStack-Ansible installation configures gnocchi to use a file as
 storage backend. When you already have a pre-installed ceph, you can use this
 as backend for gnocchi. This documentation will guide you how to set up
 gnocchi to use your ceph as storage backend.
