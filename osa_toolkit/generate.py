@@ -15,17 +15,23 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
+import argparse
 import copy
 import json
 import logging
-import netaddr
-from osa_toolkit import dictutils as du
-from osa_toolkit import filesystem as filesys
-from osa_toolkit import ip
+from os import getenv as os_env
+from os import path as os_path
 import re
+import sys
 import uuid
 import warnings
 
+import netaddr
+
+from osa_toolkit import __path__ as repo_path
+from osa_toolkit import dictutils as du
+from osa_toolkit import filesystem as filesys
+from osa_toolkit import ip
 
 logger = logging.getLogger('osa-inventory')
 
@@ -48,6 +54,53 @@ REQUIRED_HOSTVARS = [
     'physical_host',
     'component'
 ]
+
+
+def args(argv):
+    """Setup argument Parsing."""
+    parser = argparse.ArgumentParser(
+        usage='%(prog)s',
+        description='OpenStack Inventory Generator',
+        epilog='Inventory Generator Licensed "Apache 2.0"')
+
+    parser.add_argument(
+        '--config',
+        help='Path containing the user defined configuration files',
+        required=False,
+        default=os_env('OSA_CONFIG_DIR', None)
+    )
+
+    parser.add_argument(
+        '--list',
+        help='List all entries',
+        action='store_true'
+    )
+
+    parser.add_argument(
+        '--check',
+        help="Configuration check only, don't generate inventory",
+        action='store_true',
+    )
+
+    parser.add_argument(
+        '-d',
+        '--debug',
+        help=('Output debug messages to log file. '
+              'File is appended to, not overwritten'),
+        action='store_true',
+        default=False,
+    )
+
+    parser.add_argument(
+        '-e',
+        '--environment',
+        help=('Directory that contains the base env.d directory.\n'
+              'Defaults to <OSA_ROOT>/inventory/.'),
+        required=False,
+        default=f'{os_path.dirname(repo_path[0])}/inventory',
+    )
+
+    return vars(parser.parse_args(argv))
 
 
 class MultipleHostsWithOneIPError(Exception):
@@ -1139,7 +1192,11 @@ def _prepare_debug_logger():
     logger.info("Beginning new inventory run")
 
 
-def main(config=None, check=False, debug=False, environment=None, **kwargs):
+def generate(config=None,
+             check=False,
+             debug=False,
+             environment=None,
+             **kwargs):
     """Run the main application.
 
     :param config: ``str`` Directory from which to pull configs and overrides
@@ -1263,3 +1320,10 @@ def main(config=None, check=False, debug=False, environment=None, **kwargs):
         filesys.save_inventory(inventory_json, inv_path)
 
     return inventory_json
+
+
+def main(argv=sys.argv[1:]):
+
+    all_args = args(argv)
+    data = generate(**all_args)
+    print(data)

@@ -15,7 +15,6 @@
 #
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 
-import argparse
 import os
 import sys
 
@@ -28,57 +27,8 @@ except ImportError:
     from osa_toolkit import generate
 
 
-# Function kept in order to use relative pathing for the env.d directory
-def args(arg_list):
-    """Setup argument Parsing."""
-    parser = argparse.ArgumentParser(
-        usage='%(prog)s',
-        description='OpenStack Inventory Generator',
-        epilog='Inventory Generator Licensed "Apache 2.0"')
-
-    parser.add_argument(
-        '--config',
-        help='Path containing the user defined configuration files',
-        required=False,
-        default=os.getenv('OSA_CONFIG_DIR', None)
-    )
-    parser.add_argument(
-        '--list',
-        help='List all entries',
-        action='store_true'
-    )
-
-    parser.add_argument(
-        '--check',
-        help="Configuration check only, don't generate inventory",
-        action='store_true',
-    )
-
-    parser.add_argument(
-        '-d',
-        '--debug',
-        help=('Output debug messages to log file. '
-              'File is appended to, not overwritten'),
-        action='store_true',
-        default=False,
-    )
-
-    parser.add_argument(
-        '-e',
-        '--environment',
-        help=('Directory that contains the base env.d directory.\n'
-              'Defaults to <OSA_ROOT>/inventory/.'),
-        required=False,
-        default=os.path.dirname(__file__),
-    )
-
-    return vars(parser.parse_args(arg_list))
-
-
 def main():
-    all_args = args(sys.argv[1:])
-    output = generate.main(**all_args)
-    print(output)
+    generate.main()
 
 
 if __name__ == '__main__':

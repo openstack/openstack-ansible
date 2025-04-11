@@ -29,7 +29,6 @@ INV_DIR = 'inventory'
 
 sys.path.append(path.join(os.getcwd(), INV_DIR))
 
-import dynamic_inventory  # noqa: E402
 from osa_toolkit import dictutils  # noqa: E402
 from osa_toolkit import filesystem as fs  # noqa: E402
 from osa_toolkit import generate as di  # noqa: E402
@@ -102,7 +101,7 @@ def get_inventory(clean=True, extra_args=None):
     if extra_args:
         args.update(extra_args)
     try:
-        inventory_string = di.main(**args)
+        inventory_string = di.generate(**args)
         inventory = json.loads(inventory_string)
         return inventory
     finally:
@@ -114,16 +113,16 @@ def get_inventory(clean=True, extra_args=None):
 
 class TestArgParser(unittest.TestCase):
     def test_no_args(self):
-        arg_dict = dynamic_inventory.args([])
+        arg_dict = di.args([])
         self.assertIsNone(arg_dict['config'])
         self.assertEqual(arg_dict['list'], False)
 
     def test_list_arg(self):
-        arg_dict = dynamic_inventory.args(['--list'])
+        arg_dict = di.args(['--list'])
         self.assertEqual(arg_dict['list'], True)
 
     def test_config_arg(self):
-        arg_dict = dynamic_inventory.args(['--config',
+        arg_dict = di.args(['--config',
                                            '/etc/openstack_deploy'])
         self.assertEqual(arg_dict['config'], '/etc/openstack_deploy')
 
@@ -1263,7 +1262,7 @@ class TestConfigCheckFunctional(TestConfigCheckBase):
         self.user_defined_config['dashboard_hosts']['bogus'] = ip
 
     def test_checking_good_config(self):
-        output = di.main(config=TARGET_DIR, check=True,
+        output = di.generate(config=TARGET_DIR, check=True,
                          environment=BASE_ENV_DIR)
         self.assertEqual(output, 'Configuration ok!')
 
@@ -1271,7 +1270,7 @@ class TestConfigCheckFunctional(TestConfigCheckBase):
         self.duplicate_ip()
         self.write_config()
         with self.assertRaises(di.MultipleHostsWithOneIPError) as context:
-            di.main(config=TARGET_DIR, check=True, environment=BASE_ENV_DIR)
+            di.generate(config=TARGET_DIR, check=True, environment=BASE_ENV_DIR)
         self.assertEqual(context.exception.ip, '172.29.236.100')
 
 
