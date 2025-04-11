@@ -69,9 +69,7 @@ bootstrap_host_scenarios_expanded: |-
   {{ (scenario_list | unique) | sort }}
 
 _neutron_plugin_driver: |-
-  {% if 'lxb' in bootstrap_host_scenarios_expanded %}
-  {%   set plugin = 'ml2.lxb' %}
-  {% elif 'ovs' in bootstrap_host_scenarios_expanded %}
+  {% if 'ovs' in bootstrap_host_scenarios_expanded %}
   {%   set plugin = 'ml2.ovs' %}
   {% else %}
   {%   set plugin = 'ml2.ovn' %}

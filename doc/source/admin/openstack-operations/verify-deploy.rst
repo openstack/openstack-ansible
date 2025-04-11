@@ -131,10 +131,10 @@ the OpenStack API and dashboard, as an administrator.
       | ID                                   | Agent Type           | Host                                   | Availability Zone | Alive | State | Binary                    |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
       | 262b29fe-e60e-44b0-ae3c-065565f8deb7 | Metering agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metering-agent    |
-      | 41135f7f-9e6c-4122-b6b3-d131bfaae53e | Linux bridge agent   | ubuntu-focal                           | None              | :-)   | UP    | neutron-linuxbridge-agent |
+      | 41135f7f-9e6c-4122-b6b3-d131bfaae53e | Open vSwitch agent   | ubuntu-focal                           | None              | :-)   | UP    | neutron-openvswitch-agent |
       | 615d12a8-e738-490a-8552-2a03c8544b51 | Metadata agent       | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-metadata-agent    |
       | 99b2abd3-a330-4ca7-b524-ed176c10b31c | DHCP agent           | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-dhcp-agent        |
-      | e0139a26-fbf7-4cee-a37f-90940dc5851f | Linux bridge agent   | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-linuxbridge-agent |
+      | e0139a26-fbf7-4cee-a37f-90940dc5851f | Open vSwitch agent   | aio1-neutron-agents-container-2b0569d5 | None              | :-)   | UP    | neutron-openvswitch-agent |
       | feb20ed4-4346-4ad9-b50c-41efd784f2e9 | L3 agent             | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-l3-agent          |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
 

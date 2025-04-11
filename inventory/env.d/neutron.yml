@@ -23,9 +23,6 @@ component_skel:
   neutron_dhcp_agent:
     belongs_to:
       - neutron_all
-  neutron_linuxbridge_agent:
-    belongs_to:
-      - neutron_all
   neutron_openvswitch_agent:
     belongs_to:
       - neutron_all
@@ -68,7 +65,6 @@ container_skel:
       - neutron_bgp_dragent
       - neutron_dhcp_agent
       - neutron_l3_agent
-      - neutron_linuxbridge_agent
       - neutron_metadata_agent
       - neutron_metering_agent
       - neutron_openvswitch_agent

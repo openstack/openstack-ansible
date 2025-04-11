@@ -45,7 +45,7 @@ global_overrides:
         range: "1:1000"
         net_name: "vxlan"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
     #
     # The below provider network define details related to a given provider
     # network: physnet1. Details include the name of the veth interface to
@@ -59,7 +59,7 @@ global_overrides:
     # The network details will be used to populate the respective network
     # configuration file(s) on the members of the listed groups. In this
     # example, host_bind_override specifies the bond0 interface and applies
-    # only to the members of the neutron_linuxbridge_agent inventory group.
+    # only to the members of the neutron_openvswitch_agent inventory group.
     #
     - network:
         container_bridge: "br-vlan"
@@ -70,7 +70,7 @@ global_overrides:
         range: "101:200,301:400"
         net_name: "physnet1"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
     #
     # The below provider network defines details related to storage traffic.
     #

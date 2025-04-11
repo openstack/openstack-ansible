@@ -40,7 +40,7 @@ add a new block underneath the ``provider_networks`` section:
         range: "2:4094"
         net_name: "physnet2"
         group_binds:
-          - neutron_linuxbridge_agent
+          - neutron_openvswitch_agent
 
 The ``container_bridge`` setting defines the physical network bridge used
 to connect the veth pair from the physical host to the container.

@@ -73,17 +73,6 @@ global_overrides:
         net_name: "vxlan"
         group_binds:
           - neutron_openvswitch_agent
-{% elif 'lxb' in bootstrap_host_scenarios_expanded %}
-    - network:
-        container_bridge: "br-vxlan"
-        container_type: "veth"
-        container_interface: "eth10"
-        ip_from_q: "tunnel"
-        type: "vxlan"
-        range: "1:1000"
-        net_name: "vxlan"
-        group_binds:
-          - neutron_linuxbridge_agent
 {% else %}
     - network:
         container_bridge: "br-vxlan"
@@ -155,27 +144,6 @@ global_overrides:
         type: "flat"
         group_binds:
           - neutron_openvswitch_agent
-{% elif 'lxb' in bootstrap_host_scenarios_expanded %}
-    - network:
-        container_bridge: "br-vlan"
-        container_type: "veth"
-        container_interface: "eth12"
-        host_bind_override: "eth12"
-        type: "flat"
-        # ensure that public network is consistently physnet1 between OVS / OVN and Linuxbridge
-        net_name: "physnet1"
-        group_binds:
-          - neutron_linuxbridge_agent
-    - network:
-        container_bridge: "br-vlan"
-        container_type: "veth"
-        container_interface: "eth11"
-        type: "vlan"
-        range: "101:200,301:400"
-        # special case for project networks - cannot re-use the physnet1 label with Linuxbridge
-        net_name: "physnet2"
-        group_binds:
-          - neutron_linuxbridge_agent
 {% else %}
     - network:
         container_bridge: "br-provider"
