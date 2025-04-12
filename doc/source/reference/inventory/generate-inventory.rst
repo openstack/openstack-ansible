@@ -36,7 +36,7 @@ This invocation is useful when testing changes to the dynamic inventory script.
 Inputs
 ~~~~~~
 
-The ``dynamic_inventory.py`` takes the ``--config`` argument for the directory
+The ``openstack-ansible-inventory`` takes the ``--config`` argument for the directory
 holding configuration from which to create the inventory. If not specified,
 the default is ``/etc/openstack_deploy/``.
 
@@ -114,7 +114,7 @@ the inventory for the playbooks.
 Checking inventory configuration for errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Using the ``--check`` flag when running ``dynamic_inventory.py`` will run the
+Using the ``--check`` flag when running ``openstack-ansible-inventory`` will run the
 inventory build process and look for known errors, but not write any files to
 disk.
 

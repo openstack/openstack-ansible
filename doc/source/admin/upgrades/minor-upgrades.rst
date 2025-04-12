@@ -93,7 +93,7 @@ To update only a single Compute host, run the following command:
    Skipping the ``nova-key`` tag is necessary so that the keys on
    all Compute hosts are not gathered.
 
-To see which hosts belong to which groups, use the ``inventory-manage.py``
+To see which hosts belong to which groups, use the ``openstack-ansible-inventory-manage``
 script to show all groups and their hosts. For example:
 
 #. Change directory to the repository clone root directory:
@@ -106,13 +106,13 @@ script to show all groups and their hosts. For example:
 
    .. code-block:: console
 
-      # ./scripts/inventory-manage.py -G
+      # openstack-ansible-inventory-manage -G
 
 #. Show all hosts and the groups to which they belong:
 
    .. code-block:: console
 
-      # ./scripts/inventory-manage.py -g
+      # openstack-ansible-inventory-manage -g
 
 To see which hosts a playbook runs against, and to see which tasks are
 performed, run the following commands (for example):
