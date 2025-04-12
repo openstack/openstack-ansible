@@ -322,7 +322,7 @@ use TLS migrations.
 QEMU-native TLS requires all compute hosts to accept TCP connections on
 port 16514 and port range 49152 to 49261.
 
-It is not possible to have a mixed estate of some compute nodes using SSH and
+It is not possible to have a mixed state of some compute nodes using SSH and
 some using TLS for live migrations, as this would prevent live migrations
 between the compute nodes.
 
