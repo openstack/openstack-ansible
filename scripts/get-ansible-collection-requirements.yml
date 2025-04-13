@@ -29,73 +29,55 @@
       set_fact:
         user_collection_names: "{{ user_collections.collections | default([]) | map(attribute='name') | list }}"
 
-    - name: Get Zuul cloned repos path in CI
-      set_fact:
-        zuul_src_path: "{{ lookup('env', 'ZUUL_SRC_PATH') }}"
-
     - name: Generate a list of required collections excluding user overridden collections
       set_fact:
-        galaxy_collections_list : "{{ (galaxy_collections_list | default([])) + [ item ] }}"
+        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [item] }}"
       when:
         - item.name not in user_collection_names
       with_items: "{{ required_collections.collections }}"
 
     - name: Append user collections to filtered required collections
       set_fact:
-        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [ item ] }}"
+        galaxy_collections_list: "{{ (galaxy_collections_list | default([])) + [item] }}"
       with_items: "{{ user_collections.collections }}"
       when:
         - user_collections.collections is defined
         - "'source' in item"
 
-    - name: Check the Zuul src dir for cloned collections
-      stat:
-        path: "{{ zuul_src_path }}/{{ item.source.split('/')[2:] | join('/') | split('#') | first }}"
-        get_attributes: no
-        get_checksum: no
-        get_mime: no
-      register: zuul_collections
-      with_items: "{{ galaxy_collections_list }}"
+    - name: Installing resulting collection list
+      block:
+        - name: Create temporary file for galaxy collection requirements
+          tempfile:
+          register: collection_requirements_tmpfile
 
-    - name: Override paths for zuul hosted collections in CI
-      vars:
-        zuul_item:
-          name: "{{ item.item.name }}"
-          source: "{{ zuul_src_path }}/{{ item.item.source.split('/')[2:] | join('/') | replace('#', '') }}"
-          type: "dir"
-      set_fact:
-        galaxy_collections_list_ci: "{{ galaxy_collections_list_ci | default([]) + [(zuul_src_path and item.stat.exists) | ternary(zuul_item, item.item)] }}"
-      with_items: "{{ zuul_collections.results }}"
+        - name: Copy content into galaxy collection requirements temporary file
+          vars:
+            content_var:
+              collections: "{{ galaxy_collections_list }}"
+          copy:
+            content: "{{ content_var | to_nice_yaml }}"
+            dest: "{{ collection_requirements_tmpfile.path }}"
+            mode: "0644"
 
-    - name: Create temporary file for galaxy collection requirements
-      tempfile:
-      register: collection_requirements_tmpfile
+        - name: Install collection requirements with ansible galaxy
+          command: >
+            /opt/ansible-runtime/bin/ansible-galaxy collection install --force
+            -r "{{ collection_requirements_tmpfile.path }}"
+            -p "{{ collection_path_default }}"
+          register: collection_install
+          until: collection_install is success
+          retries: 5
+          delay: 2
 
-    - name: Copy content into galaxy collection requirements temporary file
-      vars:
-        content_var:
-          collections: "{{ galaxy_collections_list_ci }}"
-      copy:
-        content: "{{ content_var | to_nice_yaml }}"
-        dest: "{{ collection_requirements_tmpfile.path }}"
+        - name: Show collection install output
+          debug:
+            msg: "{{ collection_install.stdout.split('\n') }}"
 
-    - name: Install collection requirements with ansible galaxy
-      command: >
-        /opt/ansible-runtime/bin/ansible-galaxy collection install --force
-        -r "{{ collection_requirements_tmpfile.path }}"
-        -p "{{ collection_path_default }}"
-      register: collection_install
-      until: collection_install is success
-      retries: 5
-      delay: 2
-
-    - name: Show collection install output
-      debug: msg="{{ collection_install.stdout.split('\n') }}"
-
-    - name: Clean up temporary file
-      file:
-        path: "{{ collection_requirements_tmpfile.path }}"
-        state: absent
+      always:
+        - name: Clean up temporary file
+          file:
+            path: "{{ collection_requirements_tmpfile.path }}"
+            state: absent
 
   vars:
     collection_file: "{{ playbook_dir }}/../ansible-collection-requirements.yml"

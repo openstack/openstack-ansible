@@ -27,6 +27,7 @@
         name: safe.directory
         scope: global
         value: "{{ _zuul_src_path }}/opendev.org/openstack/openstack-ansible"
+
     - name: Run bootstrap-ansible script
       become: yes
       become_user: root
@@ -43,6 +44,7 @@
       when:
         - "'upgrade' not in action"
         - osa_pre_run_bootstrap | default(True)
+
     - name: Run bootstrap-aio script
       become: yes
       become_user: root

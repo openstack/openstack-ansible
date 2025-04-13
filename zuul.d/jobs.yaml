@@ -21,6 +21,7 @@
     pre-run:
       - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
+      - zuul.d/playbooks/pre-osa-requirements.yml
       - zuul.d/playbooks/pre-osa-aio.yml
     run: zuul.d/playbooks/run.yml
     post-run:

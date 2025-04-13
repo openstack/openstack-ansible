@@ -1,0 +1,132 @@
+---
+# Copyright 2025, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Prepare the OSA collection/role requirements
+  hosts: "{{ pre_osa_host | default('all[0]') }}"
+  vars:
+    _zuul_src_path: "{{ lookup('env', 'ZUUL_SRC_PATH') | default(lookup('env', 'HOME') ~ '/src') }}"
+  tasks:
+    - name: Loading osa-gate-scenario vars
+      include_vars:
+        file: "{{ zuul.executor.work_root | default('') }}/osa-gate-scenario.yml"
+      when: load_zuul_vars | default(true) | bool
+
+    - name: Ensure required directory exists
+      become: true
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      with_items:
+        - /etc/openstack_deploy
+        - /etc/ansible/roles
+
+    - name: Prepare required roles
+      when:
+        - action != 'shastest'
+        - "'upgrade' not in action"
+      block:
+        - name: Check the Zuul src dir for cloned roles
+          stat:
+            path: "{{ _zuul_src_path }}/{{ item.src.split('/')[-3:] | join('/') }}"
+            get_attributes: no
+            get_checksum: no
+            get_mime: no
+          register: zuul_roles
+          when:
+            - item.scm == "git" or item.scm is undefined
+          with_items: "{{ lookup('file', playbook_dir | dirname | dirname ~ '/ansible-role-requirements.yml') | from_yaml }}"
+
+        - name: Remove target directory if required
+          file:
+            path: "/etc/ansible/roles/{{ item.item.name | default(item.item.src | basename) }}"
+            state: absent
+          with_items: "{{ (lookup('env', 'DROP_ROLE_DIRS') | bool is true) | ternary(zuul_roles.results | selectattr('stat.exists'), []) }}"
+
+        - name: Link the Zuul provided roles
+          become: true
+          file:
+            src: "{{ _zuul_src_path }}/{{ item.item.src.split('/')[-3:] | join('/') }}"
+            dest: "/etc/ansible/roles/{{ item.item.name | default(item.item.src | basename) }}"
+            state: link
+            owner: root
+            group: root
+          with_items: "{{ zuul_roles.results | selectattr('stat.exists') }}"
+
+        # NOTE(mnaser): We need to make sure that all the roles
+        #               are checked out by Zuul so we hard fail
+        #               if any roles are not.
+        - name: Fail if any roles were not cloned
+          fail:
+            msg: |
+              The following roles were not cloned automatically by Zuul,
+              make sure that they're included in required-projects {{ uncloned_roles | join(',') }}
+          when: uncloned_roles | length > 0
+          vars:
+            uncloned_roles: "{{ zuul_roles.results | rejectattr('stat.exists')
+                                | map(attribute='item')
+                                | map(attribute='src')
+                                | select('match', 'opendev.org')
+                                | list
+                            }}"
+
+        - name: Prevent prepared roles from being cloned
+          become: true
+          copy:
+            content: |-
+              {% set ignored_roles = [] %}
+              {% for role in zuul_roles.results | selectattr('stat.exists') | map(attribute='item') %}
+              {%   set _ = ignored_roles.append({'name': role['name']}) %}
+              {% endfor %}
+              {{ ignored_roles | to_nice_yaml }}
+            dest: /etc/openstack_deploy/user-role-requirements.yml
+            mode: "0644"
+            backup: true
+
+    - name: Prepare required collections
+      when:
+        - action != 'shastest'
+        - "'upgrade' not in action"
+      block:
+        - name: Check the Zuul src dir for cloned collections
+          stat:
+            path: "{{ _zuul_src_path }}/{{ item.source.split('/')[2:] | join('/') | split('#') | first }}"
+            get_attributes: no
+            get_checksum: no
+            get_mime: no
+          register: zuul_collections
+          with_items: "{{ (lookup('file', playbook_dir | dirname | dirname ~ '/ansible-collection-requirements.yml') | from_yaml).collections }}"
+
+        - name: Copy content into user-collection-requirements
+          become: true
+          vars:
+            content_var:
+              collections: |-
+                {% set collections = [] %}
+                {% for result in zuul_collections.results %}
+                {%   if result.stat.exists %}
+                {%     set _ = collections.append({
+                        'name': result.item.name,
+                        'source': _zuul_src_path ~ '/' ~ result.item.source.split('/')[2:] | join('/') | replace('#', ''),
+                        'type': 'dir'
+                      })
+                %}
+                {%   endif %}
+                {% endfor %}
+                {{ collections }}
+          copy:
+            content: "{{ content_var | to_nice_yaml }}"
+            dest: "/etc/openstack_deploy/user-collection-requirements.yml"
+            mode: "0644"
