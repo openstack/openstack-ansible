@@ -37,6 +37,14 @@
         name: http.https://opendev.org/.userAgent
         value: "{{ 'git/' ~ _git_version.stdout.split(' ')[2] ~ ' (osa/' ~ lookup('env', 'CURRENT_OSA_VERSION') ~ '/deploy)' }}"
 
+    - name: Generate a list of roles to clone
+      vars:
+        _default_roles: "{{ required_roles | rejectattr('name', 'in', user_roles | map(attribute='name')) }}"
+        _user_roles_filtered: "{{ user_roles | rejectattr('src', 'undefined') }}"
+        _role_list: "{{ _default_roles + _user_roles_filtered }}"
+      set_fact:
+        clone_roles: "{{ _role_list | selectattr('scm', 'undefined') + _role_list | selectattr('scm', 'eq', 'git') }}"
+
     - name: Remove target directory if required
       file:
         path: "{{ item.path | default(role_path_default) }}/{{ item.name | default(item.src | basename) }}"
@@ -44,29 +52,13 @@
       when:
         - ((item.path | default(role_path_default) ~ '/' ~ item.name | default(item.src | basename) ~ '/.git') is not directory) or
           (lookup('env', 'DROP_ROLE_DIRS') | bool is true)
-      with_items: "{{ required_roles }}"
+      with_items: "{{ clone_roles }}"
 
     - name: Ensure the default roles directory exists
       file:
         path: "{{ role_path_default }}"
         state: directory
         mode: "0755"
-
-    - name: Generate a list of user overridden roles
-      set_fact:
-        user_overridden_roles: "{{ user_roles | json_query('[*].name') }}"
-
-    - name: Generate a list of roles excluding user overridden roles
-      set_fact:
-        clone_roles: "{{ (clone_roles | default([])) + [item] }}"
-      when:
-        - item.scm == "git" or item.scm is undefined
-        - item.name not in user_overridden_roles
-      with_items: "{{ required_roles }}"
-
-    - name: Append user overridden roles
-      set_fact:
-        clone_roles: "{{ (clone_roles | default([])) + user_roles | rejectattr('src', 'undefined') }}"
 
     - name: Clone git repos
       block:
