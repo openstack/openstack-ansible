@@ -284,17 +284,17 @@ exist for OpenStack.
 Using a GUI
 ~~~~~~~~~~~
 
-The horizon web interface provides a graphical interface for interacting with
-the AIO deployment. By default, the horizon API is available on port 443 of the
+The Horizon web interface provides a graphical interface for interacting with
+the AIO deployment. By default, the Horizon API is available on port 443 of the
 host (or port 80, if SSL certificate configuration was disabled). As such, to
-interact with horizon, simply browse to the IP of the host.
+interact with Horizon, simply browse to the IP of the host.
 
 .. note::
 
    If the AIO was deployed in a cloud VM, you may need to configure security
    groups or firewall rules to allow access to the HTTP(S) ports. For example,
    if the AIO was deployed in an OpenStack VM, you can create and apply a
-   suitable security group for interacting with horizon like so:
+   suitable security group for interacting with Horizon like so:
 
    .. code-block:: shell-session
 
@@ -370,8 +370,8 @@ files will be available on the host itself.
 
 If you wish to access the AIO deployment from another host - perhaps your local
 workstation - you will need either an ``openrc`` file or ``clouds.yaml`` file.
-You can download an ``openrc`` file from horizon: simply click the User
-dropdown in the top-right corner and select *⭳ OpenStack RC file*.
+You can download an ``openrc`` file from Horizon: simply click the User
+dropdown in the top-right corner and select ``OpenStack RC File``.
 
 .. important::
 

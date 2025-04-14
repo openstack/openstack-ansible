@@ -3,7 +3,7 @@ Multi-Architecture Deployments
 ==============================
 
 OpenStack-Ansible supports deployments where either the control plane
-or compute nodes may comprise of several different CPU architectures
+or compute nodes may comprise of several different CPU architectures.
 
 Mixed CPU architectures for compute nodes
 =========================================
@@ -38,7 +38,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
 
 4) Run the OpenStack-Ansible playbooks to deploy the required services.
 
-5) Add HW_ARCH_XXXX Trait to Every Compute Host in Openstack
+5) Add HW_ARCH_XXXX Trait to Every Compute Host in OpenStack.
 
    Although most CPU hardware traits such as instruction set extensions are
    detected and handled automatically in OpenStack, CPU architecture is not.
@@ -61,7 +61,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
       The trait set command replaces all existing traits with the set provided,
       so you must specify all existing traits as well as the new trait.
 
-6) Configure Nova Scheduler to Check Architecture
+6) Configure Nova Scheduler to Check Architecture.
 
    Two additional settings in /etc/nova/nova.conf in all Nova API instances:
 
@@ -106,7 +106,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
      situation images without the ``hw_architecture`` property could be scheduled to a
      non native architecture host and emulated.
 
-7) Disable QEMU Emulation
+7) Disable QEMU Emulation.
 
    .. note::
 
@@ -124,7 +124,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
    architecture `qemu-system-*`` binary so this step should not be required on newer
    releases.
 
-8) Upload images to Glance
+8) Upload images to Glance.
 
    * Ideally the ``hw_architecture`` property is set for all uploaded images. It is
      mandatory to set this property for all architectures that do not match
