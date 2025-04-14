@@ -67,11 +67,10 @@ December 7, 2023.
 .. _OpenStack-Ansible 2023.2 series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/2023.2.html
 
 
-2023.1 (Antelope): Maintained
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2023.1 (Antelope): EOM (end-of-maintenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2023.1 (Antelope) was first released with the 27.0.0 tag on
-June 1, 2023.
+OpenStack-Ansible 2023.1 (Antelope) was EOM-ed on January 31, 2025.
 
 * `OpenStack-Ansible 2023.1 Documentation`_
 
