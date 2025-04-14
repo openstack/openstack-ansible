@@ -15,34 +15,34 @@
 
 - name: Ensuring group vars
   hosts: "hosts"
-  gather_facts: no
+  gather_facts: false
   connection: local
   user: root
   tasks:
     - name: Ensuring existing group vars are well applied
-      assert:
+      ansible.builtin.assert:
         that:
           - "openstack_release is defined"
     - name: Ensuring babar is well defined
-      assert:
+      ansible.builtin.assert:
         that:
           - "babar == 'elephant'"
     - name: Ensuring lxc_hosts_package_state is well overridden
-      assert:
+      ansible.builtin.assert:
         that:
           - "lxc_hosts_package_state == 'present'"
 
 - name: Ensuring host vars
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
   connection: local
   user: root
   tasks:
     - name: Ensuring tintin has milou
-      assert:
+      ansible.builtin.assert:
         that:
           - "tintin == 'milou'"
     - name: Ensuring security_package_state is overridden
-      assert:
+      ansible.builtin.assert:
         that:
           - "security_package_state == 'present'"

@@ -14,15 +14,15 @@
 # limitations under the License.
 
 - name: Check if firewalld is installed
-  command: rpm -q firewalld
+  ansible.builtin.command: rpm -q firewalld # noqa: command-instead-of-module
   register: firewalld_check
   changed_when: false
   failed_when: firewalld_check.rc > 1
   when: ansible_facts['os_family'] == 'RedHat'
 
 - name: Disable firewalld
-  become: True
-  service:
+  become: true
+  ansible.builtin.service:
     name: "{{ item }}"
     enabled: false
     state: stopped
@@ -33,17 +33,17 @@
     - firewalld_check.rc == 0
 
 - name: Disable NetworkManager
-  become: True
-  service:
+  become: true
+  ansible.builtin.service:
     name: NetworkManager
     state: stopped
-    enabled: no
-    masked: yes
+    enabled: false
+    masked: true
   when:
     - ansible_facts['os_family'] == 'RedHat'
 
 - name: Run the systemd-networkd role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_networkd
   vars:
     systemd_networkd_prefix: "osa_testing"
@@ -192,13 +192,13 @@
 # NOTE(jrosser) The systemd_networkd role uses a handler to restart the networking service
 # This will normally not run until the end of the play, so we must force it here
 - name: Force systemd_networkd hander to run
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 # NOTE(jrosser) The intention here is not to proceed further until the network bridges are up
 # This ensures there will be no race between the bridges coming up and subsequent tasks which
 # require functional network interfaces
 - name: Check that network bridges are up
-  wait_for:
+  ansible.builtin.wait_for:
     port: 22
     timeout: 30
     host: "{{ item }}"
@@ -211,7 +211,7 @@
     - 172.29.228.100  # br-bmaas
 
 - name: Run the systemd service role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_service
   vars:
     systemd_services:
@@ -222,7 +222,7 @@
             After: network-online.target
             Wants: network-online.target
           Service:
-            RemainAfterExit: yes
+            RemainAfterExit: true
         service_type: oneshot
         execstarts:
           - "-{{ bootstrap_host_iptables_path }} -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
@@ -247,14 +247,14 @@
           - "-{{ bootstrap_host_ethtool_path }} -K eth15 gso off sg off tso off tx off"
         execstops:
           - "{{ bootstrap_host_iptables_path }} -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
-        enabled: yes
+        enabled: true
         state: started
     systemd_tempd_prefix: openstack
   tags:
     - network-config
 
 - name: Updating the facts due to net changes
-  setup:
+  ansible.builtin.setup:
     gather_subset: network
   tags:
     - networking

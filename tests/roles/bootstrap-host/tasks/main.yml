@@ -14,23 +14,26 @@
 # limitations under the License.
 
 # Identify AIO builds in the git user-agent
-- include_tasks: prepare_git_useragent.yml
+- name: Include prepare_git_useragent tasks
+  ansible.builtin.include_tasks: prepare_git_useragent.yml
 
 # Attempt data device detection if enabled
-- include_tasks: detect_data_disk_device.yml
+- name: Include detect_data_disk_device tasks
+  ansible.builtin.include_tasks: detect_data_disk_device.yml
   when:
     - bootstrap_host_data_disk_device is none
     - bootstrap_host_data_disk_device_detect | bool
 
 # Before we do anything, check the minimum requirements
-- import_tasks: check-requirements.yml
+- name: Import check-requirements tasks
+  ansible.builtin.import_tasks: check-requirements.yml
   tags:
     - check-requirements
 
 # We will look for the most specific variable files first and eventually
 # end up with the least-specific files.
 - name: Gather variables for each operating system
-  include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_version'] | lower }}.yml"
     - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] | lower }}.yml"
@@ -41,25 +44,28 @@
     - always
 
 - name: Gather nodepool variables
-  import_tasks: gather_nodepool_vars.yml
+  ansible.builtin.import_tasks: gather_nodepool_vars.yml
   tags:
     - always
 
 - name: Create the required directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: "0755"
   with_items:
     - "/openstack"
   tags:
     - create-directories
 
-- import_tasks: install_packages.yml
+- name: Import install_packages tasks
+  ansible.builtin.import_tasks: install_packages.yml
   tags:
     - install-packages
 
 # Prepare the data disk, if one is provided
-- include_tasks: prepare_data_disk.yml
+- name: Include prepare_data_disk tasks
+  ansible.builtin.include_tasks: prepare_data_disk.yml
   when:
     - bootstrap_host_data_disk_device != None
   args:
@@ -74,23 +80,25 @@
 - name: Use on-disk repos for openstack services in CI
   block:
     - name: Symlink /openstack/src to /home/zuul/src
-      file:
+      ansible.builtin.file:
         src: "{{ lookup('env', 'ZUUL_SRC_PATH') }}"
         dest: '/openstack/src'
         state: link
 
     - name: Create override for zuul git server to local repos
-      copy:
+      ansible.builtin.copy:
         content: |
           openstack_opendev_base_url: "file:///openstack/src/opendev.org"
         dest: "/etc/openstack_deploy/user_variables_zuulrepos.yml"
+        mode: "0644"
 
   when:
     - "lookup('env', 'ZUUL_SRC_PATH') | length > 0"
 
 # Prepare the swap space loopback disk
 # This is only necessary if there isn't swap already
-- include_tasks: prepare_loopback_swap.yml
+- name: Include prepare_loopback_swap
+  ansible.builtin.include_tasks: prepare_loopback_swap.yml
   when:
     - bootstrap_host_loopback_swap | bool
     - ansible_facts['swaptotal_mb'] < 1
@@ -102,7 +110,8 @@
     - always
 
 # Prepare the zfs storage loopback disk
-- include_tasks: prepare_loopback_zfs.yml
+- name: Include prepare_loopback_zfs tasks
+  ansible.builtin.include_tasks: prepare_loopback_zfs.yml
   when:
     - bootstrap_host_loopback_zfs | bool
     - bootstrap_host_data_disk_device == None
@@ -115,7 +124,8 @@
     - always
 
 # Prepare the btrfs storage loopback disk
-- include_tasks: prepare_loopback_btrfs.yml
+- name: Include prepare_loopback_btrfs tasks
+  ansible.builtin.include_tasks: prepare_loopback_btrfs.yml
   when:
     - bootstrap_host_loopback_btrfs | bool
     - bootstrap_host_data_disk_device == None
@@ -129,7 +139,8 @@
 
 # Prepare the Cinder LVM VG loopback disk
 # This is only necessary if bootstrap_host_loopback_cinder is set to yes
-- include_tasks: prepare_loopback_cinder.yml
+- name: Include prepare_loopback_cinder tasks
+  ansible.builtin.include_tasks: prepare_loopback_cinder.yml
   when:
     - bootstrap_host_loopback_cinder | bool
   args:
@@ -140,7 +151,8 @@
     - always
 
 # Prepare the Nova instance storage loopback disk
-- include_tasks: prepare_loopback_nova.yml
+- name: Include prepare_loopback_nova tasks
+  ansible.builtin.include_tasks: prepare_loopback_nova.yml
   when:
     - bootstrap_host_loopback_nova | bool
   args:
@@ -151,7 +163,8 @@
     - always
 
 # Prepare the Swift data storage loopback disks
-- include_tasks: prepare_loopback_swift.yml
+- name: Include prepare_loopback_swift tasks
+  ansible.builtin.include_tasks: prepare_loopback_swift.yml
   when:
     - bootstrap_host_loopback_swift | bool
   args:
@@ -162,7 +175,8 @@
     - always
 
 # Prepare the Manila data storage loopback disks
-- include_tasks: prepare_loopback_manila.yml
+- name: Include prepare_loopback_manila tasks
+  ansible.builtin.include_tasks: prepare_loopback_manila.yml
   when:
     - bootstrap_host_loopback_manila | bool
   args:
@@ -173,7 +187,8 @@
     - always
 
 # Prepare the Ceph cluster UUID and loopback disks
-- include_tasks: prepare_ceph.yml
+- name: Include prepare_ceph tasks
+  ansible.builtin.include_tasks: prepare_ceph.yml
   when:
     - bootstrap_host_ceph | bool
   args:
@@ -184,7 +199,8 @@
     - always
 
 # Prepare the NFS server and loopback disks
-- include_tasks: prepare_nfs.yml
+- name: Include prepare_nfs tasks
+  ansible.builtin.include_tasks: prepare_nfs.yml
   when:
     - bootstrap_host_nfs | bool
   args:
@@ -195,22 +211,26 @@
     - always
 
 # Ensure hostname/ip is consistent with inventory
-- import_tasks: prepare_hostname.yml
+- name: Import prepare_hostname tasks
+  ansible.builtin.import_tasks: prepare_hostname.yml
   tags:
     - prepare-hostname
 
 # Prepare the network interfaces
-- import_tasks: prepare_networking.yml
+- name: Import prepare_networking tasks
+  ansible.builtin.import_tasks: prepare_networking.yml
   tags:
     - prepare-networking
 
 # Ensure that there are both private and public ssh keys for root
-- import_tasks: prepare_ssh_keys.yml
+- name: Import prepare_ssh_keys tasks
+  ansible.builtin.import_tasks: prepare_ssh_keys.yml
   tags:
     - prepare-ssh-keys
 
 # Prepare local squid proxy
-- include_tasks: prepare_squid.yml
+- name: Include prepare_squid tasks
+  ansible.builtin.include_tasks: prepare_squid.yml
   when:
     - "'proxy' in bootstrap_host_scenarios_expanded"
   args:
@@ -221,7 +241,8 @@
     - always
 
 # Prepare local step-ca certificate authority
-- include_tasks: prepare_step_ca.yml
+- name: Include prepare_step_ca tasks
+  ansible.builtin.include_tasks: prepare_step_ca.yml
   when:
     - "'stepca' in bootstrap_host_scenarios_expanded"
   args:
@@ -231,10 +252,9 @@
   tags:
     - always
 
-
-
 # Put the OpenStack-Ansible configuration for an All-In-One on the host
-- include_tasks: prepare_aio_config.yml
+- name: Include prepare_aio_config tasks
+  ansible.builtin.include_tasks: prepare_aio_config.yml
   when:
     - bootstrap_host_aio_config | bool
   args:

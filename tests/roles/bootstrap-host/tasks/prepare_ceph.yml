@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse ceph OSD files
-  command: truncate -s {{ bootstrap_host_loopback_ceph_size }}G /openstack/{{ item }}.img
+  ansible.builtin.command: truncate -s {{ bootstrap_host_loopback_ceph_size }}G /openstack/{{ item }}.img
   args:
     creates: "/openstack/{{ item }}.img"
   with_items: "{{ ceph_osd_images }}"
@@ -23,23 +23,23 @@
     - ceph-file-create
 
 - name: Run the systemd service role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_service
   vars:
     systemd_services:
       - service_name: "loop-{{ loopback_var }}"
         config_overrides:
           Unit:
-            Description: no
+            Description: false
             After: systemd-udev-settle.service
           Service:
-            RemainAfterExit: yes
+            RemainAfterExit: true
         service_type: oneshot
         execstarts:
           - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/{{ loopback_var }}.img"
         execstops:
           - /bin/bash -c "losetup -d $(losetup -l | awk '/{{ loopback_var }}.img/ {print $1}')"
-        enabled: yes
+        enabled: true
         state: started
     systemd_tempd_prefix: openstack
   with_items: "{{ ceph_osd_images }}"
@@ -57,7 +57,7 @@
     - skip_ansible_lint
 
 - name: Set permissions on loopback devices
-  file:
+  ansible.builtin.file:
     path: "{{ item.stdout }}"
     mode: "0777"
   with_items: "{{ ceph_create_loopback.results }}"
@@ -67,13 +67,13 @@
 # Work around this with manual LVM creation and the advanced lvm OSD
 # scenario
 - name: Create LVM VG
-  lvg:
+  community.general.lvg:
     vg: "vg-{{ item.stdout | basename }}"
     pvs: "{{ item.stdout }}"
   loop: "{{ ceph_create_loopback.results }}"
 
 - name: Create LVM LV
-  lvol:
+  community.general.lvol:
     lv: "lv-{{ item.stdout | basename }}"
     vg: "vg-{{ item.stdout | basename }}"
     size: 100%FREE
@@ -82,7 +82,7 @@
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
 # is fixed and eliminate this task.
 - name: Write ceph cluster config
-  copy:
+  ansible.builtin.copy:
     content: |
       ---
       lvm_volumes:
@@ -106,7 +106,7 @@
             - high-iops
             - ultra-high-iops
     dest: /etc/openstack_deploy/user_ceph_aio.yml
-    force: no
+    force: false
   become: false
   when: not ceph_create_loopback is skipped
   tags:

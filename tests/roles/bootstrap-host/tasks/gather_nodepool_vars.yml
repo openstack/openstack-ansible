@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Detect whether the host is an OpenStack-CI host
-  stat:
+  ansible.builtin.stat:
     path: /etc/nodepool
   register: nodepool_dir
 
@@ -22,14 +22,15 @@
   when:
     - nodepool_dir.stat.exists
   block:
-    - name: Read nodepool environment variables
-      shell: |
+    - name: Read nodepool environment variables # noqa: risky-shell-pipe
+      ansible.builtin.shell: |
         source /etc/ci/mirror_info.sh
         env | grep NODEPOOL | sed 's/=/: /g'
       args:
         executable: /bin/bash
+      changed_when: false
       register: nodepool_env
 
     - name: Set nodepool environment variables fact
-      set_fact:
+      ansible.builtin.set_fact:
         nodepool_vars: "{{ nodepool_env.stdout | from_yaml }}"

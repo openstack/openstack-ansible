@@ -20,15 +20,15 @@
   gather_facts: false
   tasks:
     - name: Ensure the default collections directory exists
-      file:
+      ansible.builtin.file:
         path: "{{ collection_path_default }}/ansible_collections"
         state: directory
-        recurse: yes
+        recurse: true
 
     - name: Installing required Ansible collections
       block:
         - name: Create temporary file for galaxy collection requirements
-          tempfile:
+          ansible.builtin.tempfile:
           register: collection_requirements_tmpfile
 
         - name: Copy content into galaxy collection requirements temporary file
@@ -38,13 +38,13 @@
             _user_collections: "{{ user_collections.collections | default([]) | selectattr('source', 'defined') }}"
             content_var:
               collections: "{{ _default_collections + _user_collections }}"
-          copy:
+          ansible.builtin.copy:
             content: "{{ content_var | to_nice_yaml }}"
             dest: "{{ collection_requirements_tmpfile.path }}"
             mode: "0644"
 
         - name: Install collection requirements with ansible galaxy # noqa: no-changed-when
-          command: >
+          ansible.builtin.command: >
             /opt/ansible-runtime/bin/ansible-galaxy collection install --force
             -r "{{ collection_requirements_tmpfile.path }}"
             -p "{{ collection_path_default }}"
@@ -54,12 +54,12 @@
           delay: 2
 
         - name: Show collection install output
-          debug:
+          ansible.builtin.debug:
             msg: "{{ collection_install.stdout_lines }}"
 
       always:
         - name: Clean up temporary file
-          file:
+          ansible.builtin.file:
             path: "{{ collection_requirements_tmpfile.path }}"
             state: absent
 

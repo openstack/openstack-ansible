@@ -15,20 +15,20 @@
 
 - name: Bootstrap the All-In-One (AIO)
   hosts: localhost
-  gather_facts: True
+  gather_facts: true
   user: root
   roles:
     - role: "bootstrap-host"
   environment: "{{ deployment_environment_variables | default({}) }}"
   pre_tasks:
     - name: Run setup module
-      setup:
+      ansible.builtin.setup:
         gather_subset:
           - network
           - hardware
           - virtual
     - name: Ensure sshd is installed
-      package:
+      ansible.builtin.package:
         name: openssh-server
         state: present
     - name: Ensure sshd is running
@@ -36,16 +36,16 @@
         _ssh_service_name:
           redhat: sshd
           debian: ssh
-      service:
+      ansible.builtin.service:
         name: "{{ _ssh_service_name[ansible_facts['os_family'] | lower] }}"
         state: started
-        enabled: yes
+        enabled: true
   post_tasks:
     - name: Check that new network interfaces are up
-      assert:
+      ansible.builtin.assert:
         that:
           - ansible_facts['eth12']['active'] | bool
           - ansible_facts['eth13']['active'] | bool
           - ansible_facts['eth14']['active'] | bool
     - name: Clear facts
-      meta: clear_facts
+      ansible.builtin.meta: clear_facts

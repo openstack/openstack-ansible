@@ -14,22 +14,22 @@
 # limitations under the License.
 
 - name: Check for a supported Operating System
-  assert:
+  ansible.builtin.assert:
     that:
-        (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
-        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'jammy') or
-        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble') or
-        (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
+      (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
+      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'jammy') or
+      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble') or
+      (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
     msg: >-
-          The only supported platforms for this release are Debian 12 (Bookworm),
-          Ubuntu 22.04 (Jammy), Ubuntu 24.04 (Noble), CentOS Stream 9,
-          and derivatives such as Rocky Linux.
+      The only supported platforms for this release are Debian 12 (Bookworm),
+      Ubuntu 22.04 (Jammy), Ubuntu 24.04 (Noble), CentOS Stream 9,
+      and derivatives such as Rocky Linux.
   when: (check_operating_system | default(True))| bool
   tags:
     - check-operating-system
 
 - name: Check that bootstrap_host_scenario is not set with mutually exclusive options
-  assert:
+  ansible.builtin.assert:
     that:
       - not item.conditional
     msg: "{{ item.msg }}"
@@ -44,7 +44,7 @@
   # https://btrfs.wiki.kernel.org/index.php/FAQ#How_much_free_space_do_I_have.3F
   # As such, use the btrfs tools to determine the real available size on the
   # disk
-  shell: |
+  ansible.builtin.shell: |
     set -o pipefail
     if [[ $(df -T / | tail -n 1 | awk '{print $2}') == "btrfs" ]]; then
         btrfs fi du -s --raw / 2>/dev/null | awk '/[0-9]/ {print $2*1024}'
@@ -64,15 +64,15 @@
 
 # Convert root_space_available to bytes.
 - name: Set root disk facts
-  set_fact:
-    host_root_space_available_bytes: "{{ ( root_space_available.stdout | int) * 1024 | int }}"
+  ansible.builtin.set_fact:
+    host_root_space_available_bytes: "{{ (root_space_available.stdout | int) * 1024 | int }}"
   when:
     - bootstrap_host_data_disk_device == None
   tags:
     - check-disk-size
 
 - name: Fail when disk can not be found
-  fail:
+  ansible.builtin.fail:
     msg: |
       Can not find disk {{ bootstrap_host_data_disk_device }}
   when:
@@ -83,7 +83,7 @@
     - check-disk-size
 
 - name: Set data disk facts
-  set_fact:
+  ansible.builtin.set_fact:
     host_data_disk_sectors: "{{ (ansible_facts['devices'][bootstrap_host_data_disk_device]['sectors'] | int) }}"
     host_data_disk_sectorsize: "{{ (ansible_facts['devices'][bootstrap_host_data_disk_device]['sectorsize'] | int) }}"
   when:
@@ -93,7 +93,7 @@
 
 # Calculate the size of the bootstrap_host_data_disk_device by muliplying sectors with sectorsize.
 - name: Calculate data disk size
-  set_fact:
+  ansible.builtin.set_fact:
     host_data_disk_size_bytes: "{{ ((host_data_disk_sectors | int) * (host_data_disk_sectorsize | int)) | int }}"
   when:
     - bootstrap_host_data_disk_device != None
@@ -102,27 +102,27 @@
 
 # Convert bootstrap_host_data_disk_min_size to bytes.
 - name: Set min size fact
-  set_fact:
+  ansible.builtin.set_fact:
     host_data_disk_min_size_bytes: "{{ ((bootstrap_host_data_disk_min_size | int) * 1024**3) | int }}"
   tags:
     - check-disk-size
 
 - name: Set size facts
-  set_fact:
-    root_gb_available: "{{ ((host_root_space_available_bytes | int ) / 1024**3) | round(2, 'floor') }}"
+  ansible.builtin.set_fact:
+    root_gb_available: "{{ ((host_root_space_available_bytes | int) / 1024**3) | round(2, 'floor') }}"
   when: bootstrap_host_data_disk_device == None
   tags:
     - check-disk-size
 
 - name: Set disk size facts
-  set_fact:
-    disk_gb_available: "{{ ((host_data_disk_size_bytes | int ) / 1024**3) | round(2, 'floor') }}"
+  ansible.builtin.set_fact:
+    disk_gb_available: "{{ ((host_data_disk_size_bytes | int) / 1024**3) | round(2, 'floor') }}"
   when: bootstrap_host_data_disk_device != None
   tags:
     - check-disk-size
 
 - name: Fail if there is not enough space available in /
-  fail:
+  ansible.builtin.fail:
     msg: |
       Not enough space available in /.
       Found {{ root_gb_available }} GB, required {{ bootstrap_host_data_disk_min_size }} GB)
@@ -133,7 +133,7 @@
     - check-disk-size
 
 - name: Fail if there is not enough disk space available (disk specified)
-  fail:
+  ansible.builtin.fail:
     msg: |
       Not enough disk space available.
       Found {{ disk_gb_available }} GB, required {{ bootstrap_host_data_disk_min_size }} GB)
@@ -144,7 +144,7 @@
     - check-disk-size
 
 - name: Ensure that the kernel has VXLAN, VLAN, and bonding support
-  modprobe:
+  community.general.modprobe:
     name: "{{ item }}"
     state: present
   with_items:

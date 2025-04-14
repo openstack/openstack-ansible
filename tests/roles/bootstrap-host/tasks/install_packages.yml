@@ -14,17 +14,16 @@
 # limitations under the License.
 
 - name: Remove known problem packages
-  package:
+  ansible.builtin.package:
     name: "{{ packages_remove }}"
     state: absent
   tags:
     - remove-packages
 
 - name: Install packages
-  package:
+  ansible.builtin.package:
     name: "{{ packages_install }}"
     state: present
     update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
   tags:
     - install-packages
-

@@ -14,18 +14,18 @@
 # limitations under the License.
 
 - name: Create sparse lxc-btrfs file
-  command: "truncate -s {{ bootstrap_host_loopback_btrfs_size }}G /openstack/lxc-btrfs.img"
+  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_btrfs_size }}G /openstack/lxc-btrfs.img"
   args:
     creates: /openstack/lxc-btrfs.img
 
 - name: Format the lxc-btrfs file
-  filesystem:
+  community.general.filesystem:
     fstype: btrfs
     opts: "{{ bootstrap_host_format_options['btrfs'] | default(omit) }}"
     dev: /openstack/lxc-btrfs.img
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:

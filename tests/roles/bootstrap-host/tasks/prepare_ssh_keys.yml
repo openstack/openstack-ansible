@@ -14,31 +14,31 @@
 # limitations under the License.
 
 - name: Ensure root has a .ssh directory
-  file:
+  ansible.builtin.file:
     path: /root/.ssh
     state: directory
     owner: root
     group: root
-    mode: 0700
+    mode: "0700"
   tags:
     - ssh-key-dir
 
 - name: Check for existing ssh private key file
-  stat:
+  ansible.builtin.stat:
     path: /root/.ssh/id_rsa
   register: ssh_key_private
   tags:
     - ssh-key-check
 
 - name: Check for existing ssh public key file
-  stat:
+  ansible.builtin.stat:
     path: /root/.ssh/id_rsa.pub
   register: ssh_key_public
   tags:
     - ssh-key-check
 
 - name: Remove an existing private/public ssh keys if one is missing
-  file:
+  ansible.builtin.file:
     path: "/root/.ssh/{{ item }}"
     state: absent
   when: not ssh_key_public.stat.exists or not ssh_key_private.stat.exists
@@ -49,27 +49,27 @@
     - ssh-key-clean
 
 - name: Create ssh key pair for root
-  user:
+  ansible.builtin.user:
     name: root
-    generate_ssh_key: yes
+    generate_ssh_key: true
     ssh_key_bits: 2048
     ssh_key_file: /root/.ssh/id_rsa
   tags:
     - ssh-key-generate
 
 - name: Fetch the generated public ssh key
-  fetch:
+  ansible.builtin.fetch:
     src: "/root/.ssh/id_rsa.pub"
     dest: "/tmp/id_rsa.pub"
-    flat: yes
+    flat: true
   when: inventory_hostname == groups['all'][0]
   tags:
     - ssh-key-authorized
 
 - name: Ensure root's new public ssh key is in authorized_keys
-  authorized_key:
+  ansible.posix.authorized_key:
     user: root
-    key: "{{ lookup('file','/tmp/id_rsa.pub') }}"
-    manage_dir: no
+    key: "{{ lookup('file', '/tmp/id_rsa.pub') }}"
+    manage_dir: false
   tags:
     - ssh-key-authorized

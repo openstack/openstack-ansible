@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Install squid packages
-  package:
+  ansible.builtin.package:
     name: squid
     state: present
     update_cache: "{{ (ansible_facts['pkg_mgr'] == 'apt') | ternary('yes', omit) }}"
@@ -23,6 +23,7 @@
     - install-packages
 
 - name: Install squid config
-  copy:
+  ansible.builtin.copy:
     src: "squid.conf"
     dest: "/etc/squid/squid.conf"
+    mode: "0644"

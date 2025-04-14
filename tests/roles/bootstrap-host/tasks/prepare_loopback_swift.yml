@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse Swift files
-  command: "truncate -s {{ bootstrap_host_loopback_swift_size }}G /openstack/{{ item }}.img"
+  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_swift_size }}G /openstack/{{ item }}.img"
   args:
     creates: "/openstack/{{ item }}.img"
   with_items:
@@ -25,7 +25,7 @@
     - swift-file-create
 
 - name: Format the Swift files
-  filesystem:
+  community.general.filesystem:
     fstype: xfs
     opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
     dev: "/openstack/{{ item }}.img"
@@ -37,7 +37,7 @@
     - swift-format-file
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:

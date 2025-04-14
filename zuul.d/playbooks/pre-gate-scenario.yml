@@ -22,7 +22,7 @@
     zuul_user_vars_file: "{{ ansible_env.HOME }}/osa-job-vars.yml"
   tasks:
     - name: Dynamically create scenario if not set
-      set_fact:
+      ansible.builtin.set_fact:
         scenario: |-
           {% set _scenario = [] %}
           {# Add the scenarios based on the job name #}
@@ -76,26 +76,26 @@
         - scenario is not defined
 
     - name: Dynamically set action if not set
-      set_fact:
-        action: "{{ zuul.job | regex_replace('^openstack-ansible-([^-]+)-.*$', '\\1') }}"
+      ansible.builtin.set_fact:
+        action: "{{ zuul.job | regex_replace('^openstack-ansible-([^-]+)-.*$', '\\1') }}" # noqa: var-naming[no-reserved]
       when:
         - action is not defined
 
     - name: Dynamically set install method if not set
-      set_fact:
+      ansible.builtin.set_fact:
         install_method: "{{ (scenario.split('_') | intersect(install_methods))[0] }}"
       when:
         - install_method is not defined
         - scenario.split('_') | intersect(install_methods) | length > 0
 
     - name: Set install method to source as a baseline default
-      set_fact:
+      ansible.builtin.set_fact:
         install_method: source
       when:
         - install_method is not defined
 
     - name: Print gate check configuration
-      debug:
+      ansible.builtin.debug:
         msg: |-
           Running gate-check-commit with the following arguments:
           Scenario: {{ scenario }}
@@ -106,9 +106,10 @@
     # Other playbooks can consume this vars file as shown in run.yml
     # This file is stored in work/osa-gate-scenario.yml on the Zuul executor
     - name: Log the gate check configuration to a vars file
-      template:
+      ansible.builtin.template:
         src: osa-gate-scenario.yml.j2
         dest: "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
+        mode: "0644"
       delegate_to: localhost
 
     # Other playbooks can consume this vars file to access the
@@ -119,6 +120,7 @@
           zuul: "{{ zuul }}"
         zuul_site_mirror_info_helper_var:
           zuul_site_mirror_info: "{{ zuul_site_mirror_info | default({}) }}"
-      template:
+      ansible.builtin.template:
         src: osa-job-vars.yml.j2
         dest: "{{ zuul_user_vars_file }}"
+        mode: "0644"

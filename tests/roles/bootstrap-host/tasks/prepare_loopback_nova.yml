@@ -14,14 +14,14 @@
 # limitations under the License.
 
 - name: Create sparse Nova file
-  command: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
+  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_nova_size }}G /openstack/nova.img"
   args:
     creates: /openstack/nova.img
   tags:
     - nova-file-create
 
 - name: Format the Nova file
-  filesystem:
+  community.general.filesystem:
     fstype: xfs
     dev: /openstack/nova.img
     opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
@@ -29,7 +29,7 @@
     - nova-format-file
 
 - name: Run the systemd mount role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_mount
   vars:
     systemd_mounts:

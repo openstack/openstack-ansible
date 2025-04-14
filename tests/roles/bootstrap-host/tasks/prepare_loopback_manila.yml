@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Create sparse manila file
-  command: "truncate -s {{ bootstrap_host_loopback_manila_size }}G /openstack/manila.img"
+  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_manila_size }}G /openstack/manila.img"
   args:
     creates: /openstack/manila.img
   register: manila_create
@@ -22,26 +22,26 @@
     - manila-file-create
 
 - name: Run the systemd service role
-  include_role:
+  ansible.builtin.include_role:
     name: systemd_service
   vars:
     systemd_services:
       - service_name: "loop-manila"
         config_overrides:
           Unit:
-            Description: no
+            Description: false
             After: systemd-udev-settle.service
             Before: lvm2-activation-early.service
             Wants: systemd-udev-settle.service
           Service:
-            RemainAfterExit: yes
+            RemainAfterExit: true
         service_type: oneshot
         execstarts:
           - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/manila.img"
           - /sbin/pvscan
         execstops:
           - /bin/bash -c "losetup -d $(losetup -l | awk '/manila.img/ {print $1}')"
-        enabled: yes
+        enabled: true
         state: started
     systemd_tempd_prefix: openstack
   tags:
@@ -63,13 +63,13 @@
     - manila-lvm-pv
 
 - name: Run pvscan
-  command: "pvscan"
+  ansible.builtin.command: "pvscan"
   changed_when: false
   tags:
     - manila-lvm-pv
 
 - name: Add manila-shares volume group
-  lvg:
+  community.general.lvg:
     vg: manila-shares
     pvs: "{{ manila_losetup.stdout }}"
   tags:

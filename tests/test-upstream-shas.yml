@@ -15,32 +15,35 @@
 
 - name: Ensuring upstream SHAs validity
   hosts: "localhost"
-  gather_facts: no
+  gather_facts: false
   connection: local
   user: root
   tasks:
     - name: Include repo_packages variables
-      include_vars:
+      ansible.builtin.include_vars:
         dir: "{{ playbook_dir }}/../inventory/group_vars"
         files_matching: source_git.yml
-        ignore_unknown_extensions: True
+        ignore_unknown_extensions: true
         extensions:
           - 'yml'
 
     - name: Define list of services tracked
-      set_fact:
-        service_projects: "{{ hostvars[inventory_hostname] | select('match', '^([a-z_]*)_git_track_branch') | map('regex_replace', '^([a-z_]*)_git_track_branch', '\\1') | list }}"
+      ansible.builtin.set_fact:
+        service_projects: >-
+          {{
+            hostvars[inventory_hostname] | select('match', '^([a-z_]*)_git_track_branch') | map('regex_replace', '^([a-z_]*)_git_track_branch', '\\1') | list
+          }}
 
     - name: Clone git repos
-      git:
+      ansible.builtin.git:
         repo: "{{ hostvars[inventory_hostname][item ~ '_git_repo'] }}"
         dest: "/tmp/opendev/{{ hostvars[inventory_hostname][item ~ '_git_repo'] | basename }}"
         version: "{{ hostvars[inventory_hostname][item ~ '_git_install_branch'] }}"
-        depth: "10"
+        depth: 10
         update: true
         force: true
       with_items: "{{ service_projects }}"
       register: git_clone
       until: git_clone is success
-      retries: "2"
-      delay: "10"
+      retries: 2
+      delay: 10
