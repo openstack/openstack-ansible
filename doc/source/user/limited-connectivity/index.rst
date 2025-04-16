@@ -98,11 +98,11 @@ components such as Galera and Ceph.
 
 Example repositories to mirror (Ubuntu target hosts):
 
-- https://download.ceph.com/
-- http://ubuntu-cloud.archive.canonical.com/ubuntu
+- https://download.ceph.com
+- https://ubuntu-cloud.archive.canonical.com/ubuntu
 - https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang
 - https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server
-- http://downloads.mariadb.com/MariaDB
+- https://downloads.mariadb.com/MariaDB
 
 These lists are intentionally not exhaustive and equivalents will be required
 for other Linux distributions. Consult the OpenStack-Ansible playbooks and role
