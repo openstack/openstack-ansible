@@ -187,9 +187,9 @@ The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
 overrides for the default variables.
 
 For this example environment, we configure a HA load balancer.
-We implement the load balancer (HAProxy) with an HA layer (keepalived)
+We implement the load balancer (HAProxy) with an HA layer (Keepalived)
 on the infrastructure hosts.
 Your ``/etc/openstack_deploy/user_variables.yml`` must have the
-following content to configure haproxy, keepalived and ceph:
+following content to configure HAProxy, Keepalived and Ceph:
 
 .. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.prod-ceph.example

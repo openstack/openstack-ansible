@@ -4,12 +4,12 @@ Security Headers
 Security headers are HTTP headers that can be used to increase the security of
 a web application by restricting what modern browsers are able to run.
 
-In OpenStack-Ansible, security headers are implemented in haproxy as all the
+In OpenStack-Ansible, security headers are implemented in HAProxy as all the
 public endpoints reside behind it.
 
-The following headers are enabled by default on all the haproxy interfaces
+The following headers are enabled by default on all the HAProxy interfaces
 that implement TLS, but only for the Horizon service. The security headers can
-be implemented on other haproxy services, but only services used by
+be implemented on other HAProxy services, but only services used by
 browsers will make use of the headers.
 
 HTTP Strict Transport Security
@@ -136,7 +136,7 @@ Security Policy to allow access to your authorisation server by overriding the
       frame-src 'self' {{ external_lb_vip_address }}:{{ nova_spice_html5proxy_base_port }} {{ external_lb_vip_address }}:{{ nova_novncproxy_port }} {{ external_lb_vip_address }}:{{ nova_serialconsoleproxy_port }};
       "
 
-It is also possible to set specific security headers for skyline.
+It is also possible to set specific security headers for Skyline.
 
 .. code-block:: yaml
 
