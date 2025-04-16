@@ -21,8 +21,8 @@ OpenStack-Ansible 2025.1 (Epoxy) is currently Under Development.
    Release notes <https://docs.openstack.org/releasenotes/openstack-ansible/unreleased.html>
    admin/index
    user/index
-   contributor/contributing
-   contributor/index
+   contributors/contributing
+   contributors/index
    reference/index
 
 2024.2 (Dalmatian): Maintained
