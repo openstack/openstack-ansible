@@ -32,7 +32,7 @@ to interact with the server via SSH.
 
 The ``Overlay Network``, also referred to as the ``tunnel network``,
 provides connectivity between hosts for the purpose of tunnelling
-encapsulated traffic using VXLAN, GENEVE, or other protocols. The
+encapsulated traffic using VXLAN, Geneve, or other protocols. The
 ``overlay network`` uses a dedicated VLAN typically connected to the
 ``br-vxlan`` bridge.
 

@@ -14,7 +14,7 @@ Inventory overrides
 ~~~~~~~~~~~~~~~~~~~
 
 In order to tell dynamic_inventory to generate a set of containers
-for haproxy, you need to create a file
+for HAProxy, you need to create a file
 ``/etc/openstack_deploy/env.d/haproxy.yml`` with the following content:
 
 .. code:: yaml
@@ -215,7 +215,7 @@ Example bellow shows a possible content in ``user_variables.yml``:
     haproxy_keepalived_internal_interface: "{{ haproxy_bind_internal_lb_vip_interface }}"
 
 Alternatively, you can detect IPs used inside your containers to configure
-haproxy binds. This can be done by reffering to ``container_networks`` mapping:
+HAProxy binds. This can be done by reffering to ``container_networks`` mapping:
 
 .. code:: yaml
 
@@ -226,7 +226,7 @@ haproxy binds. This can be done by reffering to ``container_networks`` mapping:
 Creating containers
 ~~~~~~~~~~~~~~~~~~~
 
-Once all steps above are accomplished, it's time to create our new haproxy
+Once all steps above are accomplished, it's time to create our new HAProxy
 containers. For that run the following command:
 
 .. code:: shell
