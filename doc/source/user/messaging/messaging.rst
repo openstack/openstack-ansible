@@ -71,22 +71,22 @@ support.
    +----------------+-----------+-----------+-----+--------+-----------+
 
 
-Standard deployment of rabbitmq server
+Standard deployment of RabbitMQ server
 --------------------------------------
 
-A single rabbitmq server backend (e.g. server or cluster) is the
-default deployment for OSA. This broker messaging backend
+A single RabbitMQ server backend (e.g. server or cluster) is the
+default deployment for OpenStack-Ansible (OSA). This broker messaging backend
 provides the queue services for both RPC and Notification
 communications through its integration with the oslo.messaging rabbit
 driver. The `oslo-messaging.yml`_ file provides the default
 configuration to associate the oslo.messaging RPC and Notify services
-to the rabbitmq server backend.
+to the RabbitMQ server backend.
 
 .. literalinclude:: ../../../../inventory/group_vars/all/oslo-messaging.yml
    :language: yaml
    :start-after: under the License.
 
-.. _oslo-messaging.yml: https://github.com/openstack/openstack-ansible/blob/master/inventory/group_vars/all/oslo-messaging.yml
+.. _oslo-messaging.yml: https://opendev.org/openstack/openstack-ansible/src/branch/master/inventory/group_vars/all/oslo-messaging.yml
 
 
 Managing RabbitMQ stream policy
@@ -101,7 +101,7 @@ only comes into effect ones a stream has accumulated enough messages to fill a
 segment, which has a default size of 500MB.
 
 If you would like to reduce disk usage, an additional policy can be applied via
-OpenStack Ansible as shown below:
+OpenStack-Ansible as shown below:
 
 .. literalinclude:: ../../../../inventory/group_vars/all/infra.yml
    :language: yaml
