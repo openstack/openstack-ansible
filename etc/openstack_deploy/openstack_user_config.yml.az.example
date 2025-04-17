@@ -1,0 +1,286 @@
+---
+
+cidr_networks: &os_cidrs
+  management: 172.29.236.0/22
+  tunnel_az1: 172.29.240.0/24
+  tunnel_az2: 172.29.241.0/24
+  tunnel_az3: 172.29.242.0/24
+  storage_az1: 172.29.244.0/24
+  storage_az2: 172.29.245.0/24
+  storage_az3: 172.29.246.0/24
+  public_api_vip: 203.0.113.0/28
+
+used_ips:
+  # management network - openstack VIPs
+  - "172.29.236.1,172.29.236.30"
+  # management network - other hosts not managed by OSA dynamic inventory
+  - "172.29.238.0,172.29.239.255"
+  # storage network - reserved for ceph hosts
+  - "172.29.244.200,172.29.244.250"
+  - "172.29.245.200,172.29.245.250"
+  - "172.29.246.200,172.29.246.250"
+  # public_api
+  - "203.0.113.1,203.0.113.10"
+
+global_overrides:
+  internal_lb_vip_address: internal.example.cloud
+  external_lb_vip_address: example.cloud
+  management_bridge: "br-mgmt"
+  cidr_networks: *os_cidrs
+  provider_networks:
+    - network:
+        group_binds:
+          - all_containers
+          - hosts
+        type: "raw"
+        container_bridge: "br-mgmt"
+        container_interface: "eth1"
+        container_type: "veth"
+        ip_from_q: "management"
+        is_management_address: true
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage_az1"
+        address_prefix: "storage_az1"
+        type: "raw"
+        group_binds:
+          - cinder_volume
+          - nova_compute
+          - ceph_all
+        reference_group: "az1_all"
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage_az2"
+        address_prefix: "storage_az2"
+        type: "raw"
+        group_binds:
+          - cinder_volume
+          - nova_compute
+          - ceph_all
+        reference_group: "az2_all"
+    - network:
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        ip_from_q: "storage_az3"
+        address_prefix: "storage_az3"
+        type: "raw"
+        group_binds:
+          - cinder_volume
+          - nova_compute
+          - ceph_all
+        reference_group: "az3_all"
+    - network:
+        container_bridge: "vlan-tunnel"
+        container_type: "veth"
+        container_interface: "eth4"
+        ip_from_q: "tunnel_az1"
+        address_prefix: "tunnel"
+        type: "raw"
+        group_binds:
+          - neutron_ovn_controller
+        reference_group: "az1_all"
+    - network:
+        container_bridge: "vlan-tunnel"
+        container_type: "veth"
+        container_interface: "eth4"
+        ip_from_q: "tunnel_az2"
+        address_prefix: "tunnel"
+        type: "raw"
+        group_binds:
+          - neutron_ovn_controller
+        reference_group: "az2_all"
+    - network:
+        container_bridge: "vlan-tunnel"
+        container_type: "veth"
+        container_interface: "eth4"
+        ip_from_q: "tunnel_az3"
+        address_prefix: "tunnel"
+        type: "raw"
+        group_binds:
+          - neutron_ovn_controller
+        reference_group: "az3_all"
+    - network:
+        group_binds:
+          - haproxy
+        type: "raw"
+        container_bridge: "br-public-api"
+        container_interface: "eth20"
+        container_type: "veth"
+        ip_from_q: public_api_vip
+        static_routes:
+          - cidr: 0.0.0.0/0
+            gateway: 203.0.113.1
+
+### conf.d configuration ###
+
+# Control plane
+az1_controller_hosts: &controller_az1
+  infra1:
+    ip: 172.29.236.11
+
+az2_controller_hosts: &controller_az2
+  infra2:
+    ip: 172.29.236.12
+
+az3_controller_hosts: &controller_az3
+  infra3:
+    ip: 172.29.236.13
+
+# Computes
+
+## AZ1
+az1_shared_compute_hosts: &shared_computes_az1
+  az1_compute1:
+    ip: 172.29.237.11
+  az1_compute2:
+    ip: 172.29.237.12
+
+az1_pinned_compute_hosts: &pinned_computes_az1
+  az1_pin_compute1:
+    ip: 172.29.237.13
+  az1_pin_compute2:
+    ip: 172.29.237.14
+
+## AZ2
+
+az2_shared_compute_hosts: &shared_computes_az2
+  az2_compute1:
+    ip: 172.29.238.11
+  az2_compute2:
+    ip: 172.29.238.12
+
+## AZ3
+az3_shared_compute_hosts: &shared_computes_az3
+  az3_compute1:
+    ip: 172.29.239.11
+  az3_compute2:
+    ip: 172.29.239.12
+
+# Storage
+
+## AZ1
+az1_storage_hosts: &storage_az1
+  az1_ceph1:
+    ip: 172.29.237.201
+  az1_ceph2:
+    ip: 172.29.237.202
+  az1_ceph3:
+    ip: 172.29.237.203
+
+## AZ2
+az2_storage_hosts: &storage_az2
+  az2_ceph1:
+    ip: 172.29.238.201
+  az2_ceph2:
+    ip: 172.29.238.202
+  az2_ceph3:
+    ip: 172.29.238.203
+
+## AZ3
+az3_storage_hosts: &storage_az3
+  az3_ceph1:
+    ip: 172.29.239.201
+  az3_ceph2:
+    ip: 172.29.239.202
+  az3_ceph3:
+    ip: 172.29.239.203
+
+# AZ association
+
+az1_compute_hosts: &compute_hosts_az1
+  <<: *shared_computes_az1
+  <<: *pinned_computes_az1
+
+az2_compute_hosts: &compute_hosts_az2
+  <<: *shared_computes_az2
+
+az3_compute_hosts: &compute_hosts_az3
+  <<: *shared_computes_az3
+
+az1_hosts:
+  <<: *compute_hosts_az1
+  <<: *controller_az1
+  <<: *storage_az1
+
+az2_hosts:
+  <<: *compute_hosts_az2
+  <<: *controller_az2
+  <<: *storage_az2
+
+az3_hosts:
+  <<: *compute_hosts_az3
+  <<: *controller_az3
+  <<: *storage_az3
+
+# Final mappings
+shared_infra_hosts: &controllers
+  <<: *controller_az1
+  <<: *controller_az2
+  <<: *controller_az3
+
+repo-infra_hosts: *controllers
+memcaching_hosts: *controllers
+database_hosts: *controllers
+mq_hosts: *controllers
+operator_hosts: *controllers
+identity_hosts: *controllers
+image_hosts: *controllers
+dashboard_hosts: *controllers
+compute-infra_hosts: *controllers
+placement-infra_hosts: *controllers
+storage-infra_hosts: *controllers
+network-infra_hosts: *controllers
+network-northd_hosts: *controllers
+coordination_hosts: *controllers
+
+compute_hosts: &computes
+  <<: *compute_hosts_az1
+  <<: *compute_hosts_az2
+  <<: *compute_hosts_az3
+
+pinned_compute_hosts:
+  <<: *pinned_computes_az1
+
+shared_compute_hosts:
+  <<: *shared_computes_az1
+  <<: *shared_computes_az2
+  <<: *shared_computes_az3
+
+network-gateway_hosts: *computes
+
+storage_hosts: &storage
+  <<: *storage_az1
+  <<: *storage_az2
+  <<: *storage_az3
+
+az1_ceph_osd_hosts:
+  <<: *storage_az1
+
+az2_ceph_osd_hosts:
+  <<: *storage_az2
+
+az3_ceph_osd_hosts:
+  <<: *storage_az3
+
+az1_ceph_mon_hosts:
+  <<: *storage_az1
+
+az2_ceph_mon_hosts:
+  <<: *storage_az2
+
+az3_ceph_mon_hosts:
+  <<: *storage_az3
+
+az1_ceph_rgw_hosts:
+  <<: *storage_az1
+
+az2_ceph_rgw_hosts:
+  <<: *storage_az2
+
+az3_ceph_rgw_hosts:
+  <<: *storage_az3

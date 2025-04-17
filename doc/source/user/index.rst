@@ -29,6 +29,7 @@ For in-depth technical information, see the
    prod/provnet_groups.rst
    limited-connectivity/index.rst
    l3pods/example.rst
+   l3pods/multi_az.rst
    ceph/full-deploy.rst
    ceph/swift.rst
    ceph/ceilometer.rst

@@ -1,0 +1,36 @@
+---
+
+component_skel:
+  az1_containers:
+    belongs_to:
+      - az1_all
+  az1_hosts:
+    belongs_to:
+      - az1_all
+
+  az2_containers:
+    belongs_to:
+      - az2_all
+  az2_hosts:
+    belongs_to:
+      - az2_all
+
+  az3_containers:
+    belongs_to:
+      - az3_all
+  az3_hosts:
+    belongs_to:
+      - az3_all
+
+container_skel:
+  az1_containers:
+    properties:
+      is_nest: true
+
+  az2_containers:
+    properties:
+      is_nest: true
+
+  az3_containers:
+    properties:
+      is_nest: true

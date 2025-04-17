@@ -1,0 +1,172 @@
+---
+component_skel:
+  # Ceph MON
+  ceph_mon_az1:
+    belongs_to:
+      - ceph-mon
+      - ceph_all
+      - az1_all
+  ceph_mon_az2:
+    belongs_to:
+      - ceph-mon
+      - ceph_all
+      - az2_all
+  ceph_mon_az3:
+    belongs_to:
+      - ceph-mon
+      - ceph_all
+      - az3_all
+
+  # Ceph OSD
+  ceph_osd_az1:
+    belongs_to:
+      - ceph-osd
+      - ceph_all
+      - az1_all
+  ceph_osd_az2:
+    belongs_to:
+      - ceph-osd
+      - ceph_all
+      - az2_all
+  ceph_osd_az3:
+    belongs_to:
+      - ceph-osd
+      - ceph_all
+      - az3_all
+
+  # Ceph RGW
+  ceph_rgw_az1:
+    belongs_to:
+      - ceph-rgw
+      - ceph_all
+      - az1_all
+  ceph_rgw_az2:
+    belongs_to:
+      - ceph-rgw
+      - ceph_all
+      - az2_all
+  ceph_rgw_az3:
+    belongs_to:
+      - ceph-rgw
+      - ceph_all
+      - az3_all
+
+container_skel:
+  # Ceph MON
+  ceph_mon_container_az1:
+    belongs_to:
+      - az1_ceph_mon_containers
+    contains:
+      - ceph_mon_az1
+  ceph_mon_container_az2:
+    belongs_to:
+      - az2_ceph_mon_containers
+    contains:
+      - ceph_mon_az2
+  ceph_mon_container_az3:
+    belongs_to:
+      - az3_ceph_mon_containers
+    contains:
+      - ceph_mon_az3
+
+  # Ceph RGW
+  ceph_rgw_container_az1:
+    belongs_to:
+      - az1_ceph_rgw_containers
+    contains:
+      - ceph_rgw_az1
+  ceph_rgw_container_az2:
+    belongs_to:
+      - az2_ceph_rgw_containers
+    contains:
+      - ceph_rgw_az2
+  ceph_rgw_container_az3:
+    belongs_to:
+      - az3_ceph_rgw_containers
+    contains:
+      - ceph_rgw_az3
+
+  # Ceph OSD
+  ceph_osd_container_az1:
+    belongs_to:
+      - az1_ceph_osd_containers
+    contains:
+      - ceph_osd_az1
+    properties:
+      is_metal: true
+  ceph_osd_container_az2:
+    belongs_to:
+      - az2_ceph_osd_containers
+    contains:
+      - ceph_osd_az2
+    properties:
+      is_metal: true
+  ceph_osd_container_az3:
+    belongs_to:
+      - az3_ceph_osd_containers
+    contains:
+      - ceph_osd_az3
+    properties:
+      is_metal: true
+
+
+physical_skel:
+  # Ceph MON
+  az1_ceph_mon_containers:
+    belongs_to:
+      - all_containers
+  az1_ceph_mon_hosts:
+    belongs_to:
+      - hosts
+  az2_ceph_mon_containers:
+    belongs_to:
+      - all_containers
+  az2_ceph_mon_hosts:
+    belongs_to:
+      - hosts
+  az3_ceph_mon_containers:
+    belongs_to:
+      - all_containers
+  az3_ceph_mon_hosts:
+    belongs_to:
+      - hosts
+
+  # Ceph OSD
+  az1_ceph_osd_containers:
+    belongs_to:
+      - all_containers
+  az1_ceph_osd_hosts:
+    belongs_to:
+      - hosts
+  az2_ceph_osd_containers:
+    belongs_to:
+      - all_containers
+  az2_ceph_osd_hosts:
+    belongs_to:
+      - hosts
+  az3_ceph_osd_containers:
+    belongs_to:
+      - all_containers
+  az3_ceph_osd_hosts:
+    belongs_to:
+      - hosts
+
+  # Ceph RGW
+  az1_ceph_rgw_containers:
+    belongs_to:
+      - all_containers
+  az1_ceph_rgw_hosts:
+    belongs_to:
+      - hosts
+  az2_ceph_rgw_containers:
+    belongs_to:
+      - all_containers
+  az2_ceph_rgw_hosts:
+    belongs_to:
+      - hosts
+  az3_ceph_rgw_containers:
+    belongs_to:
+      - all_containers
+  az3_ceph_rgw_hosts:
+    belongs_to:
+      - hosts

@@ -1,0 +1,93 @@
+---
+
+haproxy_keepalived_external_vip_cidr_az1: 203.0.113.5/32
+haproxy_keepalived_external_vip_cidr_az2: 203.0.113.6/32
+haproxy_keepalived_external_vip_cidr_az3: 203.0.113.7/32
+haproxy_keepalived_internal_vip_cidr_az1: 172.29.236.21/32
+haproxy_keepalived_internal_vip_cidr_az2: 172.29.236.22/32
+haproxy_keepalived_internal_vip_cidr_az3: 172.29.236.23/32
+haproxy_keepalived_external_interface: "{{ haproxy_bind_external_lb_vip_interface }}"
+haproxy_keepalived_internal_interface: "{{ haproxy_bind_internal_lb_vip_interface }}"
+
+keepalived_unicast_peers:
+  internal: |-
+    {% set peers = [] %}
+    {% for addr in groups['haproxy'] | map('extract', hostvars, ['container_networks', 'management_address']) %}
+    {%   set _ = peers.append((addr['address'] ~ '/' ~ addr['netmask']) | ansible.utils.ipaddr('host/prefix')) %}
+    {% endfor %}
+    {{ peers }}
+  external: |-
+    {% set peers = [] %}
+    {% for addr in groups['haproxy'] | map('extract', hostvars, ['container_networks', 'public_api_vip_address']) %}
+    {%   set _ = peers.append((addr['address'] ~ '/' ~ addr['netmask']) | ansible.utils.ipaddr('host/prefix')) %}
+    {% endfor %}
+    {{ peers }}
+
+keepalived_internal_unicast_src_ip: >-
+  {{ (management_address ~ '/' ~ container_networks['management_address']['netmask']) | ansible.utils.ipaddr('host/prefix') }}
+keepalived_external_unicast_src_ip: >-
+  {{ (container_networks['public_api_vip_address']['address'] ~ '/' ~ container_networks['public_api_vip_address']['netmask']) | ansible.utils.ipaddr('host/prefix') }}
+
+keepalived_instances:
+  az1-external:
+    interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az1_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 40
+    priority: "{{ (inventory_hostname in groups['az1_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_external_vip_cidr_az1 | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'internal') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_external_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['external'] | difference([keepalived_external_unicast_src_ip]) }}"
+  az1-internal:
+    interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az1_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 41
+    priority: "{{ (inventory_hostname in groups['az1_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_internal_vip_cidr_az1 | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_internal_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['internal'] | difference([keepalived_internal_unicast_src_ip]) }}"
+
+  az2-external:
+    interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az2_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 42
+    priority: "{{ (inventory_hostname in groups['az2_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_external_vip_cidr_az2 | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'internal') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_external_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['external'] | difference([keepalived_external_unicast_src_ip]) }}"
+  az2-internal:
+    interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az2_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 43
+    priority: "{{ (inventory_hostname in groups['az2_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_internal_vip_cidr_az2 | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_internal_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['internal'] | difference([keepalived_internal_unicast_src_ip]) }}"
+
+  az3-external:
+    interface: "{{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az3_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 44
+    priority: "{{ (inventory_hostname in groups['az3_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_external_vip_cidr_az3 | default('169.254.1.1/24')  }} dev {{ haproxy_keepalived_external_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'internal') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_external_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['external'] | difference([keepalived_external_unicast_src_ip]) }}"
+  az3-internal:
+    interface: "{{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    state: "{{ (inventory_hostname in groups['az3_all']) | ternary('MASTER', 'BACKUP') }}"
+    virtual_router_id: 45
+    priority: "{{ (inventory_hostname in groups['az3_all']) | ternary(200, (groups['haproxy']|length-groups['haproxy'].index(inventory_hostname))*50) }}"
+    vips:
+      - "{{ haproxy_keepalived_internal_vip_cidr_az3 | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
+    track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
+    unicast_src_ip: "{{ keepalived_internal_unicast_src_ip }}"
+    unicast_peers: "{{ keepalived_unicast_peers['internal'] | difference([keepalived_internal_unicast_src_ip]) }}"
