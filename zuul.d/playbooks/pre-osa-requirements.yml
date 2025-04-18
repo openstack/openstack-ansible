@@ -16,7 +16,8 @@
 - name: Prepare the OSA collection/role requirements
   hosts: "{{ pre_osa_host | default('all[0]') }}"
   vars:
-    _zuul_src_path: "{{ lookup('env', 'ZUUL_SRC_PATH') | default(lookup('env', 'HOME') ~ '/src') }}"
+    _zuul_src_path_env: "{{ lookup('env', 'ZUUL_SRC_PATH', default='') }}"
+    _zuul_src_path: "{{ (_zuul_src_path_env | length > 0) | ternary(_zuul_src_path_env, ansible_user_dir | default(lookup('env', 'HOME')) ~ '/src') }}"
   tasks:
     - name: Loading osa-gate-scenario vars
       ansible.builtin.include_vars:
