@@ -26,4 +26,4 @@ audit an environment by using a playbook supplied with OpenStack-Ansible:
 For more information about the security configurations, see the
 `security hardening role`_ documentation.
 
-.. _security hardening role: https://docs.openstack.org/ansible-hardening/
+.. _security hardening role: https://docs.openstack.org/ansible-hardening/latest/
