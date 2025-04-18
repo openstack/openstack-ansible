@@ -48,7 +48,7 @@ storage for your gnocchi installation. The `supported storage systems`_ are:
 * Amazon S3
 * Redis
 
-.. _supported storage systems: https://gnocchi.xyz/intro.html#incoming-and-storage-drivers
+.. _supported storage systems: https://gnocchi.osci.io/intro.html#incoming-and-storage-drivers
 
 When your Swift API endpoint uses Ceph as a backend, the only one left for this
 setup is Redis.
@@ -177,4 +177,4 @@ Performance Tests for Gnocchi
 For more ideas how to tune your Gnocchi stack, take a look at these
 presentations:
 
-* https://docs.openstack.org/performance-docs/test_results/telemetry_gnocchi_with_ceph/index.html
+* https://docs.openstack.org/performance-docs/latest/test_results/telemetry_gnocchi_with_ceph/index.html
