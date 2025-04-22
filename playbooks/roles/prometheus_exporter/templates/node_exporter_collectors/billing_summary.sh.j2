@@ -10,13 +10,14 @@ else
 fi
 
 export BEGIN_1H=$(date -d "5 hours ago" "+%FT%H:00:00")
-export END_1H=$(date -d "4 hours ago" "+%FT%H:00:00")
 export BEGIN_24H=$(date -d "28 hours ago" "+%FT%H:00:00")
-export END_24H=$(date -d "4 hours ago" "+%FT%H:00:00")
+export BEGIN_30D=$(date -d "30 days ago 4 hours ago" "+%FT%H:00:00")
+export END=$(date -d "4 hours ago" "+%FT%H:00:00")
 
-
-export SUM_1H=$(/usr/local/bin/openstack rating summary get -a -f value -c Rate --begin "${BEGIN_1H}" --end "${END_1H}")
-export SUM_24H=$(/usr/local/bin/openstack rating summary get -a -f value -c Rate --begin "${BEGIN_24H}" --end "${END_24H}")
+export SUM_1H=$(/usr/local/bin/openstack rating summary get -a -f value -c Rate --begin "${BEGIN_1H}" --end "${END}")
+export SUM_24H=$(/usr/local/bin/openstack rating summary get -a -f value -c Rate --begin "${BEGIN_24H}" --end "${END}")
+export SUM_30D=$(/usr/local/bin/openstack rating summary get -a -f value -c Rate --begin "${BEGIN_30D}" --end "${END}")
 
 echo "openstack_rating_sum_1h{group=\"${GROUP}\"} ${SUM_1H}"
 echo "openstack_rating_sum_24h{group=\"${GROUP}\"} ${SUM_24H}"
+echo "openstack_rating_sum_30d{group=\"${GROUP}\"} ${SUM_30D}"
