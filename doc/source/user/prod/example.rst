@@ -50,7 +50,7 @@ The following host name and IP address assignments are used for this
 environment.
 
 +------------------+----------------+-------------------+----------------+
-| Host name        | Management IP  | Tunnel (VxLAN) IP | Storage IP     |
+| Host name        | Management IP  | Tunnel (VXLAN) IP | Storage IP     |
 +==================+================+===================+================+
 | lb_vip_address   | 172.29.236.9   |                   |                |
 +------------------+----------------+-------------------+----------------+
