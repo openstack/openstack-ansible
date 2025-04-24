@@ -4,7 +4,7 @@ Extending OpenStack-Ansible with additional Ansible content
 Including OpenStack-Ansible in your project
 -------------------------------------------
 
-Including the openstack-ansible repository within another project can be
+Including the OpenStack-Ansible repository within another project can be
 done in several ways:
 
 - A git submodule pointed to a released tag.
@@ -44,7 +44,9 @@ The relevant environment variables for OpenStack-Ansible are as follows:
 The paths to the ``openstack-ansible`` top level directory can be
 relative in this file.
 
-Consider this directory structure::
+Consider this directory structure:
+
+.. code-block:: text
 
     my_project
     |
@@ -95,7 +97,7 @@ will override those in ``ansible-role-requirements.yml``. In case when
 ``src`` key is not defined bootstrap script will skip cloning such roles.
 
 It is easy for a deployer to keep this file under their own version
-control and out of the openstack-ansible tree.
+control and out of the OpenStack-Ansible tree.
 
 
 Adding new or overriding collections in your OpenStack-Ansible installation
@@ -105,7 +107,7 @@ Alike to roles, collections for installation are stored in
 `ansible-collection-requirements`_ file. Path to this file can be overriden
 through ``ANSIBLE_COLLECTION_FILE`` environmental variable.
 
-The Victoria release of openstack-ansible adds an optional new config
+The Victoria release of OpenStack-Ansible adds an optional new config
 file which defaults to
 ``/etc/openstack_deploy/user-collection-requirements.yml``.
 

@@ -41,9 +41,9 @@ equipped for deploying OpenStack-powered clouds. The declarative nature of
 Ansible allows the deployer to turn an entire deployment into a rather
 simple set of instructions.
 
-Roles within the Openstack-Ansible umbrella are built using Ansible
+Roles within the OpenStack-Ansible umbrella are built using Ansible
 best practices and contain namespaced variables that are *human*
-understandable.  All roles are independant of each other and testable
+understandable. All roles are independant of each other and testable
 separately.
 
 All roles are built as Galaxy compatible roles even when the given role is
