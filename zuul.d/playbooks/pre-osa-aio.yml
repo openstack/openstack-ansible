@@ -40,6 +40,7 @@
         # where the CI provided git sources were cloned.
         ZUUL_SRC_PATH: "{{ (action != 'shastest') | ternary(_zuul_src_path, '') }}"
         ANSIBLE_PACKAGE: "{{ ansible_package | default('') }}"
+        ANSIBLE_FORKS: 10
         SETUP_ARA: 'true'
       when:
         - "'upgrade' not in action"
