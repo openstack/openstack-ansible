@@ -22,9 +22,17 @@ osd_group_name: ceph-osd
 rgw_group_name: ceph-rgw
 mds_group_name: ceph-mds
 nfs_group_name: ceph-nfs
-ceph_origin: repository
-ceph_pkg_source: ceph
+
+# NOTE: Ubuntu 24.04 at the moment does not have a community repository and Ceph is only installable from UCA or native repository
+#       Values of origin/source are overriden for Ubuntu 24.04 explicitly to ensure seamless installation out of the box
+ceph_origin: "{{ (ansible_facts['distribution'] | lower == 'ubuntu' and ansible_facts['distribution_version'] | lower == '24.04') | ternary('distro', 'repository') }}"
+ceph_pkg_source: "{{ (ansible_facts['distribution'] | lower == 'ubuntu' and ansible_facts['distribution_version'] | lower == '24.04') | ternary('distro', 'ceph') }}"
+
+# NOTE: `setuptools` are required to be present for ceph-mon to install and enable ceph dashboard plugin, which is enabled by default
+#       Alternatively, one can set `dashboard_enabled: false` to avoid dashboard installation.
+debian_package_dependencies: "{{ (ansible_facts['distribution'] | lower == 'ubuntu' and ceph_origin == 'distro') | ternary(['python3-distutils-extra'], []) }}"
 ceph_repository: community
+
 # The _stable_release var is used by both the OSA ceph_client role and the
 # ceph-ansible roles. It is defaulted in ceph_client but set here to keep the
 # OSA/ceph-ansible integrations in sync.
