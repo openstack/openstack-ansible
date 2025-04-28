@@ -146,7 +146,7 @@ For that we need to do the following series of changes in the
 
 
 #. In ``provider_networks`` you need to define a new container network and
-   assign it to HAproxy group.
+   assign it to HAProxy group.
 
     .. code:: yaml
 
