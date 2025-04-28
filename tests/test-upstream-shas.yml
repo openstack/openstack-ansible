@@ -31,7 +31,7 @@
       ansible.builtin.set_fact:
         service_projects: >-
           {{
-            hostvars[inventory_hostname] | select('match', '^([a-z_]*)_git_track_branch') | map('regex_replace', '^([a-z_]*)_git_track_branch', '\\1') | list
+            hostvars[inventory_hostname] | select('match', '^([a-z_]*)_git_track_branch') | map('regex_replace', '^([a-z_]*)_git_track_branch', '\1') | list
           }}
 
     - name: Clone git repos
