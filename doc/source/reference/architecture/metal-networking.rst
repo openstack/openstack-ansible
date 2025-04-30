@@ -69,11 +69,11 @@ to provide network connectivity to the OpenStack deployment:
 Neutron traffic
 ---------------
 
-Common reference drivers, including ML2/LXB, ML2/OVS, and ML2/OVN, and their
+Common reference drivers, including ML2/OVS, and ML2/OVN, and their
 respective agents, are responsible for managing the virtual networking
 infrastructure on each node. OpenStack-Ansible refers to Neutron traffic
-as "data plane" traffic, and can consist of flat, vlan, or overlay technologies
-such as VXLAN and GENEVE.
+as "data plane" traffic, and can consist of flat, VLAN, or overlay technologies
+such as VXLAN and Geneve.
 
 Neutron agents can be deployed across a variety of hosts, but are typically
 limited to dedicated network hosts or infrastructure hosts (controller nodes).
@@ -82,12 +82,6 @@ typically requires the operator to define "provider bridge mappings", which map
 a provider network name to a physical interface. These provider bridge mappings
 provide flexibility and abstract physical interface names when creating provider
 networks.
-
-**LinuxBridge Example**:
-
-.. code-block:: ini
-
-    bridge_mappings = physnet1:bond1
 
 **Open vSwitch/OVN Example**:
 
@@ -113,26 +107,6 @@ and requires a physical interface name which will be connected to the provider b
 The following diagrams reflect the differences in the virtual network layout for
 supported network architectures.
 
-LinuxBridge
-...........
-
-.. note::
-
-   The ML2/LinuxBridge (LXB) mechanism driver is marked as "experimental"
-   as of the Zed release of OpenStack-Ansible.
-
-Networking Node
-***************
-
-.. image:: ../figures/networking-linuxbridge-nn.drawio.png
-   :align: center
-
-Compute Node
-************
-
-.. image:: ../figures/networking-linuxbridge-cn.drawio.png
-   :align: center
-
 Open vSwitch (OVS)
 ..................
 
@@ -153,7 +127,7 @@ Open Virtual Network (OVN)
 
 .. note::
 
-   The ML2/OVN (LXB) mechanism driver is deployed by default
+   The ML2/OVN mechanism driver is deployed by default
    as of the Zed release of OpenStack-Ansible.
 
 Networking Node
