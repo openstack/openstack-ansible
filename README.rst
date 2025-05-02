@@ -1,14 +1,10 @@
-========================
-Team and repository tags
-========================
+=================
+OpenStack-Ansible
+=================
 
 .. image:: https://governance.openstack.org/tc/badges/openstack-ansible.svg
-    :target: https://governance.openstack.org/tc/reference/tags/index.html
 
 .. Change things from this point on
-
-OpenStack-Ansible
-#################
 
 OpenStack-Ansible is an `official OpenStack project`_ which aims to deploy
 production environments from source in a way that makes it scalable while
