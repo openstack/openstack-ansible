@@ -48,7 +48,7 @@ a dedicated VLAN typically connected to the ``br-storage`` bridge.
 Additional VLANs may be required for the following purposes:
 
 * External provider networks for Floating IPs and instances
-* Self-service project/tenant networks for instances
+* Self-service project networks for instances
 * Other OpenStack services
 
 Network interfaces

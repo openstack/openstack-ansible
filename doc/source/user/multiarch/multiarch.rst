@@ -45,8 +45,9 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
    It is necessary to manually add an architecture trait to the resource provider
    corresponding to every compute host. The required traits are:
 
-   HW_ARCH_X86_64    for x86_64 Intel and AMD CPUs
-   HW_ARCH_AARCH64   for aarch64 architecure CPUs
+   HW_ARCH_X86_64 for x86_64 Intel and AMD CPUs
+
+   HW_ARCH_AARCH64 for aarch64 architecture CPUs
 
    (see: https://docs.openstack.org/os-traits/latest/reference/traits.html)
 
