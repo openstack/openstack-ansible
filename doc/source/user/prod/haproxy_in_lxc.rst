@@ -187,7 +187,7 @@ Configuring HAProxy binding inside containers
 As IP provisioning is quite random inside containers, it may not always be
 handy to bind HAProxy to a specific IP address. If that's the case, you can
 bind HAProxy to an interface instead, since we always know the interface names
-inside containers. With that keepalived public/internal VIPs are supposed to
+inside containers. With that Keepalived public/internal VIPs are supposed to
 be added in ``used_ips``, so you still can define them freely.
 
 Example bellow shows a possible content in ``user_variables.yml``:

@@ -48,7 +48,8 @@ To address these challenges, the following changes to the basic design were made
 * Leverage DNS Round Robin (an A/AAAA record per AZ) for Public API
 * Define Internal API FQDN through /etc/hosts overrides, which are unique per
   Availability Zone
-* Define 6 keepalived instances: 3 for public and 3 for internal VIPs
+* Define 6 Keepalived instances: 3 for public and 3 for internal Virtual IP
+  addresses (VIPs)
 * Ensure HAProxy to prioritize a backend from own Availability Zone over
   "remote" ones
 
@@ -97,7 +98,6 @@ only to "local" backends first, this approach does work to distribute
 new VMs across all AZs when user does not supply AZ explicitly.
 Otherwise, the "default" AZ will be accepting significantly more
 new signups.
-
 
 Configuration examples
 ======================

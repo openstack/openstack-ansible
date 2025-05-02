@@ -166,7 +166,7 @@ The ``/etc/openstack_deploy/user_variables.yml`` file defines the global
 overrides for the default variables.
 
 For this environment, implement the load balancer on the infrastructure
-hosts. Ensure that keepalived is also configured with HAProxy in
+hosts. Ensure that Keepalived is also configured with HAProxy in
 ``/etc/openstack_deploy/user_variables.yml`` with the following content.
 
 .. literalinclude:: ../../../../etc/openstack_deploy/user_variables.yml.prod.example
