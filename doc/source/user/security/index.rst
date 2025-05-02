@@ -10,8 +10,11 @@ settings for your OpenStack-Ansible cloud.
 For understanding security design, please see
 :ref:`security-design`.
 
-.. include:: ssl-certificates.rst
-.. include:: security-headers.rst
-.. include:: security-txt.rst
-.. include:: hardening.rst
-.. include:: non-root.rst
+.. toctree::
+   :maxdepth: 2
+
+   ssl-certificates
+   security-headers
+   security-txt
+   hardening
+   non-root
