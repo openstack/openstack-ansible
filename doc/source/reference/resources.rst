@@ -1,24 +1,30 @@
 ====================
-Additional resources
+Additional Resources
 ====================
 
-Ansible resources:
+Ansible Resources
+~~~~~~~~~~~~~~~~~
 
-- `Ansible Documentation
-  <http://docs.ansible.com/ansible/>`_
+* `Ansible Documentation
+  <https://docs.ansible.com/ansible/latest/>`_
 
-- `Ansible Best Practices
-  <http://docs.ansible.com/ansible/playbooks_best_practices.html>`_
+* `Configuring Ansible
+  <https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html>`_
 
-- `Ansible Configuration
-  <http://docs.ansible.com/ansible/intro_configuration.html>`_
+* `Ansible tips and tricks
+  <https://docs.ansible.com/ansible/latest/tips_tricks/index.html>`_
 
-OpenStack resources:
+OpenStack Resources
+~~~~~~~~~~~~~~~~~~~
 
-- `OpenStack Documentation <https://docs.openstack.org/>`_
+* `OpenStack Documentation
+  <https://docs.openstack.org>`_
 
-- `OpenStack API Guide
+* `OpenStack API Documentation
   <https://docs.openstack.org/api-quick-start>`_
 
-- `OpenStack Project Developer Documentation
-  <https://docs.openstack.org/developer>`_
+Ceph Resources
+~~~~~~~~~~~~~~
+
+* `Ceph Documentation
+  <https://docs.ceph.com/en/latest/>`_
