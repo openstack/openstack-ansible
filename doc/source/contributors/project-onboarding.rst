@@ -19,31 +19,25 @@ each of them with specific use cases, and different sets of practices.
      - Repository purpose
    * - | **OpenStack-Ansible**
        | Also called *integrated repository*
-     - * https://github.com/openstack/openstack-ansible
+     - * https://opendev.org/openstack/openstack-ansible
      - Our main repository, used by deployers.
        Uses the other repositories.
    * - | The **OpenStack-Ansible roles** repositories
-     - * https://github.com/openstack/openstack-ansible-os_nova
-       * https://github.com/openstack/openstack-ansible-os_glance
-       * https://github.com/openstack/ansible-role-systemd_mount
-       * https://github.com/openstack/ansible-config_template
-       * https://github.com/openstack/ansible-hardening
+     - * https://opendev.org/openstack/openstack-ansible-os_nova
+       * https://opendev.org/openstack/openstack-ansible-os_glance
+       * https://opendev.org/openstack/ansible-role-systemd_mount
+       * https://opendev.org/openstack/ansible-config_template
+       * https://opendev.org/openstack/ansible-hardening
        * ...
      - Each role is in charge of deploying **exactly one**
        component of an OpenStack-Ansible deployment.
-   * - | The **tests repository**
-     - * https://github.com/openstack/openstack-ansible-tests
-     - | The tests repository is the location for common code used in
-         the integrated repo and role repos tests.
-       | It allows us to not repeat ourselves: it is the location of
-         common playbooks, common tasks and scripts.
    * - | The **specs** repository
-     - * https://github.com/openstack/openstack-ansible-specs
+     - * https://opendev.org/openstack/openstack-ansible-specs
      - This repository contains all the information concerning
        large bodies of work done in OpenStack-Ansible,
        split by cycle.
    * - | The **ops** repository
-     - * https://github.com/openstack/openstack-ansible-ops
+     - * https://opendev.org/openstack/openstack-ansible-ops
      - This repository is an incubator for new projects, each project
        solving a particular operational problem. Each project has its
        own folder in this repository.
@@ -95,7 +89,6 @@ Community communication channels
 IRC channel
 ^^^^^^^^^^^
 
-
 .. warning::
 
   The OpenStack Community moved the IRC network from Freenode to OFTC on May 31,
@@ -105,11 +98,12 @@ IRC channel
 The OpenStack-Ansible community communicates a lot through IRC, in
 the #openstack-ansible channel, on OFTC. This channel is
 logged, and its logs are published on
-http://eavesdrop.openstack.org/irclogs/%23openstack-ansible/.
+https://meetings.opendev.org/irclogs/%23openstack-ansible/
 
 Weekly meetings are held in our IRC channel. The schedule and
 logs can be found on
-http://eavesdrop.openstack.org/#OpenStack_Ansible_Deployment_Meeting.
+https://meetings.opendev.org/%23OpenStack_Ansible_Deployment_Meeting
+
 Next meeting agenda can be found on our
 `Meetings wiki page <https://wiki.openstack.org/wiki/Meetings/openstack-ansible>`_.
 
@@ -119,7 +113,6 @@ Mailing lists
 A member of the OpenStack-Ansible community should monitor the
 **OpenStack-discuss** `mailing lists`_.
 
-.. _mailing lists: http://lists.openstack.org/cgi-bin/mailman/listinfo
+.. _mailing lists: https://lists.openstack.org/mailman3/lists/
 
 All our communications should be prefixed with **[openstack-ansible]**.
-
