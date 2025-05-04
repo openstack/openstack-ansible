@@ -275,8 +275,8 @@ In order to achieve that we need:
      cinder_storage_availability_zone: "{{ az_name }}"
 
 
-Deploying 0 (or more than one) of component type per host
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Deploying with no component type per host (or more than one)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When OpenStack-Ansible generates its dynamic inventory, the affinity
 setting determines how many containers of a similar type are deployed on a
