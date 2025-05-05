@@ -24,11 +24,13 @@ roles, like for example storing information on how to reach
 RabbitMQ from nova role.
 
 You can override the existing group vars (and host vars) by creating
-your own folder in /etc/openstack_deploy/group_vars (and
-/etc/openstack_deploy/host_vars respectively).
+your own folder in ``/etc/openstack_deploy/group_vars`` (and
+``/etc/openstack_deploy/host_vars`` respectively).
 
 If you want to change the location of the override folder, you
-can adapt your openstack-ansible.rc file, or export
+can adapt your ``user.rc`` file (see details in
+:dev_docs:`Extending OSA with additional Ansible content <reference/configuration/extending-osa.html#defining-environment-variables-for-deployment>`),
+or export
 ``GROUP_VARS_PATH`` and ``HOST_VARS_PATH`` during your shell session.
 
 Role vars
@@ -157,7 +159,7 @@ available options are "yaml", "json", and "ini".
        config_type: ini
 
 
-Here is an example override dictionary (hash)
+Here is an example override dictionary (hash):
 
 .. code-block:: yaml
 

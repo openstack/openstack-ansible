@@ -89,7 +89,7 @@ have the following inside your ``openstack_user_config.yml``.
          ip: 172.39.123.13
          no_containers: true
 
-Example: Running galera on dedicated hosts
+Example: Running Galera on dedicated hosts
 ------------------------------------------
 
 For example, to run Galera directly on dedicated hosts, you would perform the
@@ -165,17 +165,17 @@ Example: Defining Availability Zones
 A good example of how ``is_nest`` property can be used is describing
 Availability Zones. As when operating multiple AZs it's handy to define
 AZ-specific variables, like AZ name, for all hosts in this AZ. And
-leveraging group_vars is best way of ensuring that all hosts that belong
+leveraging ``group_vars`` is best way of ensuring that all hosts that belong
 to same AZ have same configuration applied.
 
 Let's assume you have 3 controllers and each of them is placed
 in different Availability Zones. There is also a compute node in
 each Availability Zone. And we want each host or container that is placed
-physically in a specific AZ be part of it's own group (ie azN_all)
+physically in a specific AZ be part of it's own group (ie ``azN_all``)
 
 In order to achieve that we need:
 
-#. Define host groups in conf.d or openstack_user_config.yml to assign hosts
+#. Define host groups in ``conf.d`` or ``openstack_user_config.yml`` to assign hosts
    accordingly to their Availability Zones:
 
    .. code-block:: yaml
@@ -264,7 +264,7 @@ In order to achieve that we need:
          properties:
            is_nest: True
 
-#. Now you can leverage group_vars file to apply a variable to all
+#. Now you can leverage ``group_vars`` file to apply a variable to all
    containers and bare metal hosts in AZ.
    For example ``/etc/openstack_deploy/group_vars/az1_all.yml``:
 
@@ -295,7 +295,7 @@ Using ``shared-infra_hosts`` as an example, consider this
       infra3:
         ip: 172.29.236.103
 
-Three hosts are assigned to the `shared-infra_hosts` group,
+Three hosts are assigned to the ``shared-infra_hosts`` group,
 OpenStack-Ansible ensures that each host runs a single database container,
 a single Memcached container, and a single RabbitMQ container. Each host has
 an affinity of 1 by default,  which means that each host runs one of each
