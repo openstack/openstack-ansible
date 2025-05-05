@@ -260,14 +260,17 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
+        - openstack-ansible-deploy-aio_ceph-ubuntu-noble
         - openstack-ansible-deploy-aio_ceph-rockylinux-9:
             voting: false
     gate:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
+        - openstack-ansible-deploy-aio_ceph-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
+        - openstack-ansible-deploy-aio_ceph-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-stepca-jobs
