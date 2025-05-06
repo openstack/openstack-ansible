@@ -28,3 +28,5 @@ see the :dev_docs:`Contributors Guide <contributor/index.html>`.
    configuration/advanced-config.rst
    architecture/index.rst
    commands/reference.rst
+   resources.rst
+   aboutosa.rst

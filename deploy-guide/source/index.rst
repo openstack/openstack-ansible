@@ -13,7 +13,6 @@ production environment.
    instead of this document. This document is a walkthrough of a
    deployment using OpenStack-Ansible, with all of its configurability.
 
-
 Contents:
 
 .. toctree::
@@ -26,8 +25,6 @@ Contents:
    run-playbooks.rst
    verify-operation.rst
    next-steps.rst
-   app.rst
-
 
 Third-party trademarks and tradenames appearing in this document are the
 property of their respective owners. Such third-party trademarks have
