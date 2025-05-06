@@ -218,9 +218,9 @@ to those services.
 Certbot certificates
 ~~~~~~~~~~~~~~~~~~~~
 
-The HAProxy ansible role supports using certbot to automatically deploy
+The HAProxy ansible role supports using Certbot to automatically deploy
 trusted SSL certificates for the public endpoint. Each HAProxy server will
-individually request a SSL certificate using certbot.
+individually request a SSL certificate using Certbot.
 
 Certbot defaults to using Let's Encrypt as the Certificate Authority, other
 Certificate Authorities can be used by setting the
@@ -231,7 +231,7 @@ Certificate Authorities can be used by setting the
 
    haproxy_ssl_letsencrypt_certbot_server: "https://acme-staging-v02.api.letsencrypt.org/directory"
 
-The http-01 type challenge is used by certbot to deploy certificates so
+The http-01 type challenge is used by Certbot to deploy certificates so
 it is required that the public endpoint is accessible directly by the
 Certificate Authority.
 
@@ -239,9 +239,9 @@ Deployment of certificates using Let's Encrypt has been validated for
 OpenStack-Ansible using Ubuntu 22.04 (Jammy Jellyfish). Other distributions should work
 but are not tested.
 
-To deploy certificates with certbot, add the following to
+To deploy certificates with Certbot, add the following to
 ``/etc/openstack_deploy/user_variables.yml`` to enable the
-certbot function in the HAProxy ansible role, and to
+Certbot function in the HAProxy ansible role, and to
 create a new backend service called ``certbot`` to service
 http-01 challenge requests.
 
@@ -276,7 +276,7 @@ use different self-signed or user-provided TLS certificates on different HAProxy
 interfaces.
 
 The only way to use a different TLS certificates on the internal and external
-VIP is to use certbot.
+VIP is to use Certbot.
 
 Enabling TLS on the internal VIP for existing deployments will cause some
 downtime, this is because HAProxy only listens on a single well known port for
