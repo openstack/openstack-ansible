@@ -1,77 +1,98 @@
 <h3>Operating System Compatibility Matrix</h3>
-<table class="table table-bordered text-center">
+<table class="table table-bordered table-striped text-center">
     <tr>
-        <th colspan="2" rowspan="3" class="text-center active" style="vertical-align: middle">OpenStack Releases</th>
-        <th colspan="100%" class="text-center info">Operating Systems</th>
+        <th colspan="2" rowspan="3" class="align-middle bg-secondary text-white">OpenStack Releases</th>
+        <th colspan="100%" class="bg-secondary text-white">Operating Systems</th>
     </tr>
-    <tr class="info">
-        <th colspan="3" class="text-center col-lg-2">Ubuntu</th>
-        <th colspan="1" class="text-center col-lg-2">CentOS</th>
-        <th colspan="2" class="text-center col-lg-2">Debian</th>
-        <th colspan="1" class="text-center col-lg-2">Rocky Linux</th>
+    <tr class="bg-info">
+        <th colspan="3" class="bg-info">Ubuntu</th>
+        <th colspan="1" class="bg-info">CentOS</th>
+        <th colspan="2" class="bg-info">Debian</th>
+        <th colspan="1" class="bg-info">Rocky Linux</th>
     </tr>
     <tr>
         <!-- Ubuntu -->
-        <th class="text-center">20.04</th>
-        <th class="text-center">22.04</th>
-        <th class="text-center">24.04</th>
+        <th>20.04</th>
+        <th>22.04</th>
+        <th>24.04</th>
         <!-- CentOS -->
-        <th class="text-center">9 Stream</th>
+        <th>9 Stream</th>
         <!-- Debian -->
-        <th class="text-center">11</th>
-        <th class="text-center">12</th>
+        <th>11</th>
+        <th>12</th>
         <!-- Rocky Linux -->
-        <th class="text-center">9</th>
+        <th>9</th>
     </tr>
     <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">Zed</td>
+        <th rowspan="2" class="bg-light align-middle">Zed</th>
         <td>source</td>
         <td>✔</td><!-- Ubuntu 20.04 -->
         <td>✔</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
+        <td>✔</td><!-- CentOS 9s -->
         <td>✔</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td>✔</td><!-- RockyLinux 9 -->
+        <td>✔</td><!-- Rocky Linux 9 -->
     </tr>
     <tr>
         <td>distro</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
-        <td class="warning">E</td><!-- Ubuntu 22.04 -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
     </tr>
     <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">2023.1 (Antelope)</td>
+        <th rowspan="2" class="bg-light align-middle">2023.1 (Antelope)</th>
         <td>source</td>
         <td>✔</td><!-- Ubuntu 20.04 -->
         <td>✔</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
+        <td>✔</td><!-- CentOS 9s -->
         <td>✔</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td>✔</td><!-- RockyLinux 9 -->
+        <td>✔</td><!-- Rocky Linux 9 -->
     </tr>
     <tr>
         <td>distro</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
-        <td class="warning">E</td><!-- Ubuntu 22.04 -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
     </tr>
     <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">2023.2 (Bobcat)</td>
+        <th rowspan="2" class="bg-light align-middle">2023.2 (Bobcat)</th>
         <td>source</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
         <td>✔</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
+        <td>✔</td><!-- CentOS 9s -->
+        <td>✔</td><!-- Debian 11 -->
+        <td>✔</td><!-- Debian 12 -->
+        <td>✔</td><!-- Rocky Linux 9 -->
+    </tr>
+    <tr>
+        <td>distro</td>
+        <td>✘</td><!-- Ubuntu 20.04 -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 22.04 -->
+        <td>✘</td><!-- Ubuntu 24.04 -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
+        <td>✘</td><!-- Debian 11 -->
+        <td>✘</td><!-- Debian 12 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
+    </tr>
+    <tr class="active">
+        <th rowspan="2" class="bg-light align-middle">2024.1 (Caracal)</th>
+        <td>source</td>
+        <td>✘</td><!-- Ubuntu 20.04 -->
+        <td>✔</td><!-- Ubuntu 22.04 -->
+        <td>✘</td><!-- Ubuntu 24.04 -->
+        <td>✔</td><!-- CentOS 9s -->
         <td>✔</td><!-- Debian 11 -->
         <td>✔</td><!-- Debian 12 -->
         <td>✔</td><!-- RockyLinux 9 -->
@@ -79,75 +100,54 @@
     <tr>
         <td>distro</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
-        <td class="warning">E</td><!-- Ubuntu 22.04 -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 22.04 -->
         <td>✘</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
     </tr>
     <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">2024.1 (Caracal)</td>
-        <td>source</td>
-        <td>✘</td><!-- Ubuntu 20.04 -->
-        <td>✔</td><!-- Ubuntu 22.04 -->
-        <td>✘</td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
-        <td>✔</td><!-- Debian 11 -->
-        <td>✔</td><!-- Debian 12 -->
-        <td>✔</td><!-- RockyLinux 9 -->
-    </tr>
-    <tr>
-        <td>distro</td>
-        <td>✘</td><!-- Ubuntu 20.04 -->
-        <td class="warning">E</td><!-- Ubuntu 22.04 -->
-        <td>✘</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
-        <td>✘</td><!-- Debian 11 -->
-        <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
-    </tr>
-    <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">2024.2 (Dalmatian)</td>
+        <th rowspan="2" class="bg-light align-middle">2024.2 (Dalmatian)</th>
         <td>source</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
         <td>✔</td><!-- Ubuntu 22.04 -->
         <td>✔<span style="color:Tomato">✱</span></td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
+        <td>✔</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✔</td><!-- Debian 12 -->
-        <td>✔</td><!-- RockyLinux 9 -->
+        <td>✔</td><!-- Rocky Linux 9 -->
     </tr>
     <tr>
         <td>distro</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
         <td>✘</td><!-- Ubuntu 22.04 -->
-        <td class="warning">E</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 24.04 -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
     </tr>
     <tr class="active">
-        <th rowspan="2" style="vertical-align: middle">2025.1 (Epoxy)</td>
+        <th rowspan="2" class="bg-light align-middle">2025.1 (Epoxy)</th>
         <td>source</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
         <td>✔</td><!-- Ubuntu 22.04 -->
         <td>✔<span style="color:Tomato">✱</span></td><!-- Ubuntu 24.04 -->
-        <td>✔</td><!-- Centos 9s -->
+        <td>✔</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✔</td><!-- Debian 12 -->
-        <td>✔</td><!-- RockyLinux 9 -->
+        <td>✔</td><!-- Rocky Linux 9 -->
     </tr>
     <tr>
         <td>distro</td>
         <td>✘</td><!-- Ubuntu 20.04 -->
         <td>✘</td><!-- Ubuntu 22.04 -->
-        <td class="warning">E</td><!-- Ubuntu 24.04 -->
-        <td class="warning">E</td><!-- Centos 9s -->
+        <td class="bg-warning text-white">E</td><!-- Ubuntu 24.04 -->
+        <td class="bg-warning text-white">E</td><!-- CentOS 9s -->
         <td>✘</td><!-- Debian 11 -->
         <td>✘</td><!-- Debian 12 -->
-        <td class="warning">E</td><!-- RockyLinux 9 -->
+        <td class="bg-warning text-white">E</td><!-- Rocky Linux 9 -->
     </tr>
 </table>
 

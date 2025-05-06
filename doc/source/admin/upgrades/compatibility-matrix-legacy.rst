@@ -1,5 +1,3 @@
-:orphan:
-
 .. _compatibility-matrix-legacy:
 
 Compatibility Matrix of Legacy releases
