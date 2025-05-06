@@ -51,4 +51,4 @@ into the ansible roles folder.
 Inventory conventions
 ~~~~~~~~~~~~~~~~~~~~~
 
-Please confer to the inventory section of this reference.
+Please refer to the :dev_docs:`inventory section of this reference <inventory/inventory.html>`.

@@ -2,7 +2,7 @@
 OpenStack-Ansible Reference
 ===========================
 
-This chapter contains all the extra reference information
+This chapter contains all the additional reference information needed
 to deploy, configure, or upgrade an OpenStack-Ansible cloud.
 
 For information on how to deploy your OpenStack-Ansible cloud, refer to the

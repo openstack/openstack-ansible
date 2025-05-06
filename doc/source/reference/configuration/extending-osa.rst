@@ -144,7 +144,7 @@ follows:
 
 The hook variables should be configured in a suitable user_variables
 file. An example calling a playbook from a collection (installed
-using user-collection-requirements.yml) :
+using user-collection-requirements.yml):
 
 .. code-block:: bash
 
@@ -166,7 +166,6 @@ environment along with Ansible during ``bootstrap-ansible.sh`` execution.
 You can override the default path to ``user-ansible-venv-requirements.txt`` file
 with ``USER_ANSIBLE_REQUIREMENTS_FILE`` environment variable before running the
 ``bootstrap-ansible.sh`` script.
-
 
 Defining environment variables for deployment
 ---------------------------------------------
