@@ -20,21 +20,25 @@ using OpenStack-Ansible:
 
 #. Write the contents of the ``security.txt`` file in accordance with the
    standard.
+
+
 #. Define the contents of ``security.txt`` in the variable
    ``haproxy_security_txt_content`` in the
    ``/etc/openstack_deploy/user_variables.yml`` file:
 
-  .. code-block:: yaml
+    .. code-block:: yaml
 
-    haproxy_security_txt_content: |
+      haproxy_security_txt_content: |
         # This is my example security.txt file
         # Please see https://securitytxt.org/ for details of the specification of this file
 
+
 #. Update HAProxy
 
-  .. code-block:: shell-session
+      .. code-block:: shell-session
 
-    # openstack-ansible haproxy-install.yml
+        # openstack-ansible haproxy-install.yml
+
 
 Advanced security.txt ACL
 ~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -39,7 +39,6 @@ with ID ``40``. In your ``user_variables.yml`` define the following variables:
 
 .. code:: yaml
 
-
   _systemd_networkd_generic_devices:
     - NetDev:
         Name: bond0
@@ -128,11 +127,12 @@ For that we need to do the following series of changes in the
 #. In ``cidr_networks`` add a network which should be used as "public" network
    for accessing APIs. For example we will be using `203.0.113.128/28`:
 
-  .. code:: yaml
+    .. code:: yaml
 
-    cidr_networks:
-      ...
-      public_api: 203.0.113.128/28
+      cidr_networks:
+        ...
+        public_api: 203.0.113.128/28
+
 
 #. In ``used_ips`` you need to reserve IP address for your gateway and
    ``haproxy_keepalived_external_vip_cidr``/``external_lb_vip_address``
@@ -165,6 +165,7 @@ For that we need to do the following series of changes in the
             static_routes:
               - cidr: 0.0.0.0/0
                 gateway: 203.0.113.129
+
 
 While these are all changes, that need to be done in
 ``openstack_user_config.yml``, there is one more override that needs to be
@@ -202,6 +203,7 @@ Example bellow shows a possible content in ``user_variables.yml``:
     haproxy_keepalived_internal_vip_cidr: 172.29.236.9/32
     haproxy_keepalived_external_interface: "{{ haproxy_bind_external_lb_vip_interface }}"
     haproxy_keepalived_internal_interface: "{{ haproxy_bind_internal_lb_vip_interface }}"
+
 
 Alternatively, you can detect IPs used inside your containers to configure
 HAProxy binds. This can be done by reffering to ``container_networks`` mapping:
