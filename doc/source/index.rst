@@ -2,12 +2,13 @@
 OpenStack-Ansible Documentation
 ===============================
 
-Abstract
-~~~~~~~~
-OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
-configuration of an OpenStack environment.
+Introduction
+~~~~~~~~~~~~
 
-Documentation for each of the following releases is available.
+OpenStack-Ansible provides Ansible playbooks and roles for deploying
+and configuring an OpenStack environment.
+
+Documentation is available for each of the following releases.
 
 2025.1 (Epoxy): Under development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
