@@ -18,7 +18,6 @@ see the :dev_docs:`Operations Guide <admin/index.html>`.
 For in-depth technical information, see the
 :dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
 
-
 Contents:
 
 .. toctree::
@@ -32,4 +31,3 @@ Contents:
    periodic-work
    core-reviewers
    distributions
-

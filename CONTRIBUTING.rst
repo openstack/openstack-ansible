@@ -16,4 +16,4 @@ Bugs should be filed on Launchpad:
 For more specific information about contributing to this repository, see the
 openstack-ansible contributor guide:
 
-    https://docs.openstack.org/openstack-ansible/latest/contributor/contributing.html
+    https://docs.openstack.org/openstack-ansible/latest/contributors/contributing.html
