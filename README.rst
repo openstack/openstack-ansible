@@ -46,11 +46,11 @@ https://opendev.org/openstack/openstack-ansible-<ROLENAME>.
 .. _Home Page: https://governance.openstack.org/tc/reference/projects/openstackansible.html
 .. _Deployment Guide: https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest
 .. _Quick Start: https://docs.openstack.org/openstack-ansible/latest/user/aio/quickstart.html
-.. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributor/index.html
+.. _Developer Documentation: https://docs.openstack.org/openstack-ansible/latest/contributors/index.html
 .. _Source: https://opendev.org/openstack/openstack-ansible
-.. _OpenStack Mailing Lists: http://lists.openstack.org/
+.. _OpenStack Mailing Lists: https://lists.openstack.org/mailman3/lists/
 .. _OFTC network: https://www.oftc.net/
-.. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/draft/configure.html#advanced-service-configuration
+.. _Role Documentation: https://docs.openstack.org/project-deploy-guide/openstack-ansible/latest/configure.html#advanced-service-configuration
 
 Resources
 #########
@@ -59,4 +59,4 @@ Resources
 * Documentation: https://docs.openstack.org/openstack-ansible/latest/
 * Source: https://opendev.org/openstack/openstack-ansible
 * Bugs: https://bugs.launchpad.net/openstack-ansible
-* Release notes:  https://docs.openstack.org/releasenotes/openstack-ansible/
+* Release notes: https://docs.openstack.org/releasenotes/openstack-ansible/
