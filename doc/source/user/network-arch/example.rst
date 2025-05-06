@@ -158,11 +158,10 @@ networks not only through routers, but also directly:
    :alt: Network Interface Layout - Single Bond
 
 
-Open vSwitch and Linux Bridge
-+++++++++++++++++++++++++++++
+Open vSwitch
+++++++++++++
 
-The following diagram demonstrates hosts using a single interface for OVS and
-LinuxBridge Scenario:
+The following diagram demonstrates hosts using a single interface for OVS Scenario:
 
 .. image:: ../figures/network-arch-single-interface.png
    :width: 100%
@@ -216,11 +215,10 @@ networks not only through routers, but also directly:
    :alt: Network Interface Layout - Multiple Bonds
 
 
-Open vSwitch and Linux Bridge
-+++++++++++++++++++++++++++++
+Open vSwitch
+++++++++++++
 
-The following diagram demonstrates hosts using multiple interfaces for OVS and
-LinuxBridge Scenario:
+The following diagram demonstrates hosts using multiple interfaces for OVS Scenario:
 
 .. image:: ../figures/network-arch-multiple-interfaces.png
    :width: 100%
