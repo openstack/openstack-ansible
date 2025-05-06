@@ -251,8 +251,8 @@ http-01 challenge requests.
     haproxy_ssl_letsencrypt_enable: True
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
-TLS for HAProxy Internal VIP
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TLS for HAProxy Internal Virtual IP (VIP)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As well as load balancing public endpoints, HAProxy is also used to load balance
 internal connections.
