@@ -74,15 +74,15 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 2f2912a30812c0fa46a380c0a57ac09989e8758e
+  version: 6684e16be27ccdb2ed260c2eedc7db0c4b185c27
   trackbranch: stable/2024.2
-  shallow_since: '2024-11-27'
+  shallow_since: '2025-05-06'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
   version: e22724aa2b3815ddad2e815cb8c44a59a3c5360d
   trackbranch: stable/2024.2
-  shallow_since: '2024-11-27'
+  shallow_since: '2025-02-24'
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
@@ -92,9 +92,9 @@
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: 41470784fd9dc2438799f45417a9fbcef0d069d3
+  version: 504024d047e066d767e9b71c10931d0c8c8d42ba
   trackbranch: stable/2024.2
-  shallow_since: '2024-11-27'
+  shallow_since: '2025-03-20'
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
@@ -230,9 +230,9 @@
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
-  version: f8148653a16add4b70ccb9050b5dc66259be5dfa
+  version: 5ce463551aeda103d218d4bc66347facaa625fcf
   trackbranch: stable/2024.2
-  shallow_since: '2024-11-27'
+  shallow_since: '2025-03-16'
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
@@ -292,7 +292,7 @@
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
   version: e5ca2ec50570a0d28edaa37bdcd2fe4f54f32c40
   trackbranch: stable/2024.2
-  shallow_since: '2024-12-24'
+  shallow_since: '2025-03-03'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
@@ -333,6 +333,6 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 5ac030cd3aa9b671ed09fc6e4f10991f08cc06a4
+  version: 35131407e9858cc168baa1590f236c092336d0e3
   trackbranch: stable-8.0
-  shallow_since: '2025-02-10'
+  shallow_since: '2025-03-17'
