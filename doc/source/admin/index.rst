@@ -28,7 +28,6 @@ the major upgrades procedures.
    openstack-operations.rst
    maintenance-tasks.rst
    scale-environment.rst
-   monitoring-systems.rst
    backup-restore.rst
    troubleshooting.rst
    upgrades/compatibility-matrix.rst
