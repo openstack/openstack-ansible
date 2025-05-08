@@ -53,7 +53,6 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-focal
 
 - project-template:
     name: openstack-ansible-upgrade-infra_lxc-jobs
@@ -158,8 +157,6 @@
         - openstack-ansible-deploy-aio_metal-rockylinux-9
         - openstack-ansible-deploy-aio_metal-ubuntu-focal
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-focal
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bullseye
