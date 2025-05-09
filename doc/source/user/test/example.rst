@@ -1,3 +1,5 @@
+.. _test-environment-example:
+
 ========================
 Test environment example
 ========================

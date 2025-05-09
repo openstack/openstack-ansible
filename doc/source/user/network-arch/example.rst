@@ -250,15 +250,11 @@ For more information on how to properly configure network interface files
 and OpenStack-Ansible configuration files for different deployment scenarios,
 please refer to the following:
 
-* :dev_docs:`Configuring a test environment
-  <user/test/example.html>`
-* :dev_docs:`Configuring a homogeneous production environment
-  <user/prod/example.html>`
-* :dev_docs:`Using provider network groups for a heterogeneous environment
-  <user/prod/provnet_groups.html>`
+* :ref:`test-environment-example`
+* :ref:`production-environment-config`
+* :ref:`provider-network-groups-config`
 
 For network agent and container networking toplogies, please refer to the
 following:
 
-* :dev_docs:`Container networking architecture
-  <reference/architecture/container-networking.html>`
+* :ref:`container-networking`

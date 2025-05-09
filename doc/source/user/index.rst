@@ -1,3 +1,5 @@
+.. _user-guide:
+
 ==========
 User Guide
 ==========
@@ -16,8 +18,7 @@ see the :dev_docs:`Operations Guide <admin/index.html>`.
 For information on how to contribute, extend or develop OpenStack-Ansible,
 see the :dev_docs:`Developer Documentation <contributors/index.html>`.
 
-For in-depth technical information, see the
-:dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
+For in-depth technical information, see the :ref:`reference-guide`.
 
 .. toctree::
    :maxdepth: 1

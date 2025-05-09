@@ -22,8 +22,7 @@ This project does **not** PXE boot hosts. Host setup and lifecycle management
 is left to the deployer. This project also requires that bridges are setup
 within the hosts to allow the containers to attach to a local bridge for
 network access.
-See also the :dev_docs:`Container networking
-<reference/architecture/container-networking.html>`.
+See also the :ref:`container-networking`.
 
 Ansible Usage
 ~~~~~~~~~~~~~

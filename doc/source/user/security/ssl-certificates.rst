@@ -1,3 +1,5 @@
+.. _securing-services-with-ssl-certificates:
+
 Securing services with SSL certificates
 =======================================
 

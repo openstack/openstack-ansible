@@ -1,3 +1,5 @@
+.. _operations-guide:
+
 ================
 Operations Guide
 ================
@@ -10,13 +12,12 @@ For information on how to deploy your OpenStack-Ansible cloud, refer to the
 instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
-For user guides, see the :dev_docs:`User Guide <user/index.html>`.
+For user guides, see the :ref:`user-guide`.
 
 For information on how to contribute, extend or develop OpenStack-Ansible,
 see the :dev_docs:`Developer Documentation <contributors/index.html>`.
 
-For in-depth technical information, see the
-:dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
+For in-depth technical information, see the :ref:`reference-guide`.
 
 This guide ranges from first operations to verify your deployment, to
 the major upgrades procedures.
