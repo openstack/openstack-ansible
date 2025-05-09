@@ -138,7 +138,6 @@ the OpenStack API and dashboard, as an administrator.
       | feb20ed4-4346-4ad9-b50c-41efd784f2e9 | L3 agent             | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-l3-agent          |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
 
-
 #. Run an OpenStack command to ensure the block storage services are
    working (depends on your configuration).
    For example:
@@ -168,7 +167,7 @@ the OpenStack API and dashboard, as an administrator.
       +--------------------------------------+--------+--------+
 
 #. Check the backend API health on your load balancer nodes.
-   For example, if using haproxy, ensure no backend is marked
+   For example, if using HAProxy, ensure no backend is marked
    as "DOWN":
 
    .. code ::

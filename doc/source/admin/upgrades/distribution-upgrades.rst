@@ -81,9 +81,9 @@ Pre-Requisites
 
    The 'primary' will be the LAST box you'll want to reinstall.
 
-   *  HAProxy/keepalived
+   *  HAProxy/Keepalived
 
-      Finding your HAProxy/keepalived primary is as easy as
+      Finding your HAProxy/Keepalived primary is as easy as
 
       .. code:: console
 
@@ -136,7 +136,7 @@ Deploying Infrastructure Hosts
    If you wish to minimise error states in HAProxy, services on hosts which are
    being reinstalled can be set in maintenance mode (MAINT).
 
-   Log into your primary HAProxy/keepalived and run something similar to
+   Log into your primary HAProxy/Keepalived and run something similar to
 
    .. code:: console
 
@@ -197,14 +197,14 @@ Deploying Infrastructure Hosts
 
       openstack-ansible openstack.osa.setup_hosts --limit localhost,reinstalled_host*
 
-#. This step should be executed when you are re-configuring one of haproxy
+#. This step should be executed when you are re-configuring one of HAProxy
    hosts
 
-   Since configuration of haproxy backends happens during individual service
+   Since configuration of HAProxy backends happens during individual service
    provisioning, we need to ensure that all backends are configured before
-   enabling keepalived to select this host.
+   enabling Keepalived to select this host.
 
-   Commands below will configure all required backends on haproxy nodes:
+   Commands below will configure all required backends on HAProxy nodes:
 
    .. code:: console
 
@@ -214,7 +214,7 @@ Deploying Infrastructure Hosts
       openstack-ansible openstack.osa.rabbitmq_server --tags haproxy-service-config
       openstack-ansible openstack.osa.setup_openstack --tags haproxy-service-config
 
-   Once this is done, you can deploy keepalived again:
+   Once this is done, you can deploy Keepalived again:
 
    .. code:: console
 
@@ -241,7 +241,7 @@ Deploying Infrastructure Hosts
    #. Temporarily set your primary Galera in MAINT in HAProxy.
 
       In order to prevent role from making your primary Galera
-      as UP in haproxy, create an empty file ``/var/tmp/clustercheck.disabled``
+      as UP in HAProxy, create an empty file ``/var/tmp/clustercheck.disabled``
       . You can do this with ad-hoc:
 
       .. code:: console
