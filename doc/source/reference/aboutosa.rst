@@ -17,7 +17,7 @@ OpenStack-Ansible Manifesto
 
 All the design considerations (the container architecture, the ability to
 override any code, the network considerations, etc.) of this project are
-listed in our :dev_docs:`architecture reference <reference/architecture/index.html>`.
+listed in our :ref:`architecture` reference.
 
 Why choose OpenStack-Ansible?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
