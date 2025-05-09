@@ -1,7 +1,6 @@
 Firewalls
 =========
 
-
 OpenStack-Ansible does not configure firewalls for its infrastructure. It is
 up to the deployer to define the perimeter and its firewall configuration.
 
@@ -45,7 +44,7 @@ the following:
 
 .. note::
 
-   `Haproxy <https://opendev.org/openstack/openstack-ansible/src/commit/6520d0bb2c689ed7caa5df581be6a966133cdce0/inventory/group_vars/haproxy/haproxy.yml>`_
+   `HAProxy <https://opendev.org/openstack/openstack-ansible/src/commit/6520d0bb2c689ed7caa5df581be6a966133cdce0/inventory/group_vars/haproxy/haproxy.yml>`_
    can be configured with OpenStack-Ansible.
    The automatically generated ``/etc/haproxy/haproxy.cfg`` file have
    enough information on the ports to open for your environment.
