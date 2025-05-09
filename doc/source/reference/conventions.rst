@@ -25,7 +25,7 @@ It sources an environment variable file located in:
 ``/usr/local/bin/openstack-ansible.rc``.
 
 Userspace configurations
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 All the userspace configurations are expected to be in
 ``/etc/openstack_deploy/``.
@@ -33,7 +33,7 @@ All the userspace configurations are expected to be in
 Ansible configuration
 =====================
 
-Ansible.cfg
+ansible.cfg
 ~~~~~~~~~~~
 
 There is no ``ansible.cfg`` provided with OpenStack-Ansible.
@@ -51,4 +51,4 @@ into the ansible roles folder.
 Inventory conventions
 ~~~~~~~~~~~~~~~~~~~~~
 
-Please refer to the :dev_docs:`inventory section of this reference <inventory/inventory.html>`.
+Please refer to the :ref:`inventory` section of this reference.
