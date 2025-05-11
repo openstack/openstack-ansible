@@ -425,4 +425,7 @@ Destroying Containers
    The lxc_hosts host group must be included as the playbook and roles executed require the
    use of facts from the hosts.
 
-.. include:: scaling-swift.rst
+.. toctree::
+   :maxdepth: 2
+
+   scaling-swift

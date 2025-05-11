@@ -7,7 +7,9 @@ are integral to the operations support in an OpenStack-Ansible deployment.
 
 It explains operations such as managing images, instances, or networks.
 
+.. toctree::
+   :maxdepth: 2
 
-.. include:: openstack-operations/managing-images.rst
-.. include:: openstack-operations/managing-instances.rst
-.. include:: openstack-operations/managing-networks.rst
+   openstack-operations/managing-images
+   openstack-operations/managing-instances
+   openstack-operations/managing-networks
