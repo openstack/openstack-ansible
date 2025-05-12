@@ -6,7 +6,7 @@ OpenStack-Ansible (OSA) uses the `Ansible <https://docs.ansible.com/ansible/late
 IT automation engine to deploy an OpenStack environment on
 
 .. raw:: HTML
-    :file: ../../../deploy-guide/source/supported-platforms.html
+    :file: ../deploy-guide/source/supported-platforms.html
 
 For isolation and ease of maintenance, all OpenStack services are installed by
 default from source code into python virtual environments.
@@ -27,7 +27,7 @@ Why choose OpenStack-Ansible?
 * Supports the major Linux distributions
 
   .. raw:: HTML
-      :file: ../../../deploy-guide/source/supported-platforms.html
+      :file: ../deploy-guide/source/supported-platforms.html
 
 * Offers automation for upgrades between major OpenStack releases.
 * Uses OpenStack defaults for each of the project roles, and provides
