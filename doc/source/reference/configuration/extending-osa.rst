@@ -76,7 +76,7 @@ the location of a YAML file which ansible-galaxy can consume,
 specifying which roles to download and install.
 The default value for this is ``ansible-role-requirements.yml``.
 
-To completely override the ansible-role-requirement file you can define
+To completely override the ``ansible-role-requirement.yml`` file you can define
 the environment variable ``ANSIBLE_ROLE_FILE`` before running the
 ``bootstrap-ansible.sh`` script. With this approach it is now the
 responsibility of the deployer to maintain appropriate versions pins
@@ -144,9 +144,9 @@ follows:
  * ``pre_setup_openstack_hook``
  * ``post_setup_openstack_hook``
 
-The hook variables should be configured in a suitable user_variables
+The hook variables should be configured in a suitable ``user_variables.yml``
 file. An example calling a playbook from a collection (installed
-using user-collection-requirements.yml):
+using ``user-collection-requirements.yml``):
 
 .. code-block:: bash
 
