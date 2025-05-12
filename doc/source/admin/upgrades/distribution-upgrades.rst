@@ -14,7 +14,7 @@ release to the next.
 Introduction
 ============
 
-OpenStack Ansible supports operating system distribution upgrades during
+OpenStack-Ansible supports operating system distribution upgrades during
 specific release cycles. These can be observed by consulting the operating
 system compatibility matrix, and identifying where two versions of the same
 operating system are supported.
@@ -22,14 +22,14 @@ operating system are supported.
 Upgrades should be performed in the order specified in this guide to minimise
 the risk of service interruptions. Upgrades must also be carried out by
 performing a fresh installation of the target system's operating system, before
-running openstack-ansible to install services on this host.
+running OpenStack-Ansible to install services on this host.
 
 Ordering
 ========
 
 This guide includes a suggested order for carrying out upgrades. This may need
 to be adapted dependent on the extent to which you have customised your
-OpenStack Ansible deployment.
+OpenStack-Ansible deployment.
 
 Critically, it is important to consider when you upgrade 'repo'
 hosts/containers. At least one 'repo' host should be upgraded before you
@@ -60,12 +60,12 @@ Pre-Requisites
 ==============
 
 *  Ensure that all hosts in your target deployment have been installed and
-   configured using a matching version of OpenStack Ansible. Ideally perform a
+   configured using a matching version of OpenStack-Ansible. Ideally perform a
    minor upgrade to the latest version of the OpenStack release cycle which you
    are currently running first in order to reduce the risk of encountering
    bugs.
 
-*  Check any OpenStack Ansible variables which you customise to ensure that
+*  Check any OpenStack-Ansible variables which you customise to ensure that
    they take into account the new and old operating system version (for example
    custom package repositories and version pinning).
 
@@ -121,7 +121,7 @@ Warnings
    * Repo Server
    * Keystone
 
-*  In the same way as OpenStack Ansible major (and some minor) upgrades, there
+*  In the same way as OpenStack-Ansible major (and some minor) upgrades, there
    will be brief interruptions to the entire Galera and RabbitMQ clusters
    during the upgrade which will result in brief service interruptions.
 
@@ -318,11 +318,11 @@ Deploying Infrastructure Hosts
       openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=enabled
 
 
-Deploying Compute & Network Hosts
-=================================
+Deploying Compute and Network Hosts
+===================================
 
-#. Disable the hypervisor service on compute hosts and migrate any VMs to
-   another available hypervisor.
+#. Disable the hypervisor service on compute hosts and migrate
+   any instances to another available hypervisor.
 
 #. Reinstall a host's operating system
 

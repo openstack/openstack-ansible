@@ -89,7 +89,7 @@ one of the nodes.
 
    Please also have a look at `upstream starting a cluster page <https://galeracluster.com/documentation-webpages/startingcluster.html>`_
 
-   This can also be done with the help of ansible using the shell
+   This can also be done with the help of Ansible using the shell
    module:
 
    .. code-block:: shell-session
@@ -118,7 +118,7 @@ one of the nodes.
        wsrep_cluster_status      Primary
 
 #. Restart MariaDB on the other nodes (replace [0] from previous
-   ansible command with [1:]) and verify that they rejoin the
+   Ansible command with [1:]) and verify that they rejoin the
    cluster.
 
    .. code-block:: shell-session
@@ -169,7 +169,7 @@ bootstrap using this ad-hoc:
 
 The cluster comes back online after completion of this command. If this
 fails, please review `restarting the cluster`_ and `recovering the primary
-component`_ in the galera documentation as they're invaluable for a full
+component`_ in the Galera documentation as they're invaluable for a full
 cluster recovery.
 
 .. _restarting the cluster: https://galeracluster.com/library/training/tutorials/restarting-cluster.html

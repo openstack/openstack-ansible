@@ -80,7 +80,7 @@ To completely override the ansible-role-requirement file you can define
 the environment variable ``ANSIBLE_ROLE_FILE`` before running the
 ``bootstrap-ansible.sh`` script. With this approach it is now the
 responsibility of the deployer to maintain appropriate versions pins
-of the ansible roles if an upgrade is required.
+of the Ansible roles if an upgrade is required.
 
 If you want to extend or just partially override content of the
 ``ansible-role-requirements.yml`` file you can create a new config file
@@ -98,7 +98,6 @@ will override those in ``ansible-role-requirements.yml``. In case when
 
 It is easy for a deployer to keep this file under their own version
 control and out of the OpenStack-Ansible tree.
-
 
 Adding new or overriding collections in your OpenStack-Ansible installation
 ---------------------------------------------------------------------------

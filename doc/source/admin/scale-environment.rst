@@ -46,7 +46,7 @@ needed in an environment, it is possible to create additional nodes.
 
       # openstack-ansible openstack.osa.openstack_hosts_setup -e openstack_hosts_group=all --tags openstack_hosts-file
 
-#. Next we need to expand galera/rabbitmq clusters, which is done during
+#. Next we need to expand Galera/RabbitMQ clusters, which is done during
    ``setup-infrastructure.yml``. So we will run this playbook without limits.
 
    .. warning::
@@ -66,7 +66,7 @@ needed in an environment, it is possible to create additional nodes.
 
       # openstack-ansible openstack.osa.setup_infrastructure -e galera_force_bootstrap=true
 
-#. Once infrastructure playboks are done, it's turn of openstack services to be
+#. Once infrastructure playboks are done, it's turn of OpenStack services to be
    deployed. Most of the services are fine to be ran with limits, but some,
    like keystone, are not. So we run keystone playbook separately from all others:
 
@@ -121,9 +121,9 @@ cluster.
    ``/opt/openstack-ansible/scripts/add-compute.sh``.
 
    You can provide this script with extra tasks that will be executed
-   before or right after OSA roles. To do so you should set environment
-   variables ``PRE_OSA_TASKS`` or ``POST_OSA_TASKS`` with plays to run devided
-   with semicolon:
+   before or right after OpenStack-Ansible roles. To do so you should
+   set environment variables ``PRE_OSA_TASKS`` or ``POST_OSA_TASKS``
+   with plays to run devided with semicolon:
 
    .. code-block:: shell-session
 
@@ -151,7 +151,7 @@ new node.
 Remove a compute host
 ~~~~~~~~~~~~~~~~~~~~~
 
-The `openstack-ansible-ops <https://opendev.org/openstack/openstack-ansible-ops>`_
+The `OpenStack-Ansible Operator Tooling <https://opendev.org/openstack/openstack-ansible-ops>`_
 repository contains a playbook for removing a compute host from an
 OpenStack-Ansible environment.
 To remove a compute host, follow the below procedure.
@@ -236,7 +236,7 @@ is used.
       # nova reboot —hard $INSTANCE_UUID
 
 #. Find the volumes to check the instance has successfully booted and is
-   at the login  :
+   at the login:
 
    .. code::
 

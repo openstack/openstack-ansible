@@ -15,7 +15,7 @@ variables for the ports used within the scope of the role. Reviewing the
 documentation allow you to find the variable names if you want to use a
 different port.
 
-.. note:: OpenStack-Ansible's group vars conveniently expose the vars outside of the
+.. note:: OpenStack-Ansible group vars conveniently expose the vars outside of the
    `role scope <https://opendev.org/openstack/openstack-ansible/src/inventory/group_vars/all/all.yml>`_
    in case you are relying on the OpenStack-Ansible groups to
    configure your firewall.

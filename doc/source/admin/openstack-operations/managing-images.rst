@@ -55,7 +55,7 @@ configuration and management.
 
       $ lxc-attach -n `lxc-ls -1 | grep utility | head -n 1`
 
-Use the openstack client within the utility container to manage all glance images.
-`See the openstack client official documentation on managing images
+Use the OpenStack client within the utility container to manage all glance images.
+`See the OpenStack client official documentation on managing images
 <https://docs.openstack.org/image-guide/create-images-manually.html>`_.
 
