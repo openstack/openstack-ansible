@@ -96,9 +96,9 @@ interfaces to provider bridges:
 - ``host_bind_override``
 - ``network_interface``
 
-The ``host_bind_override`` override is used for LinuxBridge-based deployments,
-and requires a physical interface name which will then be used by the
-LinuxBridge agent for flat and vlan-based provider and tenant network traffic.
+The ``host_bind_override`` key is used to replace an LXC-related interface
+name with a physical interface name when a component is deployed on bare metal hosts.
+It will be used to populate ``network_mappings`` for Neutron.
 
 The ``network_interface`` override is used for Open vSwitch and OVN-based deployments,
 and requires a physical interface name which will be connected to the provider bridge
