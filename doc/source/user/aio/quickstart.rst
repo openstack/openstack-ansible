@@ -27,7 +27,7 @@ Recommended server resources:
 * 80GB free disk space on the root partition, or 60GB+ on a blank
   secondary disk. Using a secondary disk requires the use of the
   ``bootstrap_host_data_disk_device`` parameter. Please see
-  `Building an AIO`_ for more details.
+  :ref:`building-an-aio` for more details.
 * 16GB RAM
 
 It is `possible` to perform AIO builds within a virtual machine for
@@ -37,6 +37,7 @@ nodes for specific roles are recommended.
 
 .. _hardware-assisted virtualization: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
 
+.. _building-an-aio:
 
 Building an AIO
 ---------------
@@ -335,7 +336,7 @@ variables sourced from an ``openrc`` file or the newer ``clouds.yaml`` file.
 
 .. __: https://opendev.org/openstack/python-openstackclient
 .. __: https://opendev.org/openstack/openstacksdk
-.. __: https://opendev.org/openstack/gophercloud
+.. __: https://github.com/gophercloud/gophercloud
 
 OpenStack-Ansible provides the ``openstack_openrc`` role for creating these
 configuration files as well as a number of utilities such as *openstackclient*.
@@ -453,7 +454,7 @@ dropdown in the top-right corner and select ``OpenStack RC File``.
    document.
 
    More information about SSL certificate configuration can be found in the
-   :doc:`security guide </user/security/ssl-certificates>`.
+   :ref:`securing-services-with-ssl-certificates`.
 
 Once one of these files have been created, you can use it to interact with your
 deployment using most standard clients and libraries. For example, to list
@@ -480,9 +481,8 @@ This is done by executing the following:
    # openstack-ansible -e galera_ignore_cluster_state=true galera-install.yml
 
 If this fails to get the database cluster back into a running state, then
-please make use of the
-`Galera Cluster Recovery </admin/maintenance-tasks.html#galera-cluster-recovery>`_
-section in the operations guide.
+please make use of the :ref:`galera-cluster-recovery`
+section in the :ref:`operations-guide`.
 
 Rebuilding an AIO
 -----------------
