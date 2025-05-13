@@ -13,7 +13,7 @@ instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
 For information on how to manage and operate OpenStack-Ansible, see the
-see the :dev_docs:`Operations Guide <admin/index.html>`.
+see the :ref:`operations-guide`.
 
 For information on how to contribute, extend or develop OpenStack-Ansible,
 see the :dev_docs:`Developer Documentation <contributors/index.html>`.
