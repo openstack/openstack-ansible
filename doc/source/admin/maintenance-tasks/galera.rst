@@ -87,7 +87,8 @@ one of the nodes.
        # systemctl start mariadb
        # systemctl set-environment _WSREP_NEW_CLUSTER=''
 
-   Please also have a look at `upstream starting a cluster page <https://galeracluster.com/documentation-webpages/startingcluster.html>`_
+   Please also have a look at
+   `Starting the Cluster <https://galeracluster.com/library/training/tutorials/starting-cluster.html>`_.
 
    This can also be done with the help of Ansible using the shell
    module:
