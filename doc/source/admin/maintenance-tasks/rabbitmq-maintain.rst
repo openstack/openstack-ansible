@@ -16,16 +16,6 @@ used. There are alternatives that may work in more restrictive environments.
 For more details on that setup, see
 `Inet Configuration <https://www.erlang.org/doc/apps/erts/inet_cfg.html>`_.
 
-
-.. note::
-
-   There is currently an Ansible bug in regards to ``HOSTNAME``. If
-   the host ``.bashrc`` holds a var named ``HOSTNAME``, the container where the
-   ``lxc_container`` module attaches will inherit this var and potentially
-   set the wrong ``$HOSTNAME``. See
-   `the Ansible fix <https://github.com/ansible/ansible/pull/22246>`_ which will
-   be released in Ansible version 2.3.
-
 Create a RabbitMQ cluster
 -------------------------
 
