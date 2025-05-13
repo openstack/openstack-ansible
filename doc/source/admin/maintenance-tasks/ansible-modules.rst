@@ -42,8 +42,8 @@ limit the command as follows:
    Run the ad-hoc Ansible commands from the ``openstack-ansible/playbooks``
    directory.
 
-For more information, see `Inventory <https://docs.ansible.com/ansible/intro_inventory.html>`_
-and `Patterns <https://docs.ansible.com/ansible/intro_patterns.html>`_.
+For more information, see `Inventory <https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html>`_
+and `Patterns <https://docs.ansible.com/ansible/latest/inventory_guide/intro_patterns.html>`_.
 
 Running the shell module
 ------------------------
@@ -76,7 +76,7 @@ to :command:`chdir=/home/user ls` when running Ansible from the CLI:
    $ ansible compute_hosts -m shell -a 'ls -la /home/user'
 
 For more information, see `shell - Execute commands in nodes
-<https://docs.ansible.com/ansible/shell_module.html>`_.
+<https://docs.ansible.com/ansible/latest/collections/ansible/builtin/shell_module.html>`_.
 
 Running the copy module
 -----------------------
@@ -85,7 +85,7 @@ The copy module copies a file on a local machine to remote locations. To copy
 files from remote locations to the local machine you would use the fetch
 module. If you need variable interpolation in copied files, use the template
 module. For more information, see `copy - Copies files to remote locations
-<https://docs.ansible.com/ansible/copy_module.html>`_.
+<https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html>`_.
 
 The following example shows how to move a file from your deployment host to the
 ``/tmp`` directory on a set of remote machines:
@@ -130,9 +130,7 @@ Using tags
 
 Tags are similar to the limit flag for groups, except tags are used to only run
 specific tasks within a playbook. For more information on tags, see
-`Tags <http://ansible-docs.readthedocs.io/zh/stable-2.0/rst/playbooks_tags.html>`_
-and `Understanding ansible tags
-<http://www.caphrim.net/ansible/2015/05/24/understanding-ansible-tags.html>`_.
+`Tags <https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tags.html>`_.
 
 Ansible forks
 -------------
@@ -163,8 +161,6 @@ For more information about forks, please see the following references:
 
 * OpenStack-Ansible `Bug 1479812`_
 * Ansible `forks`_ entry for ansible.cfg
-* `Ansible Performance Tuning`_
 
 .. _Bug 1479812: https://bugs.launchpad.net/openstack-ansible/+bug/1479812
 .. _forks: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#cmdoption-ansible-playbook-f
-.. _Ansible Performance Tuning: https://www.ansible.com/blog/ansible-performance-tuning
