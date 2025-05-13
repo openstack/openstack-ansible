@@ -58,6 +58,10 @@ We need to make adjustments to each HAProxy service definition to:
     haproxy_base_service_overrides:
       haproxy_maps:
         - 'use_backend %[req.hdr(host),map_dom(/etc/haproxy/base_domain.map)]'
+      haproxy_map_entries:
+        - name: base_domain
+          entries:
+            - "# Domain map file - this comment is defined in the base frontend config"
 
 * Populate a "base" map file with search patterns per service backend. As each
   service is going to use its own FQDN we need to inform HAProxy which backend
