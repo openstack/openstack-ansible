@@ -537,7 +537,7 @@ a JSON file that is named after its hostname. The facts for that host
 will be regenerated on the next playbook run.
 
 
-Failed ansible playbooks during an upgrade
+Failed Ansible playbooks during an upgrade
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -604,7 +604,6 @@ To dump traffic on the ``br-mgmt`` bridge, use ``tcpdump`` to see all
 communications between the various containers. To narrow the focus,
 run ``tcpdump`` only on the desired network interface of the
 containers.
-
 
 Restoring inventory from backup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

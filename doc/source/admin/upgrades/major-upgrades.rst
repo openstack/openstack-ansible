@@ -113,8 +113,8 @@ Make a backup of the configuration of the environment:
     # source_series_backup_file="/openstack/backup-openstack-ansible-|previous_series_name|.tar.gz"
     # tar zcf ${source_series_backup_file} /etc/openstack_deploy /etc/ansible/ /usr/local/bin/openstack-ansible.rc
 
-Bootstrap the new Ansible and OSA roles
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bootstrap the new Ansible and OpenStack-Ansible roles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To ensure that there is no currently set ANSIBLE_INVENTORY to override
 the default inventory location, we unset the environment variable.
@@ -141,14 +141,15 @@ in the procedure, given that most playbooks executed are in this directory.
 
     # cd playbooks
 
-Implement changes to OSA configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Implement changes to OpenStack-Ansible configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If there have been any OSA variable name changes or environment/inventory
-changes, there is a playbook to handle those changes to ensure service
-continuity in the environment when the new playbooks run. The playbook is
-tagged to ensure that any part of it can be executed on its own or skipped.
-Please review the contents of the playbook for more information.
+If there have been any OpenStack-Ansible variable name changes or
+environment/inventory changes, there is a playbook to handle those changes
+to ensure service continuity in the environment when the new playbooks run.
+The playbook is tagged to ensure that any part of it can be executed on
+its own or skipped. Please review the contents of the playbook for
+more information.
 
 .. code-block:: console
 

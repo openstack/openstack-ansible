@@ -4,7 +4,7 @@ Use the command line clients
 This section describes some of the more common commands to
 use your OpenStack cloud.
 
-Log in to any utility container or install the openstack client on
+Log in to any utility container or install the OpenStack client on
 your machine, and run the following commands:
 
 The **openstack flavor list** command lists the *flavors* that are

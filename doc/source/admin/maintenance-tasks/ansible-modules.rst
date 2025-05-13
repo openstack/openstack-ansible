@@ -3,7 +3,7 @@ Running ad-hoc Ansible plays
 
 Being familiar with running ad-hoc Ansible commands is helpful when
 operating your OpenStack-Ansible deployment. For a review, we can look at the
-structure of the following ansible command:
+structure of the following Ansible command:
 
 .. code-block:: console
 
