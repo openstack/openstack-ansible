@@ -59,6 +59,12 @@
             - rocky-devel.repo
             - rocky-addons.repo
 
+        - name: Ensure /etc has proper permissions
+          ansible.builtin.file:
+            path: /etc
+            mode: "0755"
+            state: directory
+
     - name: Adjust ssh server configuration based on STIG requirements
       vars:
         sshd_settings:
