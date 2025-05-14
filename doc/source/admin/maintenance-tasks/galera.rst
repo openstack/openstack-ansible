@@ -174,7 +174,7 @@ component`_ in the Galera documentation as they're invaluable for a full
 cluster recovery.
 
 .. _restarting the cluster: https://galeracluster.com/library/training/tutorials/restarting-cluster.html
-.. _recovering the primary component: https://galeracluster.com/documentation-webpages/pcrecovery.html
+.. _recovering the primary component: https://galeracluster.com/library/documentation/pc-recovery.html
 
 Recover a single-node failure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -249,7 +249,7 @@ recover cannot join the cluster because it no longer exists.
    server indicates ``non-Primary`` because it cannot achieve quorum.
 
 #. Run the following command to
-   `rebootstrap <https://galeracluster.com/documentation-webpages/quorumreset.html>`_
+   `rebootstrap <https://galeracluster.com/library/documentation/quorum-reset.html>`_
    the operational node into the cluster:
 
    .. code-block:: shell-session
