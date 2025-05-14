@@ -89,7 +89,7 @@ Pre-Requisites
 
          ssh {{ external_lb_vip_address }}
 
-      Or preferably if you've installed HAProxy with stats, like so;
+      Or preferably if you've installed HAProxy with stats, like so:
 
       .. code-block:: yaml
 
