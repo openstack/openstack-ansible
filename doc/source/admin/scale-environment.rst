@@ -18,7 +18,7 @@ needed in an environment, it is possible to create additional nodes.
    information.
 
 #. Add the node to the ``infra_hosts`` stanza of the
-   ``/etc/openstack_deploy/openstack_user_config.yml``
+   ``/etc/openstack_deploy/openstack_user_config.yml``:
 
    .. code:: console
 
@@ -27,33 +27,33 @@ needed in an environment, it is possible to create additional nodes.
         infra<node-ID>:
           ip: 10.17.136.32
 
-#. Change to playbook folder on the deployment host.
+#. Change to playbook folder on the deployment host:
 
    .. code:: console
 
       # cd /opt/openstack-ansible
 
-#. To prepare new hosts and deploy containers on them run ``setup-hosts.yml``
+#. To prepare new hosts and deploy containers on them run ``setup-hosts.yml``:
    playbook with the ``limit`` argument.
 
    .. code:: console
 
       # openstack-ansible openstack.osa.setup_hosts --limit localhost,infra<node-ID>,infra<node-ID>-host_containers
 
-#. In case you're relying on ``/etc/hosts`` content, you should also update it for all hosts
+#. In case you're relying on ``/etc/hosts`` content, you should also update it for all hosts:
 
    .. code:: console
 
       # openstack-ansible openstack.osa.openstack_hosts_setup -e openstack_hosts_group=all --tags openstack_hosts-file
 
 #. Next we need to expand Galera/RabbitMQ clusters, which is done during
-   ``setup-infrastructure.yml``. So we will run this playbook without limits.
+   ``setup-infrastructure.yml``. So we will run this playbook without limits:
 
    .. warning::
 
      Make sure that containers from new infra host *does not* appear in inventory
      as first one for groups ``galera_all``, ``rabbitmq_all`` and ``repo_all``.
-     You can varify that with ad-hoc commands:
+     You can verify that with ad-hoc commands:
 
      .. code:: console
 
@@ -95,8 +95,7 @@ cluster.
 
 #. Configure the host as a target host. See the
    :deploy_guide:`target hosts configuration section <targethosts.html>`
-   of the deploy guide.
-   for more information.
+   of the deploy guide for more information.
 
 #. Edit the ``/etc/openstack_deploy/openstack_user_config.yml`` file and
    add the host to the ``compute_hosts`` stanza.
@@ -135,7 +134,7 @@ Test new compute nodes
 ~~~~~~~~~~~~~~~~~~~~~~
 
 After creating a new node, test that the node runs correctly by
-launching an instance on the new node.
+launching an instance on the new node:
 
 .. code-block:: shell-session
 
@@ -165,11 +164,11 @@ To remove a compute host, follow the below procedure.
 
 #. Disable all OpenStack services running on the compute node.
    This can include, but is not limited to, the ``nova-compute`` service
-   and the neutron agent service.
+   and the neutron agent service:
 
    .. note::
 
-     Ensure this step is performed first
+     Ensure this step is performed first.
 
    .. code-block:: console
 
@@ -213,17 +212,17 @@ is used.
 
 #. Re-launch all instances on the failed node.
 
-#. Invoke the MySQL command line tool
+#. Invoke the MariaDB command line tool.
 
 #. Generate a list of instance UUIDs hosted on the failed node:
 
-   .. code::
+   .. code-block:: console
 
       mysql> select uuid from instances where host = '${FAILED_NODE}' and deleted = 0;
 
 #. Set instances on the failed node to be hosted on a different node:
 
-   .. code::
+   .. code-block:: console
 
       mysql> update instances set host ='${RECEIVING_NODE}' where host = '${FAILED_NODE}' \
       and deleted = 0;
@@ -231,14 +230,14 @@ is used.
 #. Reboot each instance on the failed node listed in the previous query
    to regenerate the XML files:
 
-   .. code::
+   .. code-block:: console
 
       # nova reboot —hard $INSTANCE_UUID
 
 #. Find the volumes to check the instance has successfully booted and is
    at the login:
 
-   .. code::
+   .. code-block:: console
 
       mysql> select nova.instances.uuid as instance_uuid, cinder.volumes.id \
       as voume_uuid, cinder.volumes.status, cinder.volumes.attach_status, \
@@ -249,7 +248,7 @@ is used.
 #. If rows are found, detach and re-attach the volumes using the values
    listed in the previous query:
 
-   .. code::
+   .. code-block:: console
 
       # nova volume-detach $INSTANCE_UUID $VOLUME_UUID && \
       # nova volume-attach $INSTANCE_UUID $VOLUME_UUID $VOLUME_MOUNTPOINT
