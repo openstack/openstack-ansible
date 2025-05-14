@@ -25,7 +25,7 @@ directory to your cloud environment.
 Database backups and recovery
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MySQL data is available on the infrastructure nodes.
+MariaDB data is available on the infrastructure nodes.
 You can recover databases, and rebuild the Galera cluster.
 For more information, see
 :ref:`galera-cluster-recovery`.

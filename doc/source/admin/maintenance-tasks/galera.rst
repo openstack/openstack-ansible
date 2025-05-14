@@ -5,7 +5,7 @@ Routine maintenance includes gracefully adding or removing nodes from
 the cluster without impacting operation and also starting a cluster
 after gracefully shutting down all nodes.
 
-MySQL instances are restarted when creating a cluster, when adding a
+MariaDB instances are restarted when creating a cluster, when adding a
 node, when the service is not running, or when changes are made to the
 ``/etc/mysql/my.cnf`` configuration file.
 
@@ -206,7 +206,6 @@ continue to process SQL requests.
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
 
-
    In this example, node 3 has failed.
 
 #. Restart MariaDB on the failed node and verify that it rejoins the
@@ -336,7 +335,6 @@ the cluster have failed:
     seqno:   -1
     cert_index:
 
-
 All the nodes have failed if ``mariadbd`` is not running on any of the
 nodes and all of the nodes contain a ``seqno`` value of -1.
 
@@ -376,7 +374,6 @@ Recovering from certain failures require rebuilding one or more containers.
        # openstack-ansible oopenstack.osa.containers_lxc_create -l node3 \
        -l node3_galera_container-3ea2cbd3
 
-
    The playbook restarts all other containers on the node.
 
 #. Run the infrastructure playbook to configure the container
@@ -386,7 +383,6 @@ Recovering from certain failures require rebuilding one or more containers.
 
        # openstack-ansible openstack.osa.setup_infrastructure \
        --limit node3_galera_container-3ea2cbd3
-
 
    .. warning::
 
@@ -458,6 +454,5 @@ Recovering from certain failures require rebuilding one or more containers.
        wsrep_cluster_size        3
        wsrep_cluster_state_uuid  338b06b0-2948-11e4-9d06-bef42f6c52f1
        wsrep_cluster_status      Primary
-
 
 #. Enable the previously failed node on the load balancer.
