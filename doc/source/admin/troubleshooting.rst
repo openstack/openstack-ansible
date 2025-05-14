@@ -336,7 +336,7 @@ Does the instance's IP address ping from the gateway device
 
 No:
     - Check Neutron L3 agent logs (if applicable).
-    - Check Neutron openvswitch logs.
+    - Check Neutron Open vSwitch logs.
     - Check physical interface mappings.
     - Check Neutron Router ports (if applicable).
     - Check that linux bridges contain the proper interfaces
