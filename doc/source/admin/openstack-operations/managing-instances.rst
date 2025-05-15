@@ -265,7 +265,6 @@ are used:
 
 * kvm defaults to ``qemu+tcp://%s/system``
 * qemu defaults to ``qemu+tcp://%s/system``
-* xen defaults to ``xenmigr://%s/system``
 
 Libvirt TCP port to transfer the data to migrate.
 
@@ -286,7 +285,6 @@ Other configurations can be configured inside the
        live_migration_completion_timeout: 0
        live_migration_progress_timeout: 0
        live_migration_uri: "qemu+ssh://nova@%s/system?keyfile=/var/lib/nova/.ssh/id_rsa&no_verify=1"
-
 
 Local versus shared storage
 ---------------------------
@@ -374,5 +372,3 @@ The following nova client commands are provided:
   and also migrates (cold) the instance to a new host to accommodate
   the new resource requirements. This operation can take considerate
   amount of time, depending disk image sizes.
-
-
