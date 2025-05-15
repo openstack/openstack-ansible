@@ -32,7 +32,6 @@ backend.
       | 76ef6df109744a03b64ffaad2a7cf504 |
       +-----------------—————————————————+
 
-
 #. Record the Secondary Region output of the ``default_project_id``
    for the specified user from the user table in the keystone
    database:
