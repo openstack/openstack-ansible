@@ -20,7 +20,7 @@ Network List
 ------------
 
 1. ``HOST_NET`` (Physical Host Management and Access to Internet)
-2. ``CONTAINER_NET`` (LXC container network used Openstack Services)
+2. ``CONTAINER_NET`` (LXC container network used OpenStack Services)
 3. ``OVERLAY_NET`` (VXLAN overlay network)
 
 Useful network utilities and commands:
