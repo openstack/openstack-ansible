@@ -10,13 +10,12 @@ For information on how to deploy your OpenStack-Ansible cloud, refer to the
 instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
-For user guides, see the :dev_docs:`User Guide <user/index.html>`.
+For user guides, see the :ref:`user-guide`.
 
-For information on how to manage and operate OpenStack-Ansible, see the
-see the :dev_docs:`Operations Guide <admin/index.html>`.
+For information on how to manage and operate OpenStack-Ansible,
+see the :ref:`operations-guide`.
 
-For in-depth technical information, see the
-:dev_docs:`OpenStack-Ansible Reference <reference/index.html>`.
+For in-depth technical information, see the :ref:`reference-guide`.
 
 Contents:
 
