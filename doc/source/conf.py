@@ -22,6 +22,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from datetime import datetime
+
 import os
 import subprocess
 import sys
@@ -38,9 +40,10 @@ previous_slurp_name = '2024.1'
 current_series_name = '2025.1'
 
 # General information about the project.
+project = 'OpenStack-Ansible'
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
-copyright = '2014-2018, OpenStack-Ansible Contributors'
+copyright = f'2014-{datetime.now().year}, OpenStack-Ansible Contributors'
 title = 'OpenStack-Ansible Documentation'
 
 # Smart variable replacements with what we can. The openstackdocstheme has

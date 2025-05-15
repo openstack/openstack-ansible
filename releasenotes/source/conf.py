@@ -22,6 +22,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from datetime import datetime
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -53,11 +55,11 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
+project = 'OpenStack-Ansible'
 author = 'OpenStack-Ansible Contributors'
 category = 'Miscellaneous'
-copyright = '2014-2016, OpenStack-Ansible Contributors'
+copyright = f'2014-{datetime.now().year}, OpenStack-Ansible Contributors'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-project = 'OpenStack-Ansible'
 target_name = 'openstack-ansible'
 title = 'OpenStack-Ansible Release Notes'
 
