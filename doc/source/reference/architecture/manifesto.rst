@@ -4,7 +4,7 @@ OpenStack-Ansible Manifesto
 Project scope
 ~~~~~~~~~~~~~
 
-This project will be a **Batteries included** project. Which means deployer
+This will be a '**Batteries included**' project. Which means deployer
 can expect that deploying from any of the named feature branches or tags should
 provide an OpenStack cloud built for production which will be
 available at the successful completion of the deployment.
