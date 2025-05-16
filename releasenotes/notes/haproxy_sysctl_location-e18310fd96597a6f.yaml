@@ -1,6 +1,6 @@
 ---
 features:
   - |
-    Support has been added for defining a custom sysctl config path using
+    Allow the definition of a custom sysctl config path through
     `openstack_sysctl_file` and/or `haproxy_sysctl_file`.
-    The default remains `/etc/sysctl.conf` to preserve backwards compatibility.
+    Defaults to `/etc/sysctl.conf` to retain backwards compatibility.

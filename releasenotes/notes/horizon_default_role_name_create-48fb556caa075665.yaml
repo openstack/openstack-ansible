@@ -1,0 +1,12 @@
+---
+
+deprecations:
+  - |
+    The ``horizon_default_role_name`` (default `member`) Keystone role existence
+    is no longer ensured by the Horizon role.
+    It is expected that the role defined by ``horizon_default_role_name``
+    already exists in Keystone and was bootstrapped via ``keystone-bootstrap``
+    command during ``os_keystone`` execution.
+    You can leverage ``opestack.osa.openstack_resources`` playbook to create
+    extra roles if you need/want to use non-default value for the
+    ``horizon_default_role_name`` variable

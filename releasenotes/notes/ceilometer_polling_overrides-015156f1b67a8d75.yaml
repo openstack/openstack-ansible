@@ -1,13 +1,16 @@
 ---
 upgrade:
   - |
-    Please be aware that the way Ceilometer defines resulting content for ``pipeline.yaml`` has changed.
-    The role now applies `_ceilometer_pipeline_yaml_overrides <https://opendev.org/openstack/openstack-ansible-os_ceilometer/src/commit/c97b49a22098b57520dceef9f236c7378dddfce1/vars/main.yml#L59-L150>`_
-    to all environments where ``ceilometer_pipeline_user_content`` is not explicitly set.
-    To restore the previous behavior, add ``_ceilometer_pipeline_yaml_overrides: {}`` to user_variables.yml.
+    Please, beware that behavior for defining resulting content for ``pipeline.yaml``
+    in Ceilometer has changed.
+    Now, `_ceilometer_pipeline_yaml_overrides <https://opendev.org/openstack/openstack-ansible-os_ceilometer/src/commit/c97b49a22098b57520dceef9f236c7378dddfce1/vars/main.yml#L59-L150>`_
+    is going to be applied to all environments which do not have ``ceilometer_pipeline_user_content``
+    explicitly supplied.
+    Prior behavior can be ensured by adding ``_ceilometer_pipeline_yaml_overrides: {}``
+    to user_variables.yml.
 fixes:
   - |
-    The logic for applying enhanced pipelines for Ceilometer+Gnocchi has been corrected.
-    When no custom content is provided, the role now populates
-    sinks and transformation overrides defined in pipeline.yaml with default content,
-    rather than layering them on top of user-defined content.
+    Logic for applying enchanced pipelines for Ceilomter+Gnocchi has been fixed.
+    Now sinks and tranformation overrides defined in pipeline.yaml will be
+    populated with content when operator did not supply any custom content,
+    instead of applying them on top of it.

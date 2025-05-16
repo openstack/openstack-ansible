@@ -1,0 +1,10 @@
+---
+issues:
+  - |
+    It was discovered that LXC 5.0.3 in Ubuntu 24.04 (Noble Numbat)
+    contains packaging issue resulting in apparmor profiling conflicts.
+    A temporary workaround has been applied in ``lxc_hosts`` role to
+    apply a hotfix to the profile. However, it will be wiped with the
+    next update of ``liblxc-common`` package.
+    Please, check the `bug #2110635 <https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/2110635>`_
+    for more details on the issue.

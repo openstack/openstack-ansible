@@ -1,0 +1,11 @@
+---
+fixes:
+  - |
+    With change of policy regarding stored versions of MariaDB in
+    ``mirror.mariadb.org``, currently pinned MariaDB versions were removed
+    from the repo.
+    With a switch to ``archive.mariadb.org``, this should resolve failing
+    installation for MariaDB.
+other:
+  - |
+    Mirror for MariaDB has been switched to ``archive.mariadb.org``

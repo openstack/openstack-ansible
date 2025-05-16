@@ -1,0 +1,18 @@
+---
+upgrade:
+  - |
+    Docker mode for zun-compute has been switched to "local" mode.
+    This means, that supporting etcd cluster is no longer required
+    for Zun to operate.
+    If you want preserve old behavior, you will need to pin Docker and
+    Containerd versions back along with adding ``zun_docker_kv_storage: etcd``
+    to ``user_variables.yml``
+  - |
+    For deployments with Zun, underlying software versions were upgraded to:
+    * Docker 20.10.24 -> 27.5.1
+    * Containerd 1.6.20 -> 1.7.27
+    * Kata 3.1.0 -> 3.16.0
+deprecations:
+  - |
+    Variables ``zun_docker_kv_storage`` and ``zun_docker_kv_group`` were
+    deprecated and will be removed in the next release.

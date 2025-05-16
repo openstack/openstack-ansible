@@ -1,16 +1,20 @@
 ---
+
 upgrade:
   - |
-    The ``ml2.lxb`` (LinuxBridge) plugin has been removed from Neutron in this release and can no longer be used.
-    Make sure to migrate to a supported Neutron driver before upgrading to this OpenStack version.
-    Unfortunately, there is currently no automated process for this migration.
-    For guidance, refer to the blog post `Migrating from LinuxBridge to OVN <https://www.jimmdenton.com/migrating-lxb-to-ovn/>`_,
-    which outlines how similar migrations have been performed in the past.
+    A ``ml2.lxb`` (linuxbridge) plugin has been removed from Neutron for this release and
+    can not be used anymore. Please, ensure migrating to supported Neutron driver
+    before proceeding with the upgrade to this OpenStack version.
+    Unfortunatelly, there is no currently existing automation for such migration.
+    You can reffer to the blog post `Migrating from LinuxBridge to OVN <https://www.jimmdenton.com/migrating-lxb-to-ovn/>`_
+    to learn more on how such migrations were achieved previously.
 deprecations:
   - |
-    The Neutron LinuxBridge (``ml2.lxb``) plugin, previously marked as experimental, has been removed from the codebase.
-    Ensure that your deployment uses a supported driver before upgrading.
+    Previously marked as experimental by Neutron linuxbridge (``ml2.lxb``) plugin
+    has been removed from the codebase.
+    Please make sure that you are using supported driver before upgrade.
 critical:
   - |
-    The Neutron LinuxBridge (``ml2.lxb``) plugin, previously marked as experimental, has been removed from the codebase.
-    Ensure that your deployment uses a supported driver before upgrading.
+    Previously marked as experimental by Neutron linuxbridge (``ml2.lxb``) plugin
+    has been removed from the codebase.
+    Please make sure that you are using supported driver before upgrade.
