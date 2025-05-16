@@ -5,9 +5,9 @@
 # suhartono <cloudsuhartono@gmail.com>, 2021. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.0.0.0b2.dev109\n"
+"Project-Id-Version: openstack-ansible 31.0.0.0b2.dev126\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 12:37+0000\n"
+"POT-Creation-Date: 2025-05-15 17:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -121,13 +121,6 @@ msgstr ""
 "Tambahkan jembatan penyedia (provider bridge) menggunakan antarmuka jaringan "
 "baru"
 
-msgid ""
-"Add the node to the ``infra_hosts`` stanza of the ``/etc/openstack_deploy/"
-"openstack_user_config.yml``"
-msgstr ""
-"Tambahkan node ke stanza ``infra_hosts`` dari ``/etc/openstack_deploy/"
-"openstack_user_config.yml``"
-
 msgid "Adding an image using the Dashboard"
 msgstr "Menambahkan image menggunakan Dasbor"
 
@@ -162,13 +155,6 @@ msgstr ""
 "koneksi jaringan melalui perintah :command:`ping`. Masuk ke sistem "
 "pemantauan Anda, dan verifikasi bahwa monitor mengembalikan sinyal hijau "
 "untuk node baru."
-
-msgid ""
-"After creating a new node, test that the node runs correctly by launching an "
-"instance on the new node."
-msgstr ""
-"Setelah membuat node baru, uji bahwa node berjalan dengan benar dengan "
-"meluncurkan sebuah instance pada node baru."
 
 msgid ""
 "After the playbook completes, remove the compute node from the OpenStack-"
@@ -380,9 +366,6 @@ msgstr "Ubah direktori ke direktori root repositori kloning:"
 
 msgid "Change directory to the repository clone root directory:"
 msgstr "Ubah direktori ke direktori root clone repositori:"
-
-msgid "Change to playbook folder on the deployment host."
-msgstr "Ubah ke folder playbook di host penyebaran (deployment)."
 
 msgid ""
 "Change to the ``playbooks`` directory and run the following Ansible command "
@@ -696,15 +679,6 @@ msgstr "Layanan Compute (node komputasi)"
 msgid "Compute service (controller node)"
 msgstr "Layanan Compute (node pengontrol)"
 
-msgid ""
-"Configure the host as a target host. See the :deploy_guide:`target hosts "
-"configuration section <targethosts.html>` of the deploy guide. for more "
-"information."
-msgstr ""
-"Konfigurasikan host sebagai host target. Lihat :deploy_guide:`target hosts "
-"configuration section <targethosts.html>` dari panduan penyebaran. untuk "
-"informasi lebih lanjut."
-
 msgid "Configure your first networks"
 msgstr "Konfigurasikan jaringan pertama Anda"
 
@@ -790,15 +764,6 @@ msgstr "Details"
 
 msgid "Diagnose Image service issues"
 msgstr "Diagnosis masalah layanan Image"
-
-msgid ""
-"Disable all OpenStack services running on the compute node. This can "
-"include, but is not limited to, the ``nova-compute`` service and the neutron "
-"agent service."
-msgstr ""
-"Nonaktifkan semua layanan OpenStack yang berjalan pada node komputasi. Ini "
-"dapat termasuk, tetapi tidak terbatas pada, layanan ``nova-compute`` dan "
-"layanan agen neutron."
 
 msgid "Disable the ``cinder-volume`` service:"
 msgstr "Nonaktifkan layanan ``cinder-volume``:"
@@ -923,9 +888,6 @@ msgid ""
 msgstr ""
 "Pastikan kode OpenStack-Ansible Anda ada di |current_release_formal_name| "
 "terbaru rilis yang ditandai (tagged):"
-
-msgid "Ensure this step is performed first"
-msgstr "Pastikan langkah ini dilakukan terlebih dahulu"
 
 msgid ""
 "Enter the details of the image, including the **Image Location**, which is "
@@ -1521,9 +1483,6 @@ msgstr ""
 
 msgid "Introduction"
 msgstr "Pengantar"
-
-msgid "Invoke the MySQL command line tool"
-msgstr "Aktifkan alat baris perintah (command line tool) MySQL"
 
 msgid "Is the connectivity issue egress from the instance?"
 msgstr "Apakah masalah konektivitas egress dari instance?"
@@ -2206,14 +2165,6 @@ msgstr "Jalankan playbook yang sesuai tergantung pada bagian ``group_binds``."
 
 msgid "Run the following Ansible command to show the failed nodes:"
 msgstr "Jalankan perintah Ansible berikut untuk menunjukkan node yang gagal:"
-
-msgid ""
-"Run the following command to `rebootstrap <https://galeracluster.com/"
-"documentation-webpages/quorumreset.html>`_ the operational node into the "
-"cluster:"
-msgstr ""
-"Jalankan perintah berikut untuk `rebootstrap <https://galeracluster.com/"
-"documentation-webpages/quorumreset.html>`_ node operasional ke dalam kluster:"
 
 msgid ""
 "Run the following command to remove all currently cached facts for all hosts:"
@@ -3453,10 +3404,6 @@ msgstr ""
 "`OpenStackClient commands <https://docs.openstack.org/python-openstackclient/"
 "latest/>`__"
 
-msgid "``CONTAINER_NET`` (LXC container network used Openstack Services)"
-msgstr ""
-"``CONTAINER_NET`` (Jaringan kontainer LXC menggunakan Layanan Openstack)"
-
 msgid "``HOST_NET`` (Physical Host Management and Access to Internet)"
 msgstr "``HOST_NET`` (Physical Host Management dan Access ke Internet)"
 
@@ -3507,9 +3454,6 @@ msgstr "kvm default ke ``qemu+tcp://%s/system``"
 
 msgid "qemu defaults to ``qemu+tcp://%s/system``"
 msgstr "qemu default ke ``qemu+tcp://%s/system``"
-
-msgid "xen defaults to ``xenmigr://%s/system``"
-msgstr "xen defaults ke ``xenmigr://%s/system``"
 
 msgid "|upgrade_warning| Test this on a development environment first."
 msgstr ""

@@ -4,13 +4,13 @@
 # Andreas Jaeger <jaegerandi@gmail.com>, 2020. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.0.0.0b2.dev109\n"
+"Project-Id-Version: openstack-ansible 31.0.0.0b2.dev126\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-14 12:37+0000\n"
+"POT-Creation-Date: 2025-05-15 17:15+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-01-25 03:59+0000\n"
+"PO-Revision-Date: 2020-01-25 03:58+0000\n"
 "Last-Translator: Andreas Jaeger <jaegerandi@gmail.com>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -120,13 +120,6 @@ msgstr ""
 msgid "Add provider bridges using new network interfaces"
 msgstr "Hinzufügen von Provider-Bridges mithilfe neuer Netzwerkschnittstellen"
 
-msgid ""
-"Add the node to the ``infra_hosts`` stanza of the ``/etc/openstack_deploy/"
-"openstack_user_config.yml``"
-msgstr ""
-"Fügen Sie den Knoten der Zeilengruppe ``infra_hosts`` der Datei ``/etc/"
-"openstack_deploy/openstack_user_config.yml`` hinzu"
-
 msgid "Adding an image using the Dashboard"
 msgstr "Hinzufügen eines Abbildes mit dem Dashboard"
 
@@ -163,14 +156,6 @@ msgstr ""
 "Befehl :command:`ping` reagieren kann. Melden Sie sich bei Ihrem "
 "Überwachungssystem an und vergewissern Sie sich, dass die Monitore ein "
 "grünes Signal für den neuen Knoten zurückgeben."
-
-msgid ""
-"After creating a new node, test that the node runs correctly by launching an "
-"instance on the new node."
-msgstr ""
-"Überprüfen Sie nach dem Erstellen eines neuen Knotens, dass der Knoten "
-"ordnungsgemäß ausgeführt wird, indem Sie eine Instanz auf dem neuen Knoten "
-"starten."
 
 msgid ""
 "After the playbook completes, remove the compute node from the OpenStack-"
@@ -356,9 +341,6 @@ msgstr ""
 
 msgid "Change directory to the repository clone root directory:"
 msgstr "Wechseln Sie in das Stammverzeichnis des Repository-Klons:"
-
-msgid "Change to playbook folder on the deployment host."
-msgstr "Wechseln Sie in den Playbook-Ordner auf dem Bereitstellungshost."
 
 msgid ""
 "Change to the ``playbooks`` directory and run the following Ansible command "
@@ -673,15 +655,6 @@ msgstr "Compute-Service (Rechenknoten)"
 msgid "Compute service (controller node)"
 msgstr "Compute Service (Steuerungsknoten)"
 
-msgid ""
-"Configure the host as a target host. See the :deploy_guide:`target hosts "
-"configuration section <targethosts.html>` of the deploy guide. for more "
-"information."
-msgstr ""
-"Konfigurieren Sie den Host als Zielhost. Siehe den Konfigurationsabschnitt :"
-"deploy_guide:`Zielhosts <targethosts.html>` des Bereitstellungsleitfadens "
-"für mehr Informationen."
-
 msgid "Configure your first networks"
 msgstr "Konfigurieren Sie Ihre ersten Netzwerke"
 
@@ -768,15 +741,6 @@ msgstr "Einzelheiten"
 
 msgid "Diagnose Image service issues"
 msgstr "Diagnose Image-Probleme"
-
-msgid ""
-"Disable all OpenStack services running on the compute node. This can "
-"include, but is not limited to, the ``nova-compute`` service and the neutron "
-"agent service."
-msgstr ""
-"Deaktivieren Sie alle OpenStack-Dienste, die auf dem Rechenknoten ausgeführt "
-"werden. Dies kann den ``nova-compute`` -Dienst und den "
-"Neutronenagentendienst umfassen, ist aber nicht darauf beschränkt."
 
 msgid "Disable the ``cinder-volume`` service:"
 msgstr "Deaktivieren Sie den Dienst ``cinder-volume``:"
@@ -905,9 +869,6 @@ msgid ""
 msgstr ""
 "Stellen Sie sicher, dass sich Ihr OpenStack-Ansible-Code auf latest |"
 "current_release_formal_name| markierte Version befindet:"
-
-msgid "Ensure this step is performed first"
-msgstr "Stellen Sie sicher, dass dieser Schritt zuerst ausgeführt wird"
 
 msgid ""
 "Enter the details of the image, including the **Image Location**, which is "
@@ -1483,9 +1444,6 @@ msgstr ""
 
 msgid "Introduction"
 msgstr "Einführung"
-
-msgid "Invoke the MySQL command line tool"
-msgstr "Rufen Sie das MySQL-Befehlszeilentool auf"
 
 msgid "Is the connectivity issue egress from the instance?"
 msgstr "Tritt das Verbindungsproblem aus der Instanz aus?"
@@ -2166,15 +2124,6 @@ msgid "Run the following Ansible command to show the failed nodes:"
 msgstr ""
 "Führen Sie den folgenden Ansible-Befehl aus, um die ausgefallenen Knoten "
 "anzuzeigen:"
-
-msgid ""
-"Run the following command to `rebootstrap <https://galeracluster.com/"
-"documentation-webpages/quorumreset.html>`_ the operational node into the "
-"cluster:"
-msgstr ""
-"Führen Sie den folgenden Befehl aus, zur `Wiederaufnahme <https://"
-"galeracluster.com/documentation-webpages/quorumreset.html>`_ der operative "
-"Knoten in den Cluster:"
 
 msgid ""
 "Run the following command to remove all currently cached facts for all hosts:"
@@ -3336,10 +3285,6 @@ msgstr ""
 "`OpenStackClient Befehle <https://docs.openstack.org/python-openstackclient/"
 "latest/>`__"
 
-msgid "``CONTAINER_NET`` (LXC container network used Openstack Services)"
-msgstr ""
-"``CONTAINER_NET`` (LXC-Container-Netzwerk verwendet Openstack Services)"
-
 msgid "``HOST_NET`` (Physical Host Management and Access to Internet)"
 msgstr "``HOST_NET`` (Physische Host-Verwaltung und Zugang zum Internet)"
 
@@ -3390,9 +3335,6 @@ msgstr "kvm verwendet standardmäßig ``qemu+tcp://%s/system``"
 
 msgid "qemu defaults to ``qemu+tcp://%s/system``"
 msgstr "qemu verwendet standardmäßig `` qemu+tcp://%s/system``"
-
-msgid "xen defaults to ``xenmigr://%s/system``"
-msgstr "xen verwendet standardmäßig ``xenmigr://%s/system``"
 
 msgid "|upgrade_warning| Test this on a development environment first."
 msgstr ""
