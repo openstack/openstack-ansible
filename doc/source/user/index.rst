@@ -12,7 +12,7 @@ For information on how to deploy your OpenStack-Ansible cloud, refer to the
 instructions on how to deploy the OpenStack packages and
 dependencies on your cloud using OpenStack-Ansible.
 
-For information on how to manage and operate OpenStack-Ansible, see the
+For information on how to manage and operate OpenStack-Ansible,
 see the :ref:`operations-guide`.
 
 For information on how to contribute, extend or develop OpenStack-Ansible,
