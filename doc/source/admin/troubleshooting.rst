@@ -14,7 +14,7 @@ required for the OpenStack control plane to function properly.
 This does not cover any networking related to instance connectivity.
 
 These instructions assume an OpenStack-Ansible installation using LXC
-containers, VXLAN overlay, and the Linuxbridge ml2 driver.
+containers, VXLAN overlay, and the ML2/OVS driver.
 
 Network List
 ------------
@@ -152,12 +152,12 @@ node and running the :command:`service <SERVICE_NAME> status`.
 See the following links for additional information to verify OpenStack
 services:
 
-- `Identity service (keystone) <https://ask.openstack.org/en/question/101127/how-to-check-if-keystone-is-running/>`_
-- `Image service (glance) <https://docs.openstack.org/ocata/install-guide-ubuntu/glance-verify.html>`_
-- `Compute service (nova) <https://docs.openstack.org/ocata/install-guide-ubuntu/nova-verify.html>`_
-- `Networking service (neutron) <https://docs.openstack.org/ocata/install-guide-ubuntu/neutron-verify.html>`_
-- `Block Storage service <https://docs.openstack.org/ocata/install-guide-rdo/cinder-verify.html>`_
-- `Object Storage service (swift) <https://docs.openstack.org/project-install-guide/object-storage/ocata/verify.html>`_
+- `Identity service (keystone) <https://docs.openstack.org/keystone/latest/install/keystone-verify-ubuntu.html>`_
+- `Image service (glance) <https://docs.openstack.org/glance/latest/install/verify.html>`_
+- `Compute service (nova) <https://docs.openstack.org/nova/latest/install/verify.html>`_
+- `Networking service (neutron) <https://docs.openstack.org/neutron/latest/install/verify.html>`_
+- `Block Storage service <https://docs.openstack.org/cinder/latest/install/cinder-verify.html>`_
+- `Object Storage service (swift) <https://docs.openstack.org/swift/latest/install/verify.html>`_
 
 Restarting services
 ~~~~~~~~~~~~~~~~~~~
@@ -239,13 +239,13 @@ The following table lists the commands to restart an OpenStack service.
           # service swift-proxy-server restart
 
 
-Troubleshooting Instance connectivity issues
+Troubleshooting instance connectivity issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section will focus on troubleshooting general instance (VM)
 connectivity communication. This does not cover any networking related
 to instance connectivity. This is assuming a OpenStack-Ansible install using
-LXC containers, VXLAN overlay and the Linuxbridge ml2 driver.
+LXC containers, VXLAN overlay and the ML2/OVS driver.
 
 **Data flow example**
 
@@ -256,7 +256,7 @@ LXC containers, VXLAN overlay and the Linuxbridge ml2 driver.
                                   +->"If VXLAN"+->+  *br vxlan  +--->+  bond#.#00  +---+
                                   |               +-------------+    +-------------+   |
                    +-------------+                                                      |   +-----------------+
-   Instance +--->  | brq bridge  |++                                                    +-->| physical network|
+   Instance +--->  | qbr bridge  |++                                                    +-->| physical network|
                    +-------------+                                                      |   +-----------------+
                                   |               +-------------+    +-------------+   |
                                   +->"If  VLAN"+->+   br vlan   +--->+    bond1    +---+
@@ -269,7 +269,7 @@ LXC containers, VXLAN overlay and the Linuxbridge ml2 driver.
                      +->"If VXLAN"+->+  *bond#.#00 +--->+ *br vxlan   +-->
                      |               +-------------+    +-------------+  |
    +----------------+                                                     |     +-------------+
-   |physical network|++                                                   +--->+|  brq bridge |+--> Neutron DHCP/Router
+   |physical network|++                                                   +--->+|  qbr bridge |+--> Neutron DHCP/Router
    +----------------+                                                     |     +-------------+
                      |               +-------------+    +-------------+  |
                      +->"If  VLAN"+->+   bond1     +--->+  br vlan    +-->
@@ -281,13 +281,13 @@ Preliminary troubleshooting questions to answer:
 - Which compute node is hosting the VM in question?
 - Which interface is used for provider network traffic?
 - Which interface is used for VXLAN overlay?
-- Is the connectivity issue ingress to the instance?
-- Is the connectivity issue egress from the instance?
+- Is there connectivity issue ingress to the instance?
+- Is there connectivity issue egress from the instance?
 - What is the source address of the traffic?
 - What is the destination address of the traffic?
-- Is there a Neutron router in play?
+- Is there a Neutron Router in play?
 - Which network node (container) is the router hosted?
-- What is the tenant network type?
+- What is the project network type?
 
 If VLAN:
 
@@ -313,13 +313,13 @@ or other instances in the same network?
 No:
     - Check nova console logs to see if the instance
       ever received its IP address initially.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
-    - Check that linux bridges contain the proper interfaces.
+    - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
     - Check Neutron DHCP agent logs.
     - Check syslogs.
-    - Check Neutron linux bridge logs.
+    - Check Neutron Open vSwitch agent logs.
 
 Yes:
     - Good! This suggests that the instance received its IP address
@@ -332,16 +332,16 @@ Yes:
    network resources like DHCP.
 
 Does the instance's IP address ping from the gateway device
-(Neutron router namespace or another gateway device)?
+(Neutron Router namespace or another gateway device)?
 
 No:
     - Check Neutron L3 agent logs (if applicable).
     - Check Neutron Open vSwitch logs.
     - Check physical interface mappings.
-    - Check Neutron Router ports (if applicable).
-    - Check that linux bridges contain the proper interfaces
+    - Check Neutron router ports (if applicable).
+    - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
 
 Yes:
@@ -349,9 +349,9 @@ Yes:
       The issue may be north of the gateway
       or related to the provider network.
     - Check "gateway" or host routes on the Neutron subnet.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding ICMP rule for testing.
-    - Check Neutron FloatingIP associations (if applicable).
+    - Check Floating IP associations (if applicable).
     - Check Neutron Router external gateway information (if applicable).
     - Check upstream routes, NATs or access-control-lists.
 
@@ -381,8 +381,8 @@ Are VXLAN VTEP addresses able to ping each other?
 
 No:
     - Check ``br-vxlan`` interface on Compute and Network nodes
-    - Check veth pairs between containers and linux bridges on the host.
-    - Check that linux bridges contain the proper interfaces
+    - Check veth pairs between containers and Linux bridges on the host.
+    - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
 
 Yes:
@@ -402,13 +402,13 @@ or other instances in the same network?
 No:
     - Check Nova console logs to see if the instance
       ever received its IP address initially.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
-    - Check that linux bridges contain the proper interfaces
+    - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
     - Check Neutron DHCP agent logs.
     - Check syslogs.
-    - Check Neutron linux bridge logs.
+    - Check Neutron Open vSwitch agent logs.
     - Check that Bridge Forwarding Database (fdb) contains the proper
       entries on both the compute and Neutron agent container.
 
@@ -422,16 +422,16 @@ Yes:
    resources.
 
 Does the instance's IP address ping from the gateway device
-(Neutron router namespace or another gateway device)?
+(Neutron Router namespace or another gateway device)?
 
 No:
     - Check Neutron L3 agent logs (if applicable).
-    - Check Neutron linux bridge logs.
+    - Check Neutron Open vSwitch agent logs.
     - Check physical interface mappings.
     - Check Neutron router ports (if applicable).
-    - Check that linux bridges contain the proper interfaces
+    - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
     - Check that Bridge Forwarding Database (fdb) contains
       the proper entries on both the compute and Neutron agent container.
@@ -439,9 +439,9 @@ No:
 Yes:
     - Good! The instance can ping its intended gateway.
     - Check gateway or host routes on the Neutron subnet.
-    - Check Neutron ``security-group-rules``,
+    - Check ``security-group-rules``,
       consider adding ICMP rule for testing.
-    - Check Neutron FloatingIP associations (if applicable).
+    - Check Neutron Floating IP associations (if applicable).
     - Check Neutron Router external gateway information (if applicable).
     - Check upstream routes, NATs or ``access-control-lists``.
 
@@ -511,7 +511,7 @@ To set this permanently, set this variable in
 ``/usr/local/bin/openstack-ansible.rc``.
 Refer to the Ansible documentation on `fact caching`_ for more details.
 
-.. _fact caching: https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#fact-caching
+.. _fact caching: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html
 
 
 Forcing regeneration of cached facts
