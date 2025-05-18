@@ -63,16 +63,6 @@
       tags:
         - custom-envd-file-check
 
-    - name: Preserve cinderv3 service type
-      ansible.builtin.lineinfile:
-        path: "{{ openstack_config_dir }}/user_epoxy_upgrade.yml"
-        line: "cinder_service_v3_enabled: true"
-        regexp: "^cinder_service_v3_enabled"
-        create: true
-        mode: "0644"
-      when:
-        - groups['cinder_all'] | map('extract', hostvars, 'cinder_service_v3_enabled') | map('default', None) | reject('eq', None) | length == 0
-
     - name: Read example user secrets file
       shell: "grep '^[a-zA-Z]' {{ repo_root_dir }}/etc/openstack_deploy/user_secrets.yml"
       register: new_secrets

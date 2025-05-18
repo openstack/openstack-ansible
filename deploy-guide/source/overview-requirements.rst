@@ -10,20 +10,12 @@ following minimum requirements:
 
 * Ubuntu
 
-  * Ubuntu 22.04 LTS (Jammy Jellyfish)
-
   * Ubuntu 24.04 LTS (Noble Numbat)
-
-* CentOS based
-
-  * CentOS Stream 9
-
-  * Rocky Linux 9
 
 * Secure Shell (SSH) client and server that support public key
   authentication
 
-* Python 3.8.*x* or 3.10.*x*
+* Python 3.11.*x* or 3.12.*x*
 
 * en_US.UTF-8 as the locale
 

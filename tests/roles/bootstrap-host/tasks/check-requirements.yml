@@ -17,13 +17,10 @@
   ansible.builtin.assert:
     that:
       (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
-      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'jammy') or
-      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble') or
-      (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '9')
+      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble')
     msg: >-
-      The only supported platforms for this release are Debian 12 (Bookworm),
-      Ubuntu 22.04 (Jammy), Ubuntu 24.04 (Noble), CentOS Stream 9,
-      and derivatives such as Rocky Linux.
+      The only supported platforms for this release are Debian 12 (Bookworm) and
+      Ubuntu 24.04 (Noble Numbat).
   when: (check_operating_system | default(True))| bool
   tags:
     - check-operating-system

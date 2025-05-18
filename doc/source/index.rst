@@ -10,10 +10,10 @@ and configuring an OpenStack environment.
 
 Documentation is available for each of the following releases.
 
-2025.1 (Epoxy): Under development
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025.2 (Flamingo): Under development
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2025.1 (Epoxy) is currently Under Development.
+OpenStack-Ansible 2025.2 (Flamingo) is currently Under Development.
 
 .. toctree::
    :maxdepth: 1
@@ -25,6 +25,21 @@ OpenStack-Ansible 2025.1 (Epoxy) is currently Under Development.
    contributors/contributing
    contributors/index
    reference/index
+
+
+2025.1 (Epoxy): Release Candidate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+OpenStack-Ansible 2025.1 (Epoxy) Release Candidate was released with the 31.0.0.0rc1 tag on
+May 20, 2024.
+
+* `OpenStack-Ansible 2025.1 Documentation`_
+
+* `OpenStack-Ansible 2025.1 series release notes`_
+
+.. _OpenStack-Ansible 2025.1 Documentation: https://docs.openstack.org/openstack-ansible/2025.1/
+.. _OpenStack-Ansible 2025.1 series release notes: https://docs.openstack.org/releasenotes/openstack-ansible/2025.1.html
+
 
 2024.2 (Dalmatian): Maintained
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

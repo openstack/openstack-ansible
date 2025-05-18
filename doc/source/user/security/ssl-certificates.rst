@@ -238,7 +238,7 @@ it is required that the public endpoint is accessible directly by the
 Certificate Authority.
 
 Deployment of certificates using Let's Encrypt has been validated for
-OpenStack-Ansible using Ubuntu 22.04 (Jammy Jellyfish). Other distributions should work
+OpenStack-Ansible using Ubuntu 24.04 (Noble Numbat). Other distributions should work
 but are not tested.
 
 To deploy certificates with Certbot, add the following to

@@ -122,9 +122,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 12 (bookworm), Ubuntu 22.04 (Jammy Jellyfish),
-   Ubuntu 24.04 (Noble Numbat), CentOS 9 Stream,
-   and derivitives of CentOS Stream/RHEL such as Rocky Linux.
+   Debian 12 (bookworm) and Ubuntu 24.04 (Noble Numbat).
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
@@ -417,7 +415,7 @@ dropdown in the top-right corner and select ``OpenStack RC File``.
    other hosts. The name and location of the generated certificate are
    configured by the ``pki_authorities`` and ``pki_trust_store_location``
    variables respectively, which are used by the ``pki`` role provided by
-   `ansible-role-pki`__. On an Ubuntu 22.04 host, these will default to
+   `ansible-role-pki`__. On an Ubuntu 24.04 host, these will default to
    ``ExampleCorpRoot`` and ``/usr/local/share/ca-certificates``, respectively.
    For example:
 

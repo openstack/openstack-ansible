@@ -88,10 +88,10 @@ Many software packages are installed on Ubuntu hosts using `.deb` packages.
 Similar packaging mechanisms exist for other Linux distributions. We advise
 mirroring the repositories that host these packages.
 
-Upstream Ubuntu repositories to mirror for Ubuntu 22.04 LTS:
+Upstream Ubuntu repositories to mirror for Ubuntu 24.04 LTS:
 
-- jammy
-- jammy-updates
+- noble
+- noble-updates
 
 OpenStack-Ansible requires several other repositories to install specific
 components such as Galera and Ceph.
