@@ -18,14 +18,6 @@
   become: true
   become_user: root
   tasks:
-    - name: Switch apt source from https to http
-      ansible.builtin.replace:
-        path: /etc/apt/sources.list
-        regexp: 'https'
-        replace: "http"
-      when:
-        - ansible_facts['distribution_release'] in ['jammy']
-
     - name: Remove package excludes for yum/dnf
       ansible.builtin.lineinfile:
         dest: '/etc/dnf/dnf.conf'

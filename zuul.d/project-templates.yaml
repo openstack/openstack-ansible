@@ -32,103 +32,70 @@
         - openstack-tox-docs
     periodic:
       jobs:
-        - openstack-ansible-deploy-translations-ubuntu-jammy
+        - openstack-ansible-deploy-translations-ubuntu-noble
     experimental:
       jobs:
-        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-jammy
-        - openstack-ansible-deploy_with_ansible_next-aio-ubuntu-jammy
+        - openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-centos-9-stream:
-            voting: false
-        - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
-        - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
-        - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade-aio_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-aio_lxc-ubuntu-noble
+        - openstack-ansible-upgrade-aio_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-upgrade-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade_2024.1-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade_2024.1-infra_lxc-ubuntu-jammy
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade_2024.1-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
-        - openstack-ansible-upgrade_2024.1-infra_lxc-ubuntu-jammy
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade-aio_metal-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade-aio_metal-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-centos-9-stream:
-            voting: false
-        - openstack-ansible-deploy-infra_lxc-rockylinux-9
-        - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
-        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
-        - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-rockylinux-9
-        - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
-        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-jammy
-        - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     periodic:
       jobs:
-        - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-infra_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-infra_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
@@ -136,47 +103,37 @@
     name: openstack-ansible-deploy-hosts_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
-        - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
-        - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     periodic:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-hosts_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
-        - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
-        - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     periodic:
       jobs:
-        - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
+        - openstack-ansible-deploy-hosts_metal-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-hosts_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
 
 - project-template:
@@ -191,106 +148,77 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bookworm
-        - openstack-ansible-deploy-aio_metal-centos-9-stream:
-            voting: false
-        - openstack-ansible-deploy-aio_metal-rockylinux-9
-        - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
-        - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
-        - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade_2024.1-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade_2024.1-aio_metal-ubuntu-jammy
-        - openstack-ansible-upgrade-aio_metal_tls-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal_tls-ubuntu-jammy
+        - openstack-ansible-upgrade-aio_metal-ubuntu-noble
+        - openstack-ansible-upgrade-aio_metal_tls-ubuntu-noble
 
     gate:
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bookworm
-        - openstack-ansible-deploy-aio_metal-rockylinux-9
-        - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
-        - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
-        - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-centos-9-stream:
-            voting: false
-        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
-        - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-aio_distro_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-noble
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-debian-bookworm
-        - openstack-ansible-deploy-aio_distro_metal-centos-9-stream
 
 - project-template:
     name: openstack-ansible-deploy-nfs-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_nfs-ubuntu-jammy
         - openstack-ansible-deploy-aio_nfs-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_nfs-ubuntu-jammy
         - openstack-ansible-deploy-aio_nfs-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
         - openstack-ansible-deploy-aio_ceph-ubuntu-noble
-        - openstack-ansible-deploy-aio_ceph-rockylinux-9:
-            voting: false
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
         - openstack-ansible-deploy-aio_ceph-ubuntu-noble
     periodic:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-jammy
         - openstack-ansible-deploy-aio_ceph-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-stepca-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_stepca-ubuntu-jammy
-        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
+        - openstack-ansible-deploy-aio_stepca-ubuntu-noble
+        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_stepca-ubuntu-jammy
-        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-jammy
+        - openstack-ansible-deploy-aio_stepca-ubuntu-noble
+        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-proxy-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_proxy-ubuntu-jammy
+        - openstack-ansible-deploy-aio_proxy-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_proxy-ubuntu-jammy
+        - openstack-ansible-deploy-aio_proxy-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-linters-jobs
@@ -305,42 +233,30 @@
     name: openstack-ansible-lxc-backingstore-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
-        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
-        - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-jammy
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-jammy
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
 
 - project-template:
     name: openstack-ansible-molecule
     check:
       jobs:
-        - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
         - openstack-ansible-tox-molecule-rockylinux-9
-        - openstack-ansible-tox-molecule-ubuntu-jammy
         - openstack-ansible-tox-molecule-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
         - openstack-ansible-tox-molecule-rockylinux-9
-        - openstack-ansible-tox-molecule-ubuntu-jammy
         - openstack-ansible-tox-molecule-ubuntu-noble
 
 - project-template:
