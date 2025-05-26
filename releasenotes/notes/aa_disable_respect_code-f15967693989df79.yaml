@@ -1,0 +1,8 @@
+---
+fixes:
+  - |
+    ``os_neutron`` role was ignoring actual exit code of ``aa-disable`` command,
+    when it was exiting abnormally. It could result in unobvious failures later
+    in neutron agents.
+    This was fixed and the role will fail if ``aa-disable`` fails to disable
+    required apparmor profiles instead of suppressing the issue.
