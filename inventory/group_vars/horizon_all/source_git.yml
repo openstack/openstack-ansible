@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 28.02.2025 ###
+### HEAD as of 24.06.2025 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: b06ce1c2a1baa6bd53e70f407cd2194aadcf169e
+horizon_git_install_branch: 09826143b64daeeb8e0dfc1d484fde1a30285beb
 horizon_git_track_branch: stable/2024.1
 
 ## Adjutant dashboard plugin
@@ -77,5 +77,5 @@ trove_dashboard_git_track_branch: stable/2024.1
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-dashboard"
-octavia_dashboard_git_install_branch: 468c619bfc27b8734698571de12c06ab6ff6241a
+octavia_dashboard_git_install_branch: df12d4f080df1330c24abce7e5c3b14c4641b3ce
 octavia_dashboard_git_track_branch: stable/2024.1
