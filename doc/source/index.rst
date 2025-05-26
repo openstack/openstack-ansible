@@ -7,8 +7,7 @@ Abstract
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-OpenStack-Ansible 2023.2 (Bobcat) was first released with the 28.0.0 tag on
-7 December 2023.
+OpenStack-Ansible 2023.2 (Bobcat) has reached End of Life on May 26, 2025.
 
 .. toctree::
    :maxdepth: 1
