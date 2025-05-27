@@ -199,7 +199,7 @@ Upgrade infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~
 
 We can now go ahead with the upgrade of all the infrastructure components. To
-ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
+ensure that RabbitMQ and MariaDB are upgraded, we pass the appropriate flags.
 
 .. warning::
 
@@ -220,7 +220,7 @@ ensure that rabbitmq and mariadb are upgraded, we pass the appropriate flags.
 
     # openstack-ansible openstack.osa.setup_infrastructure -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest
 
-With this complete, we can now restart the mariadb containers one at a time,
+With this complete, we can now restart the MariaDB containers one at a time,
 ensuring that each is started, responding, and synchronized with the other
 nodes in the cluster before moving on to the next steps. This step allows
 the LXC container configuration that you applied earlier to take effect,

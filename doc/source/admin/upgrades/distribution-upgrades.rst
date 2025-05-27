@@ -255,7 +255,7 @@ Deploying Infrastructure Hosts
 
          openstack-ansible openstack.osa.galera_server --limit localhost,reinstalled_host* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
 
-      You'll now have mariadb running, and it should be synced with
+      You'll now have MariaDB running, and it should be synced with
       non-primaries.
 
       To check that verify MariaDB cluster status by executing from
