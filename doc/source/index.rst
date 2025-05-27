@@ -26,12 +26,11 @@ OpenStack-Ansible 2025.2 (Flamingo) is currently Under Development.
    contributors/index
    reference/index
 
-
 2025.1 (Epoxy): Release Candidate
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack-Ansible 2025.1 (Epoxy) Release Candidate was released with the 31.0.0.0rc1 tag on
-May 20, 2024.
+May 20, 2025.
 
 * `OpenStack-Ansible 2025.1 Documentation`_
 
