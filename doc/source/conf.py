@@ -35,9 +35,9 @@ import yaml
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = '2025.1'
+previous_series_name = '2025.1 (Epoxy)'
 previous_slurp_name = None
-current_series_name = '2025.2'
+current_series_name = '2025.2 (Flamingo)'
 
 # General information about the project.
 project = 'OpenStack-Ansible'
@@ -76,7 +76,7 @@ dev_docs_prefix = ("https://docs.openstack.org/openstack-ansible/"
                    "{}/%s".format(current_series))
 
 if previous_slurp_name:
-    slurp_epilog = f"replace:: or {previous_slurp_name.capitalize()}"
+    slurp_epilog = f"replace:: or {previous_slurp_name}"
 else:
     slurp_epilog = "unicode:: U+200B"
 
@@ -93,9 +93,9 @@ rst_epilog = """
 """.format(  # noqa: E501
     current_release_git_branch_name=branch,
     current_release_gnocchi_git_branch_name=gnocchi_branch,
-    previous_series_name=previous_series_name,
-    previous_release_formal_name=previous_series_name.capitalize(),
-    current_release_formal_name=current_series_name.capitalize(),
+    previous_series_name=previous_series_name.split(' ')[0],
+    previous_release_formal_name=previous_series_name,
+    current_release_formal_name=current_series_name,
     slurp_epilog=slurp_epilog,
     latest_tag=latest_tag,
     upgrade_warning=upgrade_warning,
