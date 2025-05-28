@@ -47,10 +47,6 @@ Should an ``env.d`` directory be found in the directory specified by
 ``--config``, its contents will be added to the base environment, overriding
 any previous contents in the event of conflicts.
 
-.. note::
-
-   In all versions prior to |previous_release_formal_name|, this argument was ``--file``.
-
 The following file must be present in the configuration directory:
 
 * ``openstack_user_config.yml``
