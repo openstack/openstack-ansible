@@ -13,11 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{% if ansible_facts['os_family'] | lower == 'redhat' %}
-deployment_environment_variables:
-  LIBSYSTEMD_VERSION: {{ systemd_version.stdout_lines[0].split('-')[1] }}
-{% endif %}
-
 ## General options
 debug: True
 
