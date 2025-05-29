@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    EL does not need to carry thm COPR repo to install LXC as LXC
+    is now provided by EPEL.
+    We remove repository during upgrade and clean dnf metadata.

@@ -2,9 +2,9 @@
 - name: ansible-hardening
   scm: git
   src: https://opendev.org/openstack/ansible-hardening
-  version: 407f609cb8ae61fea8b9b842b13ef4503ab9a712
+  version: 50eb0662c3645d302c6ca2c53f3b5fd1a7115720
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-02'
 - name: frrouting
   scm: git
   src: https://opendev.org/openstack/ansible-role-frrouting
@@ -26,21 +26,21 @@
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: f971181fc2a74e678580d55711e90797e1848e2c
+  version: f47d3c0ab9bb8fba465bfd7ea9cb7362bda7299c
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-02'
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
-  version: 90bb81e5d120543c1c474faecf51899d4f39b0e3
+  version: 713946504967077b0be1d07317e69f43472f4e7f
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-05'
 - name: systemd_networkd
   src: https://opendev.org/openstack/ansible-role-systemd_networkd
   scm: git
-  version: 157a465efce0a81f6c90a8eba270219776efd752
+  version: 1320bde98f42b7140a06bba5013fa5c6faede07d
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-04'
 - name: systemd_service
   src: https://opendev.org/openstack/ansible-role-systemd_service
   scm: git
@@ -50,9 +50,9 @@
 - name: uwsgi
   src: https://opendev.org/openstack/ansible-role-uwsgi
   scm: git
-  version: 13e2974f9ffebaf791fd21dc4e6d1646e7cca7fc
+  version: 5e849fa85b99b8f9f9ddedc09f083be24d7710f0
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-04'
 - name: zookeeper
   src: https://opendev.org/openstack/ansible-role-zookeeper
   scm: git
@@ -74,9 +74,9 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: dee261bf6af7bc01bfaf31950af6fb99e526d8dc
+  version: ab6f056d6dd4b9f071f390c7eb23d8e2285c5663
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-05'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
@@ -92,9 +92,9 @@
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
-  version: c528268d7540849008d4188ffc4d45952f052cce
+  version: c34d8e525c2c7d89ca1b8e17593e8c27402e9444
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-06'
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
@@ -104,9 +104,9 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: 7116837c3df8e3242dfdecd65a90b83d85f085dc
+  version: d6f0bab791be14046f7bcde0a9918b01e63ed020
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-03'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -182,9 +182,9 @@
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 9cc8b18993e76dcf671061efe455b58684e8f3e5
+  version: 3390ea58d61ffdad1d257e7876e36773fd3f4de4
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-04'
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
@@ -224,9 +224,9 @@
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: 1461f01879a5719151a7e606f069cac17b2e9476
+  version: fb2f85f2d736d3dde40593367bb3d5c3d929c264
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-02'
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
@@ -272,9 +272,9 @@
 - name: os_tempest
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_tempest
-  version: 3bca03b7e9fa90b7f80c6150c1e840dceb36a2a7
+  version: 3ed9cfff9759fc9430d89d6a71add0ad0b6b80a4
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-03'
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
@@ -290,9 +290,9 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: 6feb3f3fa232870a1ab44b307e756efcaaf2a7fa
+  version: a58b839905d2460b2084cb9427616705efd67189
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-02'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
