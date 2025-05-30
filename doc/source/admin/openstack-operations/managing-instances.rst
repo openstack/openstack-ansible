@@ -8,54 +8,74 @@ Creating an instance using the Dashboard
 
 Using an image, create a new instance via the Dashboard options.
 
-#. Log into the Dashboard, and select the **Compute** project from the
+#. Log into the Dashboard, and select the :guilabel:`admin` project from the
    drop down list.
 
-#. Click the **Images** option.
+#. On the :guilabel:`Project` tab, open the :guilabel:`Instances` tab and click
+   the :guilabel:`Launch Instance` button.
 
-#. Locate the image that will act as the instance base from the
-   **Images** table.
+   .. figure:: figures/launch_instance.png
 
-#. Click **Launch** from the **Actions** column.
+      **Figure Dashboard — Instances tab**
 
-#. Check the **Launch Instances** dialog, and find the **details** tab.
+#. Check the :guilabel:`Launch Instance` dialog, and find the :guilabel:`Details` tab.
    Enter the appropriate values for the instance.
 
-   #. In the Launch Instance dialog, click the **Access & Security** tab.
-      Select the keypair. Set the security group as "default".
+   .. figure:: figures/details.png
 
-   #. Click the **Networking tab**. This tab will be unavailable if
-      OpenStack networking (neutron) has not been enabled. If networking
-      is enabled, select the networks on which the instance will
-      reside.
+      **Instance Details**
 
-   #. Click the **Volume Options tab**. This tab will only be available
-      if a Block Storage volume exists for the instance. Select
-      **Don't boot from a volume** for now.
+#. Click the :guilabel:`Source`. In the Source step, select the boot
+   source: Image, Volume (Volume Snapshot), or Instance Snapshot. If
+   you choose Image, pick the desired OS or custom image from the list
+   to boot your instance. Volume option will only be available if
+   Block Storage service (cinder) is enabled.
 
-      For more information on attaching Block Storage volumes to
-      instances for persistent storage, see the
-      *Managing volumes for persistent storage* section below.
+   .. figure:: figures/source.png
 
-   #. Add customisation scripts, if needed, by clicking the
-      **Post-Creation** tab. These run after the instance has been
-      created. Some instances support user data, such as root passwords,
-      or admin users. Enter the information specific to the instance
-      here if required.
+      **Instance Source**
 
-   #. Click **Advanced Options**. Specify whether the instance uses a
-      configuration drive to store metadata by selecting a disk
-      partition type.
+   For more information on attaching Block Storage volumes to
+   instances for persistent storage, see the *Managing volumes for
+   persistent storage* section below.
 
-#. Click **Launch** to create the instance. The instance will start on a
-   compute node. The **Instance** page will open and start creating a
-   new instance. The **Instance** page that opens will list the instance
+#. In the :guilabel:`Launch Instance` dialog, click the :guilabel:`Flavor` tab
+   and select the prefered flavor for you instance.
+
+#. Click the :guilabel:`Networks tab`. This tab will be unavailable if
+   Network service (neutron) has not been enabled. If networking
+   is enabled, select the networks on which the instance will
+   reside.
+
+   .. figure:: figures/networks.png
+
+      **Instance Networks**
+
+#. Click the :guilabel:`Keypair` tab and select the keypair or create
+   new one.
+
+#. Click the :guilabel:`Security Groups` tab and set the security
+   group as "default".
+
+#. Add customisation scripts, if needed, by clicking the
+   :guilabel:`Configuration`. These run after the instance has been
+   created. Some instances support user data, such as root passwords,
+   or admin users. Enter the information specific to the instance
+   here if required.
+
+#. Click :guilabel:`Launch` to create the instance. The instance will start on a
+   compute node. The **Instances** page will open and start creating a
+   new instance. The **Instances** page that opens will list the instance
    name, size, status, and task. Power state and public and private IP
    addresses are also listed here.
 
    The process will take less than a minute to complete. Instance
    creation is complete when the status is listed as active. Refresh the
    page to see the new active instance.
+
+   .. figure:: figures/instances.png
+
+      **Instances Page**
 
    .. list-table:: **Launching an instance options**
       :widths: 33 33 33
@@ -76,8 +96,8 @@ Using an image, create a new instance via the Dashboard options.
           the Dashboard names remain unchanged
       * - **Image**
         - Required
-        - The type of container format, one of ``ami``, ``ari``, ``aki``,
-          ``bare``, or ``ovf``
+        - The type of container format, one of ``raw``, ``qcow2``, ``iso``,
+          ``vmdk``,``vdi`` etc.
       * - **Flavor**
         - Required
         - The vCPU, Memory, and Disk configuration. Note that larger flavors can
@@ -92,7 +112,7 @@ Using an image, create a new instance via the Dashboard options.
         - Specify whether the instance will be based on an image or a snapshot. If
           it is the first time creating an instance, there will not yet be any
           snapshots available.
-      * - **Image Name**
+      * - **Image**
         - Required
         - The instance will boot from the selected image. This option will be
           pre-populated with the instance selected from the table. However, choose
@@ -108,11 +128,12 @@ Using an image, create a new instance via the Dashboard options.
         - Optional
         - Specify a key pair with this option. If the image uses a static key set
           (not recommended), a key pair is not needed.
-      * - **Selected Networks**
+      * - **Networks**
         - Optional
-        - To add a network to an instance, click the **+** in the **Networks
+        - To add a network to an instance, click the **Downwards Arrow** symbol
+          in the **Networks
           field**.
-      * - **Customisation Script**
+      * - **Configuration**
         - Optional
         - Specify a customisation script. This script runs after the instance
           launches and becomes active.
@@ -181,7 +202,7 @@ Managing an instance
 ~~~~~~~~~~~~~~~~~~~~
 
 #. Log in to the Dashboard. Select one of the projects, and click
-   **Instances**.
+   :guilabel:`Instances`.
 
 #. Select an instance from the list of available instances.
 
@@ -192,19 +213,23 @@ The **Actions** column includes the following options:
 
 -  Resize or rebuild any instance
 
+-  Attach/Detach Volume
+
+-  Attach/Detach Interface
+
 -  View the instance console log
 
 -  Edit the instance
 
--  Modify security groups
+-  Edit security groups
 
--  Pause, resume, or suspend the instance
+-  Pause, resume, rescue or suspend the instance
 
 -  Soft or hard reset the instance
 
 .. note::
 
-   Terminate the instance under the **Actions** column.
+   Delete the instance under the **Actions** column.
 
 
 Managing volumes for persistent storage
@@ -215,8 +240,8 @@ storage provides a source of memory for instances. Administrators can
 attach volumes to a running instance, or move a volume from one
 instance to another.
 
-Nova instances live migration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Instances live migration
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Nova is capable of live migration instances from one host to
 a different host to support various operational tasks including:
@@ -289,14 +314,14 @@ Other configurations can be configured inside the
 Local versus shared storage
 ---------------------------
 
-By default, live migration assumes that your Nova instances are stored
+By default, live migration assumes that your instances are stored
 on shared storage and KVM/Libvirt only need to synchronize the
-memory and base image of the Nova instance to the new host.
+memory and base image of the instance to the new host.
 Live migrations on local storage will fail as a result of that assumption.
 Migrations with local storage can be accomplished by allowing instance disk
 migrations with the ``--block-migrate`` option.
 
-Additional Nova flavor features like ephemeral storage or swap have an
+Additional flavor features like ephemeral storage or swap have an
 impact on live migration performance and success.
 
 Cinder attached volumes also require a Libvirt version larger or equal to
@@ -368,7 +393,7 @@ The following nova client commands are provided:
 
 * ``resize``
 
-  Changes the flavor of an Nova instance (increase) while rebooting
+  Changes the flavor of an instance (increase) while rebooting
   and also migrates (cold) the instance to a new host to accommodate
   the new resource requirements. This operation can take considerate
   amount of time, depending disk image sizes.
