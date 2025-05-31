@@ -7,9 +7,9 @@ release to the next.
 
 .. note::
 
-   This guide was last updated when upgrading from Ubuntu Focal to Jammy during
-   the Antelope (2023.1) release. For earlier releases please see other
-   versions of the guide.
+   This guide was last updated when upgrading from Ubuntu 20.04 (Focal Fossa)
+   to Ubuntu 22.04 (Jammy Jellyfish) during the Antelope (2023.1) release.
+   For earlier releases please see other versions of the guide.
 
 Introduction
 ============
