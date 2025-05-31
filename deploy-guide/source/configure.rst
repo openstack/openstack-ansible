@@ -364,8 +364,5 @@ values for the variables in each file that contains service credentials:
 
 To regenerate existing passwords, add the ``--regen`` flag.
 
-.. warning::
-
-   The playbooks do not currently manage changing passwords in an existing
-   environment. Changing passwords and rerunning the playbooks will fail
-   and might break your OpenStack environment.
+For information on how to rotate passwords, please refer to the `Password Rotation <https://docs.openstack.org/openstack-ansible/latest/user/security/password-rotation.html>`_
+documentation.

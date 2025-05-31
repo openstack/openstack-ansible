@@ -18,3 +18,4 @@ For understanding security design, please see
    security-txt
    hardening
    non-root
+   password-rotation
