@@ -158,7 +158,7 @@ more information.
 
 .. note::
 
-    With upgrade to 2024.2 (Dalmation) release and beyond, usage of RabbitMQ
+    With upgrade to 2024.2 (Dalmatian) release and beyond, usage of RabbitMQ
     Quorum Queues is mandatory to ensure high availability of queues. If you
     had previously set ``oslomsg_rabbit_quorum_queues: false``, please
     consider migrating before continuing with this upgrade which uses RabbitMQ
