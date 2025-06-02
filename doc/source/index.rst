@@ -9,13 +9,13 @@ OpenStack-Ansible provides Ansible playbooks and roles for deploying
 and configuring an OpenStack environment.
 
 Documentation for all previous releases is available by substituting ``latest``
-with an expected release (i.e. ``2025.1``) directly in the address bar (URL)
+with an expected release (i.e. "|previous_series_name|") directly in the address bar (URL)
 of your browser.
 
 Support status for each OpenStack release can be found on `releases.openstack.org <https://releases.openstack.org/>`_
 
-2025.2 (Flamingo): Under Development
-------------------------------------
+|current_release_formal_name|: Under Development
+------------------------------------------------
 
 .. toctree::
    :maxdepth: 2
