@@ -15,7 +15,7 @@ images:
 
    $ openstack flavor list
    +-----+-----------+-------+------+-----------+-------+-----------+
-   | ID  | Name      |   RAM | Disk | Ephemeral | VCPUs | Is Public |
+   | ID  | Name      |   RAM | Disk | Ephemeral | vCPUs | Is Public |
    +-----+-----------+-------+------+-----------+-------+-----------+
    | 1   | m1.tiny   |   512 |    1 |         0 |     1 | True      |
    | 2   | m1.small  |  2048 |   20 |         0 |     1 | True      |
@@ -46,34 +46,8 @@ For more information about OpenStack client utilities, see these links:
 -  `OpenStackClient
    commands <https://docs.openstack.org/python-openstackclient/latest/>`__
 
--  `Image Service (glance) CLI
-   commands <https://docs.openstack.org/glance/latest/cli/index.html>`__
-
--  `Image Service (glance) CLI command cheat
-   sheet <https://docs.openstack.org/python-glanceclient/latest/cli/glance.html>`__
-
 -  `Compute (nova) CLI
    commands <https://docs.openstack.org/nova/latest/cli/index.html>`__
-
 -  `Compute (nova) CLI command cheat
    sheet <https://docs.openstack.org/python-novaclient/latest/cli/nova.html>`__
 
--  `Networking (neutron) CLI
-   commands <https://docs.openstack.org/neutron/latest/cli/index.html>`__
-
--  `Networking (neutron) CLI command cheat
-   sheet <https://docs.openstack.org/python-neutronclient/latest/cli/neutron.html>`__
-
--  `Block Storage (cinder) CLI commands
-   <https://docs.openstack.org/python-cinderclient/latest/user/shell.html>`__
-
--  `Block Storage (cinder) CLI command cheat
-   sheet <https://docs.openstack.org/python-cinderclient/latest/cli/details.html>`__
-
--  `python-keystoneclient <https://pypi.org/project/python-keystoneclient/>`__
-
--  `python-glanceclient <https://pypi.org/project/python-glanceclient/>`__
-
--  `python-novaclient <https://pypi.org/project/python-novaclient/>`__
-
--  `python-neutronclient <https://pypi.org/project/python-neutronclient/>`__
