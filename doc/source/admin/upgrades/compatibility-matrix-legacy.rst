@@ -10,5 +10,8 @@ in time.
 
 Operating systems with experimental support are marked with ``E`` in the table.
 
+Operating System Compatibility Matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. raw:: html
     :file: os-compatibility-matrix-legacy.html
