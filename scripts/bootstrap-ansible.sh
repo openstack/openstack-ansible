@@ -74,6 +74,8 @@ case ${DISTRO_ID} in
                 PYTHON_EXEC_PATH="$(command -v python3.12)"
                 OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
+            10|10.[0-9]*)
+                dnf -y install python3 python3-devel python3-libselinux
         esac
         ;;
     centos|rhel)
@@ -83,6 +85,8 @@ case ${DISTRO_ID} in
                 PYTHON_EXEC_PATH="$(command -v python3.12)"
                 OSA_ANSIBLE_PYTHON_INTERPRETER="/usr/bin/python3"
                 ;;
+            10)
+                dnf -y install python3 python3-devel python3-libselinux
         esac
         ;;
     ubuntu|debian)
