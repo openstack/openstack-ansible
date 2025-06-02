@@ -206,8 +206,8 @@ Managing an instance
 
 #. Select an instance from the list of available instances.
 
-#. Check the **Actions** column, and click on the **More** option.
-   Select the instance state.
+#. Check the **Actions** column, and click on the down arrow.
+   Select the action.
 
 The **Actions** column includes the following options:
 
