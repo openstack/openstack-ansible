@@ -96,8 +96,7 @@ The following example shows how to move a file from your deployment host to the
    'dest=/tmp/FILE'
 
 The fetch module gathers files from remote machines and stores the files
-locally in a file tree, organized by the hostname from remote machines and
-stores them locally in a file tree, organized by hostname.
+locally in a file tree, organized by the hostname.
 
 .. note::
 
@@ -145,6 +144,13 @@ Note that more than 10 forks will cause issues for any playbooks which use
 number of forks are not raised when executing against the control plane, as
 this is where delegation is most often used.
 
+When increasing the number of Ansible forks in, particularly beyond 10,
+SSH connection issues can arise due to the default sshd setting
+MaxStartups 10:30:100. This setting limits the number of simultaneous
+unauthenticated SSH connections to 10, after which new connection attempts
+start getting dropped probabilistically — with a 30% chance initially,
+increasing linearly up to 100% as the number of connections approaches 100.
+
 The number of forks used may be changed on a permanent basis by including
 the appropriate change to the ``ANSIBLE_FORKS`` in your ``.bashrc`` file.
 Alternatively it can be changed for a particular playbook execution by using
@@ -159,8 +165,6 @@ nodes with 50 forks.
 
 For more information about forks, please see the following references:
 
-* OpenStack-Ansible `Bug 1479812`_
 * Ansible `forks`_ entry for ansible.cfg
 
-.. _Bug 1479812: https://bugs.launchpad.net/openstack-ansible/+bug/1479812
 .. _forks: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#cmdoption-ansible-playbook-f
