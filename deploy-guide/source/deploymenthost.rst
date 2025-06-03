@@ -26,8 +26,8 @@ Install the operating system
 Install one of the following supported operating systems on the deployment
 hosts:
 
-* `Ubuntu server 24.04 (Noble Numbat) LTS 64-bit <http://releases.ubuntu.com/24.04/>`_
-* `Debian 12 (Bookworm) LTS 64-bit <https://www.debian.org/distrib/>`_
+.. raw:: HTML
+    :file: supported-platforms.html
 
 Configure at least one network interface to access the Internet or suitable
 local repositories.

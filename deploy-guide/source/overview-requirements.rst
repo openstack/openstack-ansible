@@ -4,13 +4,12 @@ Software requirements
 Ensure that all hosts within the OpenStack-Ansible (OSA) environment meet the
 following minimum requirements:
 
-* Debian
+Operating Systems:
 
-  * Debian 12 (bookworm)
+.. raw:: HTML
+    :file: supported-platforms.html
 
-* Ubuntu
-
-  * Ubuntu 24.04 LTS (Noble Numbat)
+Configuration:
 
 * Secure Shell (SSH) client and server that support public key
   authentication

@@ -11,8 +11,9 @@ Installing the operating system
 Install one of the following supported operating systems on the
 target host:
 
-* Ubuntu server 24.04 (Noble Numbat) LTS 64-bit
-* Debian 12 64-bit
+.. raw:: HTML
+    :file: supported-platforms.html
+
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
