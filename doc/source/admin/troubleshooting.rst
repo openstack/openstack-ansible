@@ -210,7 +210,7 @@ The following table lists the commands to restart an OpenStack service.
           # service cinder-backup restart
           # service cinder-scheduler restart
           # service cinder-volume restart
-   * - Block Storage service
+   * - Shared Filesystems service
      - .. code-block:: console
 
           # service manila-api restart
@@ -463,22 +463,9 @@ identity problems:
    registry is working.
 
 For an example and more information, see `Verify operation
-<https://docs.openstack.org/glance/latest/install/verify.html>_`.
+<https://docs.openstack.org/glance/latest/install/verify.html>`_.
 and `Manage Images
-<https://docs.openstack.org/glance/latest/admin/manage-images.html>_`
-
-RabbitMQ issues
-~~~~~~~~~~~~~~~
-
-Analyze RabbitMQ queues
------------------------
-
-.. The title should state what issue is being resolved? DC
-
-Analyze OpenStack service logs and RabbitMQ logs
-------------------------------------------------
-
-.. The title should state what issue is being resolved? DC
+<https://docs.openstack.org/glance/latest/admin/manage-images.html>`_.
 
 Failed security hardening after host kernel upgrade from version 3.13
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -512,7 +499,6 @@ To set this permanently, set this variable in
 Refer to the Ansible documentation on `fact caching`_ for more details.
 
 .. _fact caching: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_vars_facts.html
-
 
 Forcing regeneration of cached facts
 ------------------------------------
