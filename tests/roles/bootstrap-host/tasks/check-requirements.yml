@@ -14,15 +14,13 @@
 # limitations under the License.
 
 - name: Check for a supported Operating System
-  ansible.builtin.assert:
-    that:
-      (ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_release'] == 'bookworm') or
-      (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_release'] == 'noble') or
-      (ansible_facts['os_family'] == 'RedHat' and ansible_facts['distribution_major_version'] == '10')
-    msg: >-
-      The only supported platforms for this release are Debian 12 (Bookworm), Ubuntu 24.04 (Noble Numbat),
-      CentOS Stream 10 and RHEL 10 derivatives such as Rocky Linux.
-  when: (check_operating_system | default(True))| bool
+  ansible.builtin.include_role:
+    name: openstack.osa.platform_check
+    apply:
+      tags:
+        - check-operating-system
+  when:
+    - (check_operating_system | default(True)) | bool
   tags:
     - check-operating-system
 
