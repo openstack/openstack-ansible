@@ -228,6 +228,6 @@ onwards.
       $ openstack-ansible openstack.osa.setup_openstack --tags common-mq,post-install
 
 In order to take advantage of these steps, we suggest setting
-`oslomsg_rabbit_quorum_queues` to False before upgrading to 2024.1. Then, once
+`oslomsg_rabbit_quorum_queues` to ``false`` before upgrading to 2024.1. Then, once
 you have upgraded, set `oslomsg_rabbit_quorum_queues` back to the default of
-True and run the playbooks above.
+``true`` and run the playbooks above.
