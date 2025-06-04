@@ -8,6 +8,7 @@ using OpenStack-Ansible.
 .. toctree::
    :maxdepth: 1
 
+   scale-environment/scaling-maria-rabbit
    scale-environment/add-new-infrastructure-host
    scale-environment/add-compute-host
    scale-environment/remove-compute-host
