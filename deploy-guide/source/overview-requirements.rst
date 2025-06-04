@@ -28,7 +28,7 @@ CPU recommendations
   environments.
 
 * Infrastructure (control plane) hosts should have multicore processors for
-  best performance. Some services, such as MySQL, benefit from
+  best performance. Some services, such as MariaDB, benefit from
   additional CPU cores and other technologies, such as `Hyper-threading`_.
 
 .. _hardware-assisted virtualization extensions: https://en.wikipedia.org/wiki/Hardware-assisted_virtualization
