@@ -30,15 +30,15 @@ Images can be compressed using ``.zip`` or ``.tar.gz``.
 
 #. Log in to the Dashboard.
 
-#. Select the **Admin** tab in the navigation pane and click **images**.
+#. Select the :guilabel:`Admin` tab in the navigation pane and click :guilabel:`Images`.
 
-#. Click the **Create Image** button. The **Create an Image** dialog box
+#. Click the :guilabel:`Create Image` button. The **Create an Image** dialog box
    will appear.
 
 #. Enter the details of the image, including the **Image Location**,
    which is where the URL location of the image is required.
 
-#. Click the **Create Image** button. The newly created image may take
+#. Click the :guilabel:`Create Image` button. The newly created image may take
    some time before it is completely uploaded since the image arrives in
    an image queue.
 
