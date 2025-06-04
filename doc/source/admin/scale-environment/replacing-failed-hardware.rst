@@ -18,7 +18,7 @@ other hand, if the RAM has failed, you would have to power the host down.
 Having a plan in place for how you will manage these types of events is a vital
 part of maintaining your OpenStack environment.
 
-For a Compute host, shut down the instance on the host before
+For a Compute host, shut down instances on the host before
 it goes down. For a Block Storage (cinder) host using non-redundant storage,
 shut down any instances with volumes attached that require that mount point.
 Unmount the drive within your operating system and re-mount the drive once the
