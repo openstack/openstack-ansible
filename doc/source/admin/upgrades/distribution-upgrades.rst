@@ -152,7 +152,7 @@ Deploying Infrastructure Hosts
 
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
-   'Set state to MAINT'
+   set state to 'MAINT'.
 
 #. Reinstall an infrastructure host's operating system
 
@@ -238,7 +238,7 @@ Deploying Infrastructure Hosts
 
 #. If it IS a 'primary', do these steps
 
-   #. Temporarily set your primary Galera in MAINT in HAProxy.
+   #. Temporarily set your primary Galera in 'MAINT' in HAProxy.
 
       In order to prevent role from making your primary Galera
       as UP in HAProxy, create an empty file ``/var/tmp/clustercheck.disabled``
@@ -304,11 +304,11 @@ Deploying Infrastructure Hosts
 
 #. Adjust HAProxy status
 
-   If HAProxy was set into MAINT mode, this can now be removed for services
+   If HAProxy was set into 'MAINT' mode, this can now be removed for services
    which have been restored.
 
    For the 'repo' host, it is important that the freshly installed hosts are
-   set to READY in HAProxy, and any which remain on the old operating system
+   set to 'READY' in HAProxy, and any which remain on the old operating system
    are set to 'MAINT'.
 
    You can also use a playbook from `OPS repository`_ to re-enable all backends from the host:
@@ -332,7 +332,7 @@ Deploying Compute and Network Hosts
 
       rm /etc/openstack_deploy/ansible-facts/reinstalled_host*
 
-   (* because we're deleting all container facts for the host as well.)
+   (* because we're deleting all container facts for the host as well)
 
 #. Execute the following:
 
