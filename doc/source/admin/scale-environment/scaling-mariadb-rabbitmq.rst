@@ -43,7 +43,7 @@ each one is running all OpenStack API services along with supporting
 infrastructure, like MariaDB and RabbitMQ clusters. This is a good starting
 point for small to medium-sized deployments. However, as the deployment grows,
 you may start to experience performance problems. Typically communication
-between services and MySQL/RabbitMQ looks like this:
+between services and MariaDB/RabbitMQ looks like this:
 
 .. figure:: figures/common_deploy.png
 
@@ -57,7 +57,7 @@ write requests will be passed to the current “primary” instance creating mor
 internal traffic and raising the amount of work each instance should do. So
 it is recommended to pass write requests only to the “primary” instance.
 
-However HAProxy is not capable of balancing MySQL queries at an application
+However HAProxy is not capable of balancing MariaDB queries at an application
 level (L7 of OSI model), to separate read and write requests, so we have to
 balance TCP streams (L3) and pass all traffic without any separation to the
 current “primary” node in the Galera cluster, which creates a potential
@@ -68,7 +68,7 @@ bottleneck.
 RabbitMQ is clustered differently. We supply IP addresses of all cluster
 members to clients and it’s up to the client to decide which backend it
 will use for interaction. Only RabbitMQ management UI is balanced through
-haproxy, so the connection of clients to queues does not depend on HAProxy
+HAProxy, so the connection of clients to queues does not depend on HAProxy
 in any way.
 
 Though usage of HA queues and even quorum queues makes all messages and
@@ -155,7 +155,6 @@ you need to follow these steps:
 
     # On the component level we are creating group `neutron_rabbitmq`
     # that is also part of `rabbitmq_all` and `neutron_rabbitmq_all`
-
     component_skel:
       neutron_rabbitmq:
         belongs_to:
@@ -290,7 +289,7 @@ While it’s relatively easy to start using the new RabbitMQ cluster for the
 service, migration of the database is slightly tricky and will include some
 downtime.
 
-First, we need to tell Neutron that from now on, the MySQL database for the
+First, we need to tell Neutron that from now on, the MariaDB database for the
 service is listening on a different port. So you should add the following
 override to your ``user_variables.yml``:
 
@@ -342,7 +341,7 @@ No, we can stop the API service for Neutron:
 
    # ansible -m service -a "state=stopped name=neutron-server" neutron_server
 
-And run a backup/restore of the MySQL database for the service. For this
+And run a backup/restore of the MariaDB database for the service. For this
 purpose, we will use another small playbook, that we name as
 ``mysql_backup_restore.yml`` with the following content:
 
