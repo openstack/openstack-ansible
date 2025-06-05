@@ -770,6 +770,17 @@
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: centos-systemd:stream9
 
+
+# CentOS Stream 10
+- job:
+    name: openstack-ansible-tox-molecule-centos-10-stream
+    parent: openstack-ansible-tox-molecule
+    nodeset: osa-nested-virt-noble
+    vars:
+      tox_environment:
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: centos-systemd:stream10
+
 # debian bookworm
 
 - job:
