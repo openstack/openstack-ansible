@@ -70,7 +70,7 @@ system packages are upgraded and then reboot into the new kernel:
 
 .. code-block:: shell-session
 
-   ## CentOS / Rocky Linux
+   ## CentOS Stream / Rocky Linux
    # dnf upgrade
    # dnf install git-core
    # systemctl stop firewalld
@@ -82,8 +82,7 @@ system packages are upgraded and then reboot into the new kernel:
    Before rebooting, in ``/etc/sysconfig/selinux``, make sure that
    ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
    SELinux enabled is not currently supported in OpenStack-Ansible
-   for CentOS/Rocky/RHEL due to a lack of maintainers for the feature.
-
+   for CentOS Stream or Rocky Linux due to a lack of maintainers for the feature.
 
 .. note::
 
