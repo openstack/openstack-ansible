@@ -168,6 +168,8 @@ You can override the default path to ``user-ansible-venv-requirements.txt`` file
 with ``USER_ANSIBLE_REQUIREMENTS_FILE`` environment variable before running the
 ``bootstrap-ansible.sh`` script.
 
+.. _defining_environment_variables_for_deployment:
+
 Defining environment variables for deployment
 ---------------------------------------------
 
@@ -177,7 +179,7 @@ variables that control behaviour of OpenStack-Ansible and Ansible iteself.
 Starting with the Zed release a ``user.rc`` file can be placed in
 ``OSA_CONFIG_DIR`` (/etc/openstack_deploy) folder and contain any
 environment variable definitions that might be needed to change the
-default behaviour or any arbitrary `Ansible configuration`_ parameter.
+default behaviour or any arbitrary `ansible-configuration`_ parameter.
 These environment variables are general purpose and are not limited
 to those understood by Ansible.
 
@@ -188,6 +190,5 @@ cannot re-defined or controlled through the ``user.rc`` file.
 
 .. _ansible-role-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-role-requirements.yml
 .. _ansible-collection-requirements: https://opendev.org/openstack/openstack-ansible/src/ansible-collection-requirements.yml
-.. _Ansible configuration: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#environment-variables
-
+.. _ansible-configuration: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#environment-variables
 .. _ansible-galaxy: https://docs.ansible.com/ansible/latest/galaxy/user_guide.html#install-multiple-collections-with-a-requirements-file

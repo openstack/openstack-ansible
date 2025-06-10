@@ -28,8 +28,7 @@ your own folder in ``/etc/openstack_deploy/group_vars`` (and
 ``/etc/openstack_deploy/host_vars`` respectively).
 
 If you want to change the location of the override folder, you
-can adapt your ``user.rc`` file (see details in
-:dev_docs:`Extending OSA with additional Ansible content <reference/configuration/extending-osa.html#defining-environment-variables-for-deployment>`),
+can adapt your ``user.rc`` file (see details in :ref:`defining_environment_variables_for_deployment`),
 or export
 ``GROUP_VARS_PATH`` and ``HOST_VARS_PATH`` during your shell session.
 
@@ -138,7 +137,6 @@ documentation section.
           - json
           - yaml
 
-
 Example task using the config_template module
 ---------------------------------------------
 
@@ -158,7 +156,6 @@ available options are "yaml", "json", and "ini".
        config_overrides: "{{ test_overrides }}"
        config_type: ini
 
-
 Here is an example override dictionary (hash):
 
 .. code-block:: yaml
@@ -166,7 +163,6 @@ Here is an example override dictionary (hash):
    test_overrides:
      DEFAULT:
        new_item: 12345
-
 
 And here is the template file:
 
@@ -185,7 +181,6 @@ this:
    value1 = abc
    value2 = 123
    new_item = 12345
-
 
 Discovering available overrides
 -------------------------------
