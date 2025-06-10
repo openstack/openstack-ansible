@@ -55,14 +55,12 @@ host.
       to a vanilla OpenStack installation and allow for more tweaking and customizations. On
       the other hand, distro based deployments generally provide a package combination which
       has been verified by the distributions themselves. However, this means that updates are
-      being released less often and with a potential delay. Moreover, this method might offer
-      fewer opportunities for deployment customizations. The ``install_method`` variable is set
-      during the initial deployment and you **must not** change it as OpenStack-Ansible is not
-      able to convert itself from one installation method to the other. As such, it's
-      important to judge your needs against the pros and cons of each method before making
-      a decision. Please note that the ``distro`` installation method was introduced during
-      the Rocky cycle, and as a result of which, Ubuntu 16.04 is not supported due to the
-      fact that there are no Rocky packages for it.
+      being released less often and with a potential delay. Moreover, this method offer
+      fewer opportunities for deployment customizations and is supported only by selected
+      services. The ``install_method`` variable is set during the initial deployment and
+      you **must not** change it as OpenStack-Ansible is not able to convert itself from
+      one installation method to the other. As such, it's important to judge your needs
+      against the pros and cons of each method before making a decision.
 
 The configuration in the ``openstack_user_config.yml`` file defines which hosts
 run the containers and services deployed by OpenStack-Ansible. For
