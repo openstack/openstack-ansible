@@ -94,7 +94,7 @@ case ${DISTRO_ID} in
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           python3 python3-dev \
           python3-minimal python3-apt \
-          python3-venv\
+          python3-venv
         ;;
 esac
 
@@ -113,7 +113,7 @@ case ${DISTRO_ID} in
           git-core curl gcc \
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
-          wget
+          wget sudo
         ;;
 esac
 
