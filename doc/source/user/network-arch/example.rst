@@ -127,6 +127,45 @@ configure a systemd service for that. It can be done using variable
           After: "{{ sys-subsystem-net-devices-{{ management_bridge }}.device }}"
           BindsTo: "{{ sys-subsystem-net-devices-{{ management_bridge }}.device }}"
 
+Setting an MTU on a network interface
+-------------------------------------
+
+Larger MTU’s can be useful on certain networks, especially storage networks.
+Add a container_mtu attribute within the ``provider_networks`` dictionary to set
+a custom MTU on the container network interfaces that attach to a particular
+network:
+
+.. code-block:: yaml
+
+    provider_networks:
+      - network:
+          group_binds:
+            - glance_api
+            - cinder_api
+            - cinder_volume
+            - nova_compute
+          type: "raw"
+          container_bridge: "br-storage"
+          container_interface: "eth2"
+          container_type: "veth"
+          container_mtu: "9000"
+          ip_from_q: "storage"
+          static_routes:
+            - cidr: 10.176.0.0/12
+              gateway: 172.29.248.1
+
+The example above enables `jumbo frames <https://en.wikipedia.org/wiki/Jumbo_frame>`_ by setting the MTU on the storage
+network to 9000.
+
+.. note::
+
+   It's important to ensure that the MTU is consistently set across the
+   entire network path. This includes not only the container interfaces but
+   also the underlying bridge, physical NICs, and any connected network
+   equipment like switches, routers, and storage devices. Inconsistent MTU
+   settings can lead to fragmentation or dropped packets, which can severely
+   impact performance.
+
 
 Single interface or bond
 ------------------------
