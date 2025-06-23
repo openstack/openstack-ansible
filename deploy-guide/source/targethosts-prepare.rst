@@ -106,6 +106,12 @@ Configure CentOS / Rocky
       SELinux enabled is not currently supported in OpenStack-Ansible
       for CentOS/RHEL due to a lack of maintainers for the feature.
 
+#. Disable firewalld for proper components communication:
+
+   .. code-block:: shell-session
+
+       # systemctl stop firewalld
+       # systemctl mask firewalld
 
 #. Install additional software packages:
 
