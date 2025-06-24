@@ -29,10 +29,18 @@ host.
    ``/opt/openstack-ansible/etc/openstack_deploy`` directory to the
    ``/etc/openstack_deploy`` directory.
 
+   .. code-block:: shell-session
+
+      # cp -a /opt/openstack-ansible/etc/openstack_deploy /etc/openstack_deploy
+
 #. Change to the ``/etc/openstack_deploy`` directory.
 
 #. Copy the ``openstack_user_config.yml.example`` file to
-   ``/etc/openstack_deploy/openstack_user_config.yml``.
+   ``openstack_user_config.yml``.
+
+   .. code-block:: shell-session
+
+      # cp openstack_user_config.yml.example openstack_user_config.yml
 
 #. Review the ``openstack_user_config.yml`` file and make changes
    to the deployment of your OpenStack environment.
