@@ -1,8 +1,8 @@
 .. _security_settings:
 
-=================
-Security settings
-=================
+======================================
+Security settings and SSL certificates
+======================================
 
 This chapter contains information to configure specific security
 settings for your OpenStack-Ansible cloud.
