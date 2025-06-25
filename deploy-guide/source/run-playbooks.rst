@@ -93,7 +93,7 @@ Run the playbooks to install OpenStack
    .. code-block:: console
 
       # ansible galera_container -m shell \
-        -a "mysql -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
+        -a "mariadb -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
 
    Example output:
 
