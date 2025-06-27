@@ -22,7 +22,7 @@
       172.29.236.100 aio1.openstack.local aio1
 
       # the ip of the external interface of the aio host
-      {{ bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address']) }} external.openstack.local external
+      {{ bootstrap_host_public_address }} external.openstack.local external
 
       # The following lines are desirable for IPv6 capable hosts
       ::1 ip6-localhost ip6-loopback
