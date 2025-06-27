@@ -1,9 +1,11 @@
 # The compute host that the ceilometer compute agent will be running on.
 metering-compute_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 # The infra nodes that the central agents will be running on
 metering-infra_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}

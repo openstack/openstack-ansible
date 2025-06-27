@@ -3,14 +3,17 @@
 # neutron-server, neutron-agents
 network_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 {% if _neutron_plugin_driver == 'ml2.ovn'  %}
 network-gateway_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 network-northd_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 {% endif %}

@@ -1,8 +1,10 @@
 ---
 masakari-infra_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 masakari-monitor_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}

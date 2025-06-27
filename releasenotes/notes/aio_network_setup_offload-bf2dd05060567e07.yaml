@@ -1,0 +1,9 @@
+---
+other:
+  - |
+    A behavior for AIO setup regarding network configuration has been changed.
+    Instead of directly applying all configuration during ``boostrap-aio.sh``
+    script, script will produce another variable file
+    ``user_variables_systemd.yml`` with intended configuration.
+    Variable will be consumed and applied by ``openstack_hosts`` role, which
+    will be launched during setup-hosts (setup-everyting) playbook.

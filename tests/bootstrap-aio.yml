@@ -40,12 +40,3 @@
         name: "{{ _ssh_service_name[ansible_facts['os_family'] | lower] }}"
         state: started
         enabled: true
-  post_tasks:
-    - name: Check that new network interfaces are up
-      ansible.builtin.assert:
-        that:
-          - ansible_facts['eth12']['active'] | bool
-          - ansible_facts['eth13']['active'] | bool
-          - ansible_facts['eth14']['active'] | bool
-    - name: Clear facts
-      ansible.builtin.meta: clear_facts
