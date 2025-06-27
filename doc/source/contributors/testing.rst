@@ -246,7 +246,7 @@ Testing a new role with an AIO
    integrated build.
 
 #. Documentation must be added in the role to describe how to implement
-   the new service in an integrated environement. This content must
+   the new service in an integrated environment. This content must
    adhere to the :ref:`documentation`. Until the
    role has integrated functional testing implemented (see also the
    Role development maturity paragraph), the documentation
