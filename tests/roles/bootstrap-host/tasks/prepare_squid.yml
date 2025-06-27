@@ -23,7 +23,7 @@
     - install-packages
 
 - name: Install squid config
-  ansible.builtin.copy:
-    src: "squid.conf"
+  ansible.builtin.template:
+    src: "squid.conf.j2"
     dest: "/etc/squid/squid.conf"
     mode: "0644"

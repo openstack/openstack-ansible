@@ -25,8 +25,8 @@ ceph_pkg_source: distro
 {% endif %}
 
 ## Tempest settings
-tempest_public_subnet_cidr: "172.29.248.0/22"
-tempest_public_subnet_allocation_pools: "172.29.249.110-172.29.249.200"
+tempest_public_subnet_cidr: "{{ vlan_network }}"
+tempest_public_subnet_allocation_pools: "{{ vlan_network | ansible.utils.nthhost('110') }}-{{ vlan_network | ansible.utils.nthhost('-10') }}"
 
 {% if _neutron_plugin_driver == 'ml2.ovn' %}
 tempest_private_net_provider_type: geneve
@@ -157,8 +157,6 @@ tempest_tempest_conf_overrides_neutron:
 octavia_wsgi_threads: 1
 octavia_wsgi_processes: 1
 octavia_wsgi_buffer_size: 16384
-octavia_management_net_subnet_cidr: 172.29.232.0/22
-octavia_management_net_subnet_allocation_pools: "172.29.232.50-172.29.235.254"
 
 ## Heat
 heat_api_workers: 1
@@ -302,14 +300,17 @@ openstack_hosts_package_state: latest
 octavia_v2: True
 # Disable Octavia V1 API
 octavia_v1: False
-octavia_management_net_subnet_cidr: '172.29.232.0/22'
+
+octavia_management_net_subnet_cidr: {{ lbaas_network }}
+octavia_management_net_subnet_allocation_pools: {{ lbaas_network | ansible.utils.nthhost('110') }}-{{ lbaas_network | ansible.utils.nthhost('-10') }}
+
 {%   if 'metal' in bootstrap_host_scenarios %}
 # TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
 #               LBaaS network and using those in the health manager pool
 #               IPs.  We don't store those IPs when running metal so we
 #               have to override it manually.  We should remove this and
 #               fix the role (or the inventory tool) eventually.
-octavia_hm_hosts: 172.29.232.100 # br-lbaas IP
+octavia_hm_hosts: {{ lbaas_network | ansible.utils.nthhost('100') }} # br-lbaas IP
 {%   endif %}
 {% endif %}
 
@@ -318,9 +319,9 @@ octavia_hm_hosts: 172.29.232.100 # br-lbaas IP
 # to point to the local squid
 # Playbooks will set a runtime proxy to the AIO host squid
 deployment_environment_variables:
-  http_proxy: http://172.29.236.100:3128/
-  https_proxy: http://172.29.236.100:3128/
-  no_proxy: "localhost,127.0.0.1,172.29.236.100,172.29.236.101,{{ bootstrap_host_public_address }}"
+  http_proxy: http://{{ bootstrap_host_management_address }}:3128/
+  https_proxy: http://{{ bootstrap_host_management_address }}:3128/
+  no_proxy: "localhost,127.0.0.1,{{ bootstrap_host_management_address }},{{ bootstrap_host_internal_address }},{{ bootstrap_host_public_address }}"
 
 # Remove eth0 from all container so there is no default route and everything
 # must go via the http proxy
@@ -333,7 +334,7 @@ cinder_backends:
     volume_group: cinder-volumes
     volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
     volume_backend_name: LVM_iSCSI
-    iscsi_ip_address: "172.29.236.100"
+    iscsi_ip_address: "{{ bootstrap_host_management_address }}"
     lvm_type: "thin"
     extra_volume_types:
       - low-iops

@@ -31,10 +31,13 @@ def make_example_config(aio_config_file, configs_dir):
     j2env = jinja2.Environment(loader=jinja2.BaseLoader,
                                autoescape=jinja2.select_autoescape())
     files = glob.glob(os.path.join(configs_dir, '*.aio'))
+    templated_variables = {
+        'bootstrap_host_management_address': '172.29.236.100'
+    }
     for file_name in files:
         with open(file_name, 'r') as f:
             template = j2env.from_string(f.read())
-            jinja_data = template.render()
+            jinja_data = template.render(**templated_variables)
             config.update(yaml.safe_load(jinja_data))
 
     with open(aio_config_file, 'r') as f:

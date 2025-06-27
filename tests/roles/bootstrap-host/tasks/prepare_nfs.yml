@@ -79,7 +79,7 @@
 - name: Create exports file
   ansible.builtin.lineinfile:
     path: /etc/exports
-    line: '{{ item }} {{ storage_range }}.0/{{ netmask }}(rw,sync,no_subtree_check,insecure,all_squash,anonuid=10000,anongid=10000)'
+    line: '{{ item }} {{ storage_network }}(rw,sync,no_subtree_check,insecure,all_squash,anonuid=10000,anongid=10000)'
     owner: root
     group: root
     mode: "0644"

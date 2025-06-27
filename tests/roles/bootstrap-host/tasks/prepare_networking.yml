@@ -125,23 +125,24 @@
       - interface: "br-mgmt"
         config_overrides:
           Network:
-            Address:
-              ? "172.29.236.100/22"
-              ? "172.29.236.101/22"
+            Address: "{{ {
+                (bootstrap_host_management_address ~ '/' ~ mgmt_network | ansible.utils.ipaddr('netmask')) | ansible.utils.ipaddr('host/prefix'): None,
+                (bootstrap_host_internal_address ~ '/' ~ mgmt_network | ansible.utils.ipaddr('netmask')) | ansible.utils.ipaddr('host/prefix'): None
+              } }}"
 
       - interface: "dummy-storage"
         bridge: "br-storage"
         mtu: 9000
       - interface: "br-storage"
-        address: "172.29.244.100"
-        netmask: "255.255.252.0"
+        address: "{{ storage_network | ansible.utils.nthhost('100') }}"
+        netmask: "{{ storage_network | ansible.utils.ipaddr('netmask')  }}"
 
       - interface: "dummy-dbaas"
         bridge: "br-dbaas"
         mtu: 9000
       - interface: "br-dbaas"
-        address: "172.29.252.100"
-        netmask: "255.255.252.0"
+        address: "{{ dbaas_network | ansible.utils.nthhost('100') }}"
+        netmask: "{{ dbaas_network | ansible.utils.ipaddr('netmask') }}"
       - interface: "br-dbaas-veth"
         bridge: "br-dbaas"
         mtu: 9000
@@ -150,8 +151,8 @@
         bridge: "br-lbaas"
         mtu: 9000
       - interface: "br-lbaas"
-        address: "172.29.232.100"
-        netmask: "255.255.252.0"
+        address: "{{ lbaas_network | ansible.utils.nthhost('100') }}"
+        netmask: "{{ lbaas_network | ansible.utils.ipaddr('netmask') }}"
       - interface: "br-lbaas-veth"
         bridge: "br-lbaas"
         mtu: 9000
@@ -160,8 +161,8 @@
         bridge: "br-bmaas"
         mtu: 1500
       - interface: "br-bmaas"
-        address: "172.29.228.100"
-        netmask: "255.255.252.0"
+        address: "{{ bmaas_network | ansible.utils.nthhost('100') }}"
+        netmask: "{{ bmaas_network | ansible.utils.ipaddr('netmask') }}"
       - interface: "br-bmaas-veth"
         bridge: "br-bmaas"
         mtu: 1500
@@ -170,8 +171,8 @@
         bridge: "br-vxlan"
         mtu: 9000
       - interface: "br-vxlan"
-        address: "172.29.240.100"
-        netmask: "255.255.252.0"
+        address: "{{ vxlan_network | ansible.utils.nthhost('100') }}"
+        netmask: "{{ vxlan_network | ansible.utils.ipaddr('netmask') }}"
 
       - interface: "dummy-vlan"
         bridge: "br-vlan"
@@ -179,9 +180,10 @@
       - interface: "br-vlan"
         config_overrides:
           Network:
-            Address:
-              ? "172.29.248.100/22"
-              ? "172.29.248.1/22"
+            Address: "{{ {
+                vlan_network | ansible.utils.ipaddr('100'): None,
+                vlan_network | ansible.utils.ipaddr('1'): None
+              } }}"
       - interface: "br-vlan-veth"
         bridge: "br-vlan"
         mtu: 9000
@@ -193,22 +195,6 @@
 # This will normally not run until the end of the play, so we must force it here
 - name: Force systemd_networkd hander to run
   ansible.builtin.meta: flush_handlers
-
-# NOTE(jrosser) The intention here is not to proceed further until the network bridges are up
-# This ensures there will be no race between the bridges coming up and subsequent tasks which
-# require functional network interfaces
-- name: Check that network bridges are up
-  ansible.builtin.wait_for:
-    port: 22
-    timeout: 30
-    host: "{{ item }}"
-  with_items:
-    - 172.29.236.100  # br-mgmt
-    - 172.29.244.100  # br-storage
-    - 172.29.252.100  # br-dbaas
-    - 172.29.232.100  # br-lbaas
-    - 172.29.240.100  # br-vxlan
-    - 172.29.228.100  # br-bmaas
 
 - name: Run the systemd service role
   ansible.builtin.include_role:

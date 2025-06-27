@@ -1,5 +1,5 @@
 acl CONNECT method CONNECT
-acl lan src 172.29.236.0/22
+acl lan src {{ mgmt_network }}
 
 http_access allow localhost manager
 http_access allow lan

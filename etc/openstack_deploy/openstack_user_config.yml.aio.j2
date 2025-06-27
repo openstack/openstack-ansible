@@ -1,44 +1,44 @@
 ---
 cidr_networks:
 {% if 'ironic' in bootstrap_host_scenarios_expanded %}
-  bmaas: 172.29.228.0/22
+  bmaas: {{ bmaas_network }}
 {% endif %}
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
-  dbaas: 172.29.252.0/22
+  dbaas: {{ dbaas_network }}
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-  lbaas: 172.29.232.0/22
+  lbaas: {{ lbaas_network }}
 {% endif %}
-  management: 172.29.236.0/22
-  tunnel: 172.29.240.0/22
-  storage: 172.29.244.0/22
+  management: {{ mgmt_network }}
+  tunnel: {{ vxlan_network }}
+  storage: {{ storage_network }}
 
 used_ips:
 {% if 'ironic' in bootstrap_host_scenarios_expanded %}
-  - "172.29.228.1,172.29.228.10"
-  - "172.29.229.50,172.29.231.255"
-  - "172.29.228.100"
+  - "{{ bmaas_network | ansible.utils.nthhost('1') }},{{ bmaas_network | ansible.utils.nthhost('10') }}"
+  - "{{ bmaas_network | ansible.utils.nthhost('110') }},{{ bmaas_network | ansible.utils.nthhost('-10') }}"
+  - "{{ bmaas_network | ansible.utils.nthhost('100') }}"
 {% endif %}
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
-  - "172.29.252.1,172.29.252.10"
-  - "172.29.252.50,172.29.255.255"
+  - "{{ dbaas_network | ansible.utils.nthhost('1') }},{{ dbaas_network | ansible.utils.nthhost('10') }}"
+  - "{{ dbaas_network | ansible.utils.nthhost('50') }},{{ dbaas_network | ansible.utils.nthhost('-1') }}"
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-  - "172.29.232.1,172.29.232.10"
-  - "172.29.232.50,172.29.235.255"
+  - "{{ lbaas_network | ansible.utils.nthhost('1') }},{{ lbaas_network | ansible.utils.nthhost('10') }}"
+  - "{{ lbaas_network | ansible.utils.nthhost('50') }},{{ lbaas_network | ansible.utils.nthhost('-1') }}"
 {% endif %}
-  - "172.29.236.1,172.29.236.50"
-  - "172.29.236.100"
-  - "172.29.236.101"
-  - "172.29.240.1,172.29.240.50"
-  - "172.29.240.100"
-  - "172.29.244.1,172.29.244.50"
-  - "172.29.244.100"
-  - "172.29.248.1,172.29.248.50"
-  - "172.29.248.100"
+  - "{{ mgmt_network | ansible.utils.nthhost('1') }},{{ mgmt_network | ansible.utils.nthhost('50') }}"
+  - "{{ mgmt_network | ansible.utils.nthhost('100') }}"
+  - "{{ mgmt_network | ansible.utils.nthhost('101') }}"
+  - "{{ vxlan_network | ansible.utils.nthhost('1') }},{{ vxlan_network | ansible.utils.nthhost('50') }}"
+  - "{{ vxlan_network | ansible.utils.nthhost('100') }}"
+  - "{{ storage_network | ansible.utils.nthhost('1') }},{{ storage_network | ansible.utils.nthhost('50') }}"
+  - "{{ storage_network | ansible.utils.nthhost('100') }}"
+  - "{{ vlan_network | ansible.utils.nthhost('1') }},{{ vlan_network | ansible.utils.nthhost('50') }}"
+  - "{{ vlan_network | ansible.utils.nthhost('100') }}"
 
 global_overrides:
-  internal_lb_vip_address: 172.29.236.101
+  internal_lb_vip_address: {{ bootstrap_host_internal_address }}
   # The external IP is quoted simply to ensure that the .aio file can be used as input
   # dynamic inventory testing.
   external_lb_vip_address: "{{ ('stepca' in bootstrap_host_scenarios) | ternary('external.openstack.local', bootstrap_host_public_address) }}"
@@ -60,8 +60,8 @@ global_overrides:
         # floating ips using the br-mgmt interface as a gateway
         static_routes:
           # neutron public addresses, LXC
-          - cidr: 172.29.248.0/22
-            gateway: 172.29.236.100
+          - cidr: {{ vlan_network }}
+            gateway: {{ bootstrap_host_management_address }}
 {% if 'ovs' in bootstrap_host_scenarios_expanded %}
     - network:
         container_bridge: "br-vxlan"
@@ -180,7 +180,7 @@ global_overrides:
 # keystone
 identity_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
 {% if 'keystone' in bootstrap_host_scenarios or 'infra' in bootstrap_host_scenarios %}
 #   NOTE (jrosser) this ensures that we deploy 3 keystone containers
 #   during the os_keystone role test to validate ssh keys and fernet key sync
@@ -193,7 +193,7 @@ identity_hosts:
 # galera, memcache, rabbitmq, utility
 shared-infra_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
 {% if 'infra' in bootstrap_host_scenarios_expanded %}
     affinity:
       galera_container: 3
@@ -211,12 +211,12 @@ repo-infra_hosts:
     affinity:
       repo_container: 3
 {% endif %}
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
 
 {% if 'zookeeper' in bootstrap_host_scenarios_expanded %}
 coordination_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
 {% if 'infra' in bootstrap_host_scenarios_expanded %}
     affinity:
       zookeeper_container: 3

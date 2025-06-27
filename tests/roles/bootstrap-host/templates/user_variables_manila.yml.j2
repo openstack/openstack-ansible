@@ -73,7 +73,7 @@ manila_backends:
     cephfs_auth_id: manila
     cephfs_cluster_name: ceph
     cephfs_conf_path: /etc/ceph/ceph.conf
-    cephfs_ganesha_server_ip: 172.29.236.100
+    cephfs_ganesha_server_ip: {{ bootstrap_host_management_address }}
     cephfs_ganesha_server_is_remote: False
     cephfs_protocol_helper_type: NFS
     driver_handles_share_servers: False

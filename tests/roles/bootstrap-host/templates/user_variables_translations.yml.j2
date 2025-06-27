@@ -18,6 +18,6 @@ trove_provider_net_name: dbaas-mgmt
 trove_service_net_phys_net: dbaas-mgmt
 trove_service_net_setup: True
 
-trove_service_net_subnet_cidr: "172.29.252.0/22"
-trove_service_net_allocation_pool_start: "172.29.252.50"
-trove_service_net_allocation_pool_end: "172.29.255.254"
+trove_service_net_subnet_cidr: "{{ dbaas_network }}"
+trove_service_net_allocation_pool_start: "{{ dbaas_network | ansible.utils.nthhost('110') }}"
+trove_service_net_allocation_pool_end: "{{ dbaas_network | ansible.utils.nthhost('-10') }}"
