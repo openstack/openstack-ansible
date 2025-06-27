@@ -81,4 +81,4 @@ re-create a container with the ``lxc-containers-destroy.yml`` and
       $ openstack-ansible lxc-containers-destroy.yml --limit "CONTAINER_NAME"
       $ openstack-ansible lxc-containers-create.yml --limit "CONTAINER_NAME"
 
-#. Replace *``CONTAINER_NAME``* with the target container.
+#. Replace ``CONTAINER_NAME`` with the target container.
