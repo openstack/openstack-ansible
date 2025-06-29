@@ -1,0 +1,162 @@
+# This is an example of a multi-NIC bonded configuration for NetworkManager
+# to create the required bridges for OpenStack-Ansible. In your environment,
+# the configuration may differ.
+# The example shows a compute host setup where compute hosts also serve
+# as network gateway nodes.
+# Assuming eth0/1 and eth2/3 are dual-port NICs, eth0 is paired with eth2
+# and eth1 with eth3 to improve resiliency in case one NIC card fails.
+
+# Here is the configuration for the control plane bond, which handles
+# the control plane traffic:
+
+[connection]
+id=Bond connection 1
+type=bond
+interface-name=bond0
+
+[bond]
+downdelay=0
+miimon=1
+mode=802.3ad
+updelay=0
+
+# # Slave interface configuration (includes eth0 and eth2):
+
+# bond0 port 1 (eth0)
+[connection]
+id=bond0 port 1
+type=ethernet
+controller=bond0
+interface-name=eth0
+port-type=bond
+
+# bond0 port 2 (eth2)
+[connection]
+id=bond0 port 2
+type=ethernet
+controller=bond0
+interface-name=eth2
+port-type=bond
+
+# Bridge interface for host and container management:
+
+[connection]
+id=br-mgmt
+type=bridge
+interface-name=br-mgmt
+
+[ipv4]
+address1=172.29.236.4/22
+method=manual
+
+# Bridge interface for storage network (optional):
+
+[connection]
+id=br-storage
+type=bridge
+interface-name=br-storage
+
+# VLAN interface for container/host management carried over bond0:
+
+[connection]
+id=VLAN connection 1
+type=vlan
+controller=br-mgmt
+port-type=bridge
+
+[vlan]
+id=10
+parent=bond0
+
+# Storage network VLAN interface (optional)
+
+[connection]
+id=VLAN connection 2
+type=vlan
+controller=br-storage
+port-type=bridge
+[vlan]
+id=20
+parent=bond0
+
+### This bond carries VLAN and VXLAN traffic, ensuring isolation from
+# the control plane traffic on bond0.
+
+# And config for data plane bond:
+
+[connection]
+id=Bond connection 2
+type=bond
+interface-name=bond1
+
+[bond]
+downdelay=0
+miimon=1
+mode=802.3ad
+updelay=0
+
+# And it's slaves:
+
+# bond1 port 1 (eth1)
+
+[connection]
+id=bond1 port 1
+uuid=f6d6ae3b-db16-4bc0-b996-fad0d894186d
+type=ethernet
+controller=bond1
+interface-name=eth1
+port-type=bond
+
+# bond1 port 2 (eth3)
+
+[connection]
+id=bond1 port 2
+type=ethernet
+controller=bond1
+interface-name=eth3
+port-type=bond
+
+# OpenStack Networking VXLAN (tunnel/overlay) bridge interface:
+
+[connection]
+id=br-vxlan
+type=bridge
+interface-name=br-vxlan
+
+# Bridge interface for storage network (optional):
+
+[connection]
+id=br-storage
+type=bridge
+interface-name=br-storage
+
+# VXLAN (tunnel/overlay) VLAN interface for OpenStack networking:
+
+[connection]
+id=VLAN connection 3
+type=vlan
+controller=br-vxlan
+port-type=bridge
+timestamp=1752076721
+
+[ethernet]
+
+[vlan]
+flags=1
+id=30
+parent=bond1
+
+# The br-vlan bridge originates from older setups using containerized Neutron agents.
+# It’s no longer needed or recommended — you can use the physical interface directly,
+# which allows full utilization of the entire physical NIC without an extra bridge.
+
+[connection]
+id=Bond connection 2
+type=bond
+interface-name=bond1
+
+[bond]
+downdelay=0
+miimon=1
+mode=802.3ad
+updelay=0
