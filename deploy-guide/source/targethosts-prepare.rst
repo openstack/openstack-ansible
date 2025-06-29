@@ -14,7 +14,6 @@ target host:
 .. raw:: HTML
     :file: supported-platforms.html
 
-
 Configure at least one network interface to access the Internet or
 suitable local repositories.
 
@@ -31,7 +30,6 @@ installation on target hosts that do not have local (console) access.
 
    We also recommend setting your locale to `en_US.UTF-8`. Other locales might
    work, but they are not tested or supported.
-
 
 Configure Debian
 ~~~~~~~~~~~~~~~~
@@ -56,7 +54,6 @@ Configure Debian
          lsof lvm2 openssh-server sudo tcpdump vlan python3
 
 #. Reboot the host to activate the changes and use the new kernel.
-
 
 Configure Ubuntu
 ~~~~~~~~~~~~~~~~
@@ -88,9 +85,8 @@ Configure Ubuntu
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-
-Configure CentOS / Rocky
-~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS Stream / Rocky Linux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 
@@ -127,7 +123,6 @@ Configure CentOS / Rocky
        # dnf install iputils lsof openssh-server\
          sudo tcpdump python3
 
-
 #. (Optional) Reduce the kernel log level by changing the printk
    value in your sysctls:
 
@@ -135,9 +130,7 @@ Configure CentOS / Rocky
 
       # echo "kernel.printk='4 1 7 4'" >> /etc/sysctl.conf
 
-
 #. Reboot the host to activate the changes and use the new kernel.
-
 
 Configure SSH keys
 ==================
