@@ -17,6 +17,11 @@
 is_hci: true
 monitor_interface: "{{ ('metal' in bootstrap_host_scenarios_expanded) | ternary('br-storage', 'eth2') }}" # Storage network in the AIO
 public_network: "{{ storage_network }}"
+lvm_volumes:
+{% for osd in ceph_osd_images %}
+  - data_vg: vg-{{ osd }}
+    data: lv-{{ osd }}
+{% endfor %}
 journal_size: 100
 osd_scenario: collocated
 ceph_conf_overrides_custom:
@@ -34,3 +39,19 @@ tempest_test_includelist_ceph:
     - tempest.scenario.test_volume_boot_pattern.TestVolumeBootPattern.test_volume_boot_pattern
 # NOTE(noonedeadpunk)L We want here to run _only_ this test as otherwise we might be short on memory
 tempest_test_search_includelist_pattern: tempest_test_includelist_ceph
+
+cinder_backends:
+  aio_ceph:
+    volume_driver: cinder.volume.drivers.rbd.RBDDriver
+    rbd_pool: volumes
+    rbd_ceph_conf: /etc/ceph/ceph.conf
+    rbd_store_chunk_size: 8
+    rbd_exclusive_cinder_pool: true
+    volume_backend_name: rbddriver
+    rbd_user: "{% raw %}{{ cinder_ceph_client }}{% endraw %}"
+    rbd_secret_uuid: "{% raw %}{{ cinder_ceph_client_uuid }}{% endraw %}"
+    report_discard_supported: true
+    extra_volume_types:
+      - low-iops
+      - high-iops
+      - ultra-high-iops

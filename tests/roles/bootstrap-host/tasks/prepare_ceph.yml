@@ -75,35 +75,3 @@
     vg: "vg-{{ item }}"
     size: 100%FREE
   loop: "{{ ceph_osd_images }}"
-
-# TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
-# is fixed and eliminate this task.
-- name: Write ceph cluster config
-  ansible.builtin.copy:
-    content: |
-      ---
-      lvm_volumes:
-      {% for osd in ceph_osd_images %}
-        - data_vg: vg-{{ osd }}
-          data: lv-{{ osd }}
-      {% endfor %}
-      cinder_backends:
-        aio_ceph:
-          volume_driver: cinder.volume.drivers.rbd.RBDDriver
-          rbd_pool: volumes
-          rbd_ceph_conf: /etc/ceph/ceph.conf
-          rbd_store_chunk_size: 8
-          rbd_exclusive_cinder_pool: true
-          volume_backend_name: rbddriver
-          rbd_user: "{% raw %}{{ cinder_ceph_client }}{% endraw %}"
-          rbd_secret_uuid: "{% raw %}{{ cinder_ceph_client_uuid }}{% endraw %}"
-          report_discard_supported: true
-          extra_volume_types:
-            - low-iops
-            - high-iops
-            - ultra-high-iops
-    dest: /etc/openstack_deploy/user_ceph_aio.yml
-    force: false
-  become: false
-  tags:
-    - skip_ansible_lint
