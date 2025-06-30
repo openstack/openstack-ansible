@@ -72,3 +72,121 @@ _neutron_plugin_driver: |-
   {%   set plugin = 'ml2.ovn' %}
   {% endif %}
   {{ plugin }}
+
+_loopback_device_data: |-
+  {% set data = {'sparse': [], 'fs': [], 'mounts': [], 'services': [], 'lvm': []} %}
+  {% if bootstrap_host_loopback_nova | bool %}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_nova_size, 'path': '/openstack/nova.img'}) %}
+  {%   set _ = data['fs'].append({'fstype': 'xfs', 'opts': bootstrap_host_format_options['xfs'], 'path': '/openstack/nova.img'}) %}
+  {%   set _ = data['mounts'].append({
+                'what': '/openstack/nova.img',
+                'where': '/var/lib/nova/instances',
+                'type': 'xfs',
+                'options': 'loop,' ~ bootstrap_host_data_mount_options['xfs'],
+                'enabled': true,
+                'state': 'started',
+      }) %}
+  {% endif %}
+  {% if bootstrap_host_loopback_cinder | bool %}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_cinder_size, 'path': '/openstack/cinder.img'}) %}
+  {%   set _ = data['services'].append({
+                 'name': 'loop-cinder',
+                 'execstarts': [
+                   '/bin/bash -c "/sbin/losetup /dev/loop6 /openstack/cinder.img"',
+                   '/sbin/pvscan'
+                 ],
+                 'execstops': ['/bin/bash -c "losetup -d /dev/loop6"'],
+  }) %}
+  {%    set _ = data['lvm'].append({
+                  'vg': 'cinder-volumes',
+                  'pvs': '/dev/loop6',
+  }) %}
+  {% endif %}
+  {% if bootstrap_host_loopback_manila | bool %}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_manila_size, 'path': '/openstack/manila.img'}) %}
+  {%   set _ = data['services'].append({
+                 'name': 'loop-manila',
+                 'execstarts': [
+                   '/bin/bash -c "/sbin/losetup /dev/loop7 /openstack/manila.img"',
+                   '/sbin/pvscan'
+                 ],
+                 'execstops': ['/bin/bash -c "losetup -d /dev/loop7"'],
+  }) %}
+  {%    set _ = data['lvm'].append({
+                  'vg': 'manila-shares',
+                  'pvs': '/dev/loop7',
+  }) %}
+  {% endif %}
+  {% if bootstrap_host_ceph | bool %}
+  {%   for image in ceph_osd_images %}
+  {%     set device = '/dev/loop' ~ (10 + loop.index) %}
+  {%     set _ = data['sparse'].append({'size': bootstrap_host_loopback_ceph_size, 'path': '/openstack/' ~ image ~ '.img'}) %}
+  {%     set _ = data['services'].append({
+                  'name': 'loop-' ~ image,
+                  'execstarts': [
+                    '/bin/bash -c "/sbin/losetup '~ device ~' /openstack/' ~ image ~ '.img"',
+                    '/sbin/pvscan'
+                  ],
+                  'execstops': ['/bin/bash -c "losetup -d ' ~ device ~ '"']
+  }) %}
+  {%     set _ = data['lvm'].append({
+                  'lv': 'lv-' ~ image,
+                  'vg': 'vg-' ~ image,
+                  'pvs': device,
+  }) %}
+  {%   endfor %}
+  {% endif %}
+  {% if bootstrap_host_loopback_swift | bool %}
+  {%   for image in ['swift1', 'swift2', 'swift3'] %}
+  {%     set _ = data['sparse'].append({'size': bootstrap_host_loopback_swift_size, 'path': '/openstack/' ~ image ~ '.img'}) %}
+  {%     set _ = data['fs'].append({'fstype': 'xfs', 'opts': bootstrap_host_format_options['xfs'], 'path': '/openstack/' ~ image ~ '.img'}) %}
+  {%     set _ = data['mounts'].append({
+                  'what': '/openstack/' ~ image ~ '.img',
+                  'where': '/srv/' ~ image ~ '.img',
+                  'type': 'xfs',
+                  'options': 'loop,' ~ bootstrap_host_data_mount_options['xfs'],
+                  'enabled': true,
+                  'state': 'started',
+        }) %}
+  {%   endfor %}
+  {% endif %}
+  {% if bootstrap_host_loopback_btrfs | bool and bootstrap_host_data_disk_device == None and _lxc_container_backing_store == 'btrfs'%}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_btrfs_size, 'path': '/openstack/lxc-btrfs.img'}) %}
+  {%   set _ = data['fs'].append({'fstype': 'btrfs', 'opts': bootstrap_host_format_options['btrfs'], 'path': '/openstack/lxc-btrfs.img'}) %}
+  {%   set _ = data['mounts'].append({
+                'what': '/openstack/lxc-btrfs.img',
+                'where': '/var/lib/lxc',
+                'type': 'btrfs',
+                'options': 'loop,' ~ bootstrap_host_data_mount_options['btrfs'],
+                'enabled': true,
+                'state': 'started',
+      }) %}
+  {% endif %}
+  {% if bootstrap_host_loopback_btrfs | bool and bootstrap_host_data_disk_device == None and _lxc_container_backing_store == 'zfs'%}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_zfs_size, 'path': '/openstack/lxc-zfs.img'}) %}
+  {% endif %}
+  {% if bootstrap_host_nfs | bool %}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_nfs_size, 'path': '/openstack/nfs.img'}) %}
+  {%   set _ = data['fs'].append({'fstype': 'xfs', 'opts': bootstrap_host_format_options['xfs'], 'path': '/openstack/nfs.img'}) %}
+  {%   set _ = data['mounts'].append({
+                'what': '/openstack/nfs.img',
+                'where': '/srv/nfs',
+                'type': 'xfs',
+                'options': 'loop,' ~ bootstrap_host_data_mount_options['xfs'],
+                'enabled': true,
+                'state': 'started',
+      }) %}
+  {% endif %}
+  {% if bootstrap_host_loopback_swap | bool and ansible_facts['swaptotal_mb'] < 1 %}
+  {%   set _ = data['sparse'].append({'size': bootstrap_host_loopback_swap_size, 'path': '/openstack/swap.img'}) %}
+  {%   set _ = data['fs'].append({'fstype': 'swap', 'path': '/openstack/swap.img'}) %}
+  {%   set _ = data['mounts'].append({
+                'what': '/openstack/swap.img',
+                'priority': 0,
+                'type': 'swap',
+                'options': bootstrap_host_data_mount_options['swap'],
+                'enabled': true,
+                'state': 'started',
+      }) %}
+  {% endif %}
+  {{ data }}

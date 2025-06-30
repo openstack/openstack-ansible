@@ -13,35 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Create sparse NFS volume
-  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_nfs_size }}G /openstack/nfs.img"
-  args:
-    creates: /openstack/nfs.img
-  tags:
-    - nfs-file-create
-
-- name: Format the NFS file
-  community.general.filesystem:
-    fstype: xfs
-    dev: /openstack/nfs.img
-    opts: "{{ bootstrap_host_format_options['xfs'] | default(omit) }}"
-  tags:
-    - nfs-format-file
-
-- name: Run the systemd mount role
-  ansible.builtin.include_role:
-    name: systemd_mount
-  vars:
-    systemd_mounts:
-      - what: "/openstack/nfs.img"
-        where: "/srv/nfs"
-        options: "loop,{{ bootstrap_host_data_mount_options['xfs'] }}"
-        type: "xfs"
-        state: 'started'
-        enabled: true
-  tags:
-    - nfs-config
-
 - name: Install NFS packages
   ansible.builtin.package:
     name: "{{ nfs_package }}"

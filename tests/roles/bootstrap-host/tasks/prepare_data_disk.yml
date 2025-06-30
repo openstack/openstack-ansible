@@ -108,23 +108,12 @@
         options: "{{ bootstrap_host_data_mount_options[bootstrap_host_data_disk_fs_type] }}"
         state: 'started'
         enabled: true
-  tags:
-    - data-config
-
-- name: Run the systemd mount role
-  ansible.builtin.include_role:
-    name: systemd_mount
-  vars:
-    systemd_mounts:
       - what: "/dev/{{ _bootstrap_host_data_partition_devices[1] }}"
         where: "{{ bootstrap_host_data_disk2_path }}"
         type: "{{ bootstrap_host_data_disk2_fs }}"
         options: "{{ bootstrap_host_data_disk2_fs_mount_options }}"
-        state: 'started'
-        enabled: true
-  when:
-    - _lxc_container_backing_store != 'lvm'
-    - _lxc_container_backing_store != 'zfs'
+        state: "{{ (_lxc_container_backing_store != 'lvm' and _lxc_container_backing_store != 'zfs') | ternary('started', 'stopped') }}"
+        enabled: "{{ (_lxc_container_backing_store != 'lvm' and _lxc_container_backing_store != 'zfs') | bool }}"
   tags:
     - data-config
 
