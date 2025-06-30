@@ -182,7 +182,7 @@ def _get_backup_name(basename):
     :return: a name for a backup file based on current time
     """
 
-    utctime = datetime.datetime.utcnow()
+    utctime = datetime.datetime.now(datetime.UTC)
     utctime = utctime.strftime("%Y%m%d_%H%M%S")
     return '{}-{}.json'.format(basename, utctime)
 
