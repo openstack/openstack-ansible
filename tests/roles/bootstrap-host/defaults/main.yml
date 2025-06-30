@@ -55,29 +55,24 @@ bootstrap_host_loopback_swap: false
 bootstrap_host_loopback_swap_size: 4096
 #
 # Boolean option to deploy the loopback disk for Cinder
-bootstrap_host_loopback_cinder: true
+bootstrap_host_loopback_cinder: "{{ 'cinder' in bootstrap_host_scenarios_expanded }}"
 # Size of the Cinder loopback disk in gigabytes (GB).
 bootstrap_host_loopback_cinder_size: 1024
 #
 # Boolean option to deploy the loopback disk for Swift
-bootstrap_host_loopback_swift: true
+bootstrap_host_loopback_swift: "{{ 'swift' in bootstrap_host_scenarios_expanded }}"
 # Size of the Swift loopback disk in gigabytes (GB).
 bootstrap_host_loopback_swift_size: 1024
 #
 # Boolean option to deploy the loopback disk for Nova
-bootstrap_host_loopback_nova: true
+bootstrap_host_loopback_nova: "{{ 'nova' in bootstrap_host_scenarios_expanded }}"
 # Size of the Nova loopback disk in gigabytes (GB).
 bootstrap_host_loopback_nova_size: 1024
 #
 # Boolean option to deploy the loopback disk for Manila
-bootstrap_host_loopback_manila: true
+bootstrap_host_loopback_manila: "{{ 'manila' in bootstrap_host_scenarios_expanded }}"
 # Size of the Manila loopback disk in gigabytes (GB).
 bootstrap_host_loopback_manila_size: 1024
-#
-# Boolean option to deploy the loopback disk for machines
-bootstrap_host_loopback_machines: true
-# Size of the machines loopback disk in gigabytes (GB).
-bootstrap_host_loopback_machines_size: 128
 #
 # Boolean option to deploy the loopback disk for btrfs
 bootstrap_host_loopback_btrfs: true
