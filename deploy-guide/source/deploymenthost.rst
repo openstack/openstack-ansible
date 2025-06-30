@@ -84,7 +84,12 @@ Before you begin, we recommend upgrading your system packages and kernel.
        # dnf install git chrony openssh-server python3-devel sudo
        # dnf group install "Development Tools"
 
-#. Configure NTP to synchronize with a suitable time source.
+#. Configure NTP to synchronize with a suitable time source and start chronyd:
+
+   .. code-block:: shell-session
+
+      # systemctl enable chronyd
+      # systemctl start chronyd
 
 #. The ``firewalld`` service is enabled on most CentOS systems by default and
    its default ruleset prevents OpenStack components from communicating
