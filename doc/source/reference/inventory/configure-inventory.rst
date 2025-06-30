@@ -4,7 +4,7 @@ Configuring the inventory
 =========================
 
 In this chapter, you can find the information on how to configure
-the openstack-ansible dynamic inventory to your needs.
+the OpenStack-Ansible dynamic inventory to your needs.
 
 Introduction
 ~~~~~~~~~~~~
