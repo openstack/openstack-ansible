@@ -54,7 +54,7 @@ running on each host and the amount of disk space allocated to each instance.
 .. tip ::
 
    Consider disks that provide higher I/O throughput with lower latency,
-   such as SSD drives in a RAID array.
+   such as SSD or NVMe drives in a RAID array.
 
 Storage hosts
 -------------
@@ -92,7 +92,6 @@ container running on the host.
    Other technologies leveraging copy-on-write can be used to reduce
    the disk space requirements on machine containers.
 
-
 Network recommendations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -107,13 +106,13 @@ environment, consider a network configuration that contains
 the following features:
 
 * Bonded network interfaces, which increase performance, reliability, or both
-  (depending on the bonding architecture)
+  (depending on the bonding architecture).
 
 * VLAN offloading, which increases performance by adding and removing VLAN tags
-  in hardware, rather than in the server's main CPU
+  in hardware, rather than in the server's main CPU.
 
-* Gigabit or 10 Gigabit Ethernet, which supports higher network speeds and can
-  also improve storage performance when using the Block Storage service
+* A high-speed Ethernet network can enhance storage performance when using
+  the Block Storage service.
 
 * Jumbo frames, which increase network performance by allowing more data to
-  be sent in each packet
+  be sent in each packet.

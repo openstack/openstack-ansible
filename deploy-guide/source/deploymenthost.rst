@@ -62,8 +62,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-Configure CentOS / Rocky
-~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS Stream / Rocky Linux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
@@ -91,23 +91,15 @@ Before you begin, we recommend upgrading your system packages and kernel.
       # systemctl enable chronyd
       # systemctl start chronyd
 
-#. The ``firewalld`` service is enabled on most CentOS systems by default and
-   its default ruleset prevents OpenStack components from communicating
-   properly. Stop the ``firewalld`` service and mask it to prevent it from
-   starting:
+#. The ``firewalld`` service is enabled on CentOS Stream and Rocky Linux by
+   default and its default ruleset prevents OpenStack components from
+   communicating properly. Stop the ``firewalld`` service and mask it to
+   prevent it from starting:
 
    .. code-block:: shell-session
 
        # systemctl stop firewalld
        # systemctl mask firewalld
-
-.. note::
-
-    There is `future work planned <https://bugs.launchpad.net/openstack-ansible/+bug/1657518>`_
-    to create proper firewall rules for OpenStack services in OpenStack-Ansible
-    deployments. Until that work is complete, deployers must maintain their
-    own firewall rulesets or disable the firewall entirely.
-
 
 Configure SSH keys
 ==================

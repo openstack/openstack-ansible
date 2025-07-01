@@ -29,7 +29,7 @@ configuration and testing.
 
       # lxc-attach -n infra1_utility_container-161a4084
 
-#. Source the ``admin`` tenant credentials:
+#. Source the ``admin`` project credentials:
 
    .. code::
 
@@ -59,7 +59,7 @@ configuration and testing.
       | e59e4379730b41209f036bbeac51b181 | keystone           |
       +----------------------------------+--------------------+
 
-Verifying the Dashboard (horizon)
+Verifying the Dashboard (Horizon)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. With a web browser, access the Dashboard by using the external load
