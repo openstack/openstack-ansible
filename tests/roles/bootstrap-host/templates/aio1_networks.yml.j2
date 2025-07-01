@@ -20,66 +20,73 @@ aio_systemd_networkd_devices_bootstrap:
       Name: dummy-mgmt
       Kind: dummy
   - NetDev:
+      Name: br-mgmt
+      Kind: bridge
+
+  - NetDev:
       Name: dummy-vxlan
       Kind: dummy
+  - NetDev:
+      Name: br-vxlan
+      Kind: bridge
+
   - NetDev:
       Name: dummy-storage
       Kind: dummy
   - NetDev:
+      Name: br-storage
+      Kind: bridge
+
+  - NetDev:
       Name: dummy-vlan
       Kind: dummy
   - NetDev:
-      Name: dummy-dbaas
-      Kind: dummy
-  - NetDev:
-      Name: dummy-lbaas
-      Kind: dummy
-  - NetDev:
-      Name: dummy-bmaas
-      Kind: dummy
-
-  - NetDev:
-      Name: br-mgmt
-      Kind: bridge
-  - NetDev:
-      Name: br-vxlan
-      Kind: bridge
-  - NetDev:
-      Name: br-storage
-      Kind: bridge
-  - NetDev:
       Name: br-vlan
       Kind: bridge
-  - NetDev:
-      Name: br-dbaas
-      Kind: bridge
-  - NetDev:
-      Name: br-lbaas
-      Kind: bridge
-  - NetDev:
-      Name: br-bmaas
-      Kind: bridge
-
   - NetDev:
       Name: br-vlan-veth
       Kind: veth
     Peer:
       Name: eth12
+{% if 'trove' in bootstrap_host_scenarios_expanded %}
+  - NetDev:
+      Name: dummy-dbaas
+      Kind: dummy
+  - NetDev:
+      Name: br-dbaas
+      Kind: bridge
   - NetDev:
       Name: br-dbaas-veth
       Kind: veth
     Peer:
       Name: eth13
+{% endif %}
+{% if 'octavia' in bootstrap_host_scenarios_expanded %}
+  - NetDev:
+      Name: dummy-lbaas
+      Kind: dummy
+  - NetDev:
+      Name: br-lbaas
+      Kind: bridge
   - NetDev:
       Name: br-lbaas-veth
       Kind: veth
     Peer:
       Name: eth14
+{% endif %}
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+  - NetDev:
+      Name: dummy-bmaas
+      Kind: dummy
+  - NetDev:
+      Name: br-bmaas
+      Kind: bridge
   - NetDev:
       Name: br-bmaas-veth
       Kind: veth
     Peer:
       Name: eth15
+{% endif %}
 
 aio_systemd_networkd_networks_bootstrap:
   - interface: "dummy-mgmt"
@@ -98,36 +105,6 @@ aio_systemd_networkd_networks_bootstrap:
   - interface: "br-storage"
     address: "{{ storage_network | ansible.utils.nthhost('100') }}"
     netmask: "{{ storage_network | ansible.utils.ipaddr('netmask')  }}"
-
-  - interface: "dummy-dbaas"
-    bridge: "br-dbaas"
-    mtu: 9000
-  - interface: "br-dbaas"
-    address: "{{ dbaas_network | ansible.utils.nthhost('100') }}"
-    netmask: "{{ dbaas_network | ansible.utils.ipaddr('netmask') }}"
-  - interface: "br-dbaas-veth"
-    bridge: "br-dbaas"
-    mtu: 9000
-
-  - interface: "dummy-lbaas"
-    bridge: "br-lbaas"
-    mtu: 9000
-  - interface: "br-lbaas"
-    address: "{{ lbaas_network | ansible.utils.nthhost('100') }}"
-    netmask: "{{ lbaas_network | ansible.utils.ipaddr('netmask') }}"
-  - interface: "br-lbaas-veth"
-    bridge: "br-lbaas"
-    mtu: 9000
-
-  - interface: "dummy-bmaas"
-    bridge: "br-bmaas"
-    mtu: 1500
-  - interface: "br-bmaas"
-    address: "{{ bmaas_network | ansible.utils.nthhost('100') }}"
-    netmask: "{{ bmaas_network | ansible.utils.ipaddr('netmask') }}"
-  - interface: "br-bmaas-veth"
-    bridge: "br-bmaas"
-    mtu: 1500
 
   - interface: "dummy-vxlan"
     bridge: "br-vxlan"
@@ -149,6 +126,40 @@ aio_systemd_networkd_networks_bootstrap:
     bridge: "br-vlan"
     mtu: 9000
 
+{% if 'trove' in bootstrap_host_scenarios_expanded %}
+  - interface: "dummy-dbaas"
+    bridge: "br-dbaas"
+    mtu: 9000
+  - interface: "br-dbaas"
+    address: "{{ dbaas_network | ansible.utils.nthhost('100') }}"
+    netmask: "{{ dbaas_network | ansible.utils.ipaddr('netmask') }}"
+  - interface: "br-dbaas-veth"
+    bridge: "br-dbaas"
+    mtu: 9000
+{% endif %}
+{% if 'octavia' in bootstrap_host_scenarios_expanded %}
+  - interface: "dummy-lbaas"
+    bridge: "br-lbaas"
+    mtu: 9000
+  - interface: "br-lbaas"
+    address: "{{ lbaas_network | ansible.utils.nthhost('100') }}"
+    netmask: "{{ lbaas_network | ansible.utils.ipaddr('netmask') }}"
+  - interface: "br-lbaas-veth"
+    bridge: "br-lbaas"
+    mtu: 9000
+{% endif %}
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+  - interface: "dummy-bmaas"
+    bridge: "br-bmaas"
+    mtu: 1500
+  - interface: "br-bmaas"
+    address: "{{ bmaas_network | ansible.utils.nthhost('100') }}"
+    netmask: "{{ bmaas_network | ansible.utils.ipaddr('netmask') }}"
+  - interface: "br-bmaas-veth"
+    bridge: "br-bmaas"
+    mtu: 1500
+{% endif %}
+
 aio_systemd_services_postnetwork:
   - service_name: "networking-post-up"
     config_overrides:
@@ -165,21 +176,27 @@ aio_systemd_services_postnetwork:
         - "-{{ bootstrap_host_ethtool_path }} -K br-vxlan gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ethtool_path }} -K br-storage gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ethtool_path }} -K br-vlan gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-dbaas gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-lbaas gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-bmaas gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ip_path }} link set eth12 up"
         - "-{{ bootstrap_host_ip_path }} link set br-vlan-veth up"
         - "-{{ bootstrap_host_ethtool_path }} -K eth12 gso off sg off tso off tx off"
+{% if 'trove' in bootstrap_host_scenarios_expanded %}
+        - "-{{ bootstrap_host_ethtool_path }} -K br-dbaas gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ip_path }} link set eth13 up"
         - "-{{ bootstrap_host_ip_path }} link set br-dbaas-veth up"
         - "-{{ bootstrap_host_ethtool_path }} -K eth13 gso off sg off tso off tx off"
+{% endif %}
+{% if 'octavia' in bootstrap_host_scenarios_expanded %}
+        - "-{{ bootstrap_host_ethtool_path }} -K br-lbaas gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ip_path }} link set eth14 up"
         - "-{{ bootstrap_host_ip_path }} link set br-lbaas-veth up"
         - "-{{ bootstrap_host_ethtool_path }} -K eth14 gso off sg off tso off tx off"
+{% endif %}
+{% if 'ironic' in bootstrap_host_scenarios_expanded %}
+        - "-{{ bootstrap_host_ethtool_path }} -K br-bmaas gso off sg off tso off tx off"
         - "-{{ bootstrap_host_ip_path }} link set eth15 up"
         - "-{{ bootstrap_host_ip_path }} link set br-bmaas-veth up"
         - "-{{ bootstrap_host_ethtool_path }} -K eth15 gso off sg off tso off tx off"
+{% endif %}
     execstops:
         - "{{ bootstrap_host_iptables_path }} -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
     enabled: true
