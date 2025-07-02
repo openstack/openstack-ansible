@@ -192,7 +192,7 @@ def main():
             os.chmod(user_vars_tar_file, 0o600)
             basename = os.path.basename(user_vars_file)
             # Time stamp the password file in UTC
-            utctime = datetime.datetime.utcnow()
+            utctime = datetime.datetime.now(datetime.UTC)
             utctime = utctime.strftime('%Y%m%d_%H%M%S')
             backup_name = '%s-%s' % (basename, utctime)
             tar.add(user_vars_file, arcname=backup_name)
