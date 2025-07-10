@@ -43,17 +43,20 @@
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-10-stream
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
+        - openstack-ansible-deploy-aio_lxc-debian-trixie
         - openstack-ansible-deploy-aio_lxc-rockylinux-10
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-10-stream
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
+        - openstack-ansible-deploy-aio_lxc-debian-trixie
         - openstack-ansible-deploy-aio_lxc-rockylinux-10
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
+        - openstack-ansible-deploy-aio_lxc-debian-trixie
         - openstack-ansible-upgrade-aio_lxc-ubuntu-noble
 
 - project-template:
@@ -80,6 +83,7 @@
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_lxc-debian-trixie
         - openstack-ansible-deploy-infra_lxc-rockylinux-10
         - openstack-ansible-deploy-infra_lxc_tls-rockylinux-10
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
@@ -89,6 +93,7 @@
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_lxc-debian-trixie
         - openstack-ansible-deploy-infra_lxc-rockylinux-10
         - openstack-ansible-deploy-infra_lxc_tls-rockylinux-10
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
@@ -105,12 +110,14 @@
         - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream:
             voting: false
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_distro_lxc-debian-trixie
         - openstack-ansible-deploy-infra_distro_lxc-rockylinux-10:
             voting: false
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
+        - openstack-ansible-deploy-infra_distro_lxc-debian-trixie
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
 - project-template:
@@ -119,12 +126,14 @@
       jobs:
         - openstack-ansible-deploy-hosts_lxc-centos-10-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
+        - openstack-ansible-deploy-hosts_lxc-debian-trixie
         - openstack-ansible-deploy-hosts_lxc-rockylinux-10
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc-centos-10-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
+        - openstack-ansible-deploy-hosts_lxc-debian-trixie
         - openstack-ansible-deploy-hosts_lxc-rockylinux-10
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     periodic:
@@ -137,12 +146,14 @@
       jobs:
         - openstack-ansible-deploy-hosts_metal-centos-10-stream
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
+        - openstack-ansible-deploy-hosts_metal-debian-trixie
         - openstack-ansible-deploy-hosts_metal-rockylinux-10
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_metal-centos-10-stream
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
+        - openstack-ansible-deploy-hosts_metal-debian-trixie
         - openstack-ansible-deploy-hosts_metal-rockylinux-10
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     periodic:
@@ -165,6 +176,7 @@
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-debian-bookworm
+        - openstack-ansible-deploy-aio_distro_lxc-debian-trixie
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-noble
 
 - project-template:
@@ -173,6 +185,7 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-10-stream
         - openstack-ansible-deploy-aio_metal-debian-bookworm
+        - openstack-ansible-deploy-aio_metal-debian-trixie
         - openstack-ansible-deploy-aio_metal-rockylinux-10
         - openstack-ansible-deploy-aio_metal_tls-rockylinux-10
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
@@ -184,6 +197,7 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-centos-10-stream
         - openstack-ansible-deploy-aio_metal-debian-bookworm
+        - openstack-ansible-deploy-aio_metal-debian-trixie
         - openstack-ansible-deploy-aio_metal-rockylinux-10
         - openstack-ansible-deploy-aio_metal_tls-rockylinux-10
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
@@ -195,12 +209,14 @@
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-10-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
+        - openstack-ansible-deploy-aio_telemetry_metal-debian-trixie
         - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-10
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-10-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
+        - openstack-ansible-deploy-aio_telemetry_metal-debian-trixie
         - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-10
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
 
@@ -274,6 +290,8 @@
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-10
+        - openstack-ansible-deploy-hosts_lxc_btrfs-debian-trixie
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-trixie
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-noble
@@ -281,6 +299,8 @@
         - openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-noble
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
+        - openstack-ansible-deploy-hosts_lxc_btrfs-debian-trixie
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-trixie
         - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-10
 
 - project-template:
@@ -288,6 +308,8 @@
     check:
       jobs:
         - openstack-ansible-tox-molecule-debian-bookworm
+        - openstack-ansible-tox-molecule-debian-trixie:
+            voting: false
         - openstack-ansible-tox-molecule-ubuntu-noble
         - openstack-ansible-tox-molecule-centos-10-stream
         - openstack-ansible-tox-molecule-rockylinux-10:
