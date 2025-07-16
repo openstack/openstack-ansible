@@ -106,11 +106,14 @@ ceph_osd_images:
 
 ## Network configuration
 # Default network IP ranges
-mgmt_range: "172.29.236"
-vxlan_range: "172.29.240"
-storage_range: "172.29.244"
-vlan_range: "172.29.248"
-netmask: "255.255.252.0"
+mgmt_network: "172.29.236.0/22"
+vxlan_network: "172.29.240.0/22"
+storage_network: "172.29.244.0/22"
+vlan_network: "172.29.248.0/22"
+bmaas_network: "172.29.228.0/22"
+dbaas_network: "172.29.252.0/22"
+lbaas_network: "172.29.232.0/22"
+
 #
 # NICs
 bootstrap_host_public_interface: "{{ ansible_facts['default_ipv4']['interface'] }}"
@@ -118,7 +121,8 @@ bootstrap_host_public_interface: "{{ ansible_facts['default_ipv4']['interface'] 
 # By default the address will be set to the ipv4 address of the
 # host's network interface that has the default route on it.
 bootstrap_host_public_address: "{{ ansible_facts[bootstrap_host_public_interface | replace('-', '_')]['ipv4']['address'] }}"
-
+bootstrap_host_management_address: "{{ mgmt_network | ansible.utils.nthhost('100') }}"
+bootstrap_host_internal_address: "{{ mgmt_network | ansible.utils.nthhost('101') }}"
 #
 # Utility paths
 bootstrap_host_network_utils:

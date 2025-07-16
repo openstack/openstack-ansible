@@ -1,4 +1,4 @@
 # The controller host that the octavia control plane will be run on
 octavia-infra_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}

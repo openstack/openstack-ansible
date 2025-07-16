@@ -1,8 +1,8 @@
 ---
 compute-infra_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
 
 compute_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}

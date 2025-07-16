@@ -16,7 +16,7 @@ global_overrides:
           default: True
 swift-proxy_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
     container_vars:
       swift_proxy_vars:
         limit_container_types: swift_proxy
@@ -25,7 +25,7 @@ swift-proxy_hosts:
         write_affinity_node_count: "1 * replicas"
 swift_hosts:
   aio1:
-    ip: 172.29.236.100
+    ip: {{ bootstrap_host_management_address }}
     container_vars:
       swift_vars:
         limit_container_types: swift
