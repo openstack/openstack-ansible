@@ -37,8 +37,8 @@
       - ^tox.ini$
       - ^Vagrantfile
     vars:
-      #disable powertools/highavailabity for centos, do not install debian/ubuntu backports repo config
-      configure_mirrors_extra_repos: False
+      #disable powertools/highavailabity for centos
+      configure_mirrors_extra_repos: "{{ ansible_facts['os_family'] | lower != 'redhat' }}"
       #disable generation of ARA html report to reduce log upload time
       ara_report_type: database
 
