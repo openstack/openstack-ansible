@@ -114,6 +114,11 @@ netmask: "255.255.252.0"
 #
 # NICs
 bootstrap_host_public_interface: "{{ ansible_facts['default_ipv4']['interface'] }}"
+# Specify the public IP address for the host.
+# By default the address will be set to the ipv4 address of the
+# host's network interface that has the default route on it.
+bootstrap_host_public_address: "{{ ansible_facts[bootstrap_host_public_interface | replace('-', '_')]['ipv4']['address'] }}"
+
 #
 # Utility paths
 bootstrap_host_network_utils:
@@ -191,11 +196,6 @@ bootstrap_host_data_disk2_fs_mount_options: "{{ bootstrap_host_data_mount_option
 bootstrap_host_data_disk2_path: '/var/lib/lxc'
 
 ### Optional Settings ###
-
-# Specify the public IP address for the host.
-# By default the address will be set to the ipv4 address of the
-# host's network interface that has the default route on it.
-# bootstrap_host_public_address: 0.0.0.0
 
 # Set the install method for the deployment. Options are ['source', 'distro']
 bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true) }}"

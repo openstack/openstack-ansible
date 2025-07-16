@@ -41,7 +41,7 @@ global_overrides:
   internal_lb_vip_address: 172.29.236.101
   # The external IP is quoted simply to ensure that the .aio file can be used as input
   # dynamic inventory testing.
-  external_lb_vip_address: "{{ ('stepca' in bootstrap_host_scenarios) | ternary('external.openstack.local', bootstrap_host_public_address | default(ansible_facts['default_ipv4']['address'])) }}"
+  external_lb_vip_address: "{{ ('stepca' in bootstrap_host_scenarios) | ternary('external.openstack.local', bootstrap_host_public_address) }}"
   management_bridge: "br-mgmt"
   no_containers: {{ true if 'metal' in bootstrap_host_scenarios else false }}
   provider_networks:
