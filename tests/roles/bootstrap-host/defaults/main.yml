@@ -21,7 +21,7 @@ bootstrap_host_scenario: "{{ lookup('env', 'SCENARIO') | default('aio_lxc', true
 bootstrap_host_action: "{{ lookup('env', 'ACTION') | default('deploy', true) }}"
 #
 # Boolean option to implement OpenStack-Ansible configuration for an AIO
-# Switch to no for a multi-node configuration
+# Switch to false for a multi-node configuration
 bootstrap_host_aio_config: true
 #
 # Path to the location of the bootstrapping configuration files

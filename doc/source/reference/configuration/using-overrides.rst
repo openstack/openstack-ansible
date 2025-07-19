@@ -196,7 +196,7 @@ The list of overrides available may be found by executing:
 
     ls /etc/ansible/roles/*/defaults/main.yml -1 \
         | xargs -I {} grep '_.*_overrides:' {} \
-        | egrep -v "^#|^\s" \
+        | grep -Ev "^#|^\s" \
         | sort -u
 
 .. note::
@@ -206,7 +206,7 @@ The list of overrides available may be found by executing:
    ``/etc/ansible/roles/role_name/defaults/main.yml``.
 
 Overriding OpenStack configuration defaults
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenStack has many configuration options available in ``.conf`` files
 (in a standard ``INI`` file format),
