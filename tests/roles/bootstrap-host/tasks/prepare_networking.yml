@@ -51,7 +51,9 @@
     systemd_interface_cleanup: true
     systemd_run_networkd: true
     systemd_netdevs:
-
+      - NetDev:
+          Name: dummy-squid
+          Kind: dummy
       - NetDev:
           Name: dummy-mgmt
           Kind: dummy
@@ -119,6 +121,8 @@
 
     systemd_networks:
 
+      - interface: "dummy-squid"
+        address: "{{ squid_network }}"
       - interface: "dummy-mgmt"
         bridge: "br-mgmt"
         mtu: 9000

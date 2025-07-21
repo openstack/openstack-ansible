@@ -318,8 +318,8 @@ octavia_hm_hosts: {{ lbaas_network | ansible.utils.nthhost('100') }} # br-lbaas 
 # to point to the local squid
 # Playbooks will set a runtime proxy to the AIO host squid
 deployment_environment_variables:
-  http_proxy: http://{{ bootstrap_host_management_address }}:3128/
-  https_proxy: http://{{ bootstrap_host_management_address }}:3128/
+  http_proxy: http://{{ squid_network | ansible.utils.ipaddr('address') }}:3128/
+  https_proxy: http://{{ squid_network | ansible.utils.ipaddr('address') }}:3128/
   no_proxy: "localhost,127.0.0.1,{{ bootstrap_host_management_address }},{{ bootstrap_host_internal_address }},{{ bootstrap_host_public_address }}"
 
 # Remove eth0 from all container so there is no default route and everything

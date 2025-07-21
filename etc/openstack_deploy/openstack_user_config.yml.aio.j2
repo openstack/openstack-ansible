@@ -62,6 +62,10 @@ global_overrides:
           # neutron public addresses, LXC
           - cidr: {{ vlan_network }}
             gateway: {{ bootstrap_host_management_address }}
+{% if 'proxy' in bootstrap_host_scenarios_expanded %}
+          - cidr: {{ squid_network }}
+            gateway: {{ bootstrap_host_management_address }}
+{% endif %}
 {% if 'ovs' in bootstrap_host_scenarios_expanded %}
     - network:
         container_bridge: "br-vxlan"

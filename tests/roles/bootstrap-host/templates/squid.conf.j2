@@ -1,5 +1,6 @@
 acl CONNECT method CONNECT
 acl lan src {{ mgmt_network }}
+acl lan src {{ squid_network }}
 
 http_access allow localhost manager
 http_access allow lan
