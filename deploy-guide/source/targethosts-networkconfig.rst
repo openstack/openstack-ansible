@@ -87,6 +87,13 @@ Host network bridges information
 
 *  OpenStack Networking provider: ``br-vlan``
 
+   .. note::
+
+    The br-vlan bridge is no longer strictly necessary — with right configuration
+    you can use the physical interface directly (for example, in OVN). It remains
+    in some setups mostly for consistency and to align naming conventions across
+    documentation, but its use is optional.
+
    The ``br-vlan`` bridge is provides infrastructure for VLAN
    tagged or flat (no VLAN tag) networks.
 
