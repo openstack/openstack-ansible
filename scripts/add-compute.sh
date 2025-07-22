@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export OSA_REPO_PATH=${OSA_REPO_PATH:-"/opt/openstack-ansible"}
 export OSA_CONFIG_DIR=${OSA_CONFIG_DIR:-"/etc/openstack_deploy"}
 export HOSTS=${1:-""}
 
@@ -37,10 +36,10 @@ function define_tasks {
         done
     fi
 
-    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-hosts.yml --limit ${HOSTS}")
-    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/openstack-hosts-setup.yml -e openstack_hosts_group=nova_compute --tags openstack_hosts-file")
-    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/setup-openstack.yml --limit ${HOSTS}")
-    RUN_TASKS+=("${OSA_REPO_PATH}/playbooks/unbound-install.yml --tags unbound-config")
+    RUN_TASKS+=("openstack.osa.setup_hosts --limit ${HOSTS}")
+    RUN_TASKS+=("openstack.osa.openstack_hosts_setup -e openstack_hosts_group=nova_compute --tags openstack_hosts-file")
+    RUN_TASKS+=("openstack.osa.setup_openstack --limit ${HOSTS}")
+    RUN_TASKS+=("openstack.osa.unbound --tags unbound-config")
 
     if [[ ! -z ${POST_OSA_TASKS} ]]; then
         if [ "${BASH_VERSINFO[0]}" -ge 4 ] && [ "${BASH_VERSINFO[1]}" -ge 4 ]; then
@@ -81,9 +80,6 @@ function run_tasks {
 function main {
     if [[ -z ${HOSTS} ]]; then
         echo "Hosts to setup are not provided"
-        exit 1
-    elif [[ ! -d ${OSA_REPO_PATH} ]]; then
-        echo "OSA repo is not found: ${OSA_REPO_PATH}. Define OSA_REPO_PATH to set another directory"
         exit 1
     fi
 
