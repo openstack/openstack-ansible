@@ -15,7 +15,14 @@
 # limitations under the License.
 
 export OSA_REPO_PATH=${OSA_REPO_PATH:-"/opt/openstack-ansible"}
+export OSA_CONFIG_DIR=${OSA_CONFIG_DIR:-"/etc/openstack_deploy"}
 export HOSTS=${1:-""}
+
+export OSA_USER_RC=${OSA_USER_RC:-${OSA_CONFIG_DIR}/user.rc}
+
+if [[ -f ${OSA_USER_RC} ]]; then
+    . ${OSA_USER_RC}
+fi
 
 function define_tasks {
 
