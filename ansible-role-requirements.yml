@@ -20,9 +20,9 @@
 - name: pki
   src: https://opendev.org/openstack/ansible-role-pki
   scm: git
-  version: d8884f2d14b275a8df8502ad6c64a0ef4983fddc
+  version: e2b4b03bd3294967d28c50752cc48ae9b55359ac
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-07-16'
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
@@ -74,7 +74,7 @@
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: ab6f056d6dd4b9f071f390c7eb23d8e2285c5663
+  version: 747e6b999af097e77c9c5f5d710b709f1f3505aa
   trackbranch: stable/2025.1
   shallow_since: '2025-06-05'
 - name: haproxy_server
@@ -104,9 +104,9 @@
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: d6f0bab791be14046f7bcde0a9918b01e63ed020
+  version: 4cc9014d518276e5b2667201606437c23b74719d
   trackbranch: stable/2025.1
-  shallow_since: '2025-06-03'
+  shallow_since: '2025-07-15'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -146,9 +146,9 @@
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
-  version: d172ff1ad3c1659eb65db9c4cdb5379875bb679b
+  version: 3dd5a740b4829dd33e87366feeef6e221d02dd4f
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-07-15'
 - name: os_cloudkitty
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cloudkitty
@@ -188,9 +188,9 @@
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
-  version: 46166786ac235c131f0f38456b7d3e590a94344b
+  version: 7c99b0449b4a9b8a6b6e55c95c0f3f8ac2ddc825
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-04'
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
@@ -254,9 +254,9 @@
 - name: os_skyline
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_skyline
-  version: b855cdf80dd3c6cb69f27d61fe122eec0d328794
+  version: 937fc4093f9e6d5d2f2d3c073cd74b181c1eabd1
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-07-07'
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
@@ -278,9 +278,9 @@
 - name: os_trove
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_trove
-  version: b436a92e3f43dd90e310af56da6eddc0fec2068d
+  version: 6378afd46e433adb1ebab3f5b8e5e5c25849dc52
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-06-08'
 - name: os_zun
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_zun
@@ -296,9 +296,9 @@
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
-  version: 86ec585ff63779c6e366ce9db0d963a84f288c4e
+  version: b4b9ad0c1d8754be739da0171aa350b66c0e6018
   trackbranch: stable/2025.1
-  shallow_since: '2025-05-15'
+  shallow_since: '2025-07-28'
 # External dependencies
 - name: etcd
   scm: git
@@ -333,6 +333,6 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 35131407e9858cc168baa1590f236c092336d0e3
+  version: 870d7004a79975e27498131f7e17e5760f985892
   trackbranch: stable-8.0
-  shallow_since: '2025-03-17'
+  shallow_since: '2025-06-24'
