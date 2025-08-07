@@ -41,10 +41,12 @@
     name: openstack-ansible-deploy-aio_lxc-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-aio_lxc-centos-10-stream
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_lxc-centos-10-stream
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-noble
     periodic:
@@ -74,12 +76,14 @@
     name: openstack-ansible-deploy-infra_lxc-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-infra_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-infra_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
@@ -92,10 +96,12 @@
     name: openstack-ansible-deploy-infra_distro_lxc-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
@@ -103,10 +109,12 @@
     name: openstack-ansible-deploy-hosts_lxc-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-hosts_lxc-centos-10-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-hosts_lxc-centos-10-stream
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     periodic:
@@ -117,10 +125,12 @@
     name: openstack-ansible-deploy-hosts_metal-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-hosts_metal-centos-10-stream
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-hosts_metal-centos-10-stream
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-noble
     periodic:
@@ -147,6 +157,7 @@
     name: openstack-ansible-deploy-aio_metal-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-aio_metal-centos-10-stream
         - openstack-ansible-deploy-aio_metal-debian-bookworm
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
@@ -155,6 +166,7 @@
 
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_metal-centos-10-stream
         - openstack-ansible-deploy-aio_metal-debian-bookworm
         - openstack-ansible-deploy-aio_metal-ubuntu-noble
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
@@ -163,10 +175,12 @@
     name: openstack-ansible-deploy-aio_telemetry_metal-jobs
     check:
       jobs:
+        - openstack-ansible-deploy-aio_telemetry_metal-centos-10-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_telemetry_metal-centos-10-stream
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-noble
 

@@ -82,7 +82,8 @@
         _ubuntu_conditional_vars: "{{ (ansible_facts['distribution'] == 'Ubuntu') | ternary(_ubuntu_vars, {}) }}"
         nodepool_overrides:
           openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
-          centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
+          # NOTE: EPEL10 mirrors are not around yet
+          # centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
           # galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
           nova_virt_type: 'qemu'
           # NOTE(jrosser)
