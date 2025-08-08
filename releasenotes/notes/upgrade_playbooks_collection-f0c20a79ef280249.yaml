@@ -1,0 +1,10 @@
+---
+other:
+  - |
+    In order to align approach on playbooks location and usage,
+    upgrade playbooks were moved from ``upgrade_utilities`` of
+    the integrated repository to ``openstack.osa`` collection:
+
+      * upgrade-utilities/deploy-config-changes.yml -> openstack.osa.upgrade.deploy_config_changes
+      * upgrade-utilities/galera-cluster-rolling-restart.yml -> openstack.osa.tools.galera_cluster_rolling_restart
+      * upgrade-utilities/nova-restore-compute-id.yml -> openstack.osa.tools.nova_restore_compute_id

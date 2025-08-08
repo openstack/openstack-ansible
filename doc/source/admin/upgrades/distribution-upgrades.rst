@@ -354,6 +354,6 @@ Deploying Compute and Network Hosts
 
    .. code:: console
 
-      openstack-ansible ../scripts/upgrade-utilities/nova-restore-compute-id.yml --limit reinstalled_host
+      openstack-ansible openstack.osa.tools.nova_restore_compute_id --limit reinstalled_host
 
 .. _OPS repository: https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/ansible_tools/playbooks/set-haproxy-backends-state.yml
