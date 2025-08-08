@@ -167,7 +167,6 @@
       This should be used only for hosts based tests.
     required-projects: *r-p-no_services
 
-
 - job:
     name: openstack-ansible-deploy-aio
     parent: openstack-ansible-deploy
@@ -305,12 +304,14 @@
       - name: openstack/rally-openstack
 
 # Ensuring overrides work
+
 - job:
     name: openstack-ansible-varstest-aio
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
 
 # Ensuring SHAs are valid
+
 - job:
     name: openstack-ansible-shastest-metal
     parent: openstack-ansible-deploy
@@ -322,6 +323,7 @@
       - ^inventory\/group_vars\/*\/source_git\.yml
 
 # Ensuring hosts setup and healthcheck-hosts playbook is valid
+
 - job:
     name: openstack-ansible-deploy-hosts_lxc-validate
     parent: openstack-ansible-deploy-hosts_lxc-ubuntu-noble
@@ -353,6 +355,7 @@
       - ^playbooks\/zookeeper-(-install)?\.yml
 
 # Running linters check
+
 - job:
     name: openstack-ansible-linters-ubuntu-noble
     parent: openstack-ansible-deploy-aio
@@ -361,6 +364,7 @@
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
+
 - job:
     name: openstack-ansible-deploy_with_ansible_devel-aio-ubuntu-noble
     parent: openstack-ansible-deploy-aio
@@ -374,6 +378,7 @@
 
 # Experimental job for checking our AIO can deploy with
 # a different ansible version
+
 - job:
     name: openstack-ansible-deploy_with_ansible_next-aio-ubuntu-noble
     parent: openstack-ansible-deploy-aio
@@ -385,7 +390,8 @@
     vars:
       ansible_package: "file://{{ ansible_user_dir }}/src/github.com/ansible/ansible"
 
-# ubuntu noble
+# Ubuntu 24.04 (Noble Numbat)
+
 - job:
     name: openstack-ansible-deploy-aio_lxc-ubuntu-noble
     parent: openstack-ansible-deploy-aio
@@ -530,6 +536,7 @@
         DOCKER_IMAGE_TAG: ubuntu-systemd:noble
 
 # CentOS Stream 10
+
 - job:
     name: openstack-ansible-deploy-aio_lxc-centos-10-stream
     parent: openstack-ansible-deploy-aio
@@ -580,7 +587,7 @@
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: centos-systemd:stream10
 
-# debian bookworm
+# Debian 12 (Bookworm)
 
 - job:
     name: openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
@@ -650,7 +657,7 @@
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: debian-systemd:bookworm
 
-# Rocky 10
+# Rocky Linux 10
 
 - job:
     name: openstack-ansible-tox-molecule-rockylinux-10
@@ -659,3 +666,70 @@
       tox_environment:
         DOCKER_REGISTRY: quay.io/rockylinux
         DOCKER_IMAGE_TAG: rockylinux:10-ubi-init
+
+- job:
+    name: openstack-ansible-deploy-aio_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc_tls-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-infra_distro_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_tls-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: osa-rockylinux-10
+    voting: false
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
