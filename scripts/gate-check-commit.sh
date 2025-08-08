@@ -284,10 +284,6 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
     echo 'YES' | SOURCE_SERIES=${UPGRADE_SOURCE_RELEASE} bash "${OSA_CLONE_DIR}/scripts/run-upgrade.sh"
 
     if [[ $SCENARIO =~ "infra" ]]; then
-      # TODO(noonedeadpunk): Remove after Y release
-      set -a
-      . ${OSA_CLONE_DIR}/scripts/upgrade-utilities/unset-ansible-env.rc
-      set +a
       # Verify our infra setup after upgrade
       openstack-ansible ${OSA_CLONE_DIR}/playbooks/healthcheck-infrastructure.yml -e osa_gather_facts=False
     fi
