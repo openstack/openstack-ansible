@@ -190,26 +190,24 @@ function main {
 
     bootstrap_ansible
 
-    pushd ${MAIN_PATH}/playbooks
-        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml")
-        # we don't want to trigger container restarts for galera and rabbit
-        # but as there will be no hosts available for metal deployments,
-        # as a fallback option we just run setup-hosts.yml without any arguments
-        RUN_TASKS+=("setup-hosts.yml --limit '!galera_all:!rabbitmq_all' -e package_state=latest && \
-                     openstack-ansible setup-hosts.yml -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all' || \
-                     openstack-ansible setup-hosts.yml -e package_state=latest")
-        # upgrade infrastructure
-        RUN_TASKS+=("setup-infrastructure.yml -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest")
-        # explicitly perform controlled galera cluster restart with new lxc config
-        RUN_TASKS+=("${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml")
-        # upgrade openstack
-        RUN_TASKS+=("setup-openstack.yml -e package_state=latest")
-        # Run the tasks in order
-        for item in ${!RUN_TASKS[@]}; do
-          echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
-          run_lock $item "${RUN_TASKS[$item]}"
-        done
-    popd
+    RUN_TASKS+=("openstack.osa.upgrade.deploy_config_changes")
+    # we don't want to trigger container restarts for galera and rabbit
+    # but as there will be no hosts available for metal deployments,
+    # as a fallback option we just run setup_hosts.yml without any arguments
+    RUN_TASKS+=("openstack.osa.setup_hosts --limit '!galera_all:!rabbitmq_all' -e package_state=latest && \
+                  openstack-ansible openstack.osa.setup_hosts -e 'lxc_container_allow_restarts=false' --limit 'galera_all:rabbitmq_all' || \
+                  openstack-ansible openstack.osa.setup_hosts -e package_state=latest")
+    # upgrade infrastructure
+    RUN_TASKS+=("openstack.osa.setup_infrastructure -e 'galera_upgrade=true' -e 'rabbitmq_upgrade=true' -e package_state=latest")
+    # explicitly perform controlled galera cluster restart with new lxc config
+    RUN_TASKS+=("openstack.osa.tools.galera_cluster_rolling_restart")
+    # upgrade openstack
+    RUN_TASKS+=("openstack.osa.setup_openstack -e package_state=latest")
+    # Run the tasks in order
+    for item in ${!RUN_TASKS[@]}; do
+      echo "### NOW RUNNING: ${RUN_TASKS[$item]}"
+      run_lock $item "${RUN_TASKS[$item]}"
+    done
 }
 
 main
