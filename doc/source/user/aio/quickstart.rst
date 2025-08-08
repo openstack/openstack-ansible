@@ -124,7 +124,7 @@ version.
    The |current_release_formal_name| release is only compatible with
    Debian 12 (bookworm), Ubuntu 22.04 (Jammy Jellyfish),
    Ubuntu 24.04 (Noble Numbat), CentOS 9 Stream, CentOS 10 Stream,
-   and derivatives of CentOS 9 Stream/RHEL such as Rocky Linux.
+   and derivatives of RHEL such as Rocky Linux.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.

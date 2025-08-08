@@ -22,6 +22,8 @@ following minimum requirements:
 
   * Rocky Linux 9
 
+  * Rocky Linux 10
+
 * Secure Shell (SSH) client and server that support public key
   authentication
 

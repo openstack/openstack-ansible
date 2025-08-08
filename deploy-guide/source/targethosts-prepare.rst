@@ -17,6 +17,7 @@ target host:
 * CentOS 9 Stream 64-bit
 * CentOS 10 Stream 64-bit
 * Rocky Linux 9 64-bit
+* Rocky Linux 10 64-bit
 
 Configure at least one network interface to access the Internet or
 suitable local repositories.
