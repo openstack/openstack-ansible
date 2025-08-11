@@ -189,7 +189,9 @@ sed -i "s|OSA_CLONE_DIR|${OSA_CLONE_DIR}|g" /usr/local/bin/openstack-ansible
 sed -i "s|CURRENT_OSA_VERSION|${CURRENT_OSA_VERSION}|g" /usr/local/bin/openstack-ansible
 
 # Create an auto-completion script
-cp -v scripts/bash-completion /etc/bash_completion.d/openstack-ansible
+if [ -d /etc/bash_completion.d ]; then
+  cp -v scripts/bash-completion /etc/bash_completion.d/openstack-ansible
+fi
 
 # Ensure wrapper tool is executable
 chmod +x /usr/local/bin/openstack-ansible
