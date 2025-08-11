@@ -28,7 +28,7 @@ If a LVM backed Block Storage host needs to be shut down:
 
    .. code-block:: console
 
-      # cat /home/user/running_instances | xargs -n1 nova show | fgrep vm_state
+      # cat /home/user/running_instances | xargs -n1 nova show | grep -F vm_state
 
 #. Shut down the Block Storage host:
 
@@ -55,4 +55,4 @@ If a LVM backed Block Storage host needs to be shut down:
    .. code-block:: console
 
       # cat /home/user/running_instances | xargs -n1 nova start
-      # cat /home/user/running_instances | xargs -n1 nova show | fgrep vm_state
+      # cat /home/user/running_instances | xargs -n1 nova show | grep -F vm_state
