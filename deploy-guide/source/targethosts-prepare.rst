@@ -23,6 +23,10 @@ resolves the actual hostname to another loopback IP address such as
 resolution problems. **Do not remove the 127.0.0.1 entry.**
 This step is especially important for `metal` deployments.
 
+Use short hostnames rather than fully-qualified domain names (FQDN) to
+prevent length limitation issues with LXC and SSH. For example, a suitable
+short hostname for a compute host might be: 12345-Compute001.
+
 We recommend adding the Secure Shell (SSH) server packages to the
 installation on target hosts that do not have local (console) access.
 

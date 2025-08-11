@@ -90,6 +90,127 @@ configuration and the variable precedence, see our
 :dev_docs:`Reference Guide <reference/index.html>` under the inventory
 section.
 
+Configure target hosts
+~~~~~~~~~~~~~~~~~~~~~~
+
+Modify the ``/etc/openstack_deploy/openstack_user_config.yml`` file
+to configure the target hosts.
+
+Do not assign the same IP address to different target hostnames.
+Unexpected results may occur. Each IP address and hostname must be
+a matching pair. To use the same host in multiple roles, for example
+infrastructure and networking, specify the same hostname and IP in
+each section.
+
+Unless otherwise stated, replace ``*_IP_ADDRESS`` with the IP address of
+the br-mgmt container management bridge on each target host.
+
+.. note::
+
+   If the SSH access to the host is via a different network than the
+   br-mgmt interface, please, refer to the `guide <https://docs.openstack.org/openstack-ansible/latest/reference/inventory/configure-inventory.html#having-ssh-network-different-from-openstack-management-network>`_.
+
+#. Configure a list containing at least three infrastructure
+   target hosts in the ``shared-infra_hosts`` section:
+
+   .. code-block:: yaml
+
+      shared-infra_hosts:
+        infra01:
+          ip: INFRA01_IP_ADDRESS
+        infra02:
+          ip: INFRA02_IP_ADDRESS
+        infra03:
+          ip: INFRA03_IP_ADDRESS
+        infra04: ...
+
+#. Configure a list of at least one keystone target host in the
+   ``identity_hosts`` section:
+
+   .. code-block:: yaml
+
+      identity_hosts:
+        infra01:
+          ip: INFRA01_IP_ADDRESS
+        infra02: ...
+
+#. Configure the appropriate set of hosts responsible for network-related
+   roles in your deployment:
+
+   .. code-block:: yaml
+
+      network-infra_hosts:
+        infra01:
+          ip: INFRA01_IP_ADDRESS
+        infra02: ...
+
+      network-northd_hosts:
+        infra01:
+          ip: INFRA01_IP_ADDRESS
+        infra02: ...
+
+   When deploying OpenStack with OVN, it's essential to properly configure
+   ``network-gateway_hosts`` depending on your network architecture. There are
+   two typical scenarios:
+
+   Scenario 1: DVR with gateway on compute nodes:
+
+   .. code-block:: yaml
+
+      network-gateway_hosts:
+        compute01:
+          ip: COMPUTE01_IP_ADDRESS
+        compute02: ...
+
+   Scenario 2: standalone network nodes:
+
+   .. code-block:: yaml
+
+      network-gateway_hosts:
+        network01:
+          ip: NETWORK01_IP_ADDRESS
+        network02: ...
+
+#. Configure a list containing at least one compute target host in
+   the ``compute_hosts`` section:
+
+   .. code-block:: yaml
+
+      compute_hosts:
+        compute01:
+          ip: COMPUTE01_IP_ADDRESS
+        compute02: ...
+
+#. Configure a list containing at least one repository target host in
+   the ``repo-infra_hosts`` section:
+
+   .. code-block:: yaml
+
+      repo-infra_hosts:
+        infra01:
+          ip: INFRA01_IP_ADDRESS
+        infra02:
+          ip: INFRA02_IP_ADDRESS
+        infra03:
+          ip: INFRA03_IP_ADDRESS
+        infra04: ...
+
+   The repository typically resides on one or more infrastructure hosts.
+
+#. Optionally configure storage host in the ``storage_hosts`` section:
+
+   .. code-block:: yaml
+
+      storage_hosts:
+        storage01:
+          ip: STORAGE01_IP_ADDRESS
+        storage02: ...
+
+   Each storage host requires additional configuration to define the
+   back end driver. The default configuration includes an optional
+   storage host. To install without storage hosts, comment out the
+   stanza beginning with the ``storage_hosts:`` line.
+
 Installing additional services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
