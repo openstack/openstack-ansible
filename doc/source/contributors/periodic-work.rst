@@ -22,26 +22,24 @@ necessary for releasing into the openstack-ansible code tree. This
 allowed the tooling for releasing to be more flexible,
 and lighter, over time.
 
-Now, all the functions are separated, and included into a branch
-independent tooling, `osa_cli_releases`.
+All the functions are separated, and included as an extra console
+script ``openstack-ansible-releases``.
 
-.. _osa_cli_releases: https://github.com/noonedeadpunk/osa_cli_releases
-
-You can install the latest version of this tooling by running:
+By default, dependencies for the script are not installed to minimize amount
+of them for regular users.
+To ensure all required dependencies are installed for the script, you can run:
 
 .. parsed-literal::
 
-   pip3 install -e git+https://github.com/noonedeadpunk/osa-cli.git#egg=openstack_ansible_cli
-   pip3 install -e git+https://github.com/noonedeadpunk/osa_cli_releases.git#egg=osa_cli_releases
+   pip3 install -e git+https://opendev.org/openstack/openstack-ansible#egg=openstack-ansible[releases]
 
-This tooling can then be called using ``osa releases``.
 Each subcommand contains help by default.
 
 Updating upstream SHAs
 ----------------------
 
 The dependencies for OpenStack-Ansible are updated
-through the use of ``osa releases bump_upstream_shas``. This script
+through the use of ``openstack-ansible-releases bump_upstream_shas``. This script
 updates the project's pinned SHAs, located in the
 ``inventory/group_vars/<service_group>/source_git.yml`` file,
 based on their ``_git_track_branch`` value.
@@ -51,7 +49,7 @@ Updating OpenStack-Ansible roles
 --------------------------------
 
 Updating the roles to their latest version per branch is done through
-``osa releases bump_roles``.
+``openstack-ansible-releases bump_roles``.
 
 This can do multiple things:
 
@@ -61,13 +59,13 @@ This can do multiple things:
 * Unfreeze of master.
 
 Master doesn't get frozen, unless explicitly asked for it for release
-milestones, using the command ``osa releases freeze_roles_for_milestone``
+milestones, using the command ``openstack-ansible-releases freeze_roles_for_milestone``
 
 Updating required collections
 -----------------------------
 
 Updating collections to their latest version is done through
-``osa releases bump_collections``.
+``openstack-ansible-releases bump_collections``.
 
 Please note, that only collections with type `git` are supported.
 Ones, that are installed from Ansible Galaxy should be bumped manually.
@@ -77,7 +75,7 @@ Check current pins status
 -------------------------
 
 You can check the current PyPI pins that are used in openstack-ansible
-repository by running ``osa releases check_pins``. This will display
+repository by running ``openstack-ansible-releases check_pins``. This will display
 a table, showing the current pin in OSA, and what is available upstream on
 PyPI.
 
