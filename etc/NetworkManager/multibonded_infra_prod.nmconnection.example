@@ -1,0 +1,82 @@
+# This is a multi-NIC bonded configuration for NetworkManager to create
+# the required bridges for OpenStack-Ansible.
+# The example below shows the setup for the infrastructure host;
+# adapt the assigned IP addresses accordingly for other hosts.
+
+# Assuming that eth0/1 and eth2/3 are dual port NIC's we pair
+# eth0 with eth2 and eth1 with eth3 for increased resiliency
+# in the case of one interface card failing.
+
+# Here is the configuration for the control plane bond, which handles
+# the control plane traffic:
+
+[connection]
+id=Bond connection 1
+type=bond
+interface-name=bond0
+
+[bond]
+downdelay=0
+miimon=1
+mode=802.3ad
+updelay=0
+
+# Slave interface configuration (includes eth0 and eth2):
+
+# bond0 port 1 (eth0)
+[connection]
+id=bond0 port 1
+type=ethernet
+controller=bond0
+interface-name=eth0
+port-type=bond
+
+# bond0 port 2 (eth2)
+[connection]
+id=bond0 port 2
+type=ethernet
+controller=bond0
+interface-name=eth2
+port-type=bond
+
+# Bridge interface for host and container management:
+
+[connection]
+id=br-mgmt
+type=bridge
+interface-name=br-mgmt
+
+[ipv4]
+address1=172.29.236.1/22
+method=manual
+
+# Bridge interface for storage network (optional):
+
+[connection]
+id=br-storage
+type=bridge
+interface-name=br-storage
+
+# VLAN interface for container/host management carried over bond0:
+
+[connection]
+id=VLAN connection 1
+type=vlan
+controller=br-mgmt
+port-type=bridge
+
+[vlan]
+id=10
+parent=bond0
+
+# Optional storage network VLAN interface:
+
+[connection]
+id=VLAN connection 2
+type=vlan
+controller=br-storage
+port-type=bridge
+
+[vlan]
+id=20
+parent=bond0
