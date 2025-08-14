@@ -236,6 +236,11 @@ and command modules such as the Ansible ``shell`` or ``command``.
 Tags and tags conventions
 -------------------------
 
+.. note::
+
+   If you want to learn more about how to use Ansible tags effectively,
+   check out the :dev_docs:`Operations Guide <admin/index.html>`.
+
 Tags are assigned based on the relevance of each individual item.
 Higher level includes (for example in the ``tasks/main.yml``) need high
 level tags. For example, ``*-config`` or ``*-install``.
@@ -253,8 +258,6 @@ The following convention is used:
   to run the service(s) configured in the role. Running a playbook with
   ``--tags <role>-config`` is only possible if the target already ran
   the tags ``<role>-install``.
-
-* A tag including the word ``upgrade`` handles all the upgrade tasks.
 
 Variable files conventions
 --------------------------
