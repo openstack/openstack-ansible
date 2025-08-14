@@ -10,16 +10,19 @@ from keystoneauth1 import session
 from novaclient import client
 
 nova_api_version = "2"
-gpu_flavors = ['g2-c6-m90-d800-g24','g1-c24-m380-d3.2k-g160']
+gpu_flavors = ['g3-c12-m180-d1.6k-g48','g2-c6-m90-d800-g24','g1-c24-m380-d3.2k-g160']
 vms_per_compute = {
+  'g3-c12-m180-d1.6k-g48': 4,
   'g2-c6-m90-d800-g24': 4,
   'g1-c24-m380-d3.2k-g160': 1
 }
 compute_count = {
+  'g3-c12-m180-d1.6k-g48': {},
   'g2-c6-m90-d800-g24': {},
   'g1-c24-m380-d3.2k-g160': {}
 }
 vm_count = {
+  'g3-c12-m180-d1.6k-g48': {},
   'g2-c6-m90-d800-g24': {},
   'g1-c24-m380-d3.2k-g160': {}
 }
