@@ -66,9 +66,12 @@ OpenStack-Ansible, plus any that you choose to specify for neutron
 physical interfaces.
 
 A selection of network configuration example files are given in
-the ``etc/network`` and ``etc/netplan`` for ubuntu systems, and it is
-expected that these will need adjustment for the specific requirements
-of each deployment.
+the `etc/network <https://opendev.org/openstack/openstack-ansible/src/branch/master/etc/network>`_
+and `etc/netplan <https://opendev.org/openstack/openstack-ansible/src/branch/master/etc/netplan>`_
+for Ubuntu systems,  and in
+`etc/NetworkManager <https://opendev.org/openstack/openstack-ansible/src/branch/master/etc/NetworkManager>`_ for RHEL-based (or others) systems.
+It is expected that these will need adjustment for the specific requirements of
+each deployment.
 
 If you want to delegate management of network bridges and interfaces to
 OpenStack-Ansible, you can define variables
