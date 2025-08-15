@@ -111,76 +111,37 @@ you need to follow these steps:
 * Define new groups for RabbitMQ and MariaDB. For that, you can create files
   with the following content: ``/etc/openstack_deploy/env.d/galera-neutron.yml``:
 
-.. code-block:: yaml
+  .. code-block:: yaml
 
-  # env.d file are more clear if you read them bottom-up
-  # At component skeleton you map component to ansible groups
-  component_skel:
-    # Component itself is an ansible group as well
-    neutron_galera:
-    # You tell in which ansible groups component will appear
-    belongs_to:
-      - neutron_galera_all
-      - galera_all
-
-  # At container skeleton you link components to physical layer
-  container_skel:
-    neutron_galera_container:
-      # Here you define on which physical hosts container will reside
-      belongs_to:
-        - neutron-database_containers
-      # Here you define which components will reside on container
-     contains:
-       - neutron_galera
-
-  # At physical skeleton level you map containers to hosts
-  physical_skel:
-    # Here you tell to which global group containers will be added
-    # from the host in question.
-    # Please note, that <name>_hosts and <name>_containers are
-    # interconnected, and <name> can not contain underscores.
-    neutron-database_containers:
-      belongs_to:
-        - all_containers
-
-  # You define `<name>_hosts` in your openstack_user_config or conf.d
-  # files to tell on which physical hosts containers should be spawned
-  neutron-database_hosts:
-    belongs_to:
-      - hosts
-
-``/etc/openstack_deploy/env.d/rabbit-neutron.yml``:
-
-.. code-block:: yaml
-
-  # env.d file are more clear if you read them bottom-up
-  # At component skeleton you map component to ansible groups
-  component_skel:
-    # Component itself is an ansible group as well
-    neutron_galera:
+    # env.d file are more clear if you read them bottom-up
+    # At component skeleton you map component to ansible groups
+    component_skel:
+      # Component itself is an ansible group as well
+      neutron_galera:
       # You tell in which ansible groups component will appear
       belongs_to:
         - neutron_galera_all
         - galera_all
 
-  # At container skeleton you link components to physical layer
-  container_skel:
-    neutron_galera_container:
-      # Here you define on which physical hosts container will reside
-      belongs_to:
-        - neutron-database_containers
-      # Here you define which components will reside on container
-      contains:
-        - neutron_galera
-  # At physical skeleton level you map containers to hosts
-  physical_skel:
-    # Here you tell to which global group containers will be added
-    # from the host in question.
-    # Please note, that <name>_hosts and <name>_containers are
-    # interconnected, and <name> can not contain underscores.
-    neutron-database_containers:
-      belongs_to:
-        - all_containers
+    # At container skeleton you link components to physical layer
+    container_skel:
+      neutron_galera_container:
+        # Here you define on which physical hosts container will reside
+        belongs_to:
+          - neutron-database_containers
+        # Here you define which components will reside on container
+       contains:
+         - neutron_galera
+
+    # At physical skeleton level you map containers to hosts
+    physical_skel:
+      # Here you tell to which global group containers will be added
+      # from the host in question.
+      # Please note, that <name>_hosts and <name>_containers are
+      # interconnected, and <name> can not contain underscores.
+      neutron-database_containers:
+        belongs_to:
+          - all_containers
 
     # You define `<name>_hosts` in your openstack_user_config or conf.d
     # files to tell on which physical hosts containers should be spawned
@@ -188,37 +149,37 @@ you need to follow these steps:
       belongs_to:
         - hosts
 
-``/etc/openstack_deploy/env.d/rabbit-neutron.yml``:
+* ``/etc/openstack_deploy/env.d/rabbit-neutron.yml``:
 
-.. code-block:: yaml
+  .. code-block:: yaml
 
-  # On the component level we are creating group `neutron_rabbitmq`
-  # that is also part of `rabbitmq_all` and `neutron_rabbitmq_all`
+    # On the component level we are creating group `neutron_rabbitmq`
+    # that is also part of `rabbitmq_all` and `neutron_rabbitmq_all`
 
-  component_skel:
-    neutron_rabbitmq:
-      belongs_to:
-        - rabbitmq_all
-        - neutron_rabbitmq_all
+    component_skel:
+      neutron_rabbitmq:
+        belongs_to:
+          - rabbitmq_all
+          - neutron_rabbitmq_all
 
-  # On the container level we tell to create neutron_rabbitmq on
-  # neutron-mq_hosts
-  container_skel:
-    neutron_rabbit_mq_container:
-      belongs_to:
-        - neutron-mq_containers
-      contains:
-        - neutron_rabbitmq
+    # On the container level we tell to create neutron_rabbitmq on
+    # neutron-mq_hosts
+    container_skel:
+      neutron_rabbit_mq_container:
+        belongs_to:
+          - neutron-mq_containers
+        contains:
+          - neutron_rabbitmq
 
-  # We define the physical level as a base level which can be consumed
-  # by container and component skeleton.
-  physical_skel:
-    neutron-mq_containers:
-      belongs_to:
-        - all_containers
-    neutron-mq_hosts:
-      belongs_to:
-        - hosts
+    # We define the physical level as a base level which can be consumed
+    # by container and component skeleton.
+    physical_skel:
+      neutron-mq_containers:
+        belongs_to:
+          - all_containers
+      neutron-mq_hosts:
+        belongs_to:
+          - hosts
 
 Map your new neutron-infra hosts to these new groups. To add to your
 ``openstack_user_config.yml`` the following content:
@@ -265,14 +226,15 @@ In file  ``/etc/openstack_deploy/group_vars/galera.yml``:
     rabbitmq_host_group: neutron_rabbitmq
     rabbitmq_cluster_name: neutron_cluster
 
-In file ``/etc/openstack_deploy/group_vars/rabbitmq.yml``
+  * In file ``/etc/openstack_deploy/group_vars/rabbitmq.yml``
 
-.. code-block:: yaml
+  .. code-block:: yaml
 
-  rabbitmq_host_group: rabbitmq
+    rabbitmq_host_group: rabbitmq
 
 * HAProxy
-  In ``/etc/openstack_deploy/user_variables.yml`` define extra service for MariaDB:
+
+  * In ``/etc/openstack_deploy/user_variables.yml`` define extra service for MariaDB:
 
   .. code-block:: yaml
 
@@ -311,15 +273,15 @@ In file ``/etc/openstack_deploy/group_vars/rabbitmq.yml``
 
   * MariaDB:
 
-  .. code-block:: console
+    .. code-block:: console
 
-     openstack-ansible playbooks/galera-install.yml --limit neutron_galera
+       openstack-ansible playbooks/galera-install.yml --limit neutron_galera
 
   * RabbitMQ:
 
-  .. code-block:: console
+    .. code-block:: console
 
-     openstack-ansible playbooks/rabbitmq-install.yml --limit neutron_rabbitmq
+       openstack-ansible playbooks/rabbitmq-install.yml --limit neutron_rabbitmq
 
 Migrating the service to use new clusters
 -----------------------------------------
@@ -544,7 +506,7 @@ its new destination host.
 
   .. note::
 
-     new infra hosts should be prepared before this step (i.e., by running
+     New infra hosts should be prepared before this step (i.e., by running
      ``setup-hosts.yml`` playbook against them).
 
 * Install MariaDB to this new container and add it to the cluster:
