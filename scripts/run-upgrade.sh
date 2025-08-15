@@ -188,9 +188,6 @@ function main {
     # To ensure this is not the case, we unset the environment variable.
     unset ANSIBLE_INVENTORY
 
-    # TODO(noonedeadpunk): Remove after Y release
-    source ${SCRIPTS_PATH}/upgrade-utilities/unset-ansible-env.rc
-
     bootstrap_ansible
 
     pushd ${MAIN_PATH}/playbooks
