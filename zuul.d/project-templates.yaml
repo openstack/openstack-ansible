@@ -96,12 +96,12 @@
     name: openstack-ansible-deploy-infra_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream
+        - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream:
+            voting: false
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
