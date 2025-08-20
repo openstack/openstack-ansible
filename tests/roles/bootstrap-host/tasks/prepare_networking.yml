@@ -29,11 +29,3 @@
     - firewalld
   when:
     - firewalld_check.rc == 0
-
-- name: Disable NetworkManager
-  become: true
-  ansible.builtin.service:
-    name: NetworkManager
-    state: stopped
-    enabled: false
-    masked: true
