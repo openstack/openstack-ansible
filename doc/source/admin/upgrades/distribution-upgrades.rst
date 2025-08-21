@@ -153,11 +153,11 @@ Deploying Infrastructure Hosts
 
    for each API or service instance you wish to disable.
 
-   You can also use a playbook from `OPS repository`_ like this:
+   You can also use a playbook for this:
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=disabled
+      openstack-ansible openstack.osa.tools.set_haproxy_backends_state -e hostname=${REINSTALLED_HOST} -e backend_state=disabled
 
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
@@ -230,11 +230,11 @@ Deploying Infrastructure Hosts
       openstack-ansible openstack.osa.haproxy --tags keepalived --limit localhost,${REINSTALLED_HOST}
 
    After that you might want to ensure that "local" backends remain disabled.
-   You can also use a playbook from `OPS repository`_ for this:
+   You can also use the playbook for this:
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=disabled --limit ${REINSTALLED_HOST}
+      openstack-ansible openstack.osa.tools.set_haproxy_backends_state -e hostname=${REINSTALLED_HOST} -e backend_state=disabled --limit ${REINSTALLED_HOST}
 
 #. If it is NOT a 'primary', install everything on the new host
 
@@ -320,11 +320,11 @@ Deploying Infrastructure Hosts
    set to 'READY' in HAProxy, and any which remain on the old operating system
    are set to 'MAINT'.
 
-   You can also use a playbook from `OPS repository`_ to re-enable all backends from the host:
+   You can use the playbook to re-enable all backends from the host:
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=enabled
+      openstack-ansible openstack.osa.tools.set_haproxy_backends_state -e hostname=${REINSTALLED_HOST} -e backend_state=enabled
 
 
 Deploying Compute and Network Hosts
@@ -364,5 +364,3 @@ Deploying Compute and Network Hosts
    .. code:: console
 
       openstack-ansible openstack.osa.tools.nova_restore_compute_id --limit ${REINSTALLED_HOST}
-
-.. _OPS repository: https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/ansible_tools/playbooks/set-haproxy-backends-state.yml
