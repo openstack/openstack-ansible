@@ -18,6 +18,8 @@ following minimum requirements:
 
   * CentOS Stream 9
 
+  * CentOS Stream 10
+
   * Rocky Linux 9
 
 * Secure Shell (SSH) client and server that support public key
