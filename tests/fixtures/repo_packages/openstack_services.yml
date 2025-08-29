@@ -1,0 +1,294 @@
+---
+# Copyright 2014, Rackspace US, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+## NOTICE on items in this file:
+##   * If you use anything in the *._git_install_branch field that is not a TAG
+##     make sure to leave an in-line comment as to "why".
+
+## For the sake of anyone else editing this file:
+##   * If you add services to this file please do so in alphabetical order.
+##   * Every entry should be name spaced with the name of the client followed by an "_"
+##   * All items with this file should be separated by `name_` note that the name of the
+##     package should be one long name with no additional `_` separating it.
+
+
+### Before this is shipped all of these services should have a tag set as the branch,
+### or have a comment / reason attached to them as to why a tag can not work.
+
+
+## Global Requirements
+requirements_git_repo: https://git.openstack.org/openstack/requirements
+requirements_git_install_branch: 4425ce22fda513fb7a20e77f28685004296731d0 # HEAD of "master" as of 08.08.2018
+requirements_git_track_branch: master
+
+
+## Aodh service
+aodh_git_repo: https://git.openstack.org/openstack/aodh
+aodh_git_install_branch: d7dc751a7922fc0a5ea08ec80e3acb2db4b6979e # HEAD of "master" as of 08.08.2018
+aodh_git_project_group: aodh_all
+aodh_git_track_branch: master
+
+
+## Barbican service
+barbican_git_repo: https://git.openstack.org/openstack/barbican
+barbican_git_install_branch: 08ca2287dd845011d940a722f6418c3b73c6c7ae # HEAD of "master" as of 08.08.2018
+barbican_git_project_group: barbican_all
+barbican_git_track_branch: master
+
+
+## Ceilometer service
+ceilometer_git_repo: https://git.openstack.org/openstack/ceilometer
+ceilometer_git_install_branch: 413f9a3261c2b247395c36eef938b53ff8279214 # HEAD of "master" as of 08.08.2018
+ceilometer_git_project_group: ceilometer_all
+ceilometer_git_track_branch: master
+
+
+## Cinder service
+cinder_git_repo: https://git.openstack.org/openstack/cinder
+cinder_git_install_branch: a27d0eb32afc32d745de6a3aafb905ea6151813c # HEAD of "master" as of 08.08.2018
+cinder_git_project_group: cinder_all
+cinder_git_track_branch: master
+
+
+## Designate service
+designate_git_repo: https://git.openstack.org/openstack/designate
+designate_git_install_branch: 6daedf125c6126bd1c32a377fded9d7b46a2b4e9 # HEAD of "master" as of 08.08.2018
+designate_git_project_group: designate_all
+designate_git_track_branch: master
+
+
+## Horizon Designate dashboard plugin
+designate_dashboard_git_repo: https://git.openstack.org/openstack/designate-dashboard
+designate_dashboard_git_install_branch: e41d74a03d46d678c3e86bf98703bcc16dff71f6 # HEAD of "master" as of 08.08.2018
+designate_dashboard_git_project_group: horizon_all
+designate_dashboard_git_track_branch: master
+
+
+## Dragonflow service
+dragonflow_git_repo: https://git.openstack.org/openstack/dragonflow
+dragonflow_git_install_branch: 0f05fc13d7bd26097d16c634c5ddeb63f9bfaecd # HEAD of "master" as of 08.08.2018
+dragonflow_git_project_group: neutron_all
+dragonflow_git_track_branch: master
+
+
+## Glance service
+glance_git_repo: https://git.openstack.org/openstack/glance
+glance_git_install_branch: bfa25c5e5c05399506404e66d53b0d61eaa06ab7 # HEAD of "master" as of 08.08.2018
+glance_git_project_group: glance_all
+glance_git_track_branch: master
+
+
+## Heat service
+heat_git_repo: https://git.openstack.org/openstack/heat
+heat_git_install_branch: 8ca06cfeafc94e739947cf89affa4db57b6bf3c9 # HEAD of "master" as of 08.08.2018
+heat_git_project_group: heat_all
+heat_git_track_branch: master
+
+## Horizon Heat dashboard plugin
+heat_dashboard_git_repo: https://git.openstack.org/openstack/heat-dashboard
+heat_dashboard_git_install_branch: df563384901294ac118c45a1e92734f67b6593d8 # HEAD of "master" as of 08.08.2018
+heat_dashboard_git_project_group: horizon_all
+heat_dashboard_git_track_branch: master
+
+## Horizon service
+horizon_git_repo: https://git.openstack.org/openstack/horizon
+horizon_git_install_branch: a4443f4be7a7e38ce052080ed157337bc778c18d # HEAD of "master" as of 08.08.2018
+horizon_git_project_group: horizon_all
+horizon_git_track_branch: master
+
+## Horizon Ironic dashboard plugin
+ironic_dashboard_git_repo: https://git.openstack.org/openstack/ironic-ui
+ironic_dashboard_git_install_branch: 36840aaa0da8053d2e4032c060a6a45af224572b # HEAD of "master" as of 08.08.2018
+ironic_dashboard_git_project_group: horizon_all
+ironic_dashboard_git_track_branch: master
+
+## Horizon Magnum dashboard plugin
+magnum_dashboard_git_repo: https://git.openstack.org/openstack/magnum-ui
+magnum_dashboard_git_install_branch: dcf62a6e80fd3733b530cb76218b2ec5c3532cb6 # HEAD of "master" as of 08.08.2018
+magnum_dashboard_git_project_group: horizon_all
+magnum_dashboard_git_track_branch: master
+
+## Horizon LBaaS dashboard plugin
+neutron_lbaas_dashboard_git_repo: https://git.openstack.org/openstack/neutron-lbaas-dashboard
+neutron_lbaas_dashboard_git_install_branch: dde6dfb2eba8eb2f1d9cd61986032b512330b281 # HEAD of "master" as of 08.08.2018
+neutron_lbaas_dashboard_git_project_group: horizon_all
+neutron_lbaas_dashboard_git_track_branch: master
+
+## Horizon FWaaS dashboard plugin
+neutron_fwaas_dashboard_git_repo: https://git.openstack.org//openstack/neutron-fwaas-dashboard
+neutron_fwaas_dashboard_git_install_branch: 5ece747e15896cf998e3787aa07f547fa39e3e44 # HEAD of "master" as of 08.08.2018
+neutron_fwaas_dashboard_git_project_group: horizon_all
+neutron_fwaas_dashboard_git_track_branch: master
+
+## Horizon Sahara dashboard plugin
+sahara_dashboard_git_repo: https://git.openstack.org/openstack/sahara-dashboard
+sahara_dashboard_git_install_branch: 4585a9d004427f52e34f0cd89374e8ba1cba2dff # HEAD of "master" as of 08.08.2018
+sahara_dashboard_git_project_group: horizon_all
+sahara_dashboard_git_track_branch: master
+
+
+## Keystone service
+keystone_git_repo: https://git.openstack.org/openstack/keystone
+keystone_git_install_branch: a2b510c17638d31d2983317a4261f9dc27507d24 # HEAD of "master" as of 08.08.2018
+keystone_git_project_group: keystone_all
+keystone_git_track_branch: master
+
+
+## Neutron service
+neutron_git_repo: https://git.openstack.org/openstack/neutron
+neutron_git_install_branch: 06f1aa6629d3e54c04ab06ca2808479f5ed9f186 # HEAD of "master" as of 08.08.2018
+neutron_git_project_group: neutron_all
+neutron_git_track_branch: master
+
+neutron_lbaas_git_repo: https://git.openstack.org/openstack/neutron-lbaas
+neutron_lbaas_git_install_branch: e4a9d3c1dfb06482f90699e60b98a94481af5f75 # HEAD of "master" as of 08.08.2018
+neutron_lbaas_git_project_group: neutron_all
+neutron_lbaas_git_track_branch: master
+
+neutron_vpnaas_git_repo: https://git.openstack.org/openstack/neutron-vpnaas
+neutron_vpnaas_git_install_branch: da4fff7e7aa756cd8280e8dd14fb8cccc5777277 # HEAD of "master" as of 08.08.2018
+neutron_vpnaas_git_project_group: neutron_all
+neutron_vpnaas_git_track_branch: master
+
+neutron_fwaas_git_repo: https://git.openstack.org/openstack/neutron-fwaas
+neutron_fwaas_git_install_branch: d61bd2961c5117f22d227a910b7a20e65322bb82 # HEAD of "master" as of 08.08.2018
+neutron_fwaas_git_project_group: neutron_all
+neutron_fwaas_git_track_branch: master
+
+neutron_dynamic_routing_git_repo: https://git.openstack.org/openstack/neutron-dynamic-routing
+neutron_dynamic_routing_git_install_branch: ac63f126c6bd0ab12d6cd80077023c3e5c264e98 # HEAD of "master" as of 08.08.2018
+neutron_dynamic_routing_git_project_group: neutron_all
+neutron_dynamic_routing_git_track_branch: master
+
+networking_calico_git_repo: https://git.openstack.org/openstack/networking-calico
+networking_calico_git_install_branch: 5d852f653552f2332dce48aa425ee842b5b684ad # HEAD of "master" as of 08.08.2018
+networking_calico_git_project_group: neutron_all
+networking_calico_git_track_branch: master
+
+# ODL is frozen until further notice due to
+# https://github.com/openstack/networking-odl/commit/391c1d89ef2b8133d3aafbe7612c7908be106e73#diff-b4ef698db8ca845e5845c4618278f29a
+networking_odl_git_repo: https://git.openstack.org/openstack/networking-odl
+networking_odl_git_install_branch: 53ff740b2a78626d5b077278997bdcec6b1b0892 # FROZEN HEAD of "master" as of 31.03.2018
+networking_odl_git_project_group: neutron_all
+networking_odl_git_track_branch: None
+
+# BGPVPN is frozen until further notice due to
+# https://github.com/openstack/networking-bgpvpn/commit/e9a0ea199b47f76f69545e04bdb4db44869c388b#diff-b4ef698db8ca845e5845c4618278f29a
+networking_bgpvpn_git_repo: https://git.openstack.org/openstack/networking-bgpvpn
+networking_bgpvpn_git_install_branch: 3b93ddacd390d92fb144e5660324d4da064ad9a4 # FROZEN HEAD of "master" as of 31.03.2018
+networking_bgpvpn_git_project_group: neutron_all
+networking_bgpvpn_git_track_branch: None
+
+networking_sfc_git_repo: https://git.openstack.org/openstack/networking-sfc
+networking_sfc_git_install_branch: 4c38303620c8a3f38d7261a64ce8532979bf7560 # HEAD of "master" as of 08.08.2018
+networking_sfc_git_project_group: neutron_all
+networking_sfc_git_track_branch: master
+
+
+## Nova service
+nova_git_repo: https://git.openstack.org/openstack/nova
+nova_git_install_branch: c52c2caf97a90de8770e9296d553e0e4a65ac946 # HEAD of "master" as of 08.08.2018
+nova_git_project_group: nova_all
+nova_git_track_branch: master
+
+
+## PowerVM Virt Driver
+nova_powervm_git_repo: https://git.openstack.org/openstack/nova-powervm
+nova_powervm_git_install_branch: 9b518d8c9986249a06e3f5dc1450b66283af91f1 # HEAD of "master" as of 08.08.2018
+nova_powervm_git_project_group: nova_all
+nova_powervm_git_track_branch: master
+
+
+## LXD Virt Driver
+nova_lxd_git_repo: https://git.openstack.org/openstack/nova-lxd
+nova_lxd_git_install_branch: bc8d540c95b3209321658000fd74b0e5065a7ee2 # HEAD of "master" as of 08.08.2018
+nova_lxd_git_project_group: nova_all
+nova_lxd_git_track_branch: master
+
+
+## Sahara service
+sahara_git_repo: https://git.openstack.org/openstack/sahara
+sahara_git_install_branch: 2c6232c9ad37079020ac72a29a54ab794cc80500 # HEAD of "master" as of 08.08.2018
+sahara_git_project_group: sahara_all
+sahara_git_track_branch: master
+
+
+## Swift service
+swift_git_repo: https://git.openstack.org/openstack/swift
+swift_git_install_branch: 7f7482c096d6c587c64a75e207842ab4dee6e8dd # HEAD of "master" as of 08.08.2018
+swift_git_project_group: swift_all
+swift_git_track_branch: master
+
+
+## Swift3 middleware
+swift_swift3_git_repo: https://git.openstack.org/openstack/swift3
+swift_swift3_git_install_branch: 90db5d1510b2a770387961e7bf0fbeae8101ba45 # HEAD of "master" as of 08.08.2018
+swift_swift3_git_project_group: swift_all
+swift_swift3_git_track_branch: master
+
+
+## Ironic service
+ironic_git_repo: https://git.openstack.org/openstack/ironic
+ironic_git_install_branch: 89f68e70e06e24b100d93e751e2a3e8cb8dd9b61 # HEAD of "master" as of 08.08.2018
+ironic_git_project_group: ironic_all
+ironic_git_track_branch: master
+
+
+## Magnum service
+magnum_git_repo: https://git.openstack.org/openstack/magnum
+magnum_git_install_branch: 97b34e67508a69d800239087d0131c6ea128e790 # HEAD of "master" as of 08.08.2018
+magnum_git_project_group: magnum_all
+magnum_git_track_branch: master
+
+
+## Trove service
+trove_git_repo: https://git.openstack.org/openstack/trove
+trove_git_install_branch: 5f2462f0ea4ec2d084db102dbad35bf97eca1135 # HEAD of "master" as of 08.08.2018
+trove_git_project_group: trove_all
+trove_git_track_branch: master
+
+## Horizon Trove dashboard plugin
+trove_dashboard_git_repo: https://git.openstack.org/openstack/trove-dashboard
+trove_dashboard_git_install_branch: 9b7f3d9561ce47f370642a3d169fce6469203148 # HEAD of "master" as of 08.08.2018
+trove_dashboard_git_project_group: horizon_all
+trove_dashboard_git_track_branch: master
+
+
+## Octavia service
+octavia_git_repo: https://git.openstack.org/openstack/octavia
+octavia_git_install_branch: a166c89b643c1bdaf3f36004fede25eb7a1c26f5 # HEAD of "master" as of 08.08.2018
+octavia_git_project_group: octavia_all
+octavia_git_track_branch: master
+
+
+## Tacker service
+tacker_git_repo: https://git.openstack.org/openstack/tacker
+tacker_git_install_branch: 5987ad8c56a61e3a6d8fcf37a2557926c585de41 # HEAD of "master" as of 08.08.2018
+tacker_git_project_group: tacker_all
+tacker_git_track_branch: master
+
+## Congress service
+congress_git_repo: https://git.openstack.org/openstack/congress
+congress_git_install_branch: 502f40a7d24dd2603bc9e026edc685a956a52e15 # HEAD of "master" as of 08.08.2018
+congress_git_project_group: congress_all
+congress_git_track_branch: master
+
+## Horizon Octavia dashboard plugin
+octavia_dashboard_git_repo: https://git.openstack.org/openstack/octavia-dashboard
+octavia_dashboard_git_install_branch: 4f7a5591ae8dd61b25af7f746f20d8f058aa991c # HEAD of "master" as of 08.08.2018
+octavia_dashboard_git_project_group: horizon_all
+octavia_dashboard_git_track_branch: master
+

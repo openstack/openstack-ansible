@@ -1,0 +1,16 @@
+# This file should only be used to set python package pins that are
+# not present in OpenStack's upper-constraints. Any pins present in
+# this file will override any requirements set in *requirements.txt,
+# upper-constraints and any roles/vars.
+#
+# Use this file with caution!
+#
+###
+### These are pinned to ensure exactly the same behaviour forever!   ###
+### These pins are updated through the sources-branch-updater script ###
+###
+# Bumping pip to version 10 fails in tempest when trying to install
+# packages with an empty list.
+pip==19.2
+setuptools==40.0.0
+wheel==0.31.1
