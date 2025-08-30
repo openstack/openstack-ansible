@@ -1,45 +1,15 @@
 ---
-- name: Ensuring that compute node has UUID state defined
-  hosts: nova_compute
-  vars:
-    nova_compute_id_file: /var/lib/nova/compute_id
-    nova_hypervisor_fact_name: "{{ ansible_facts['fqdn'] }}"
-  handlers:
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-    - name: Restart nova
-      ansible.builtin.service:
-        name: nova-compute
-        state: restarted
-
-  tasks:
-
-    - name: Checking if compute file exist
-      ansible.builtin.stat:
-        path: "{{ nova_compute_id_file }}"
-      register: _compute_id_status
-
-    - name: Get list of existing hypervisors  # noqa: run-once[task]
-      ansible.builtin.command: openstack --os-cloud default hypervisor list -f json -c ID -c "Hypervisor Hostname"
-      run_once: true
-      delegate_to: "{{ groups['utility_all'][0] }}"
-      register: nova_hypervisors
-      changed_when: false
-
-    - name: Get node UUID if needed
-      when: not _compute_id_status.stat.exists
-      block:
-
-        - name: Register hypervisors fact
-          ansible.builtin.set_fact:
-            nova_hv: "{{ nova_hypervisors.stdout | from_json | selectattr('Hypervisor Hostname', 'eq', nova_hypervisor_fact_name) }}"
-
-        - name: Place node UUID to the expected location
-          ansible.builtin.copy:
-            dest: "{{ nova_compute_id_file }}"
-            content: >
-              {{ nova_hv[0]['ID'] }}
-            owner: nova
-            group: nova
-            mode: "0640"
-          when: nova_hv
-          notify: Restart nova
+- name: Importing nova_restore_compute_id playbook
+  ansible.builtin.import_playbook: openstack.osa.tools.nova_restore_compute_id

@@ -13,56 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Gracefully restart mariadb/galera cluster
-  hosts: galera_all
-  serial: 1
-  max_fail_percentage: 0
-  gather_facts: false
-  user: root
-  tasks:
-    - name: Stop mariadb
-      service:
-        name: mariadb
-        state: stopped
-      retries: 5
-      delay: 10
-
-    - name: Stop container
-      lxc_container:
-        name: "{{ inventory_hostname }}"
-        state: "stopped"
-      delegate_to: "{{ physical_host }}"
-      when: not hostvars[inventory_hostname]['is_metal']
-
-    - name: Start container
-      lxc_container:
-        name: "{{ inventory_hostname }}"
-        state: "started"
-      delegate_to: "{{ physical_host }}"
-      when: not hostvars[inventory_hostname]['is_metal']
-
-    - name: Start mariadb
-      service:
-        name: mariadb
-        state: started
-      retries: 5
-      delay: 10
-      when: hostvars[inventory_hostname]['is_metal']
-
-  post_tasks:
-    - name: Wait for mariadb port 3306 to be available
-      wait_for:
-        port: "3306"
-        host: "{{ management_address | default(ansible_ssh_host | default(inventory_hostname)) }}"
-      retries: 10
-      delay: 10
-      delegate_to: "{{ groups['utility_all'][0] }}"
-
-    - name: Check that WSREP is ready and Synced
-      shell: "/usr/bin/mariadb-admin extended-status | grep -E '(wsrep_local_state_comment)'"
-      register: mariadb_ready
-      until:
-        - mariadb_ready.rc == 0
-        - (mariadb_ready.stdout).find("Synced") != -1
-      retries: 60
-      delay: 1
+- name: Importing galera_cluster_rolling_restart playbook
+  ansible.builtin.import_playbook: openstack.osa.tools.galera_cluster_rolling_restart

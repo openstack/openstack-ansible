@@ -89,20 +89,6 @@ Ensure that your OpenStack-Ansible code is on the latest
 
     # git checkout |latest_tag|
 
-Prepare the shell variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Define these variables to reduce typing when running the remaining upgrade
-tasks. Because these environments variables are shortcuts, this step is
-optional. If you prefer, you can reference the files directly during the
-upgrade.
-
-.. code-block:: console
-
-    # cd /opt/openstack-ansible
-    # export MAIN_PATH="$(pwd)"
-    # export SCRIPTS_PATH="${MAIN_PATH}/scripts"
-
 Backup the existing OpenStack-Ansible configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -129,17 +115,8 @@ dependencies are in place before you run playbooks from the
 
 .. code-block:: console
 
-    # ${SCRIPTS_PATH}/bootstrap-ansible.sh
-
-Change to the playbooks directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Change to the playbooks directory to simplify the CLI commands from here on
-in the procedure, given that most playbooks executed are in this directory.
-
-.. code-block:: console
-
-    # cd playbooks
+    # cd /opt/openstack-ansible
+    # ./scripts/bootstrap-ansible.sh
 
 Implement changes to OpenStack-Ansible configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -153,7 +130,7 @@ more information.
 
 .. code-block:: console
 
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/deploy-config-changes.yml"
+    # openstack-ansible openstack.osa.upgrade.deploy_config_changes
 
 
 .. note::
@@ -228,7 +205,7 @@ ensuring that the containers are restarted in a controlled fashion.
 
 .. code-block:: console
 
-    # openstack-ansible "${SCRIPTS_PATH}/upgrade-utilities/galera-cluster-rolling-restart.yml"
+    # openstack-ansible openstack.osa.tools.galera_cluster_rolling_restart
 
 Upgrade OpenStack
 ~~~~~~~~~~~~~~~~~
