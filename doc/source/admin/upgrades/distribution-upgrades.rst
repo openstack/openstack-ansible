@@ -131,6 +131,15 @@ Warnings
 Deploying Infrastructure Hosts
 ==============================
 
+#. Define redeployed host as environment variable
+
+   This will serve as a shortcut for future operations and will make following the
+   instruction more error-prone. For example:
+
+   .. code:: console
+
+      export REINSTALLED_HOST="infra3"
+
 #. Disable HAProxy back ends (optional)
 
    If you wish to minimise error states in HAProxy, services on hosts which are
@@ -148,7 +157,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=disabled
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=disabled
 
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
@@ -165,7 +174,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         rm /etc/openstack_deploy/ansible-facts/reinstalled_host*
+         rm /etc/openstack_deploy/ansible-facts/${REINSTALLED_HOST}*
 
       (* because we're deleting all container facts for the host as well.)
 
@@ -195,7 +204,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.setup_hosts --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_hosts --limit localhost,${REINSTALLED_HOST}*
 
 #. This step should be executed when you are re-configuring one of HAProxy
    hosts
@@ -208,7 +217,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.haproxy --limit localhost,reinstalled_host --skip-tags keepalived
+      openstack-ansible openstack.osa.haproxy --limit localhost,${REINSTALLED_HOST} --skip-tags keepalived
       openstack-ansible openstack.osa.repo --tags haproxy-service-config
       openstack-ansible openstack.osa.galera_server --tags haproxy-service-config
       openstack-ansible openstack.osa.rabbitmq_server --tags haproxy-service-config
@@ -218,21 +227,21 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.haproxy --tags keepalived --limit localhost,reinstalled_host
+      openstack-ansible openstack.osa.haproxy --tags keepalived --limit localhost,${REINSTALLED_HOST}
 
    After that you might want to ensure that "local" backends remain disabled.
    You can also use a playbook from `OPS repository`_ for this:
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=disabled --limit reinstalled_host
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=disabled --limit ${REINSTALLED_HOST}
 
 #. If it is NOT a 'primary', install everything on the new host
 
    .. code:: console
 
-      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
-      openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,reinstalled_host*
+      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,${REINSTALLED_HOST}*
+      openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,${REINSTALLED_HOST}*
 
    (* because we need to include containers in the limit)
 
@@ -247,13 +256,13 @@ Deploying Infrastructure Hosts
       .. code:: console
 
          cd /opt/openstack-ansible
-         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=touch" 'reinstalled-host*:&galera_all'
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=touch" '${REINSTALLED_HOST}*:&galera_all'
 
       Once it's done you can run playbook to install MariaDB to the destination
 
       .. code:: console
 
-         openstack-ansible openstack.osa.galera_server --limit localhost,reinstalled_host* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
+         openstack-ansible openstack.osa.galera_server --limit localhost,${REINSTALLED_HOST}* -e galera_server_bootstrap_node="{{ groups['galera_all'][-1] }}"
 
       You'll now have MariaDB running, and it should be synced with
       non-primaries.
@@ -281,7 +290,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=absent" 'reinstalled-host_containers:&galera_all'
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=absent" '${REINSTALLED_HOST}_containers:&galera_all'
 
    #. We can move on to RabbitMQ primary
 
@@ -299,8 +308,8 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,reinstalled_host*
-         openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,reinstalled_host*
+         openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,${REINSTALLED_HOST}*
+         openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,${REINSTALLED_HOST}*
 
 #. Adjust HAProxy status
 
@@ -315,7 +324,7 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible set-haproxy-backends-state.yml -e hostname=reinstalled_host -e backend_state=enabled
+      openstack-ansible set-haproxy-backends-state.yml -e hostname=${REINSTALLED_HOST} -e backend_state=enabled
 
 
 Deploying Compute and Network Hosts
@@ -330,7 +339,7 @@ Deploying Compute and Network Hosts
 
    .. code:: console
 
-      rm /etc/openstack_deploy/ansible-facts/reinstalled_host*
+      rm /etc/openstack_deploy/ansible-facts/${REINSTALLED_HOST}*
 
    (* because we're deleting all container facts for the host as well)
 
@@ -338,9 +347,9 @@ Deploying Compute and Network Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.setup_hosts --limit localhost,reinstalled_host*
-      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,reinstalled_host*
-      openstack-ansible openstack.osa.setup_openstack --limit localhost,reinstalled_host*
+      openstack-ansible openstack.osa.setup_hosts --limit localhost,${REINSTALLED_HOST}*
+      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,${REINSTALLED_HOST}*
+      openstack-ansible openstack.osa.setup_openstack --limit localhost,${REINSTALLED_HOST}*
 
    (* because we need to include containers in the limit)
 
@@ -354,6 +363,6 @@ Deploying Compute and Network Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.tools.nova_restore_compute_id --limit reinstalled_host
+      openstack-ansible openstack.osa.tools.nova_restore_compute_id --limit ${REINSTALLED_HOST}
 
 .. _OPS repository: https://opendev.org/openstack/openstack-ansible-ops/src/branch/master/ansible_tools/playbooks/set-haproxy-backends-state.yml
