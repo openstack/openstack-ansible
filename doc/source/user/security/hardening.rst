@@ -18,10 +18,10 @@ audit an environment by using a playbook supplied with OpenStack-Ansible:
 .. code-block:: bash
 
     # Apply security hardening configurations
-      openstack-ansible security-hardening.yml
+      openstack-ansible openstack.osa.security_hardening
 
     # Perform a quick audit by using Ansible's check mode
-      openstack-ansible --check security-hardening.yml
+      openstack-ansible --check openstack.osa.security_hardening
 
 For more information about the security configurations, see the
 `security hardening role`_ documentation.
