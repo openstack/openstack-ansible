@@ -74,6 +74,16 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
        # dnf upgrade
 
+#. Disable SELinux. Edit ``/etc/sysconfig/selinux``, make sure that
+   ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
+
+   For RHEL distributions starting from version 9 the recommended
+   way to disable SELinux is via the boot loader using grubby:
+
+   .. code-block:: shell-session
+
+      # grubby --update-kernel ALL --args selinux=0
+
 #. Reboot the host.
 
 #. Install additional software packages if they were not installed
