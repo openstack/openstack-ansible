@@ -13,6 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# NOTE(noonedeadpunk): We can not offload this to openstack_hosts, as Squid should be already
+#                      operational for it.
+- name: Prepare Squid interface
+  ansible.builtin.include_role:
+    name: systemd_networkd
+  vars:
+    systemd_networkd_prefix: "osa_proxy"
+    systemd_networkd_epel_mirror: "{{ (nodepool_vars is defined) | ternary(nodepool_vars.NODEPOOL_EPEL_MIRROR, 'http://download.fedoraproject.org/pub/epel') }}"
+    systemd_interface_cleanup: true
+    systemd_run_networkd: true
+    systemd_netdevs:
+      - NetDev:
+          Name: dummy-squid
+          Kind: dummy
+    systemd_networks:
+      - interface: "dummy-squid"
+        address: "{{ squid_network }}"
+
 - name: Install squid packages
   ansible.builtin.package:
     name: squid

@@ -1,14 +1,17 @@
 ---
 ironic-infra_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 # Ironic compute hosts. These compute hosts will be used to
 #  facilitate ironic's interactions through nova.
 ironic-compute_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 
 ironic-inspector_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}

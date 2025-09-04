@@ -117,6 +117,16 @@
   when:
     - ansible_facts['selinux']['status'] == "enabled"
 
+- name: Create vars override folders if we need to test them
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - /etc/openstack_deploy/group_vars
+    - /etc/openstack_deploy/host_vars
+    - /etc/openstack_deploy/host_vars/aio1
+
 - name: Set the user_variables
   openstack.config_template.config_template:
     src: "{{ bootstrap_user_variables_template }}"
@@ -141,6 +151,9 @@
   when:
     - "item.condition | bool"
   with_items:
+    - src: aio1_networks.yml.j2
+      dest: host_vars/aio1/networks.yml
+      condition: true
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
       condition: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
@@ -197,16 +210,6 @@
     mode: "0644"
   when:
     - "'ceph' in bootstrap_host_scenarios_expanded"
-
-- name: Create vars override folders if we need to test them
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0755"
-  with_items:
-    - /etc/openstack_deploy/group_vars
-    - /etc/openstack_deploy/host_vars
-  when: "(lookup('env','ACTION') | default(false,true)) == 'varstest'"
 
 - name: Create user-space overrides
   ansible.builtin.lineinfile:

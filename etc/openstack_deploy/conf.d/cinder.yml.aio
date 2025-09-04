@@ -1,7 +1,8 @@
 ---
 storage-infra_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
     container_vars:
       cinder_qos_specs:
         - name: low-iops
@@ -28,4 +29,5 @@ storage-infra_hosts:
 
 storage_hosts:
   aio1:
-    ip: {{ bootstrap_host_management_address }}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}

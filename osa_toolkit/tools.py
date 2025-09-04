@@ -32,7 +32,8 @@ def make_example_config(aio_config_file, configs_dir):
                                autoescape=jinja2.select_autoescape())
     files = glob.glob(os.path.join(configs_dir, '*.aio'))
     templated_variables = {
-        'bootstrap_host_management_address': '172.29.236.100'
+        'bootstrap_host_management_address': None,
+        'bootstrap_host_public_address': '172.29.236.100'
     }
     for file_name in files:
         with open(file_name, 'r') as f:

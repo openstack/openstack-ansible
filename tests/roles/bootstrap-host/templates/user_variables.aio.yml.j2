@@ -44,6 +44,13 @@ openstack_hosts_journald_config:
   SystemMaxFileSize: 100M
   RuntimeMaxFileSize: 100M
 
+{% raw %}
+openstack_hosts_systemd_services: "{{ query('vars', *query('varnames', '^aio_systemd_services_')) | flatten(levels=1) }}"
+openstack_hosts_systemd_networkd_networks: "{{ query('vars', *query('varnames', '^aio_systemd_networkd_networks_')) | flatten(levels=1) }}"
+openstack_hosts_systemd_networkd_devices: "{{ query('vars', *query('varnames', '^aio_systemd_networkd_devices_')) | flatten(levels=1) }}"
+openstack_hosts_systemd_networkd_prefix: "osa_testing"
+{% endraw %}
+
 ## Galera settings
 galera_monitoring_allowed_source: "0.0.0.0/0"
 # TODO(noonedeadpunk): This should be enabled, once we will re-work SSL part
@@ -306,7 +313,7 @@ octavia_management_net_subnet_allocation_pools: {{ lbaas_network | ansible.utils
 {%   if 'metal' in bootstrap_host_scenarios %}
 # TODO(mnaser): The Octavia role relies on gathering IPs of hosts in the
 #               LBaaS network and using those in the health manager pool
-#               IPs.  We don't store those IPs when running metal so we
+#               IPs.  We do not store those IPs when running metal so we
 #               have to override it manually.  We should remove this and
 #               fix the role (or the inventory tool) eventually.
 octavia_hm_hosts: {{ lbaas_network | ansible.utils.nthhost('100') }} # br-lbaas IP

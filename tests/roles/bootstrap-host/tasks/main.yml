@@ -218,7 +218,13 @@
 
 # Prepare the network interfaces
 - name: Import prepare_networking tasks
-  ansible.builtin.import_tasks: prepare_networking.yml
+  ansible.builtin.include_tasks: prepare_networking.yml
+  args:
+    apply:
+      tags:
+        - prepare-networking
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
   tags:
     - prepare-networking
 
