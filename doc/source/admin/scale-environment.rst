@@ -11,6 +11,7 @@ using OpenStack-Ansible.
    scale-environment/scaling-mariadb-rabbitmq
    scale-environment/add-new-infrastructure-host
    scale-environment/add-compute-host
+   scale-environment/use-ansible-tags
    scale-environment/remove-compute-host
    scale-environment/recover-compute-host-failure
    scale-environment/replacing-failed-hardware
