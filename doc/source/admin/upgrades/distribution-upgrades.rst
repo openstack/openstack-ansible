@@ -161,7 +161,7 @@ Deploying Infrastructure Hosts
 
    Or if you've enabled haproxy_stats as described above, you can visit
    https://admin:password@external_lb_vip_address:1936/ and select them and
-   set state to 'MAINT'.
+   set state to ``MAINT``.
 
 #. Reinstall an infrastructure host's operating system
 
