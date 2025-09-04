@@ -62,3 +62,19 @@ during runtime, for example:
 Including the deployment host can be useful to reduce its attack surface
 and ensure that the host running OpenStack-Ansible follows the same security
 best practices as your other nodes.
+
+Hiding Secrets in OpenStack-Ansible
+-----------------------------------
+
+OpenStack-Ansible roles use variables like ``_oslodb_setup_nolog``,
+``_service_setup_nolog``, and ``_oslomsg_nolog`` to control whether
+task output is hidden in logs.
+
+By default, this prevents sensitive values (such as passwords) from being
+written to log files. Disabling these variables can make debugging easier,
+but it also risks exposing secrets in plain text.
+
+.. warning::
+
+   Use them with caution: keep logging enabled for troubleshooting, but remember
+   that passwords may appear in the logs if protection is turned off.
