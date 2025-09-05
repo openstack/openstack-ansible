@@ -132,3 +132,10 @@ Run the playbooks to install OpenStack
 
    Confirm satisfactory completion with zero items unreachable or
    failed.
+
+.. note::
+
+   You can also consider applying a hardening role for the deployment host
+   to improve security. For more details, see the
+   `Apply ansible-hardening <https://docs.openstack.org/openstack-ansible/latest/user/security/hardening.html>`_.
+
