@@ -30,6 +30,7 @@ the major upgrades procedures.
    maintenance-tasks.rst
    scale-environment.rst
    backup-restore.rst
+   ansible-logging.rst
    troubleshooting.rst
    upgrades/compatibility-matrix.rst
    upgrades/compatibility-matrix-legacy.rst
