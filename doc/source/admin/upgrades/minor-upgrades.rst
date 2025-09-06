@@ -132,3 +132,82 @@ performed, run the following commands (for example):
      # openstack-ansible openstack.osa.nova --limit nova_compute \
                                              --skip-tags 'nova-key' \
                                              --list-tasks
+
+Upgrading a specific component within the same OpenStack-Ansible version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes you may need to apply the latest security patches or bug
+fixes for a service while remaining on the same stable branch. This can
+be done by overriding the Git installation branch for that service, which
+instructs OpenStack-Ansible to pull the most recent code from the branch
+you are already tracking.
+But using branches directly as ``<service>_git_install_branch`` is
+highly discouraged. Every time the playbook is re-run, the service may
+be upgraded to a newer commit, which can lead to inconsistent
+versions between hosts (for example, when adding a new compute node
+later).
+
+So the recommended practice is to take the HEAD commit SHA of the
+desired stable branch and set it explicitly. To find the latest SHA of the
+``stable/2025.1`` branch, you can run (e.g. for Nova):
+
+.. code-block:: bash
+
+   git ls-remote https://opendev.org/openstack/nova refs/heads/stable/2025.1
+
+And use that SHA in your configuration to ensure consistent versions across
+all hosts in your ``user_variables.yml``:
+
+.. code-block:: yaml
+
+   nova_git_install_branch: {{SHA}}
+
+And run:
+
+.. code-block:: bash
+
+   openstack-ansible openstack.osa.nova --tags nova-install
+
+The playbook will fetch and install the code from the specified branch or
+commit SHA, applying the latest patches and fixes as defined. Using a
+pinned SHA ensures consistent versions across all hosts, while following
+the branch directly will always pull its current HEAD.
+
+We can verify the version of the service before and after the upgrade
+(don't forget to load required environment variables):
+
+.. code-block:: bash
+
+   $ ansible -m shell -a '/openstack/venvs/nova-{{ openstack_release }}/bin/pip3 freeze | grep nova' nova_all
+   infra1-nova-api-container-e5dbbe38 | CHANGED | rc=0 >>
+   nova==31.0.1.dev12
+   infra2-nova-api-container-0c5d0203 | CHANGED | rc=0 >>
+   nova==31.0.1.dev12
+   infra3-nova-api-container-d791a43e | CHANGED | rc=0 >>
+   nova==31.0.1.dev12
+   compute | CHANGED | rc=0 >>
+   nova==31.0.1.dev12
+
+After the upgrade to the latest patches in the same branch:
+
+.. code-block:: bash
+
+   $ ansible -m shell -a '/openstack/venvs/nova-{{ openstack_release }}/bin/pip3 freeze | grep nova' nova_all
+   infra1-nova-api-container-e5dbbe38 | CHANGED | rc=0 >>
+   nova==31.1.1.dev9
+   infra2-nova-api-container-0c5d0203 | CHANGED | rc=0 >>
+   nova==31.1.1.dev9
+   infra3-nova-api-container-d791a43e | CHANGED | rc=0 >>
+   nova==31.1.1.dev9
+   compute | CHANGED | rc=0 >>
+   nova==31.1.1.dev9
+
+.. note::
+
+   This approach is not limited to Nova. You can apply the same method
+   to any other OpenStack service managed by OpenStack-Ansible by
+   overriding its corresponding ``<service>_git_install_branch``
+   variable.
+
+Always ensure that the branch is up-to-date and compatible with the rest
+of your deployment before proceeding.
