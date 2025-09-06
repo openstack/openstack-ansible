@@ -230,21 +230,10 @@ magnum_conductor_workers: 1
 venv_wheel_build_enable: false
 {% endif %}
 
-## Sahara
-sahara_api_workers: 1
-sahara_wsgi_threads: 1
-sahara_wsgi_processes: 1
-sahara_wsgi_buffer_size: 16384
-
 ## Zun
 zun_api_threads: 1
 zun_wsgi_threads: 1
 zun_wsgi_processes: 1
-
-## Senlin
-senlin_api_threads: 1
-senlin_wsgi_threads: 1
-senlin_wsgi_processes: 1
 
 # NOTE: hpcloud-b4's eth0 uses 10.0.3.0/24, which overlaps with the
 #       lxc_net_address default
