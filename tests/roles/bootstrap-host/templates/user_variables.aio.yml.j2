@@ -48,6 +48,7 @@ openstack_hosts_journald_config:
 openstack_hosts_systemd_services: "{{ query('vars', *query('varnames', '^aio_systemd_services_')) | flatten(levels=1) }}"
 openstack_hosts_systemd_networkd_networks: "{{ query('vars', *query('varnames', '^aio_systemd_networkd_networks_')) | flatten(levels=1) }}"
 openstack_hosts_systemd_networkd_devices: "{{ query('vars', *query('varnames', '^aio_systemd_networkd_devices_')) | flatten(levels=1) }}"
+openstack_host_specific_kernel_modules: "{{ query('vars', *query('varnames', '^aio1_kernel_modules_')) | flatten(levels=1) }}"
 openstack_hosts_systemd_networkd_prefix: "osa_testing"
 {% endraw %}
 

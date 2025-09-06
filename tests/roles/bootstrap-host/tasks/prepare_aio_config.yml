@@ -154,6 +154,9 @@
     - src: aio1_networks.yml.j2
       dest: host_vars/aio1/networks.yml
       condition: true
+    - src: aio1_kernel.yml.j2
+      dest: host_vars/aio1/kernel.yml
+      condition: true
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
       condition: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"

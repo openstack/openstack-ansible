@@ -138,12 +138,3 @@
     - (host_data_disk_size_bytes | int) < (host_data_disk_min_size_bytes | int)
   tags:
     - check-disk-size
-
-- name: Ensure that the kernel has VXLAN, VLAN, and bonding support
-  community.general.modprobe:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - vxlan
-    - bonding
-    - 8021q
