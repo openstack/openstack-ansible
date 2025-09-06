@@ -11,7 +11,7 @@ All service passwords are defined and stored as Ansible variables in
 OpenStack-Ansible.
 This allows the operator to store passwords in an encrypted format using
 `Ansible Vault <https://docs.ansible.com/ansible/latest/vault_guide/index.html>`_
-or define them as a lookup to `SOPS <https://getsops.io/>`_ or `OpenBao <https://openbao.org/>`_
+or define them as a lookup to `SOPS <https://getsops.io/>`_ or `OpenBao <https://openbao.org/>`_.
 
 Typical password change processes include the following steps:
 

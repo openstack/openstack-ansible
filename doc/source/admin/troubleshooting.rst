@@ -14,14 +14,14 @@ required for the OpenStack control plane to function properly.
 This does not cover any networking related to instance connectivity.
 
 These instructions assume an OpenStack-Ansible installation using LXC
-containers, VXLAN overlay, and the ML2/OVS driver.
+containers, VXLAN overlay for ML2/OVS and Geneve overlay for the ML2/OVN drivers.
 
 Network List
 ------------
 
 1. ``HOST_NET`` (Physical Host Management and Access to Internet)
-2. ``CONTAINER_NET`` (LXC container network used OpenStack Services)
-3. ``OVERLAY_NET`` (VXLAN overlay network)
+2. ``MANAGEMENT_NET`` (LXC container network used OpenStack Services)
+3. ``OVERLAY_NET`` (VXLAN overlay network for OVS, Geneve overlay network for OVN)
 
 Useful network utilities and commands:
 
@@ -35,7 +35,6 @@ Useful network utilities and commands:
    # brctl show [BRIDGE_ID]
    # iptables -nL
    # arping [-c NUMBER] [-d] <TARGET_IP_ADDRESS>
-
 
 Troubleshooting host-to-host traffic on HOST_NET
 ------------------------------------------------
@@ -64,8 +63,8 @@ tagged sub-interface, or in some cases the bridge interface:
       valid_lft forever preferred_lft forever
    ...
 
-Troubleshooting host-to-host traffic on CONTAINER_NET
------------------------------------------------------
+Troubleshooting host-to-host traffic on MANAGEMENT_NET
+------------------------------------------------------
 
 Perform the following checks:
 
@@ -116,6 +115,17 @@ physical interface or tagged-subinterface:
                                                99999999_eth1
                                                ...
 
+You can also use ip command to display bridges:
+
+.. code-block:: console
+
+   # ip link show master br-mgmt
+
+   12: bond0.100@bond0: ... master br-mgmt state UP mode DEFAULT group default qlen 1000
+   ....
+   51: 11111111_eth1_eth1@if3: ... master br-mgmt state UP mode DEFAULT group default qlen 1000
+   ....
+
 Troubleshooting host-to-host traffic on OVERLAY_NET
 ---------------------------------------------------
 
@@ -147,7 +157,7 @@ Checking services
 ~~~~~~~~~~~~~~~~~
 
 You can check the status of an OpenStack service by accessing every controller
-node and running the :command:`service <SERVICE_NAME> status`.
+node and running the :command:`systemctl status <SERVICE_NAME>`.
 
 See the following links for additional information to verify OpenStack
 services:
@@ -156,8 +166,10 @@ services:
 - `Image service (glance) <https://docs.openstack.org/glance/latest/install/verify.html>`_
 - `Compute service (nova) <https://docs.openstack.org/nova/latest/install/verify.html>`_
 - `Networking service (neutron) <https://docs.openstack.org/neutron/latest/install/verify.html>`_
-- `Block Storage service <https://docs.openstack.org/cinder/latest/install/cinder-verify.html>`_
+- `Block Storage service (cinder) <https://docs.openstack.org/cinder/latest/install/cinder-verify.html>`_
 - `Object Storage service (swift) <https://docs.openstack.org/swift/latest/install/verify.html>`_
+
+Some useful commands to manage LXC see :ref:`command-line-reference`.
 
 Restarting services
 ~~~~~~~~~~~~~~~~~~~
@@ -173,87 +185,105 @@ The following table lists the commands to restart an OpenStack service.
 
    * - OpenStack service
      - Commands
+
    * - Image service
      - .. code-block:: console
 
-          # service glance-api restart
+          # systemctl restart glance-api
+
    * - Compute service (controller node)
      - .. code-block:: console
 
-          # service nova-api-os-compute restart
-          # service nova-consoleauth restart
-          # service nova-scheduler restart
-          # service nova-conductor restart
-          # service nova-api-metadata restart
-          # service nova-novncproxy restart (if using novnc)
-          # service nova-spicehtml5proxy restart (if using spice)
+          # systemctl restart nova-api-os-compute
+          # systemctl restart nova-scheduler
+          # systemctl restart nova-conductor
+          # systemctl restart nova-api-metadata
+          # systemctl restart nova-novncproxy (if using noVNC)
+          # systemctl restart nova-spicehtml5proxy (if using SPICE)
+
    * - Compute service (compute node)
      - .. code-block:: console
 
-          # service nova-compute restart
-   * - Networking service
+          # systemctl restart nova-compute
+
+   * - Networking service (controller node, for OVS)
      - .. code-block:: console
 
-          # service neutron-server restart
-          # service neutron-dhcp-agent restart
-          # service neutron-l3-agent restart
-          # service neutron-metadata-agent restart
-          # service neutron-openvswitch-agent restart
+          # systemctl restart neutron-server
+          # systemctl restart neutron-dhcp-agent
+          # systemctl restart neutron-l3-agent
+          # systemctl restart neutron-metadata-agent
+          # systemctl restart neutron-openvswitch-agent
+
    * - Networking service (compute node)
      - .. code-block:: console
 
-          # service neutron-openvswitch-agent restart
+          # systemctl restart neutron-openvswitch-agent
+
+   * - Networking service (controller node, for OVN)
+     - .. code-block:: console
+
+          # systemctl restart neutron-server
+          # systemctl restart neutron-ovn-maintenance-worker
+          # systemctl restart neutron-periodic-workers
+
+   * - Networking service (compute node, for OVN)
+     - .. code-block:: console
+
+          # systemctl restart neutron-ovn-metadata-agent
+
    * - Block Storage service
      - .. code-block:: console
 
-          # service cinder-api restart
-          # service cinder-backup restart
-          # service cinder-scheduler restart
-          # service cinder-volume restart
+          # systemctl restart cinder-api
+          # systemctl restart cinder-backup
+          # systemctl restart cinder-scheduler
+          # systemctl restart cinder-volume
+
    * - Shared Filesystems service
      - .. code-block:: console
 
-          # service manila-api restart
-          # service manila-data restart
-          # service manila-share restart
-          # service manila-scheduler restart
+          # systemctl restart manila-api
+          # systemctl restart manila-data
+          # systemctl restart manila-share
+          # systemctl restart manila-scheduler
+
    * - Object Storage service
      - .. code-block:: console
 
-          # service swift-account-auditor restart
-          # service swift-account-server restart
-          # service swift-account-reaper restart
-          # service swift-account-replicator restart
-          # service swift-container-auditor restart
-          # service swift-container-server restart
-          # service swift-container-reconciler restart
-          # service swift-container-replicator restart
-          # service swift-container-sync restart
-          # service swift-container-updater restart
-          # service swift-object-auditor restart
-          # service swift-object-expirer restart
-          # service swift-object-server restart
-          # service swift-object-reconstructor restart
-          # service swift-object-replicator restart
-          # service swift-object-updater restart
-          # service swift-proxy-server restart
-
+          # systemctl restart swift-account-auditor
+          # systemctl restart swift-account-server
+          # systemctl restart swift-account-reaper
+          # systemctl restart swift-account-replicator
+          # systemctl restart swift-container-auditor
+          # systemctl restart swift-container-server
+          # systemctl restart swift-container-reconciler
+          # systemctl restart swift-container-replicator
+          # systemctl restart swift-container-sync
+          # systemctl restart swift-container-updater
+          # systemctl restart swift-object-auditor
+          # systemctl restart swift-object-expirer
+          # systemctl restart swift-object-server
+          # systemctl restart swift-object-reconstructor
+          # systemctl restart swift-object-replicator
+          # systemctl restart swift-object-updater
+          # systemctl restart swift-proxy-server
 
 Troubleshooting instance connectivity issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This section will focus on troubleshooting general instance (VM)
+This section will focus on troubleshooting general instances
 connectivity communication. This does not cover any networking related
-to instance connectivity. This is assuming a OpenStack-Ansible install using
-LXC containers, VXLAN overlay and the ML2/OVS driver.
+to instance connectivity. This is assuming a OpenStack-Ansible install using LXC
+containers, VXLAN overlay for ML2/OVS and Geneve overlay for the ML2/OVN driver.
 
-**Data flow example**
+**Data flow example (for OVS)**
 
 .. code-block:: console
 
    COMPUTE NODE
                                                   +-------------+    +-------------+
-                                  +->"If VXLAN"+->+  *br vxlan  +--->+  bond#.#00  +---+
+                                  +->"If VXLAN"+->+  *br vxlan  +--->+  bond0.#00  +---+
                                   |               +-------------+    +-------------+   |
                    +-------------+                                                      |   +-----------------+
    Instance +--->  | qbr bridge  |++                                                    +-->| physical network|
@@ -266,21 +296,37 @@ LXC containers, VXLAN overlay and the ML2/OVS driver.
 
    NETWORK NODE
                                      +-------------+    +-------------+
-                     +->"If VXLAN"+->+  *bond#.#00 +--->+ *br vxlan   +-->
+                     +->"If VXLAN"+->+  *bond#.#00 +--->+ *br-vxlan   +-->
                      |               +-------------+    +-------------+  |
    +----------------+                                                     |     +-------------+
    |physical network|++                                                   +--->+|  qbr bridge |+--> Neutron DHCP/Router
    +----------------+                                                     |     +-------------+
                      |               +-------------+    +-------------+  |
-                     +->"If  VLAN"+->+   bond1     +--->+  br vlan    +-->
+                     +->"If  VLAN"+->+   bond1     +--->+  br-vlan    +-->
                                      +-------------+    +-------------+
+
+**Data flow example (for OVN)**
+
+.. code-block:: console
+
+      COMPUTE NODE
+                                                   +-------------+    +-------------+
+                                  +->"If Geneve"+->+  *br-vxlan  +--->+  bond0.#00  +---+
+                                  |                +-------------+    +-------------+   |
+                   +-------------+                                                      |   +-----------------+
+   Instance +--->  |   br-int    |++                                                    +-->| physical network|
+                   +-------------+                                                      |   +-----------------+
+                                  |              +-------------+    +-------------+     |
+                                  +->"If VLAN"+->+   br-vlan   +--->+    bond1    +-----+
+                                                 +-------------+    +-------------+
+
 
 Preliminary troubleshooting questions to answer:
 ------------------------------------------------
 
-- Which compute node is hosting the VM in question?
+- Which compute node is hosting the instance in question?
 - Which interface is used for provider network traffic?
-- Which interface is used for VXLAN overlay?
+- Which interface is used for VXLAN (Geneve) overlay?
 - Is there connectivity issue ingress to the instance?
 - Is there connectivity issue egress from the instance?
 - What is the source address of the traffic?
@@ -343,6 +389,11 @@ No:
       on compute and network nodes.
     - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
+      In case of using OVN check additionally:
+    - Check ovn-controller on all nodes.
+    - Verify ovn-northd is running and DBs are healthy.
+    - Ensure ovn-metadata-agent is active.
+    - Review logs for ovn-controller, ovn-northd.
 
 Yes:
     - Good! The instance can ping its intended gateway.
@@ -359,7 +410,7 @@ Yes:
 
    Do not continue until the instance can reach its gateway.
 
-If VXLAN:
+If VXLAN (Geneve):
 
 Does physical interface show link and all VLANs properly trunked
 across physical network?
@@ -377,24 +428,24 @@ Yes:
 
    Do not continue until physical network is properly configured.
 
-Are VXLAN VTEP addresses able to ping each other?
+Are VXLAN (Geneve) VTEP addresses able to ping each other?
 
 No:
-    - Check ``br-vxlan`` interface on Compute and Network nodes
+    - Check ``br-vxlan`` interface on Compute and Network nodes.
     - Check veth pairs between containers and Linux bridges on the host.
     - Check that OVS bridges contain the proper interfaces
       on compute and network nodes.
 
 Yes:
-    - Check ml2 config file for local VXLAN IP
-      and other VXLAN configuration settings.
+    - Check ml2 config file for local VXLAN (Geneve) IP
+      and other VXLAN (Geneve) configuration settings.
     - Check VTEP learning method (multicast or l2population):
         - If multicast, make sure the physical switches are properly
           allowing and distributing multicast traffic.
 
 .. important::
 
-   Do not continue until VXLAN endpoints have reachability to each other.
+   Do not continue until VXLAN (Geneve) endpoints have reachability to each other.
 
 Does the instance's IP address ping from network's DHCP namespace
 or other instances in the same network?
@@ -410,7 +461,8 @@ No:
     - Check syslogs.
     - Check Neutron Open vSwitch agent logs.
     - Check that Bridge Forwarding Database (fdb) contains the proper
-      entries on both the compute and Neutron agent container.
+      entries on both the compute and Neutron agent container
+      (``ovs-appctl fdb/show br-int``).
 
 Yes:
     - Good! This suggests that the instance received its IP address
@@ -434,7 +486,14 @@ No:
     - Check ``security-group-rules``,
       consider adding allow ICMP rule for testing.
     - Check that Bridge Forwarding Database (fdb) contains
-      the proper entries on both the compute and Neutron agent container.
+      the proper entries on both the compute and Neutron agent container
+      (``ovs-appctl fdb/show br-int``).
+      In case of using OVN check additionally:
+    - Check ovn-controller on all nodes.
+    - Verify ovn-northd is running and DBs are healthy.
+    - Ensure ovn-metadata-agent is active.
+    - Review logs for ovn-controller, ovn-northd.
+
 
 Yes:
     - Good! The instance can ping its intended gateway.
@@ -446,7 +505,7 @@ Yes:
     - Check upstream routes, NATs or ``access-control-lists``.
 
 Diagnose Image service issues
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``glance-api`` handles the API interactions and image store.
 
@@ -463,12 +522,12 @@ identity problems:
    registry is working.
 
 For an example and more information, see `Verify operation
-<https://docs.openstack.org/glance/latest/install/verify.html>`_.
+<https://docs.openstack.org/glance/latest/install/verify.html>`_
 and `Manage Images
 <https://docs.openstack.org/glance/latest/admin/manage-images.html>`_.
 
 Failed security hardening after host kernel upgrade from version 3.13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Ubuntu kernel packages newer than version 3.13 contain a change in
 module naming from ``nf_conntrack`` to ``br_netfilter``. After
@@ -522,10 +581,8 @@ To clear facts for a single host, find its file within
 a JSON file that is named after its hostname. The facts for that host
 will be regenerated on the next playbook run.
 
-
 Failed Ansible playbooks during an upgrade
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 Container networking issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -612,7 +669,6 @@ Example inventory restore process.
     cp openstack_inventory.json-YYYYMMDD_SSSSSS.json /etc/openstack_deploy/openstack_inventory.json
     cd -
     rm -rf /tmp/inventory_restore
-
 
 At the completion of this operation the inventory will be restored to the
 earlier version.
