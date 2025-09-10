@@ -26,7 +26,7 @@ General Guidelines for Submitting Code
   should always aim to result in a working build throughout the dependency
   chain. Documentation is available for `advanced gerrit usage`_ too.
 * All patch sets should adhere to the :ref:`Ansible Style Guide` listed here as
-  well as adhere to the `Ansible best practices`_ when possible.
+  well as adhere to the `Ansible playbooks`_ when possible.
 * All changes should be clearly listed in the commit message, with an
   associated bug id/blueprint along with any extra information where
   applicable.
@@ -43,9 +43,9 @@ General Guidelines for Submitting Code
   for more information.
 
 .. _Git Commit Good Practice: https://wiki.openstack.org/wiki/GitCommitMessages
-.. _workflow documented here: https://docs.openstack.org/infra/manual/developers.html#development-workflow
-.. _advanced gerrit usage: https://www.mediawiki.org/wiki/Gerrit/Advanced_usage
-.. _Ansible best practices: https://docs.ansible.com/playbooks_best_practices.html
+.. _workflow documented here: https://docs.opendev.org/opendev/infra-manual/latest/developers.html#development-workflow
+.. _advanced gerrit usage: https://docs.openstack.org/contributors/code-and-documentation/using-gerrit.html
+.. _Ansible playbooks: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 .. _the reno tool: https://docs.openstack.org/reno/latest/
 
 .. _documentation:
@@ -338,17 +338,6 @@ include at least the following:
   be overridden by our proposal bot should any change happen.
 * ``setup.cfg`` and ``setup.py``:
   Information about the repository used when building artifacts.
-* ``run_tests.sh``:
-  A script for developers to execute all standard tests on a
-  suitable host. This must be copied from the
-  ``openstack-ansible-tests`` repository and will be automatically
-  be overridden by our proposal bot should any change happen.
-* ``Vagrantfile``:
-  A configuration file to allow a developer to easily create a
-  test virtual machine using `Vagrant`_. This must automatically execute
-  ``run_tests.sh``. This must be copied from the
-  ``openstack-ansible-tests`` repository and will be automatically
-  be overridden by our proposal bot should any change happen.
 * ``README.rst``, ``LICENSE``, ``CONTRIBUTING.rst``:
   A set of standard files whose content is self-explanatory.
 * ``.gitignore``:
@@ -364,8 +353,6 @@ include at least the following:
 
 Please have a look at a role like os_cinder, os_keystone, or os_neutron
 for latest files.
-
-.. _Vagrant: https://www.vagrantup.com/
 
 Container technology independence
 ---------------------------------
