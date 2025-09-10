@@ -12,5 +12,6 @@ maintenance tasks.
    maintenance-tasks/rabbitmq-maintain
    maintenance-tasks/ansible-modules
    maintenance-tasks/containers
+   maintenance-tasks/logging
    maintenance-tasks/firewalls
    maintenance-tasks/inventory-backups
