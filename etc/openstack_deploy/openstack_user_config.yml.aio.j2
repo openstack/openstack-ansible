@@ -224,7 +224,7 @@ repo-infra_hosts:
 coordination_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
-    management_ip:{{ bootstrap_host_management_address }}
+    management_ip: {{ bootstrap_host_management_address }}
 {% if 'infra' in bootstrap_host_scenarios_expanded %}
     affinity:
       zookeeper_container: 3
