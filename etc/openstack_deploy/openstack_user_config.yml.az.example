@@ -193,8 +193,7 @@ az3_storage_hosts: &storage_az3
 # AZ association
 
 az1_compute_hosts: &compute_hosts_az1
-  <<: *shared_computes_az1
-  <<: *pinned_computes_az1
+  <<: [*shared_computes_az1, *pinned_computes_az1]
 
 az2_compute_hosts: &compute_hosts_az2
   <<: *shared_computes_az2
@@ -203,25 +202,17 @@ az3_compute_hosts: &compute_hosts_az3
   <<: *shared_computes_az3
 
 az1_hosts:
-  <<: *compute_hosts_az1
-  <<: *controller_az1
-  <<: *storage_az1
+  <<: [*compute_hosts_az1, *controller_az1, *storage_az1]
 
 az2_hosts:
-  <<: *compute_hosts_az2
-  <<: *controller_az2
-  <<: *storage_az2
+  <<: [*compute_hosts_az2, *controller_az2, *storage_az2]
 
 az3_hosts:
-  <<: *compute_hosts_az3
-  <<: *controller_az3
-  <<: *storage_az3
+  <<: [*compute_hosts_az3, *controller_az3, *storage_az3]
 
 # Final mappings
 shared_infra_hosts: &controllers
-  <<: *controller_az1
-  <<: *controller_az2
-  <<: *controller_az3
+  <<: [*controller_az1, *controller_az2, *controller_az3]
 
 repo-infra_hosts: *controllers
 memcaching_hosts: *controllers
@@ -239,24 +230,18 @@ network-northd_hosts: *controllers
 coordination_hosts: *controllers
 
 compute_hosts: &computes
-  <<: *compute_hosts_az1
-  <<: *compute_hosts_az2
-  <<: *compute_hosts_az3
+  <<: [*compute_hosts_az1, *compute_hosts_az2, *compute_hosts_az3]
 
 pinned_compute_hosts:
   <<: *pinned_computes_az1
 
 shared_compute_hosts:
-  <<: *shared_computes_az1
-  <<: *shared_computes_az2
-  <<: *shared_computes_az3
+  <<: [*shared_computes_az1, *shared_computes_az2, *shared_computes_az3]
 
 network-gateway_hosts: *computes
 
 storage_hosts: &storage
-  <<: *storage_az1
-  <<: *storage_az2
-  <<: *storage_az3
+  <<: [*storage_az1, *storage_az2, *storage_az3]
 
 az1_ceph_osd_hosts:
   <<: *storage_az1
