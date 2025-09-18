@@ -256,7 +256,7 @@ Deploying Infrastructure Hosts
       .. code:: console
 
          cd /opt/openstack-ansible
-         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=touch" '${REINSTALLED_HOST}*:&galera_all'
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=touch" "${REINSTALLED_HOST}*:&galera_all"
 
       Once it's done you can run playbook to install MariaDB to the destination
 
@@ -290,7 +290,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=absent" '${REINSTALLED_HOST}_containers:&galera_all'
+         ansible -m file -a "path=/var/tmp/clustercheck.disabled state=absent" "${REINSTALLED_HOST}*:&galera_all"
 
    #. We can move on to RabbitMQ primary
 
