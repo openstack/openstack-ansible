@@ -36,7 +36,6 @@
       - ^releasenotes/.*
       - ^setup\.(cfg|py)$
       - ^tox.ini$
-      - ^Vagrantfile
     vars:
       #disable powertools/highavailabity for centos
       configure_mirrors_extra_repos: "{{ ansible_facts['os_family'] | lower != 'redhat' }}"
