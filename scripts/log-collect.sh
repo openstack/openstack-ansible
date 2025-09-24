@@ -43,7 +43,6 @@ COMMON_ETC_LOG_NAMES="apt \
     corosync \
     ceph \
     dnf \
-    etcd \
     exports \
     ganesha \
     gitconfig \

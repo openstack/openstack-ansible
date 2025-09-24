@@ -1,0 +1,14 @@
+---
+other:
+  - |
+    Etcd role has been removed from ``ansible-role-requirements.yml`` as it's
+    no longer required by any component.
+    If you are relying on the role or etcd in your deployment, you can add the
+    following to your ``/etc/openstack_deploy/user-role-requirements.yml``:
+
+    .. code-block:: yaml
+
+      - name: etcd
+        scm: git
+        src: https://github.com/noonedeadpunk/ansible-etcd
+        version: master
