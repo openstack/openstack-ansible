@@ -23,6 +23,7 @@ The following tags are available in OpenStack Ansible:
 - ``systemd-service``
 - ``<service>-install``
 - ``<service>-config``
+- ``<service>-key``
 
 common-mq
 ---------
@@ -169,3 +170,17 @@ Example:
 .. code-block:: shell-session
 
    # openstack-ansible openstack.osa.cinder --tags cinder-config
+
+<service>-key
+-------------
+
+This tag is used to generate and distribute SSH certificates, issued through
+``openstack.osa.ssh_keypairs`` role.
+
+This is currently in-use by Keystone, Nova and Swift roles.
+
+Example:
+
+.. code-block:: shell-session
+
+   # openstack-ansible openstack.osa.nova --tags nova-key
