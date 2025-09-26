@@ -37,25 +37,18 @@
             RemainAfterExit: true
         service_type: oneshot
         execstarts:
-          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/cinder.img"
+          - /bin/bash -c "/sbin/losetup /dev/loop6 /openstack/cinder.img"
           - /sbin/pvscan
         execstops:
-          - /bin/bash -c "losetup -d $(losetup -l | awk '/cinder.img/ {print $1}')"
+          - /bin/bash -c "losetup -d /dev/loop6"
         enabled: true
         state: started
     systemd_tempd_prefix: openstack
   tags:
     - cinder-config
 
-- name: Get loopback device
-  ansible.builtin.shell: "losetup -l | awk '/cinder.img/ {print $1}'"
-  changed_when: false
-  register: cinder_losetup
-  tags:
-    - skip_ansible_lint
-
 - name: Make LVM physical volume on the cinder device
-  ansible.builtin.shell: "pvcreate {{ cinder_losetup.stdout }} && touch /openstack/cinder.pvcreate"
+  ansible.builtin.shell: "pvcreate /dev/loop6 && touch /openstack/cinder.pvcreate"
   args:
     creates: "/openstack/cinder.pvcreate"
   tags:
@@ -71,6 +64,6 @@
 - name: Add cinder-volumes volume group
   community.general.lvg:
     vg: cinder-volumes
-    pvs: "{{ cinder_losetup.stdout }}"
+    pvs: /dev/loop6
   tags:
     - cinder-lvm-vg

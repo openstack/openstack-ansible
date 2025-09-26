@@ -37,25 +37,18 @@
             RemainAfterExit: true
         service_type: oneshot
         execstarts:
-          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/manila.img"
+          - /bin/bash -c "/sbin/losetup /dev/loop7 /openstack/manila.img"
           - /sbin/pvscan
         execstops:
-          - /bin/bash -c "losetup -d $(losetup -l | awk '/manila.img/ {print $1}')"
+          - /bin/bash -c "losetup -d /dev/loop7"
         enabled: true
         state: started
     systemd_tempd_prefix: openstack
   tags:
     - manila-config
 
-- name: Get loopback device
-  shell: "losetup -l | awk '/manila.img/ {print $1}'"
-  changed_when: false
-  register: manila_losetup
-  tags:
-    - skip_ansible_lint
-
 - name: Make LVM physical volume on the manila device
-  shell: "pvcreate {{ manila_losetup.stdout }} && touch /openstack/manila.pvcreate"
+  shell: "pvcreate /dev/loop7 && touch /openstack/manila.pvcreate"
   args:
     creates: "/openstack/manila.pvcreate"
   tags:
@@ -71,6 +64,6 @@
 - name: Add manila-shares volume group
   community.general.lvg:
     vg: manila-shares
-    pvs: "{{ manila_losetup.stdout }}"
+    pvs: /dev/loop7
   tags:
     - manila-lvm-vg

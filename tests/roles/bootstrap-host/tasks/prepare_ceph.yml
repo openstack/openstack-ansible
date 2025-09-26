@@ -36,31 +36,26 @@
             RemainAfterExit: true
         service_type: oneshot
         execstarts:
-          - /bin/bash -c "/sbin/losetup $(/sbin/losetup -f) /openstack/{{ loopback_var }}.img"
+          - /bin/bash -c "/sbin/losetup /dev/loop{{ 10 + loopback_index }} /openstack/{{ loopback_var }}.img"
         execstops:
-          - /bin/bash -c "losetup -d $(losetup -l | awk '/{{ loopback_var }}.img/ {print $1}')"
+          - /bin/bash -c "losetup -d /dev/loop{{ 10 + loopback_index }}"
         enabled: true
         state: started
     systemd_tempd_prefix: openstack
   with_items: "{{ ceph_osd_images }}"
   loop_control:
     loop_var: loopback_var
+    index_var: loopback_index
   tags:
     - ceph-config
 
-- name: Get loopback device
-  shell: "losetup -l | awk '/{{ item }}.img/ {print $1}'"
-  changed_when: false
-  register: ceph_create_loopback
-  with_items: "{{ ceph_osd_images }}"
-  tags:
-    - skip_ansible_lint
-
 - name: Set permissions on loopback devices
   ansible.builtin.file:
-    path: "{{ item.stdout }}"
+    path: "/dev/loop{{ 10 + loopback_index }}"
     mode: "0777"
-  with_items: "{{ ceph_create_loopback.results }}"
+  with_items: "{{ ceph_osd_images }}"
+  loop_control:
+    index_var: loopback_index
 
 # NOTE(jrosser) ceph-volume is unwilling to automatically create OSD
 # directly on loop devices - see http://tracker.ceph.com/issues/36603
@@ -68,16 +63,18 @@
 # scenario
 - name: Create LVM VG
   community.general.lvg:
-    vg: "vg-{{ item.stdout | basename }}"
-    pvs: "{{ item.stdout }}"
-  loop: "{{ ceph_create_loopback.results }}"
+    vg: "vg-{{ item }}"
+    pvs: "/dev/loop{{ 10 + loopback_index }}"
+  loop: "{{ ceph_osd_images }}"
+  loop_control:
+    index_var: loopback_index
 
 - name: Create LVM LV
   community.general.lvol:
-    lv: "lv-{{ item.stdout | basename }}"
-    vg: "vg-{{ item.stdout | basename }}"
+    lv: "lv-{{ item }}"
+    vg: "vg-{{ item }}"
     size: 100%FREE
-  loop: "{{ ceph_create_loopback.results }}"
+  loop: "{{ ceph_osd_images }}"
 
 # TODO(logan): Move these vars to user_variables.ceph.yml.j2 once LP #1649381
 # is fixed and eliminate this task.
@@ -86,9 +83,9 @@
     content: |
       ---
       lvm_volumes:
-      {% for d in ceph_create_loopback | json_query('results[].stdout') %}
-        - data_vg: vg-{{ d | basename }}
-          data: lv-{{ d | basename }}
+      {% for osd in ceph_osd_images %}
+        - data_vg: vg-{{ osd }}
+          data: lv-{{ osd }}
       {% endfor %}
       cinder_backends:
         aio_ceph:
@@ -108,6 +105,5 @@
     dest: /etc/openstack_deploy/user_ceph_aio.yml
     force: false
   become: false
-  when: not ceph_create_loopback is skipped
   tags:
     - skip_ansible_lint
