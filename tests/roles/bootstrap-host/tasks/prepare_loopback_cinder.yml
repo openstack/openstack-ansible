@@ -47,20 +47,6 @@
   tags:
     - cinder-config
 
-- name: Make LVM physical volume on the cinder device
-  ansible.builtin.shell: "pvcreate /dev/loop6 && touch /openstack/cinder.pvcreate"
-  args:
-    creates: "/openstack/cinder.pvcreate"
-  tags:
-    - skip_ansible_lint
-    - cinder-lvm-pv
-
-- name: Run pvscan
-  ansible.builtin.command: "pvscan"
-  changed_when: false
-  tags:
-    - cinder-lvm-pv
-
 - name: Add cinder-volumes volume group
   community.general.lvg:
     vg: cinder-volumes

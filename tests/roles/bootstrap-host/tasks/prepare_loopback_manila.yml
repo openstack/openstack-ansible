@@ -47,20 +47,6 @@
   tags:
     - manila-config
 
-- name: Make LVM physical volume on the manila device
-  shell: "pvcreate /dev/loop7 && touch /openstack/manila.pvcreate"
-  args:
-    creates: "/openstack/manila.pvcreate"
-  tags:
-    - skip_ansible_lint
-    - manila-lvm-pv
-
-- name: Run pvscan
-  ansible.builtin.command: "pvscan"
-  changed_when: false
-  tags:
-    - manila-lvm-pv
-
 - name: Add manila-shares volume group
   community.general.lvg:
     vg: manila-shares
