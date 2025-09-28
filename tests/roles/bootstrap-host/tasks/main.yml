@@ -95,23 +95,14 @@
   when:
     - "lookup('env', 'ZUUL_SRC_PATH') | length > 0"
 
-# Prepare the swap space loopback disk
-# This is only necessary if there isn't swap already
-- name: Include prepare_loopback_swap
-  ansible.builtin.include_tasks: prepare_loopback_swap.yml
-  when:
-    - bootstrap_host_loopback_swap | bool
-    - ansible_facts['swaptotal_mb'] < 1
-  args:
-    apply:
-      tags:
-        - prepare-loopback
+- name: Import prepare_loopback tasks
+  ansible.builtin.import_tasks: prepare_loopback.yml
   tags:
-    - always
+    - prepare-loopback
 
 # Prepare the zfs storage loopback disk
-- name: Include prepare_loopback_zfs tasks
-  ansible.builtin.include_tasks: prepare_loopback_zfs.yml
+- name: Include prepare_zfs tasks
+  ansible.builtin.include_tasks: prepare_zfs.yml
   when:
     - bootstrap_host_loopback_zfs | bool
     - bootstrap_host_data_disk_device == None
@@ -120,81 +111,6 @@
     apply:
       tags:
         - prepare-loopback
-  tags:
-    - always
-
-# Prepare the btrfs storage loopback disk
-- name: Include prepare_loopback_btrfs tasks
-  ansible.builtin.include_tasks: prepare_loopback_btrfs.yml
-  when:
-    - bootstrap_host_loopback_btrfs | bool
-    - bootstrap_host_data_disk_device == None
-    - _lxc_container_backing_store == 'btrfs'
-  args:
-    apply:
-      tags:
-        - prepare-loopback
-  tags:
-    - always
-
-# Prepare the Cinder LVM VG loopback disk
-# This is only necessary if bootstrap_host_loopback_cinder is set to yes
-- name: Include prepare_loopback_cinder tasks
-  ansible.builtin.include_tasks: prepare_loopback_cinder.yml
-  when:
-    - bootstrap_host_loopback_cinder | bool
-  args:
-    apply:
-      tags:
-        - prepare-loopback
-  tags:
-    - always
-
-# Prepare the Nova instance storage loopback disk
-- name: Include prepare_loopback_nova tasks
-  ansible.builtin.include_tasks: prepare_loopback_nova.yml
-  when:
-    - bootstrap_host_loopback_nova | bool
-  args:
-    apply:
-      tags:
-        - prepare-loopback
-  tags:
-    - always
-
-# Prepare the Swift data storage loopback disks
-- name: Include prepare_loopback_swift tasks
-  ansible.builtin.include_tasks: prepare_loopback_swift.yml
-  when:
-    - bootstrap_host_loopback_swift | bool
-  args:
-    apply:
-      tags:
-        - prepare-loopback
-  tags:
-    - always
-
-# Prepare the Manila data storage loopback disks
-- name: Include prepare_loopback_manila tasks
-  ansible.builtin.include_tasks: prepare_loopback_manila.yml
-  when:
-    - bootstrap_host_loopback_manila | bool
-  args:
-    apply:
-      tags:
-        - prepare-loopback
-  tags:
-    - always
-
-# Prepare the Ceph cluster UUID and loopback disks
-- name: Include prepare_ceph tasks
-  ansible.builtin.include_tasks: prepare_ceph.yml
-  when:
-    - bootstrap_host_ceph | bool
-  args:
-    apply:
-      tags:
-        - prepare-ceph
   tags:
     - always
 

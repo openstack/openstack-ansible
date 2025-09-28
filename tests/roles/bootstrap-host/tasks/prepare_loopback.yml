@@ -1,0 +1,82 @@
+---
+# Copyright 2025, Cleura AB.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Create sparse files
+  ansible.builtin.command: "truncate -s {{ item.size }}G {{ item.path }}"
+  loop: "{{ _loopback_device_data['sparse'] }}"
+  args:
+    creates: "{{ item.path }}"
+  tags:
+    - spare-file-create
+
+- name: Format the file if needed
+  community.general.filesystem:
+    fstype: "{{ item['fstype'] | default(omit) }}"
+    opts: "{{ item['opts'] | default(omit) }}"
+    dev: "{{ item['path'] }}"
+  loop: "{{ _loopback_device_data['fs'] }}"
+
+- name: Run the systemd mount role
+  ansible.builtin.include_role:
+    name: systemd_mount
+  vars:
+    systemd_mounts: "{{ _loopback_device_data['mounts'] }}"
+
+- name: Run the systemd service role
+  ansible.builtin.include_role:
+    name: systemd_service
+  vars:
+    systemd_services: |-
+      {% set services = [] %}
+      {% for service in _loopback_device_data['services'] %}
+      {% set _ = services.append({
+                    'service_name': service['name'],
+                    'config_overrides': {
+                      'Unit': {
+                        'Description': false,
+                        'After': 'systemd-udev-settle.service',
+                        'Before': 'lvm2-activation-early.service',
+                        'Wants': 'systemd-udev-settle.service',
+                      },
+                      'Service': {'RemainAfterExit': true},
+                    },
+                    'service_type': 'oneshot',
+                    'execstarts': service['execstarts'],
+                    'execstops': service['execstops'],
+                    'enabled': true,
+                    'state': 'started',
+      }) %}
+      {% endfor %}
+      {{ services }}
+    systemd_tempd_prefix: openstack
+
+- name: Add LVM Volume Groups
+  community.general.lvg:
+    vg: "{{ item.vg }}"
+    pvs: "{{ item.pvs }}"
+  loop: "{{ _loopback_device_data['lvm'] }}"
+  tags:
+    - create-lvm-vg
+
+- name: Create LVM Logical Volumes
+  community.general.lvol:
+    lv: "{{ item.lv }}"
+    vg: "{{ item.vg }}"
+    size: 100%VG
+  loop: "{{ _loopback_device_data['lvm'] }}"
+  when:
+    - "'lv' in item"
+  tags:
+    - create-lvm-lv

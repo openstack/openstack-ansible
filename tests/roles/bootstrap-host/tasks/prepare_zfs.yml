@@ -21,11 +21,6 @@
   tags:
     - install-packages
 
-- name: Create sparse ZFS backing file
-  ansible.builtin.command: "truncate -s {{ bootstrap_host_loopback_zfs_size }}G /openstack/lxc-zfs.img"
-  args:
-    creates: /openstack/lxc-zfs.img
-
 - name: Create the ZFS pool
   ansible.builtin.command: zpool create osa-test-pool /openstack/lxc-zfs.img
   args:
