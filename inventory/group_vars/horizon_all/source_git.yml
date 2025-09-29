@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 24.06.2025 ###
+### HEAD as of 29.09.2025 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: 1d88ebef7535ea45901f8eb3448eee88956d6bbc
+horizon_git_install_branch: f83e6f86cbdd0bd198c376a748537d684e21a860
 horizon_git_track_branch: stable/2024.2
 
 ## Adjutant dashboard plugin
 adjutant_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/adjutant-ui"
-adjutant_dashboard_git_install_branch: bab31ad14dbf75019abf3132363910614865b23e
+adjutant_dashboard_git_install_branch: c41568a2617316e1b2af98b039d26d0c2e1e642f
 adjutant_dashboard_git_track_branch: stable/2024.2
 
 ## Barbican dashboard plugin
@@ -77,5 +77,5 @@ neutron_vpnaas_dashboard_git_track_branch: stable/2024.2
 
 ## Horizon Neutron FWaaS dashboard plugin
 neutron_fwaas_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-fwaas-dashboard"
-neutron_fwaas_dashboard_git_install_branch: 94a00c572853b17999d0b4478d98b76eaa3864c8
+neutron_fwaas_dashboard_git_install_branch: 098fd216a10465d5144c58d3063285d14839d2a0
 neutron_fwaas_dashboard_git_track_branch: stable/2024.2
