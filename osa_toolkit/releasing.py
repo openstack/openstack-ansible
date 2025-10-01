@@ -14,8 +14,8 @@ try:
     from jinja2 import Template as j2_template
     from packaging import requirements as pyrequirements
     from packaging import version
-    from prettytable import PrettyTable  # prettytable
-    from ruamel.yaml import YAML  # ruamel.yaml
+    from prettytable import PrettyTable
+    from ruamel.yaml import YAML
 except ImportError as err:
     raise SystemExit(
         'Required dependencies are missing for this script! '
@@ -155,6 +155,14 @@ def analyse_global_requirement_pins(args):
     print_requirements_state(pins, latest_versions, constraints_versions)
 
 
+def write_data_to_file(data, filename):
+    yaml = YAML()
+    yaml.width = 160
+    yaml.explicit_start = True
+    with open(filename, "w") as fw:
+        yaml.dump(data, fw)
+
+
 def parse_requirements(requirements):
     """Parse requirement file contents into name, constraints specs, and extra data
     :param pin: Complete string containing a requirement
@@ -281,11 +289,7 @@ def bump_upstream_repos_sha_file(filename):
             )
 
     if changed:
-        with open(filename, "w") as fw:
-            # Temporarily revert the explicit start to add --- into first line
-            yaml.explicit_start = True
-            yaml.dump(repofiledata, fw)
-            yaml.explicit_start = False
+        write_data_to_file(repofiledata, filename)
 
 
 # def parse_repos_info(filename):
@@ -427,11 +431,7 @@ def update_ansible_role_requirements_file(
 
     shutil.rmtree(clone_root_path)
     print("Overwriting ansible-role-requirements")
-    with open(filename, "w") as arryml:
-        yaml = YAML()  # use ruamel.yaml to keep comments that could appear
-        yaml.explicit_start = True
-        yaml.dump(all_roles, arryml)
-        yaml.explicit_start = False
+    write_data_to_file(all_roles, filename)
 
 
 def update_ansible_collection_requirements(filename=''):
@@ -460,11 +460,7 @@ def update_ansible_collection_requirements(filename=''):
 
     all_requirements['collections'] = all_collections
     print("Overwriting ansible-collection-requirements")
-    with open(filename, "w") as arryml:
-        yaml = YAML()  # use ruamel.yaml to keep comments that could appear
-        yaml.explicit_start = True
-        yaml.dump(all_requirements, arryml)
-        yaml.explicit_start = False
+    write_data_to_file(all_requirements, filename)
 
 
 def sort_roles(ansible_role_requirements_file):
