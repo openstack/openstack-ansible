@@ -121,7 +121,8 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 12 (bookworm), Ubuntu 24.04 (Noble Numbat) and CentOS 10 Stream.
+   Debian 12 (bookworm), Ubuntu 24.04 (Noble Numbat), CentOS 10 Stream,
+   and derivatives of RHEL 10 such as Rocky Linux.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
