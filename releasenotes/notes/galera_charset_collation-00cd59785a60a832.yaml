@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added new variables to control MariaDB default charset and collation:
+
+    * galera_default_charset
+    * galera_default_collation
+    * galera_default_collation_set
+
+    Variable ``galera_default_collation_set`` is defined in my.cnf only for
+    MariaDB versions >= 11.5.

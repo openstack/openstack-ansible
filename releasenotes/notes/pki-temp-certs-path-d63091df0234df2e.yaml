@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    If directory is defined instead of certificate files, haproxy will attempt
+    to treat all files within as a pem bundled certs. And will fail its
+    configuration test.
+    To avoid this a new variable haproxy_ssl_temp_path were introduced. When it
+    is defined certificates from the pki being put into that directory and then
+    combined into pem in the correct directory.
+
+    Such an approach allows us to put additional certificates to the directory
+    outside of the haproxy_server role and keep the directory clean. This also
+    eliminates the need to list all additional custom certificates and sum them
+    with the ones calculate by this role.
+
+    Additionally added a cleanup/move of the certs if haproxy_ssl_temp_path set
+    to be different from  haproxy_ssl_cert_path which allows a transition from
+    old setup.

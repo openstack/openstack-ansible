@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    The format of `san` parameter in a ``pki_certificates`` variable was
+    changed from a string to the dictonary of lists. New dict can
+    contain following keys: dns, ip, uri, other. These keys should
+    contain a list with all SANs that should be a part of the
+    certificate.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Enable Barbican Secrets Support for Glance in OpenStack-Ansible.
+    Glance was not being configured to use Barbican for secret management when Barbican support was enabled.
+    This patch ensures that Glance is efficiently configured to interact with Barbican and allowing proper handling of secrets (such as image encryption keys) in OpenStack environments.

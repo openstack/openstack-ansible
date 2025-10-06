@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Added key ``params`` to the variable ``openstack_host_specific_kernel_modules``
+    which allows to supply module parameters as a simple string.
+upgrade:
+  - |
+    Kernel modules loaded by OpenStack-Ansible will be defined for load in their own
+    files under ``/etc/modules-load.d/``. Prior paths managed by OpenStack-Ansible
+    like ``/etc/modules-load.d/openstack-ansible.conf`` for EL systems or
+    ``/etc/modules`` for DEB systems will be cleaned out from managed modules during
+    upgrade.
