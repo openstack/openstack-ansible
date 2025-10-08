@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 04.08.2025 ###
+### HEAD as of 08.10.2025 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: 4c7d049b5e829130c102974d73274818c267295c
+horizon_git_install_branch: 609b13bf00dcf48c09a60e3b4e7c18b5d786de07
 horizon_git_track_branch: stable/2025.1
 
 ## Adjutant dashboard plugin
 adjutant_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/adjutant-ui"
-adjutant_dashboard_git_install_branch: 8adc451be16a677e72a68cd766f5c2e438e57fb2
+adjutant_dashboard_git_install_branch: e8f861279b8c1ffd1c947b46bf38cfcd16a3222a
 adjutant_dashboard_git_track_branch: stable/2025.1
 
 ## Barbican dashboard plugin
@@ -37,7 +37,7 @@ cloudkitty_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Designate dashboard plugin
 designate_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/designate-dashboard"
-designate_dashboard_git_install_branch: 58a6cb03aa059d2a7c6fd28b4b3e860be1e8c520
+designate_dashboard_git_install_branch: 349f34baca5813aebde7097318cde160f60aa061
 designate_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Heat dashboard plugin
@@ -62,7 +62,7 @@ masakari_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove-dashboard"
-trove_dashboard_git_install_branch: f1248649d67b3bbb7e569c023917f47551a294ab
+trove_dashboard_git_install_branch: 97976e32716770e0c22be6bd911c69ec0a188d42
 trove_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Octavia dashboard plugin
@@ -77,5 +77,5 @@ neutron_vpnaas_dashboard_git_track_branch: stable/2025.1
 
 ## Horizon Neutron FWaaS dashboard plugin
 neutron_fwaas_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-fwaas-dashboard"
-neutron_fwaas_dashboard_git_install_branch: 252adff556287f30fe56bfd01f07aadfbd9ab2f7
+neutron_fwaas_dashboard_git_install_branch: fafd9a358bd32fab32fa74eecb30810b5a44f74a
 neutron_fwaas_dashboard_git_track_branch: stable/2025.1

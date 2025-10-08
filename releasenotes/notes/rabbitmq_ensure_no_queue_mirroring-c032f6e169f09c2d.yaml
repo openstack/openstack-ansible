@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Fixed RabbitMQ upgrade issue for older deployments which had
+    previously used RabbitMQ Classic Queue mirroring (HA Queues)
+    by implementing an upgrade check and disabling leftover
+    policies on upgrade.
