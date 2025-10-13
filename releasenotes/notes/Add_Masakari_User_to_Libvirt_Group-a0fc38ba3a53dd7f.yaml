@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Added the Masakari user to the libvirt group to ensure proper permissions
+    for accessing libvirt resources. This resolves permission issues that could
+    prevent Masakari from monitoring and managing virtual machine instances
+    effectively. The fix ensures that the Masakari service can successfully
+    interact with the libvirt daemon for instance evacuation and recovery
+    operations during host failures.

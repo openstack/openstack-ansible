@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    Default value of ``galera_wsrep_address`` has changed from
+    ``ansible_host``, which could vary based on the deployment scenario,
+    to ``management_address``, which will be set to the IP of the
+    management network.
+    The fallback to ``ansible_host`` is present to avoid failures when
+    ``management_address`` is not defined.

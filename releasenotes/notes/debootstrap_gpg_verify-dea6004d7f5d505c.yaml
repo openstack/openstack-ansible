@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added variable ``lxc_apt_mirror_gpg_check`` to either enforce or disable
+    gpg check during LXC image preparation through debootstrap. It is enabled
+    by default.
+
+  - |
+    Added variable ``lxc_apt_mirror_gpg_file`` which provides path on the
+    remote host to GPG file location, against which to verify packages
+    from ``lxc_apt_mirror`` during debootstrap process.

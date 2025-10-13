@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    For ``systemd_mount`` role added ``mount_overrides_only`` to
+    ``systemd_mounts`` mapping. This key is desinged to apply systemd
+    overrides for already existing mounts, which are not managed by
+    the role directly.

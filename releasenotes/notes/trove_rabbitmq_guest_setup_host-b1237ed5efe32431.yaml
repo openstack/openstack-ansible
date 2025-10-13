@@ -1,0 +1,14 @@
+---
+upgrade:
+  - |
+    When using standalone RabbitMQ cluster for Trove deployment, make sure to
+    use ``trove_guest_rpc_host_group`` as a pointer to host group, rather then
+    a pointer to a specific host.
+    You can use variable ``trove_guest_oslomsg_rpc_setup_host`` to define a
+    specific host which should be responsible for provisionment of RabbitMQ
+    vhost and users instead.
+fixes:
+  - |
+    Variable ``trove_guest_rpc_host_group`` is now used as intended and
+    represents a host group. It is no longer directly used as
+    "delegated host" when configuring a standalone RabbitMQ cluster for Trove.

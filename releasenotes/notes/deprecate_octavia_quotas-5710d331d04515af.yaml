@@ -1,0 +1,24 @@
+---
+deprecations:
+  - |
+    Quota management for Octavia service has been deperecated in favor of
+    centralized approach through ``openstack.osa.openstack_resources``
+    playbook.
+    As default project name was ``service``, defining quota inside of the
+    Octavia role was causing conflicts with other services (like Trove).
+
+    Respective variables were deprecated and have no effect:
+
+      * octavia_num_instances
+      * octavia_ram
+      * octavia_gigabytes
+      * octavia_num_server_groups
+      * octavia_num_server_group_members
+      * octavia_num_cores
+      * octavia_num_secgroups
+      * octavia_num_ports
+      * octavia_num_security_group_rules
+      * octavia_num_volumes
+
+    Please reffer to `Octavia documentation <https://docs.openstack.org/openstack-ansible-os_octavia/latest/configure-octavia.html>`_
+    for more information how to manage service quotas.

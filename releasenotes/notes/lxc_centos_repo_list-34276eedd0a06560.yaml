@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Added variables ``lxc_centos_repo_keys`` and ``lxc_centos_repos``, which
+    allows to supply a list of repositories, which will be added to lxc_host.
+    By default, role keeps installing EPEL repository with it's GPG key.

@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    For ``systemd_mount`` role added boolean key ``escape_name`` to
+    ``systemd_mounts`` mapping which designed to prevent name escaping,
+    when mount name is not a path. Evaluated as ``true`` by default.
