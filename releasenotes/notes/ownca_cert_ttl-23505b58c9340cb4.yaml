@@ -1,0 +1,18 @@
+---
+features:
+  - |
+    Added key ``ttl`` to the ``pki_create_certificates``. The value can be
+    defined as a timespec, without leading `+`. For example:
+
+    .. code::yaml
+
+      - name: "SnakeMail"
+        signed_by: "SnakeRootIntermediate"
+        provider: ownca
+        cn: "imap.snakeoil.com"
+        signed_by: "SnakeRootIntermediate"
+        ttl: 30d
+
+    Default value is defined by the
+    `community.crypto.x509_certificate <https://docs.ansible.com/ansible/latest/collections/community/crypto/x509_certificate_module.html#parameter-ownca_not_after>`_
+    module.
