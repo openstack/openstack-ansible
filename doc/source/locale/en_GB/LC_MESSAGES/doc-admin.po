@@ -8,9 +8,9 @@
 # Andi Chandler <andi@gowling.com>, 2024. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.1.0.dev190\n"
+"Project-Id-Version: openstack-ansible 31.1.0.dev271\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 07:53+0000\n"
+"POT-Creation-Date: 2025-10-13 14:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,9 +29,6 @@ msgstr "(* because we're deleting all container facts for the host as well.)"
 
 msgid "**Availability Zone**"
 msgstr "**Availability Zone**"
-
-msgid "**Data flow example**"
-msgstr "**Data flow example**"
 
 msgid "**Flavor**"
 msgstr "**Flavor**"
@@ -207,9 +204,6 @@ msgstr "Ansible `forks`_ entry for ansible.cfg"
 
 msgid "Ansible forks"
 msgstr "Ansible forks"
-
-msgid "Are VXLAN VTEP addresses able to ping each other?"
-msgstr "Are VXLAN VTEP addresses able to ping each other?"
 
 msgid ""
 "Are you sure you want to destroy the LXC containers? Are you sure you want "
@@ -409,9 +403,6 @@ msgstr ""
 msgid "Check VTEP learning method (multicast or l2population):"
 msgstr "Check VTEP learning method (multicast or l2population):"
 
-msgid "Check ``br-vxlan`` interface on Compute and Network nodes"
-msgstr "Check ``br-vxlan`` interface on Compute and Network nodes"
-
 msgid ""
 "Check cable, seating, physical switchport configuration, interface/bonding "
 "configuration, and general network configuration. See general network "
@@ -426,13 +417,6 @@ msgstr "Check gateway or host routes on the Neutron subnet."
 
 msgid "Check interface bonding (if applicable)"
 msgstr "Check interface bonding (if applicable)"
-
-msgid ""
-"Check ml2 config file for local VXLAN IP and other VXLAN configuration "
-"settings."
-msgstr ""
-"Check ml2 config file for local VXLAN IP and other VXLAN configuration "
-"settings."
 
 msgid ""
 "Check nova console logs to see if the instance ever received its IP address "
@@ -452,13 +436,6 @@ msgstr "Check physical interface mappings."
 
 msgid "Check syslogs."
 msgstr "Check syslogs."
-
-msgid ""
-"Check that Bridge Forwarding Database (fdb) contains the proper entries on "
-"both the compute and Neutron agent container."
-msgstr ""
-"Check that Bridge Forwarding Database (fdb) contains the proper entries on "
-"both the compute and Neutron agent container."
 
 msgid ""
 "Check that hosts are in the same IP subnet or have proper routing between "
@@ -666,9 +643,6 @@ msgstr "Distribution upgrades"
 
 msgid "Do generic preparation of reinstalled host"
 msgstr "Do generic preparation of reinstalled host"
-
-msgid "Do not continue until VXLAN endpoints have reachability to each other."
-msgstr "Do not continue until VXLAN endpoints have reachability to each other."
 
 msgid ""
 "Do not continue until instance has an IP address and can reach local network "
@@ -1117,9 +1091,6 @@ msgstr "If RabbitMQ was running on this host"
 
 msgid "If VLAN:"
 msgstr "If VLAN:"
-
-msgid "If VXLAN:"
-msgstr "If VXLAN:"
 
 msgid "If a Compute host needs to be shut down:"
 msgstr "If a Compute host needs to be shut down:"
@@ -1650,9 +1621,6 @@ msgstr "Network nodes"
 
 msgid "Networking"
 msgstr "Networking"
-
-msgid "Networking service"
-msgstr "Networking service"
 
 msgid "Networking service (compute node)"
 msgstr "Networking service (compute node)"
@@ -2970,9 +2938,6 @@ msgstr ""
 msgid "Troubleshooting"
 msgstr "Troubleshooting"
 
-msgid "Troubleshooting host-to-host traffic on CONTAINER_NET"
-msgstr "Troubleshooting host-to-host traffic on CONTAINER_NET"
-
 msgid "Troubleshooting host-to-host traffic on HOST_NET"
 msgstr "Troubleshooting host-to-host traffic on HOST_NET"
 
@@ -3198,12 +3163,6 @@ msgstr ""
 "wait 30 seconds for the last disc node to come back online, and fail "
 "afterwards."
 
-msgid "Which compute node is hosting the VM in question?"
-msgstr "Which compute node is hosting the VM in question?"
-
-msgid "Which interface is used for VXLAN overlay?"
-msgstr "Which interface is used for VXLAN overlay?"
-
 msgid "Which interface is used for provider network traffic?"
 msgstr "Which interface is used for provider network traffic?"
 
@@ -3295,13 +3254,6 @@ msgstr ""
 "help identity problems:"
 
 msgid ""
-"You can check the status of an OpenStack service by accessing every "
-"controller node and running the :command:`service <SERVICE_NAME> status`."
-msgstr ""
-"You can check the status of an OpenStack service by accessing every "
-"controller node and running the :command:`service <SERVICE_NAME> status`."
-
-msgid ""
 "You can limit upgrades to specific OpenStack components by running each of "
 "the component playbooks against groups."
 msgstr ""
@@ -3358,9 +3310,6 @@ msgstr ""
 
 msgid "``HOST_NET`` (Physical Host Management and Access to Internet)"
 msgstr "``HOST_NET`` (Physical Host Management and Access to Internet)"
-
-msgid "``OVERLAY_NET`` (VXLAN overlay network)"
-msgstr "``OVERLAY_NET`` (VXLAN overlay network)"
 
 msgid ""
 "``br-mgmt`` should contain veth-pair ends from all containers and a physical "

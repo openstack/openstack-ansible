@@ -4,9 +4,9 @@
 # Andreas Jaeger <jaegerandi@gmail.com>, 2020. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.1.0.dev190\n"
+"Project-Id-Version: openstack-ansible 31.1.0.dev271\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 07:53+0000\n"
+"POT-Creation-Date: 2025-10-13 14:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,9 +19,6 @@ msgstr ""
 
 msgid "**Availability Zone**"
 msgstr "**Verfügbarkeitszone**"
-
-msgid "**Data flow example**"
-msgstr "**Datenflussbeispiel**"
 
 msgid "**Flavor**"
 msgstr "**Variante**"
@@ -172,9 +169,6 @@ msgstr "Ansible `forks`_ Eintrag für ansible.cfg"
 
 msgid "Ansible forks"
 msgstr "Ansible Forks"
-
-msgid "Are VXLAN VTEP addresses able to ping each other?"
-msgstr "Können sich VXLAN VTEP-Adressen gegenseitig pingen?"
 
 msgid ""
 "Are you sure you want to destroy the LXC containers? Are you sure you want "
@@ -353,13 +347,6 @@ msgid "Check interface bonding (if applicable)"
 msgstr "Überprüfen Sie die Schnittstellenverbindung (falls zutreffend)"
 
 msgid ""
-"Check ml2 config file for local VXLAN IP and other VXLAN configuration "
-"settings."
-msgstr ""
-"Überprüfen Sie die ml2-Konfigurationsdatei auf lokale VXLAN-IP- und andere "
-"VXLAN-Konfigurationseinstellungen."
-
-msgid ""
 "Check nova console logs to see if the instance ever received its IP address "
 "initially."
 msgstr ""
@@ -378,13 +365,6 @@ msgstr "Überprüfen Sie die Zuordnung der physischen Schnittstelle."
 
 msgid "Check syslogs."
 msgstr "Überprüfen Sie Syslogs."
-
-msgid ""
-"Check that Bridge Forwarding Database (fdb) contains the proper entries on "
-"both the compute and Neutron agent container."
-msgstr ""
-"Überprüfen Sie, ob die Bridge Forwarding Database (fdb) die richtigen "
-"Einträge sowohl im Compute- als auch im Neutron-Agent-Container enthält."
 
 msgid ""
 "Check that hosts are in the same IP subnet or have proper routing between "
@@ -545,9 +525,6 @@ msgstr "Deaktivieren Sie die ``nova-compute`` Binärdatei:"
 
 msgid "Disable the failed node on the load balancer."
 msgstr "Deaktivieren Sie den ausgefallenen Knoten im Lastenausgleichsmodul."
-
-msgid "Do not continue until VXLAN endpoints have reachability to each other."
-msgstr "Fahren Sie nicht fort, bis VXLAN-Endpunkte zueinander erreichbar sind."
 
 msgid ""
 "Do not continue until instance has an IP address and can reach local network "
@@ -938,9 +915,6 @@ msgstr ""
 
 msgid "If VLAN:"
 msgstr "Wenn VLAN:"
-
-msgid "If VXLAN:"
-msgstr "Wenn VXLAN:"
 
 msgid "If a Compute host needs to be shut down:"
 msgstr "Wenn ein Compute-Host heruntergefahren werden muss:"
@@ -1367,9 +1341,6 @@ msgstr "Netzwerk Schnittstellen"
 
 msgid "Networking"
 msgstr "Vernetzung"
-
-msgid "Networking service"
-msgstr "Netzwerkdienst"
 
 msgid "Networking service (compute node)"
 msgstr "Netzwerkdienst (Rechenknoten)"
@@ -2500,9 +2471,6 @@ msgstr ""
 msgid "Troubleshooting"
 msgstr "Fehlerbehebung"
 
-msgid "Troubleshooting host-to-host traffic on CONTAINER_NET"
-msgstr "Fehlerbehebung für Host-zu-Host-Datenverkehr in CONTAINER_NET"
-
 msgid "Troubleshooting host-to-host traffic on HOST_NET"
 msgstr "Fehlerbehebung für Host-zu-Host-Datenverkehr in HOST_NET"
 
@@ -2706,12 +2674,6 @@ msgstr ""
 "werden soll. Wenn dies nicht geschieht, warten die Knoten 30 Sekunden, bis "
 "der letzte Plattenknoten wieder online ist, und scheitern danach."
 
-msgid "Which compute node is hosting the VM in question?"
-msgstr "Welcher Rechenknoten hostet die fragliche VM?"
-
-msgid "Which interface is used for VXLAN overlay?"
-msgstr "Welche Schnittstelle wird für VXLAN-Overlay verwendet?"
-
 msgid "Which interface is used for provider network traffic?"
 msgstr ""
 "Welche Schnittstelle wird für den Netzwerkverkehr des Providers verwendet?"
@@ -2751,14 +2713,6 @@ msgid ""
 msgstr ""
 "Sie können auch die folgenden Aktivitäten ausführen, die Protokolle "
 "generieren können, um Identitätsprobleme zu beheben:"
-
-msgid ""
-"You can check the status of an OpenStack service by accessing every "
-"controller node and running the :command:`service <SERVICE_NAME> status`."
-msgstr ""
-"Sie können den Status eines OpenStack-Dienstes überprüfen, indem Sie auf "
-"jeden Controller-Knoten zugreifen und den Befehl: `service <SERVICE_NAME> "
-"status` ausführen."
 
 msgid ""
 "You can limit upgrades to specific OpenStack components by running each of "
@@ -2811,9 +2765,6 @@ msgstr ""
 
 msgid "``HOST_NET`` (Physical Host Management and Access to Internet)"
 msgstr "``HOST_NET`` (Physische Host-Verwaltung und Zugang zum Internet)"
-
-msgid "``OVERLAY_NET`` (VXLAN overlay network)"
-msgstr "``OVERLAY_NET`` (VXLAN-Overlay-Netzwerk)"
 
 msgid ""
 "``br-mgmt`` should contain veth-pair ends from all containers and a physical "

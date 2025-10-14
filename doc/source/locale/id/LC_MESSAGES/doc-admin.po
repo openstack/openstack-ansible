@@ -5,9 +5,9 @@
 # suhartono <cloudsuhartono@gmail.com>, 2021. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.1.0.dev190\n"
+"Project-Id-Version: openstack-ansible 31.1.0.dev271\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 07:53+0000\n"
+"POT-Creation-Date: 2025-10-13 14:27+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,9 +20,6 @@ msgstr ""
 
 msgid "**Availability Zone**"
 msgstr "**Availability Zone**"
-
-msgid "**Data flow example**"
-msgstr "**Data flow example**"
 
 msgid "**Flavor**"
 msgstr "**Flavor**"
@@ -177,9 +174,6 @@ msgstr "Ansible `forks`_ entry untuk ansible.cfg"
 
 msgid "Ansible forks"
 msgstr "Ansible forks"
-
-msgid "Are VXLAN VTEP addresses able to ping each other?"
-msgstr "Apakah alamat VXLAN VTEP dapat melakukan ping satu sama lain?"
 
 msgid ""
 "Are you sure you want to destroy the LXC containers? Are you sure you want "
@@ -361,9 +355,6 @@ msgstr ""
 msgid "Check VTEP learning method (multicast or l2population):"
 msgstr "Periksa metode pembelajaran VTEP  (multicast atau l2population):"
 
-msgid "Check ``br-vxlan`` interface on Compute and Network nodes"
-msgstr "Periksa interface ``br-vxlan`` pada node Compute dan Network"
-
 msgid ""
 "Check cable, seating, physical switchport configuration, interface/bonding "
 "configuration, and general network configuration. See general network "
@@ -378,13 +369,6 @@ msgstr "Periksa rute gateway atau host di subnet Neutron."
 
 msgid "Check interface bonding (if applicable)"
 msgstr "Periksa ikatan antarmuka (jika ada)"
-
-msgid ""
-"Check ml2 config file for local VXLAN IP and other VXLAN configuration "
-"settings."
-msgstr ""
-"Periksa file konfigurasi ml2 untuk IP VXLAN lokal dan pengaturan konfigurasi "
-"VXLAN lainnya."
 
 msgid ""
 "Check nova console logs to see if the instance ever received its IP address "
@@ -404,13 +388,6 @@ msgstr "Periksa pemetaan antarmuka fisik."
 
 msgid "Check syslogs."
 msgstr "Periksa syslogs."
-
-msgid ""
-"Check that Bridge Forwarding Database (fdb) contains the proper entries on "
-"both the compute and Neutron agent container."
-msgstr ""
-"Periksa bahwa Bridge Forwarding Database (fdb) berisi entri yang tepat pada "
-"kontainer agen Neutron dan komputasi."
 
 msgid ""
 "Check that hosts are in the same IP subnet or have proper routing between "
@@ -570,10 +547,6 @@ msgstr "Nonaktifkan biner ``nova-compute``:"
 
 msgid "Disable the failed node on the load balancer."
 msgstr "Nonaktifkan node gagal pada load balancer."
-
-msgid "Do not continue until VXLAN endpoints have reachability to each other."
-msgstr ""
-"Jangan teruskan sebelum titik akhir VXLAN memiliki jangkauan satu sama lain."
 
 msgid ""
 "Do not continue until instance has an IP address and can reach local network "
@@ -970,9 +943,6 @@ msgstr ""
 
 msgid "If VLAN:"
 msgstr "If VLAN:"
-
-msgid "If VXLAN:"
-msgstr "Jika VXLAN:"
 
 msgid "If a Compute host needs to be shut down:"
 msgstr "Jika host Compute perlu dimatikan:"
@@ -1423,9 +1393,6 @@ msgstr "Antarmuka jaringan"
 
 msgid "Networking"
 msgstr "Jaringan"
-
-msgid "Networking service"
-msgstr "Layanan Networking"
 
 msgid "Networking service (compute node)"
 msgstr "Layanan Networking  (node komputasi)"
@@ -2617,9 +2584,6 @@ msgstr "Untuk memperbarui hanya satu host Compute, jalankan perintah berikut:"
 msgid "Troubleshooting"
 msgstr "Penyelesaian masalah"
 
-msgid "Troubleshooting host-to-host traffic on CONTAINER_NET"
-msgstr "Memecahkan masalah lalu lintas host-to-host di CONTAINER_NET"
-
 msgid "Troubleshooting host-to-host traffic on HOST_NET"
 msgstr "Memecahkan masalah lalu lintas host-to-host di HOST_NET"
 
@@ -2811,12 +2775,6 @@ msgstr ""
 "menunggu 30 detik untuk node disk terakhir untuk kembali online, dan gagal "
 "setelahnya."
 
-msgid "Which compute node is hosting the VM in question?"
-msgstr "Komputasi node mana yang menjadi hosting VM yang dimaksud?"
-
-msgid "Which interface is used for VXLAN overlay?"
-msgstr "Antarmuka mana yang digunakan untuk hamparan VXLAN?"
-
 msgid "Which interface is used for provider network traffic?"
 msgstr "Antarmuka mana yang digunakan untuk lalu lintas jaringan penyedia?"
 
@@ -2876,13 +2834,6 @@ msgstr ""
 "untuk membantu masalah identitas:"
 
 msgid ""
-"You can check the status of an OpenStack service by accessing every "
-"controller node and running the :command:`service <SERVICE_NAME> status`."
-msgstr ""
-"Anda dapat memeriksa status layanan OpenStack dengan mengakses setiap node "
-"pengontrol dan menjalankan :command:`service <SERVICE_NAME> status`."
-
-msgid ""
 "You can limit upgrades to specific OpenStack components by running each of "
 "the component playbooks against groups."
 msgstr ""
@@ -2934,9 +2885,6 @@ msgstr ""
 
 msgid "``HOST_NET`` (Physical Host Management and Access to Internet)"
 msgstr "``HOST_NET`` (Physical Host Management dan Access ke Internet)"
-
-msgid "``OVERLAY_NET`` (VXLAN overlay network)"
-msgstr "``OVERLAY_NET`` (jaringan hamparan VXLAN)"
 
 msgid ""
 "``br-mgmt`` should contain veth-pair ends from all containers and a physical "
