@@ -51,12 +51,9 @@ utility_distro_openstack_clients_packages:
 # Python packages to be installed into the utility container
 utility_pip_packages:
   - cryptography
-  - pip
   - PyMySQL
   - python-memcached
   - selinux
-  - setuptools
-  - wheel
   - openstacksdk
 
 # Determines whether Cinder backup should be tested
