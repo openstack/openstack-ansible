@@ -526,15 +526,6 @@ For an example and more information, see `Verify operation
 and `Manage Images
 <https://docs.openstack.org/glance/latest/admin/manage-images.html>`_.
 
-Failed security hardening after host kernel upgrade from version 3.13
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Ubuntu kernel packages newer than version 3.13 contain a change in
-module naming from ``nf_conntrack`` to ``br_netfilter``. After
-upgrading the kernel, run the ``openstack-hosts-setup.yml``
-playbook against those hosts. For more information, see
-`OSA bug 157996 <https://bugs.launchpad.net/openstack-ansible/+bug/1579963>`_.
-
 Cached Ansible facts issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
