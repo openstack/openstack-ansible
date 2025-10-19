@@ -46,6 +46,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Tooling for releasing OpenStack-Ansible"
     )
+    parser.set_defaults(func=lambda args: parser.print_help())
     subparsers = parser.add_subparsers(help='subcommand help')
 
     # check_pins
