@@ -125,7 +125,7 @@ def parse_args():
         help="path to ansible-role-requirements.yml file",
         default="ansible-role-requirements.yml",
     )
-    freeze_roles_parser.set_defaults(func=unfreeze_arr)
+    unfreeze_roles_parser.set_defaults(func=unfreeze_arr)
 
     return parser.parse_args()
 
