@@ -87,7 +87,7 @@ Run the playbooks to install OpenStack
 
       In order to run ad-hoc commands, you need to execute command from the
       location of ``openstack-ansible`` repository (ie `/opt/openstack-ansible`)
-      or explicitly load required envirnoment variables for Ansible configuration
+      or explicitly load required environment variables for Ansible configuration
       through ``source /usr/local/bin/openstack-ansible.rc``.
 
    .. code-block:: console
