@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed a race condition on start of the repo container, when
+    var-www-mount.repo is started before glusterd.service is fully
+    operational.
