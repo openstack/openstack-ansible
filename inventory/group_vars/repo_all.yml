@@ -28,6 +28,12 @@ repo_server_systemd_mounts:
     type: glusterfs
     state: 'started'
     enabled: true
+    config_overrides:
+      Unit:
+        BindsTo: glusterd.service
+        After:
+          ? glusterd.service
+          ? network-online.target
 
 openstack_repo_server_enable_glusterfs: True
 
