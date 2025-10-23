@@ -572,8 +572,36 @@ To clear facts for a single host, find its file within
 a JSON file that is named after its hostname. The facts for that host
 will be regenerated on the next playbook run.
 
-Failed Ansible playbooks during an upgrade
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Rebuilding Python Virtual Environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In certain situations, you may need to forcefully rebuild a service's
+Python virtual environment. This can be required if the
+``python_venv_build`` role fails (for example, due to temporary
+package conflicts), or if you want to reset the virtual environment
+after manual modifications.
+
+Two variables control the rebuild process:
+
+* ``venv_rebuild`` — resets the virtual environment to its intended
+  state without rebuilding wheels. This is usually sufficient when the
+  service version has not changed and only the venv state needs to be
+  restored.
+
+* ``venv_wheels_rebuild`` — additionally forces a rebuild of the
+  Python wheels. This may be required if the service version has
+  changed or if its venv requirements were modified.
+
+To trigger a rebuild for a specific service, re-run its playbook with
+the following environment variables:
+
+.. code-block:: shell-session
+
+   # reset the venv state
+   openstack-ansible openstack.osa.nova -e venv_rebuild=true
+
+   # reset the venv state and rebuild wheels
+   openstack-ansible openstack.osa.nova -e venv_rebuild=true -e venv_wheels_rebuild=true
 
 Container networking issues
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
