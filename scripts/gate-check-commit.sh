@@ -93,8 +93,6 @@ log_instance_info
 
 run_dstat || true
 
-load_nodepool_pip_opts
-
 # Bootstrap Ansible
 if [[ -z "${SKIP_OSA_BOOTSTRAP_AIO+defined}" ]]; then
   source "${OSA_CLONE_DIR}/scripts/bootstrap-ansible.sh"
@@ -129,7 +127,7 @@ elif [[ "${ACTION}" == "shastest" ]]; then
 elif [[ "${ACTION}" == "linters" ]]; then
   pushd "${OSA_CLONE_DIR}"
     # Install linter tools
-    ${PIP_COMMAND} install --isolated ${PIP_OPTS} -r ${OSA_CLONE_DIR}/test-requirements.txt
+    ${PIP_COMMAND} install --isolated -r ${OSA_CLONE_DIR}/test-requirements.txt
     # Disable Ansible color output
     export ANSIBLE_NOCOLOR=1
     # Create ansible logging directory
@@ -248,8 +246,6 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
     unset TOX_CONSTRAINTS_FILE
     unset PIP_OPTS
     unset UPGRADE_TARGET_BRANCH
-
-    load_nodepool_pip_opts
 
     # Source the current scripts-library.sh functions
     source "${OSA_CLONE_DIR}/scripts/scripts-library.sh"

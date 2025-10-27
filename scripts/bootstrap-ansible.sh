@@ -117,9 +117,6 @@ case ${DISTRO_ID} in
         ;;
 esac
 
-# Load nodepool PIP mirror settings
-load_nodepool_pip_opts
-
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
 if [ -n "$HTTPS_PROXY" ]; then
   PIP_OPTS+=" --proxy $HTTPS_PROXY"
