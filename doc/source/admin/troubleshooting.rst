@@ -215,7 +215,7 @@ The following table lists the commands to restart an OpenStack service.
           # systemctl restart neutron-metadata-agent
           # systemctl restart neutron-openvswitch-agent
 
-   * - Networking service (compute node)
+   * - Networking service (compute node, for OVS)
      - .. code-block:: console
 
           # systemctl restart neutron-openvswitch-agent
@@ -319,7 +319,6 @@ containers, VXLAN overlay for ML2/OVS and Geneve overlay for the ML2/OVN driver.
                                   |              +-------------+    +-------------+     |
                                   +->"If VLAN"+->+   br-vlan   +--->+    bond1    +-----+
                                                  +-------------+    +-------------+
-
 
 Preliminary troubleshooting questions to answer:
 ------------------------------------------------
@@ -493,7 +492,6 @@ No:
     - Verify ovn-northd is running and DBs are healthy.
     - Ensure ovn-metadata-agent is active.
     - Review logs for ovn-controller, ovn-northd.
-
 
 Yes:
     - Good! The instance can ping its intended gateway.
