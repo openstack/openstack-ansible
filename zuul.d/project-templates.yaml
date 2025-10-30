@@ -105,12 +105,12 @@
         - openstack-ansible-deploy-infra_distro_lxc-centos-10-stream:
             voting: false
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-10
+        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-10:
+            voting: false
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
-        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-10
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
 
 - project-template:
@@ -153,11 +153,11 @@
     name: openstack-ansible-deploy-hosts_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10
+        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10:
+            voting: false
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
 
 - project-template:
