@@ -215,6 +215,7 @@ export ANSIBLE_CONFIG="none-ansible.cfg"
 export ANSIBLE_COLLECTIONS_PATH="/etc/ansible"
 export ANSIBLE_TRANSPORT="smart"
 export ANSIBLE_STRATEGY="linear"
+export LC_ALL="${LC_ALL:-C.UTF-8}"
 
 pushd scripts
 if ([ -f "${ANSIBLE_COLLECTION_FILE}" ] || [ -f "${USER_COLLECTION_FILE}" ]) && [[ -z "${SKIP_OSA_COLLECTION_CLONE+defined}" ]]; then
