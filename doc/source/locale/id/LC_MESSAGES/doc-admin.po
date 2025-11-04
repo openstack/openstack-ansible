@@ -5,9 +5,9 @@
 # suhartono <cloudsuhartono@gmail.com>, 2021. #zanata
 msgid ""
 msgstr ""
-"Project-Id-Version: openstack-ansible 31.1.0.dev271\n"
+"Project-Id-Version: openstack-ansible 32.0.0.0b2.dev19\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-13 14:27+0000\n"
+"POT-Creation-Date: 2025-11-03 19:09+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -693,11 +693,6 @@ msgstr ""
 "ANSIBLE_CACHE_PLUGIN = memory``. Untuk mengatur ini secara permanen, setel "
 "variabel ini di ``/usr/local/bin/openstack-ansible.rc``. Lihat dokumentasi "
 "Ansible di `fact caching`_ untuk detail lebih lanjut."
-
-msgid "Failed security hardening after host kernel upgrade from version 3.13"
-msgstr ""
-"Pengerasan (hardening) keamanan gagal setelah upgrade kernel host dari versi "
-"3.13"
 
 msgid "Field Name"
 msgstr "Field Name"
@@ -1393,9 +1388,6 @@ msgstr "Antarmuka jaringan"
 
 msgid "Networking"
 msgstr "Jaringan"
-
-msgid "Networking service (compute node)"
-msgstr "Layanan Networking  (node komputasi)"
 
 msgid "New facts will be gathered and cached during the next playbook run."
 msgstr ""
@@ -2592,19 +2584,6 @@ msgstr "Memecahkan masalah lalu lintas host-to-host pada OVERLAY_NET"
 
 msgid "Tunneling versus direct transport"
 msgstr "Tunneling versus transportasi langsung"
-
-msgid ""
-"Ubuntu kernel packages newer than version 3.13 contain a change in module "
-"naming from ``nf_conntrack`` to ``br_netfilter``. After upgrading the "
-"kernel, run the ``openstack-hosts-setup.yml`` playbook against those hosts. "
-"For more information, see `OSA bug 157996 <https://bugs.launchpad.net/"
-"openstack-ansible/+bug/1579963>`_."
-msgstr ""
-"Paket kernel Ubuntu yang lebih baru dari versi 3.13 berisi perubahan dalam "
-"penamaan modul dari ``nf_conntrack`` menjadi ``br_netfilter``. Setelah "
-"memutakhirkan kernel, jalankan playbook ``openstack-hosts-setup.yml`` "
-"terhadap host tersebut. Untuk informasi lebih lanjut, lihat `OSA bug 157996 "
-"<https://bugs.launchpad.net/openstack-ansible/+bug/1579963>`_."
 
 msgid "Unassign all Neutron floating IPs:"
 msgstr "Batalkan penetapan semua IP mengambang neutron:"
