@@ -733,3 +733,133 @@
     name: openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-10
     parent: openstack-ansible-deploy-aio
     nodeset: osa-rockylinux-10
+
+# debian trixie
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-debian-trixie
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-aio_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-infra_distro_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-debian-trixie
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-debian-trixie
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-debian-trixie
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_btrfs-debian-trixie
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-debian-trixie
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-tox-molecule-debian-trixie
+    parent: openstack-ansible-tox-molecule
+    vars:
+      tox_environment:
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: debian-systemd:trixie
