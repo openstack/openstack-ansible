@@ -1,0 +1,10 @@
+---
+upgrade:
+  - |
+    Variable ``networking_ovn_bgp_install_branch`` has been renamed to
+    ``networking_ovn_bgp_git_install_branch`` in order to match existing
+    naming convention.
+fixes:
+  - |
+    Fixes SHA pinning and installation of ``ovn-bgp-agent``, as SHA pinning
+    and role were using different variable names.

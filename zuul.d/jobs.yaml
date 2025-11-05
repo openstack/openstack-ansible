@@ -15,6 +15,7 @@
 
 - job:
     name: openstack-ansible-deploy
+    override-checkout: unmaintained/2024.1
     parent: base
     description: |
       Global parent for integrated OpenStack-Ansible tests
