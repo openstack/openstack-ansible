@@ -187,19 +187,6 @@ Deploying Infrastructure Hosts
          rabbitmqctl cluster_status
          rabbitmqctl forget_cluster_node rabbit@removed_host_rabbitmq_container
 
-   #. If GlusterFS was running on this host (repo nodes)
-
-      We forget it by running these commands on another repo host. Note that we
-      have to tell Gluster we are intentionally reducing the number of
-      replicas. 'N' should be set to the number of repo servers minus 1.
-      Existing gluster peer names can be found using the 'gluster peer status'
-      command.
-
-      .. code:: console
-
-         gluster volume remove-brick gfs-repo replica N removed_host_gluster_peer:/gluster/bricks/1 force
-         gluster peer detach removed_host_gluster_peer
-
 #. Do generic preparation of reinstalled host
 
    .. code:: console
@@ -240,10 +227,28 @@ Deploying Infrastructure Hosts
 
    .. code:: console
 
-      openstack-ansible openstack.osa.setup_infrastructure --limit localhost,repo_all,rabbitmq_all,${REINSTALLED_HOST}*
+      openstack-ansible openstack.osa.setup_infrastructure -e glusterfs_reset_peers=true --limit localhost,repo_all,rabbitmq_all,${REINSTALLED_HOST}*
       openstack-ansible openstack.osa.setup_openstack --limit localhost,keystone_all,${REINSTALLED_HOST}*
 
    (* because we need to include containers in the limit)
+
+   .. note::
+
+      Passing ``-e glusterfs_reset_peers=true`` to
+      ``openstack.osa.setup_infrastructure`` playbook is intended to clean up
+      stale Gluster peers, which existed before OS re-installing.
+      Alternatively, you can manually remove peers from the cluster.
+      Note that we have to tell Gluster we are intentionally reducing the
+      number of replicas. 'N' should be set to the number of repo servers
+      minus 1.
+
+      Existing gluster peer names can be found using the 'gluster peer status'
+      command.
+
+      .. code:: console
+
+         gluster volume remove-brick gfs-repo replica N removed_host_gluster_peer:/gluster/bricks/1 force
+         gluster peer detach removed_host_gluster_peer
 
 #. If it IS a 'primary', do these steps
 
@@ -302,7 +307,7 @@ Deploying Infrastructure Hosts
 
       .. code:: console
 
-         openstack-ansible openstack.osa.repo -e glusterfs_bootstrap_node="{{ groups['repo_all'][-1] }}"
+         openstack-ansible openstack.osa.repo -e glusterfs_bootstrap_node="{{ groups['repo_all'][-1] }}" -e glusterfs_reset_peers=true
 
    #. Everything should now be in a working state and we can finish it off with
 
