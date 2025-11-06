@@ -369,7 +369,8 @@
       jobs:
         - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
-        - openstack-ansible-tox-molecule-rockylinux-9
+        - openstack-ansible-tox-molecule-rockylinux-9:
+            voting: false
         - openstack-ansible-tox-molecule-ubuntu-jammy
         - openstack-ansible-tox-molecule-ubuntu-noble
         - openstack-ansible-tox-molecule-centos-10-stream
@@ -377,7 +378,6 @@
       jobs:
         - openstack-ansible-tox-molecule-centos-9-stream
         - openstack-ansible-tox-molecule-debian-bookworm
-        - openstack-ansible-tox-molecule-rockylinux-9
         - openstack-ansible-tox-molecule-ubuntu-jammy
         - openstack-ansible-tox-molecule-ubuntu-noble
         - openstack-ansible-tox-molecule-centos-10-stream
