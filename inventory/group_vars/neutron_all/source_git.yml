@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 08.10.2025 ###
+### HEAD as of 08.11.2025 ###
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: b3db08f483e57937728bd23b0285fbe96fddd334
+neutron_git_install_branch: 56f461d877002bf3aedf887d6afa5f41a1b6be8d
 neutron_git_track_branch: stable/2025.1
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
@@ -49,7 +49,7 @@ networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: 458234972d1428ac92bbeff26511edfdc49b6b2f
+networking_nsxlib_git_install_branch: 948a72da034acdd74a08eded88aa19b080e40927
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
@@ -57,5 +57,5 @@ networking_baremetal_git_install_branch: 0f8ab8318214edeef1a2ef74d3e5796cfe96384
 networking_baremetal_git_track_branch: stable/2025.1
 
 networking_ovn_bgp_git_repo: "{{ openstack_opendev_base_url }}/openstack/ovn-bgp-agent"
-networking_ovn_bgp_git_install_branch: 9a36c3875111a0b1bfb155e71b25c08fc1131ece
+networking_ovn_bgp_git_install_branch: 4f02cad1f7fc3cb20a4b22b819f010393f11a8ab
 networking_ovn_bgp_git_track_branch: stable/2025.1
