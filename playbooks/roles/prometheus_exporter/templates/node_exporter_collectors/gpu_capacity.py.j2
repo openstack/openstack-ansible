@@ -86,7 +86,7 @@ for flavor in flavors:
     for server in servers:
       server_dict = server.to_dict()
       #print(f"Server ID: {server_dict['id']}, Server Name: {server_dict['name']}, Flavor: {flavor_dict['name']}, Host: {server_dict['OS-EXT-SRV-ATTR:host']}, AZ: {server_dict['OS-EXT-AZ:availability_zone']}")
-      if server_dict['OS-EXT-AZ:availability_zone'] not in vm_count[aggregate_dict['name']]:
+      if server_dict['OS-EXT-AZ:availability_zone'] not in vm_count[flavor_dict['name']]:
         vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']] = {}
       if not server_dict['OS-EXT-SRV-ATTR:host'] in vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']]:
         vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']][server_dict['OS-EXT-SRV-ATTR:host']] = 1
