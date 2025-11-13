@@ -58,7 +58,7 @@ bootstrap_host_scenarios_expanded: |-
   {%   set _ = scenario_list.extend(['ceph'])  %}
   {% endif %}
   {% if ['telemetry', 'aodh', 'ceilometer', 'gnocchi'] | intersect(bootstrap_host_scenarios) | length > 0 %}
-  {%   set _ = scenario_list.extend(['aodh', 'ceilometer', 'gnocchi']) %}
+  {%   set _ = scenario_list.extend(['aodh', 'ceilometer', 'gnocchi', 'zookeeper']) %}
   {% endif %}
   {% if 'translations' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['designate', 'heat', 'magnum', 'swift', 'trove']) %}
