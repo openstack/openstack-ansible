@@ -8,7 +8,7 @@ Supported distributions
 =======================
 
 The list of supported distributions can be found in the
-:deploy_guide:`Deployment Guide <deploymenthost.html>`
+:ref:`compatibility-matrix`
 
 Minimum requirements for OpenStack-Ansible roles
 ================================================
