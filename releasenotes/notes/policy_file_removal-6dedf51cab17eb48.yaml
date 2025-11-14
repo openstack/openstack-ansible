@@ -1,0 +1,9 @@
+---
+fixes:
+  - |
+    Fixed service failure in case of previously defined policies for the
+    service were removed.
+other:
+  - |
+    An empty policy.yaml file is being created for services by default, even
+    when no policy overrides are defined.
