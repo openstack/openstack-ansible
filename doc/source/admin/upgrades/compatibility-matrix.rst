@@ -1,5 +1,8 @@
+.. _compatibility-matrix:
+
 Compatibility Matrix
 --------------------
+
 
 All of the OpenStack-Ansible releases are compatible with specific sets of
 operating systems and their versions. Operating Systems have their own
