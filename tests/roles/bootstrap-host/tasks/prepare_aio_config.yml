@@ -70,40 +70,6 @@
   tags:
     - generate_secrets
 
-- name: Set facts when inside of OpenStack-Infra
-  when:
-    - nodepool_vars is defined
-  block:
-    - name: Configure the OpenStack-Infra mirrors
-      vars:
-        _ubuntu_vars:
-          apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
-        _ubuntu_conditional_vars: "{{ (ansible_facts['distribution'] == 'Ubuntu') | ternary(_ubuntu_vars, {}) }}"
-        nodepool_overrides:
-          openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
-          centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
-          galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"
-          nova_virt_type: 'qemu'
-          # NOTE(jrosser)
-          # we only run ceph jobs on ubuntu in CI so this is sufficient
-          # NOTE(jrosser)
-          # re-enable these local CI repos when the reef release is mirrored
-          #ceph_stable_repo: "http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef"
-          # we must set the ceph repo seperatley for the ceph_client role
-          #ceph_apt_repos:
-          #  ceph:
-          #    state: "present"
-          #    repo: "deb http://{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}/ceph-deb-reef {{ ansible_facts['distribution_release'] }} main"
-      copy:
-        dest: /etc/openstack_deploy/user_openstackci.yml
-        content: "{{ (nodepool_overrides | combine(_ubuntu_conditional_vars)) | to_nice_yaml }}"
-
-    - name: Set the package cache timeout to 60 mins in OpenStack-CI
-      set_fact:
-        cache_timeout: 3600
-      when:
-        - cache_timeout is not defined
-
 # NOTE(mhayden): The OpenStack CI images for CentOS recently set SELinux to
 # Enforcing mode by default. While I am normally a supporter of this change,
 # the SELinux policy work for CentOS is not done yet.
