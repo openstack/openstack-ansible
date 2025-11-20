@@ -176,7 +176,7 @@ Deploying Infrastructure Hosts
 
          rm /etc/openstack_deploy/ansible-facts/${REINSTALLED_HOST}*
 
-      (* because we're deleting all container facts for the host as well.)
+      (* because we're deleting all container facts for the host as well)
 
    #. If RabbitMQ was running on this host
 

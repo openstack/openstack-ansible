@@ -61,7 +61,7 @@ resides on all hosts in the environment.
 
 In addition, it is necessary to configure easy_install to use an alternative
 index. easy_install is used instead of pip to install anything listed under
-setup_requires in setup.py during wheel builds. See https://pip.pypa.io/en/latest/reference/pip_install/#controlling-setup-requires
+setup_requires in setup.py during wheel builds. See https://pip.pypa.io/en/latest/cli/pip_install/
 
 To configure easy_install to use an alternative index, create the file
 `/root/.pydistutils.cfg` with the following content.
@@ -100,9 +100,9 @@ Example repositories to mirror (Ubuntu target hosts):
 
 - https://download.ceph.com
 - https://ubuntu-cloud.archive.canonical.com/ubuntu
-- https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-erlang
-- https://dl.cloudsmith.io/public/rabbitmq/rabbitmq-server
-- https://downloads.mariadb.com/MariaDB
+- https://cloudsmith.io/~rabbitmq/repos/rabbitmq-erlang
+- https://cloudsmith.io/~rabbitmq/repos/rabbitmq-server
+- https://archive.mariadb.org
 
 These lists are intentionally not exhaustive and equivalents will be required
 for other Linux distributions. Consult the OpenStack-Ansible playbooks and role
