@@ -82,6 +82,10 @@ COMMON_ETC_LOG_NAMES="apt \
 
 COMMON_ETC_LOG_NAMES+=" $(awk -F'os_' '/name.*os_.*/ {print $2}' $(dirname $(readlink -f ${BASH_SOURCE[0]}))/../ansible-role-requirements.yml | tr '\n' ' ')"
 
+COMMON_BUILD_FILES="constraints.txt \
+    global-constraints.txt \
+    requirements.txt"
+
 ## Functions -----------------------------------------------------------------
 
 function repo_information {
@@ -104,26 +108,36 @@ function store_lxc_artifacts {
     # exist, it will be created.
     # USAGE: store_lxc_artifacts <container_name> /change/to/dir pattern/to/collect /path/to/store
     CONTAINER_PID=$(sudo lxc-info -p -n ${1} | awk '{print $2}')
-    CONTAINER_COLLECT="/proc/${CONTAINER_PID}/root/${2}/${3}"
+    CONTAINER_COLLECT="/proc/${CONTAINER_PID}/root/${2}"
+    if [[ "${3}" != *"*"* ]]; then
+      # If the path doesn't contain a wildcard
+      CONTAINER_COLLECT+="/${3}"
+    fi
     if sudo test -e "${CONTAINER_COLLECT}"; then
       if [[ ! -d "${4}" ]]; then
           mkdir -vp "${4}"
       fi
       echo "Running container artifact sync on ${1} collecting ${3} from dir ${2} to ${4}"
-      sudo lxc-attach -q -n ${1} -- /bin/bash -c "tar --dereference -c -f - -C ${2} ${3} 2>/dev/null | cat" | tar -C ${4} -x 2>/dev/null
+      sudo lxc-attach -q -n ${1} -- /bin/bash -c "cd ${2} && tar --dereference -c -f - ${3} 2>/dev/null | cat" | tar -C ${4} -x 2>/dev/null
     fi
 }
 
+
 function store_artifacts {
     # Store known artifacts only if they exist. If the target directory does
-    # exist, it will be created.
-    # USAGE: store_artifacts /src/to/artifacts /path/to/store
+    # exist, it will be created. Optionally includes an rsync include filter
+    # USAGE: store_artifacts /src/to/artifacts/ /path/to/store *.txt
+    if [[ ! -z "${3}" ]]; then
+        INCLUDE="${3}"
+    else
+        INCLUDE="*"
+    fi
     if sudo test -e "${1}"; then
         if [[ ! -d "${2}" ]]; then
             mkdir -vp "${2}"
         fi
-        echo "Running artifact sync for \"${1}\" to \"${2}\""
-        sudo ${RSYNC_CMD} ${1} ${2} || true
+        echo "Running artifact sync for \"${1}\" to \"${2}\" with filter \"${INCLUDE}\""
+        sudo ${RSYNC_CMD} --include "*/" --include "${INCLUDE}" --exclude "*" --prune-empty-dirs ${1} ${2} || true
     fi
 }
 
@@ -166,20 +180,28 @@ store_artifacts "${TESTING_HOME}/.ara/server/ansible.sqlite" "${WORKING_DIR}/log
 # Store netstat report
 store_artifacts /tmp/listening_port_report.txt "${WORKING_DIR}/logs/host"
 
-# Copy the repo os-releases *.txt files
-# container path
-store_artifacts /openstack/*repo*/repo/os-releases/*/*/*.txt "${WORKING_DIR}/repo"
+# Store instance console logs
+store_artifacts /var/lib/nova/instances/ "${WORKING_DIR}/logs/host/instances" "*.log"
 
+export -f store_artifacts
+export -f store_lxc_artifacts
+
+# Copy constraints and requirements txt files from virtualenvs
 # metal path
-store_artifacts /var/www/repo/os-releases/*/*/*.txt "${WORKING_DIR}/repo"
+IFS=' ' read -a BUILD_FILES <<< "$COMMON_BUILD_FILES"
+parallel store_artifacts /openstack/venvs/ ${WORKING_DIR}/logs/host/venvs {1} ::: "${BUILD_FILES[@]}"
+
+# container path
+if command -v lxc-ls &> /dev/null; then
+  export CONTAINER_NAMES=$(sudo lxc-ls -1)
+  parallel store_lxc_artifacts {1} /openstack/venvs/ */{2} ${WORKING_DIR}/logs/openstack/{1}/venvs ::: "${CONTAINER_NAMES[@]}" ::: "${BUILD_FILES[@]}"
+fi
 
 # Gather container etc artifacts
-export -f store_artifacts
 IFS=' ' read -a ETC_LOG_NAMES <<< "$COMMON_ETC_LOG_NAMES"
 parallel store_artifacts /etc/{1} ${WORKING_DIR}/logs/etc/host ::: "${ETC_LOG_NAMES[@]}"
 
 # Gather container etc artifacts
-export -f store_lxc_artifacts
 if command -v lxc-ls &> /dev/null; then
   export CONTAINER_NAMES=$(sudo lxc-ls -1)
   parallel store_lxc_artifacts {1} /etc/ {2} ${WORKING_DIR}/logs/etc/openstack/{1} ::: "${CONTAINER_NAMES[@]}" ::: "${ETC_LOG_NAMES[@]}"
