@@ -1,0 +1,9 @@
+---
+cluster-api_hosts:
+  aio1:
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
+{% if 'k8sHA' in bootstrap_host_scenarios_expanded %}
+    affinity:
+      k8s_container: 3
+{% endif %}
