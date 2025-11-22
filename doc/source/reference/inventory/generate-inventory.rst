@@ -152,8 +152,7 @@ tox.ini file in that directory with following content:
       bash
 
   [testenv:generate_inventory]
-  basepython = python3
-  deps = -rhttps://opendev.org/openstack/openstack-ansible/raw/branch/master/requirements.txt
+  deps = -r https://opendev.org/openstack/openstack-ansible/raw/branch/master/requirements.txt
   install_command =
       pip install -c https://releases.openstack.org/constraints/upper/master {packages} -e git+https://opendev.org/openstack/openstack-ansible@master\#egg=openstack-ansible
   commands =
