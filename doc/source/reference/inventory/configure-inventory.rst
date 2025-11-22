@@ -256,13 +256,13 @@ In order to achieve that we need:
      container_skel:
        az1_containers:
          properties:
-           is_nest: True
+           is_nest: true
        az2_containers:
          properties:
-           is_nest: True
+           is_nest: true
        az3_containers:
          properties:
-           is_nest: True
+           is_nest: true
 
 #. Now you can leverage ``group_vars`` file to apply a variable to all
    containers and bare metal hosts in AZ.
@@ -273,7 +273,6 @@ In order to achieve that we need:
      ---
      az_name: az1
      cinder_storage_availability_zone: "{{ az_name }}"
-
 
 Deploying with no component type per host (or more than one)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,7 +338,6 @@ To omit a component from a deployment, you can use one of several options:
   to 0 for the host group. Similar to the second option listed here, Unless
   you specify the component to run directly on a host by using the ``is_metal``
   property, a container is created for this component.
-
 
 Having SSH network different from OpenStack Management network
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

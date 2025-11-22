@@ -69,7 +69,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
    .. code:: yaml
 
      [scheduler]
-     image_metadata_prefilter = True
+     image_metadata_prefilter = true
 
      [filter_scheduler]
      image_properties_default_architecture = x86_64

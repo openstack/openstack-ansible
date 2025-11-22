@@ -4,7 +4,6 @@ Running as non-root user
 Deployers do not have to use ``root`` user accounts on deploy or target hosts.
 This approach works out of the box by leveraging `Ansible privilege escalation`_.
 
-
 Deployment hosts
 ~~~~~~~~~~~~~~~~
 
@@ -41,7 +40,6 @@ guidelines:
    script still should be done either as the ``root`` user or escalate
    privileges using ``sudo`` or ``su``.
 
-
 Destination hosts
 ~~~~~~~~~~~~~~~~~
 
@@ -62,8 +60,7 @@ There are also couple of additional things which you might want to consider:
 
     .. code-block:: shell-session
 
-      export ANSIBLE_BECOME="True"
-
+      export ANSIBLE_BECOME="true"
 
 #. Override Ansible temporary path if LXC containers are used. The ansible
    connection from the physical host to the LXC container passes

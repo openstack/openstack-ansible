@@ -169,7 +169,7 @@
 #
 #     Level: storage_policies (required)
 #     Contains storage policies. Minimum one policy. One policy must include
-#     the 'index: 0' and 'default: True' options.
+#     the 'index: 0' and 'default: true' options.
 #
 #       Level: policy (required)
 #       Contains a storage policy. Define for each policy.
@@ -204,7 +204,7 @@
 #
 #         Option: default (conditionally required, boolean)
 #         Defines the default policy. One policy must include this option
-#         with a 'True' value.
+#         with a 'true' value.
 #
 #         Option: deprecated (optional, boolean)
 #         Defines a deprecated policy.
@@ -228,12 +228,12 @@
 #      - policy:
 #         name: gold
 #         index: 0
-#         default: True
+#         default: true
 #     - policy:
 #         name: silver
 #         index: 1
 #         repl_number: 3
-#         deprecated: True
+#         deprecated: true
 #     - policy:
 #         name: ec10-4
 #         index: 2

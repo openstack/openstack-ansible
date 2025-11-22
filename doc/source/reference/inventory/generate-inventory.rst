@@ -121,7 +121,7 @@ This check does not do YAML syntax validation, though it will fail if there
 are unparseable errors.
 
 Writing debug logs
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 The ``--debug/-d`` parameter allows writing of a detailed log file for
 debugging the inventory script's behavior. The output is written to
@@ -130,7 +130,6 @@ debugging the inventory script's behavior. The output is written to
 The ``inventory.log`` file is appended to, not overwritten.
 
 Like ``--check``, this flag is not invoked when running from ansible.
-
 
 Running with tox
 ~~~~~~~~~~~~~~~~
@@ -146,8 +145,8 @@ tox.ini file in that directory with following content:
   envlist = generate_inventory
 
   [testenv]
-  skip_install = True
-  usedevelop = True
+  skip_install = true
+  usedevelop = true
   allowlist_externals =
       bash
 

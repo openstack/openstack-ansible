@@ -250,7 +250,7 @@ http-01 challenge requests.
 .. code-block:: shell-session
 
     haproxy_ssl: true
-    haproxy_ssl_letsencrypt_enable: True
+    haproxy_ssl_letsencrypt_enable: true
     haproxy_ssl_letsencrypt_email: "email.address@example.com"
 
 TLS for HAProxy Internal Virtual IP (VIP)
@@ -299,14 +299,14 @@ following variable:
 
 .. code-block:: yaml
 
-    openstack_service_backend_ssl: True
+    openstack_service_backend_ssl: true
 
 There is also an option to enable it only for individual services:
 
 .. code-block:: yaml
 
-    keystone_backend_ssl: True
-    neutron_backend_ssl: True
+    keystone_backend_ssl: true
+    neutron_backend_ssl: true
 
 By default, self-signed certificates will be used to secure traffic but
 user-provided certificates are also supported.
