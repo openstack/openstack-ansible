@@ -102,7 +102,7 @@ It will be used to populate ``network_mappings`` for Neutron.
 
 The ``network_interface`` override is used for Open vSwitch and OVN-based deployments,
 and requires a physical interface name which will be connected to the provider bridge
-(ie. br-ex) for flat and vlan-based provider and tenant network traffic.
+(ie. br-ex) for flat and vlan-based provider and project network traffic.
 
 The following diagrams reflect the differences in the virtual network layout for
 supported network architectures.

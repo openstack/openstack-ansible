@@ -15,7 +15,7 @@ the OpenStack API and dashboard, as an administrator.
 
       $ lxc-attach -n `lxc-ls -1 | grep utility | head -n 1`
 
-#. Source the ``admin`` tenant credentials:
+#. Source the ``admin`` project credentials:
 
    .. code::
 
