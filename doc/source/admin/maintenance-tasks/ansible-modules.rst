@@ -102,12 +102,10 @@ locally in a file tree, organized by the hostname.
 
     This module transfers log files that might not be present, so a missing
     remote file will not be an error unless ``fail_on_missing`` is set to
-    ``yes``.
-
+    ``true``.
 
 The following examples shows the :file:`nova-compute.log` file being pulled
 from a single Compute host:
-
 
 .. code-block:: console
 
