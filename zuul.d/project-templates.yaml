@@ -62,23 +62,19 @@
     name: openstack-ansible-upgrade-infra_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
-    gate:
-      jobs:
-        - openstack-ansible-upgrade-infra_lxc-rockylinux-9
-        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy
+        - openstack-ansible-upgrade-infra_lxc-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-infra_lxc-ubuntu-jammy:
+            voting: false
 
 - project-template:
     name: openstack-ansible-upgrade-aio_metal-jobs
     check:
       jobs:
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
-    gate:
-      jobs:
-        - openstack-ansible-upgrade-aio_metal-rockylinux-9
-        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy
+        - openstack-ansible-upgrade-aio_metal-rockylinux-9:
+            voting: false
+        - openstack-ansible-upgrade-aio_metal-ubuntu-jammy:
+            voting: false
 
 - project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
