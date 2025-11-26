@@ -122,12 +122,12 @@ It will be used to populate ``network_mappings`` for Neutron.
 
 The ``network_interface`` override is used for Open vSwitch and OVN-based deployments,
 and requires a physical interface name which will be connected to the provider bridge
-(ie. br-ex) for flat and vlan-based provider and tenant network traffic.
+(ie. br-ex) for flat and vlan-based provider and project network traffic.
 
 .. note::
 
     Previous versions of OpenStack-Ansible utilized a bridge named ``br-vlan`` for
-    flat and vlan-based provider and tenant network traffic. The ``br-vlan`` bridge
+    flat and vlan-based provider and project network traffic. The ``br-vlan`` bridge
     is a leftover of containerized Neutron agents and is no longer useful or
     recommended.
 
