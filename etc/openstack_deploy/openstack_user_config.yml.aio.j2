@@ -99,7 +99,11 @@ global_overrides:
         type: "flat"
         net_name: "dbaas-mgmt"
         group_binds:
+{% if 'ovs' in bootstrap_host_scenarios_expanded %}
+          - neutron_openvswitch_agent
+{% else %}
           - neutron_ovn_gateway
+{% endif %}
           - rabbitmq
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
@@ -112,7 +116,11 @@ global_overrides:
         type: "flat"
         net_name: "lbaas"
         group_binds:
+{% if 'ovs' in bootstrap_host_scenarios_expanded %}
+          - neutron_openvswitch_agent
+{% else %}
           - neutron_ovn_gateway
+{% endif %}
           - octavia-worker
           - octavia-housekeeping
           - octavia-health-manager
