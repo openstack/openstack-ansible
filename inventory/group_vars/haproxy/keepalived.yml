@@ -74,4 +74,4 @@ _keepalived_default_instances:
       - "{{ haproxy_keepalived_internal_vip_cidr | default('169.254.2.1/24') }} dev {{ haproxy_keepalived_internal_interface | default(management_bridge) }}"
     track_scripts: "{{ keepalived_scripts | dict2items | json_query('[*].{name: key, instance: value.instance}') | rejectattr('instance', 'equalto', 'external') | map(attribute='name') | list }}"
 
-keepalived_instances: "{{ _keepalived_default_instances | combine(keepalived_instances_overrides | default({}), recursive=True) }}"
+keepalived_instances: "{{ _keepalived_default_instances | combine(keepalived_instances_overrides | default({}), recursive=true) }}"

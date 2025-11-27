@@ -33,7 +33,7 @@ global_overrides:
         is_management_address: true
     #
     # The below provider network defines details related to overlay traffic,
-    # including the range of VXLAN VNIs to assign to project/tenant networks
+    # including the range of VXLAN VNIs to assign to project networks
     # and other attributes.
     #
     - network:
@@ -49,9 +49,9 @@ global_overrides:
     #
     # The below provider network define details related to a given provider
     # network: physnet1. Details include the name of the veth interface to
-    # connect to the bridge when agent on_metal is False (container_interface)
+    # connect to the bridge when agent on_metal is false (container_interface)
     # or the physical interface to connect to the bridge when agent on_metal
-    # is True (host_bind_override), as well as the network type. The provider
+    # is true (host_bind_override), as well as the network type. The provider
     # network name (net_name) will be used to build a physical network mapping
     # to a network interface using either container_interface or
     # host_bind_override (when defined).
@@ -99,7 +99,7 @@ shared_infra_hosts:
   infra3:
     ip: 172.29.236.13
 
-# repository (apt cache, python packages, etc)
+# repository (apt or dnf cache, python packages, etc)
 repo_infra_hosts:
   infra1:
     ip: 172.29.236.11

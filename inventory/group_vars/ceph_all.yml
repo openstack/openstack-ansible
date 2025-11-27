@@ -32,21 +32,21 @@ ceph_conf_overrides_manila:
 # To extend ceph_conf_overrides use the ceph_conf_overrides_custom which will
 # combine any ceph_conf_overrides with other RGW specific overrides.
 ceph_conf_overrides_custom: {}
-ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_conf_overrides_manila, recursive=True) | combine(ceph_conf_overrides_custom, recursive=True) | combine(ceph_conf_overrides_log, recursive=True) }}"
+ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_conf_overrides_manila, recursive=true) | combine(ceph_conf_overrides_custom, recursive=true) | combine(ceph_conf_overrides_log, recursive=true) }}"
 
 # Disable the NFS gateway PPA and package install by default as it is not
 # needed.
 nfs_file_gw: "{{ (('ceph_nfs' in groups) and ('ceph_mds' in groups)) }}"
-nfs_obj_gw: False
-nfs_ganesha_stable: True
+nfs_obj_gw: false
+nfs_ganesha_stable: true
 nfs_ganesha_stable_deb_repo: http://ppa.launchpad.net/nfs-ganesha/nfs-ganesha-5/ubuntu
 libntirpc_stable_deb_repo: http://ppa.launchpad.net/nfs-ganesha/libntirpc-5/ubuntu
 
 # NTP in an OSA environment is handled by ansible-hardening using chrony
 # ceph-ansible's default enabling of ntpd conflicts with the OSA defaults
-ntp_service_enabled: False
+ntp_service_enabled: false
 
-dashboard_enabled: True
+dashboard_enabled: true
 
 openstack_glance_pool:
   name: "images"

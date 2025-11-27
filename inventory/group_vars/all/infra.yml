@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-## Rabbit options
+## RabbitMQ options
 rabbitmq_host_group: "rabbitmq_all"
 rabbitmq_port: "{{ (rabbitmq_use_ssl | bool) | ternary(5671, 5672) }}"
 
-rabbitmq_use_ssl: True
+rabbitmq_use_ssl: true
 rabbitmq_servers: >-
   {{
     groups[rabbitmq_host_group]
@@ -25,8 +25,8 @@ rabbitmq_servers: >-
       | list | join(',')
   }}
 
-# If you do not want to use quorum queues, set rabbitmq_queue_replication to False
-rabbitmq_queue_replication: True
+# If you do not want to use quorum queues, set rabbitmq_queue_replication to false
+rabbitmq_queue_replication: true
 
 rabbitmq_policies:
   - name: CQv2
@@ -36,7 +36,7 @@ rabbitmq_policies:
       queue-version: 2
     state: >-
       {{
-        ((oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
+        ((oslomsg_rabbit_quorum_queues | default(true) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
           ) | ternary('present', 'absent')
       }}
 # The following is an example of an additional policy which applies to fanout/stream queues only
@@ -52,7 +52,7 @@ rabbitmq_policies:
 #      stream-max-segment-size-bytes: 1000000
 #    state: >-
 #      {{
-#        ((oslomsg_rabbit_quorum_queues | default(True) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
+#        ((oslomsg_rabbit_quorum_queues | default(true) or not rabbitmq_queue_replication) and rabbitmq_install_method | default('') != 'distro'
 #          ) | ternary('present', 'absent')
 #      }}
 

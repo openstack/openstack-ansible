@@ -37,7 +37,7 @@ cinder_storage_availability_zone: "{{ az_name }}"
 
 # Glance to use Swift as a backend
 glance_default_store: swift
-glance_use_uwsgi: False
+glance_use_uwsgi: false
 
 # Neutron variables
 neutron_availability_zone: "{{ az_name }}"
@@ -45,7 +45,7 @@ neutron_default_availability_zones:
   - az1
   - az2
   - az3
-neutron_ovn_distributed_fip: True
+neutron_ovn_distributed_fip: true
 neutron_plugin_type: ml2.ovn
 neutron_plugin_base:
   - ovn-router
@@ -61,7 +61,7 @@ neutron_provider_networks:
   network_interface_mappings: "br-vlan:bond0"
 
 # Nova variables
-nova_cinder_rbd_inuse: True
+nova_cinder_rbd_inuse: true
 nova_glance_rbd_inuse: false
 nova_libvirt_images_rbd_pool: ""
 nova_libvirt_disk_cachemodes: network=writeback,file=directsync
