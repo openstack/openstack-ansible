@@ -44,7 +44,7 @@
         SETUP_ARA: 'true'
       when:
         - "'upgrade' not in action"
-        - osa_pre_run_bootstrap | default(True)
+        - osa_pre_run_bootstrap | default(true)
 
     - name: Run bootstrap-aio script # noqa: no-changed-when
       become: true
@@ -64,4 +64,4 @@
         - "'upgrade' not in action"
         - action != 'linters'
         - action != 'shastest'
-        - osa_pre_run_bootstrap | default(True)
+        - osa_pre_run_bootstrap | default(true)
