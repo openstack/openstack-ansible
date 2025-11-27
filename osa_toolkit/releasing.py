@@ -401,34 +401,43 @@ def update_ansible_role_requirements_file(
         # Do not freeze sha if trackbranch is None
         if trackbranch:
             try:
-                role_repo = clone_role(
-                   role["src"], clone_root_path, branch=trackbranch, depth="1"
-                )
                 if milestone_unfreeze:
                     print(f"Unfreeze {trackbranch} role")
                     role["version"] = trackbranch
+                    continue
                 # Do nothing when trackbranch and version are same and not freezing
                 elif trackbranch == role.get("version") and not milestone_freeze:
                     print("Version and trackbranch equal, skipping...")
-                    pass
-                # Freeze or Bump
-                else:
-                    role_head = role_repo.head.object
-                    role["version"] = str(role_head)
-                    print(f"Bumped role {role['name']} to sha {role['version']}")
+                    continue
 
-                    if shallow_since:
-                        head_timestamp = role_head.committed_datetime
-                        head_datetime = head_timestamp - timedelta(days=1)
-                        role["shallow_since"] = head_datetime.strftime('%Y-%m-%d')
+                role_head_sha = get_sha_from_ref(role["src"], trackbranch)
+                role["version"] = role_head_sha
+                print(f"Bumped role {role['name']} to sha {role['version']}")
 
                 # Copy the release notes `Also handle the release notes
                 # If frozen, no need to copy release notes.
-                if copyreleasenotes:
-                    print("Copying %s's release notes" % role["name"])
-                    copy_role_releasenotes(role_repo.working_dir, "./")
-            finally:
-                shutil.rmtree(role_repo.working_dir)
+                if copyreleasenotes or shallow_since:
+                    role_repo = clone_role(
+                        role["src"],
+                        clone_root_path,
+                        branch=role_head_sha,
+                        track_branch=trackbranch,
+                        depth="1"
+                    )
+                    if copyreleasenotes:
+                        print("Copying %s's release notes" % role["name"])
+                        copy_role_releasenotes(role_repo.working_dir, "./")
+                    if shallow_since:
+                        role_head = role_repo.head.object
+                        head_timestamp = role_head.committed_datetime
+                        head_datetime = head_timestamp - timedelta(days=1)
+                        role["shallow_since"] = head_datetime.strftime('%Y-%m-%d')
+                    shutil.rmtree(role_repo.working_dir)
+            except Exception:
+                # Cleanup in case of error
+                if os.path.isdir(clone_root_path):
+                    shutil.rmtree(clone_root_path)
+                raise
 
     shutil.rmtree(clone_root_path)
     print("Overwriting ansible-role-requirements")
@@ -485,22 +494,26 @@ def sort_roles(ansible_role_requirements_file):
     return openstack_roles, external_roles, all_roles
 
 
-def clone_role(url, clone_root_path, branch=None, clone_folder=None, depth=None):
+def clone_role(url, clone_root_path, branch=None, track_branch=None, clone_folder=None, depth=None):
     """ Git clone
     :param url: Source of the git repo
-    :param branch: Branch of the git repo
+    :param branch: Branch or SHA to checkout.
+    :param track_branch: The branch to track for the initial shallow clone.
     :param clone_root_path: The main folder in which the repo will be cloned.
     :param clone_folder: The relative folder name of the git clone to the clone_root_path
     :param depth(str): The git shallow clone depth
     :returns: dulwich repository object
     """
     gitargs = {}
+    # For the initial clone, we use the track_branch if available, as cloning
+    # a specific SHA might fail on a shallow clone.
+    clone_branch = track_branch or branch
 
-    if depth and depth.isdigit():
+    if depth and str(depth).isdigit():
         gitargs.update({"depth": depth, "no-single-branch": True})
 
-    if branch:
-        gitargs.update({"branch": branch})
+    if clone_branch:
+        gitargs.update({"branch": clone_branch})
 
     if not clone_folder:
         clone_folder = url.split("/")[-1]
@@ -508,6 +521,14 @@ def clone_role(url, clone_root_path, branch=None, clone_folder=None, depth=None)
 
     print(f'Clonning {url} to {dirpath}')
     repo = Repo.clone_from(url, dirpath, **gitargs)
+
+    # If a specific commit SHA was requested and it's not what we have,
+    # fetch it and check it out. This ensures we are on the exact commit.
+    if branch and branch != repo.head.commit.hexsha:
+        print(f'Fetching and checking out specific SHA {branch}')
+        repo.git.fetch('origin', branch)
+        repo.git.checkout(branch)
+
     return repo
 
 
