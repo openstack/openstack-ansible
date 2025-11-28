@@ -24,6 +24,16 @@ nova_novncproxy_port: 6080
 nova_serialconsoleproxy_port: 6083
 
 # Default nova console proxy types
-nova_console_proxy_types:
-  - "{{ nova_console_type | default((ansible_facts['architecture'] == 'aarch64') | ternary('serialconsole', 'novnc')) }}"
-  - "{{ ironic_console_type }}"
+nova_console_type_mapping:
+  x86_64: "{{ nova_console_type | default('novnc') }}"
+  ppc64le: novnc
+  aarch64: serialconsole
+  disabled: disabled
+
+nova_console_proxy_types: |
+  {% set _console_types = [ironic_console_type] %}
+  {% set _compute_arch_list = groups['nova_compute'] | map('extract', hostvars, ['ansible_facts', 'architecture']) | map('default', 'disabled') %}
+  {% for arch in _compute_arch_list | unique %}
+  {%   set _ = _console_types.append(nova_console_type_mapping[arch]) %}
+  {% endfor %}
+  {{ _console_types | unique }}
