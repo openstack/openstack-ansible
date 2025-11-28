@@ -4,6 +4,52 @@
 Code rules
 ==========
 
+Project repositories
+====================
+
+The OpenStack-Ansible project has different kinds of git repositories,
+each of them with specific use cases, and different sets of practices.
+
+.. list-table::
+   :header-rows: 1
+
+   * - Repository type or name
+     - Code location
+     - Repository purpose
+   * - | **OpenStack-Ansible**
+       | Also called *integrated repository*
+     - * https://opendev.org/openstack/openstack-ansible
+     - Our main repository, used by deployers.
+       Uses the other repositories.
+   * - | The **OpenStack-Ansible roles** repositories
+     - * https://opendev.org/openstack/openstack-ansible-os_nova
+       * https://opendev.org/openstack/openstack-ansible-os_glance
+       * https://opendev.org/openstack/ansible-role-systemd_mount
+       * https://opendev.org/openstack/ansible-config_template
+       * https://opendev.org/openstack/ansible-hardening
+       * ...
+     - Each role is in charge of deploying **exactly one**
+       component of an OpenStack-Ansible deployment.
+   * - | The **specs** repository
+     - * https://opendev.org/openstack/openstack-ansible-specs
+     - This repository contains all the information concerning
+       large bodies of work done in OpenStack-Ansible,
+       split by cycle.
+   * - | The **ops** repository
+     - * https://opendev.org/openstack/openstack-ansible-ops
+     - This repository is an incubator for new projects, each project
+       solving a particular operational problem. Each project has its
+       own folder in this repository.
+   * - | External repositories
+     - * https://github.com/ceph/ceph-ansible
+       * https://github.com/logan2211/ansible-resolvconf
+       * https://github.com/evrardjp/ansible-keepalived
+       * ...
+     - OpenStack-Ansible is not re-inventing the wheel, and tries to
+       reuse as much as possible existing roles. A bugfix for one of
+       those repositories must be handled to these repositories'
+       maintainers.
+
 .. _codeguidelines:
 
 General Guidelines for Submitting Code
@@ -170,10 +216,47 @@ submitted with patches:
   section. Note that if a variable has been removed entirely then it has not
   been deprecated and the removal should be noted in the ``upgrade`` section.
 
+.. _backport:
+
+Backporting
+===========
+
+* Backporting is defined as the act of reproducing a change from another
+  branch. Unclean/squashed/modified cherry-picks and complete
+  reimplementations are OK.
+* Backporting is often done by using the same code (via cherry picking), but
+  this is not always the case. This method is preferred when the cherry-pick
+  provides a complete solution for the targeted problem.
+* When cherry-picking a commit from one branch to another the commit message
+  should be amended with any files that may have been in conflict while
+  performing the cherry-pick operation. Additionally, cherry-pick commit
+  messages should contain the original commit *SHA* near the bottom of the new
+  commit message. This can be done with ``cherry-pick -x``. Here's more
+  information on `Submitting a change to a branch for review`_.
+* Every backport commit must still only solve one problem, as per the
+  guidelines in :ref:`codeguidelines`.
+* If a backport is a squashed set of cherry-picked commits, the original SHAs
+  should be referenced in the commit message and the reason for squashing the
+  commits should be clearly explained.
+* When a cherry-pick is modified in any way, the changes made and the reasons
+  for them must be explicitly expressed in the commit message.
+* Refactoring work must not be backported to a "released" branch.
+* Backport reviews should be done with due consideration to the effect of the
+  patch on any existing environment deployed by OpenStack-Ansible. The general
+  `OpenStack Guidelines for stable branches`_ can be used as a reference.
+
+.. _Submitting a change to a branch for review: https://www.mediawiki.org/wiki/Gerrit/Advanced_usage#Submitting_a_change_to_a_branch_for_review_.28.22backporting.22.29
+.. _OpenStack Guidelines for stable branches: https://docs.openstack.org/project-team-guide/stable-branches.html
+
+.. _newfeatures:
+
+Working on new features
+=======================
+
 .. _specs:
 
 Submitting a specification
-==========================
+--------------------------
 
 By proposing a draft spec you can help the OpenStack-Ansible
 community keep track of what roles or large changes are being developed,
@@ -188,6 +271,97 @@ However, to help you in the writing of the specification, we have a
 name folder. Rename and edit it for your needs.
 
 .. _specification template: https://opendev.org/openstack/openstack-ansible-specs/src/specs/templates/template.rst
+
+Example process to develop a new role
+-------------------------------------
+
+Here are the steps to write the role:
+
+#. You can review roles which may be currently in development by checking our
+   `specs repository`_ and `unmerged specs`_ on review.openstack.org. If you
+   do not find a spec for the role, propose a blueprint/spec.
+   See also :ref:`specs`.
+#. Create a source repository (e.g. on Github) to start your work on the Role.
+#. Generate the reference directory structure for an Ansible role which is
+   the necessary subset of the documented `Best Practice`_. You might use
+   Ansible Galaxy tools to do this for you (e.g. ``ansible-galaxy init``).
+   You may additionally want to include directories such as ``docs`` and
+   ``examples`` and ``tests`` for your role.
+#. Generate a meta/main.yml right away. This file is important to Ansible to
+   ensure your dependent roles are installed and available and provides others
+   with the information they will need to understand the purpose of your role.
+
+#. Develop task files for each of the install stages in turn, creating any
+   handlers and templates as needed. Ensure that you notify handlers after any
+   task which impacts the way the service would run (such as configuration
+   file modifications). Also take care that file ownership and permissions are
+   appropriate.
+
+   .. HINT:: Fill in variable defaults, libraries, and prerequisites as you
+      discover a need for them. You can also develop documentation for your
+      role at the same time.
+
+#. Add tests to the role. See also our :ref:`tests` page.
+#. Ensuring the role matches OpenStack-Ansible's latest standards.
+   See also our :ref:`code_rules` page.
+#. Ensure the role converges:
+
+   * Deploy the applicable configuration files in the right places.
+   * Ensure that the service starts.
+
+   The convergence may involve consuming other OpenStack-Ansible roles
+   (For example: **galera_server, python_venv_build, rabbitmq_server,
+   systemd_service, openstack.osa.db_setup**)
+   in order to ensure that the appropriate infrastructure is in place.
+   Re-using existing roles in OpenStack-Ansible or Ansible Galaxy is
+   strongly encouraged.
+#. Once the initial convergence is working and the services are running,
+   the role development should focus on implementing some level of
+   functional testing. See also :ref:`tempest-testing`.
+#. Test the role on a new machine, using our provided scripts.
+#. Submit your role for review.
+#. If required, ask the OpenStack-Ansible PTL to import the GitHub
+   role into the openstack-ansible namespace (This can only be done
+   early in the development cycle, and may be postponed to next
+   cycle).
+#. If necessary, work on the integration within the
+   openstack-ansible integrated repository, and deploy
+   the role on an AIO. See also :ref:`integrate-new-role-with-aio`.
+
+.. _specs repository: https://opendev.org/openstack/openstack-ansible-specs
+.. _unmerged specs: https://review.opendev.org/#/q/status:+open+project:openstack/openstack-ansible-specs
+.. _Best Practice: https://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout
+
+
+Example process for adding a feature to an existing role
+--------------------------------------------------------
+
+#. Search for in the `OpenStack-Ansible Launchpad project`_ for
+   the feature request.
+#. If no "Wishlist" item exist in Launchpad for your feature, create
+   a bug for it. Don't hesitate to ask if a spec is required in
+   the bug.
+#. Work on the role files, following our :ref:`code_rules`.
+#. Add an extra role test scenario, to ensure your code path is
+   tested and working.
+#. Test your new scenario with a new machine.
+   See also the :ref:`devel_and_testing` page.
+#. Submit your code for review, with its necessary documentation and
+   release notes.
+
+.. _OpenStack-Ansible Launchpad project: https://bugs.launchpad.net/openstack-ansible
+
+
+Example process to incubate a new "ops" project
+-----------------------------------------------
+
+A new project in "openstack-ansible-ops" can be started at any time,
+with no constraint like writing a specification, or creating a bug.
+
+Instead, the new code has to be isolated on a separate folder of the
+`openstack-ansible-ops repo`_.
+
+.. _openstack-ansible-ops repo: https://opendev.org/openstack/openstack-ansible-ops
 
 .. _Ansible Style Guide:
 
@@ -369,4 +543,4 @@ to simulate a multi-node build out as part of the testing infrastructure.
 Minimum supported distributions
 -------------------------------
 
-See our :ref:`supported-distros` page.
+See our :ref:`compatibility-matrix` page.

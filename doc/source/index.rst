@@ -25,5 +25,4 @@ Support status for each OpenStack release can be found on `releases.openstack.or
    admin/index
    user/index
    reference/index
-   contributors/contributing
    contributors/index
