@@ -163,41 +163,41 @@ aio_systemd_networkd_networks_bootstrap:
 aio_systemd_services_postnetwork:
   - service_name: "networking-post-up"
     config_overrides:
-        Unit:
+      Unit:
         Description: networking-post-up
         After: network-online.target
         Wants: network-online.target
-        Service:
+      Service:
         RemainAfterExit: true
     service_type: oneshot
     execstarts:
-        - "-{{ bootstrap_host_iptables_path }} -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-mgmt gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-vxlan gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-storage gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ethtool_path }} -K br-vlan gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ip_path }} link set eth12 up"
-        - "-{{ bootstrap_host_ip_path }} link set br-vlan-veth up"
-        - "-{{ bootstrap_host_ethtool_path }} -K eth12 gso off sg off tso off tx off"
+      - "{{ bootstrap_host_iptables_path }} -t nat -A POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
+      - "{{ bootstrap_host_ethtool_path }} -K br-mgmt gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-vxlan gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-storage gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-vlan gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ip_path }} link set eth12 up"
+      - "{{ bootstrap_host_ip_path }} link set br-vlan-veth up"
+      - "{{ bootstrap_host_ethtool_path }} -K eth12 gso off sg off tso off tx off"
 {% if 'trove' in bootstrap_host_scenarios_expanded %}
-        - "-{{ bootstrap_host_ethtool_path }} -K br-dbaas gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ip_path }} link set eth13 up"
-        - "-{{ bootstrap_host_ip_path }} link set br-dbaas-veth up"
-        - "-{{ bootstrap_host_ethtool_path }} -K eth13 gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-dbaas gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ip_path }} link set eth13 up"
+      - "{{ bootstrap_host_ip_path }} link set br-dbaas-veth up"
+      - "{{ bootstrap_host_ethtool_path }} -K eth13 gso off sg off tso off tx off"
 {% endif %}
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-        - "-{{ bootstrap_host_ethtool_path }} -K br-lbaas gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ip_path }} link set eth14 up"
-        - "-{{ bootstrap_host_ip_path }} link set br-lbaas-veth up"
-        - "-{{ bootstrap_host_ethtool_path }} -K eth14 gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-lbaas gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ip_path }} link set eth14 up"
+      - "{{ bootstrap_host_ip_path }} link set br-lbaas-veth up"
+      - "{{ bootstrap_host_ethtool_path }} -K eth14 gso off sg off tso off tx off"
 {% endif %}
 {% if 'ironic' in bootstrap_host_scenarios_expanded %}
-        - "-{{ bootstrap_host_ethtool_path }} -K br-bmaas gso off sg off tso off tx off"
-        - "-{{ bootstrap_host_ip_path }} link set eth15 up"
-        - "-{{ bootstrap_host_ip_path }} link set br-bmaas-veth up"
-        - "-{{ bootstrap_host_ethtool_path }} -K eth15 gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ethtool_path }} -K br-bmaas gso off sg off tso off tx off"
+      - "{{ bootstrap_host_ip_path }} link set eth15 up"
+      - "{{ bootstrap_host_ip_path }} link set br-bmaas-veth up"
+      - "{{ bootstrap_host_ethtool_path }} -K eth15 gso off sg off tso off tx off"
 {% endif %}
     execstops:
-        - "{{ bootstrap_host_iptables_path }} -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
+      - "{{ bootstrap_host_iptables_path }} -t nat -D POSTROUTING -o {{ bootstrap_host_public_interface }} -j MASQUERADE"
     enabled: true
     state: started
