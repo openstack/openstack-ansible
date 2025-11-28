@@ -49,7 +49,8 @@ Perform the following checks:
   on physical switches (if applicable)
 - Check that hosts are in the same IP subnet
   or have proper routing between them
-- Check there are no iptables applied to the hosts that would deny traffic
+- Check there are no firewall (firewalld, ufw, etc.) rules applied to the hosts
+  that would deny traffic
 
 IP addresses should be applied to physical interface, bond interface,
 tagged sub-interface, or in some cases the bridge interface:
@@ -75,7 +76,8 @@ Perform the following checks:
 - Check VLAN configurations and any necessary trunking to uplink ports
   on physical switches (if applicable)
 - Check that hosts are in the same subnet or have proper routing between them
-- Check there are no iptables applied to the hosts that would deny traffic
+- Check there are no firewall (firewalld, ufw, etc.) rules applied to the hosts
+  that would deny traffic
 - Check to verify that physical interface is in the bridge
 - Check to verify that veth-pair end from container is in ``br-mgmt``
 
@@ -138,7 +140,8 @@ Perform the following checks:
 - Check VLAN configurations and any necessary trunking to uplink ports
   on physical switches (if applicable)
 - Check that hosts are in the same subnet or have proper routing between them
-- Check there are no iptables applied to the hosts that would deny traffic
+- Check there are no firewall (firewalld, ufw, etc.) rules applied to the hosts
+  that would deny traffic
 - Check to verify that physcial interface is in the bridge
 - Check to verify that veth-pair end from container is in ``br-vxlan``
 
