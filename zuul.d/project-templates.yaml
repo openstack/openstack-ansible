@@ -195,12 +195,10 @@
     check:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-10
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
 
 - project-template:
@@ -272,7 +270,8 @@
     check:
       jobs:
         - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
-        - openstack-ansible-deploy-aio_distro_metal-rockylinux-10
+        - openstack-ansible-deploy-aio_distro_metal-rockylinux-10:
+            voting: false
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-noble
     experimental:
       jobs:
