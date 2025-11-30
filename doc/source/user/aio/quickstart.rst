@@ -70,7 +70,7 @@ system packages are upgraded and then reboot into the new kernel:
 
 .. code-block:: shell-session
 
-   ## CentOS Stream / Rocky Linux
+   ## CentOS Stream / Rocky Linux / AlmaLinux
    # dnf upgrade
    # dnf install git-core
    # systemctl stop firewalld
@@ -82,7 +82,8 @@ system packages are upgraded and then reboot into the new kernel:
    Before rebooting, in ``/etc/sysconfig/selinux``, make sure that
    ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
    SELinux enabled is not currently supported in OpenStack-Ansible
-   for CentOS Stream or Rocky Linux due to a lack of maintainers for the feature.
+   for CentOS Stream, Rocky Linux or AlmaLinux due to a lack of
+   maintainers for the feature.
 
 .. note::
 
@@ -122,7 +123,8 @@ version.
 .. note::
    The |current_release_formal_name| release is only compatible with
    Debian 12 (bookworm), Debian 13 (trixie), Ubuntu 24.04 (Noble Numbat),
-   CentOS 10 Stream and derivatives of RHEL 10 such as Rocky Linux.
+   CentOS 10 Stream and derivatives of RHEL 10 such as Rocky Linux
+   or AlmaLinux.
 
 The next step is to bootstrap Ansible and the Ansible roles for the
 development environment.
