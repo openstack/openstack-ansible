@@ -66,11 +66,11 @@ ssh_key_create
 determine_distro
 
 # Install the python interpreters
-case ${DISTRO_ID} in
-    centos|rhel|rocky)
+case ${DISTRO_FAMILY} in
+    *"rhel"*)
         dnf -y install python3 python3-devel python3-libselinux
         ;;
-    ubuntu|debian)
+    *"debian"*)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           python3 python3-dev \
@@ -80,15 +80,15 @@ case ${DISTRO_ID} in
 esac
 
 # Install the base packages
-case ${DISTRO_ID} in
-    rocky|centos|rhel)
+case ${DISTRO_FAMILY} in
+    *"rhel"*)
         dnf -y install \
           git-core /usr/bin/curl gcc gcc-c++ nc \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
           rsync wget
         ;;
-    ubuntu|debian)
+    *"debian"*)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
           git-core curl gcc \
