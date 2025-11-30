@@ -157,7 +157,7 @@ to automatically recover a node or an entire environment.
 
    .. code-block:: shell-session
 
-       # openstack-ansible openstack.osa.galera_server -e galera_force_bootstrap=True --tags galera_server-config
+       # openstack-ansible openstack.osa.galera_server -e galera_force_bootstrap=true --tags galera_server-config
 
 You can additionally define a different bootstrap node through
 ``galera_server_bootstrap_node`` variable, in case current bootstrap node is in

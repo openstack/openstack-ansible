@@ -16,7 +16,6 @@ to custom ports which completely disables the ability to use them in such deploy
 In order to work around such limitations, starting from 2023.1 (Antelope) release,
 it is possible to have domain-based or path-based endpoints instead.
 
-
 Configuring domain-based endpoints (recommended)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -28,7 +27,6 @@ can be like ``https://compute.domain.com``.
 As a prerequisite for this type of setup you need to ensure that corresponding
 `A` or `CNAME` records are present for your domain. Also, you need to ensure
 having a valid wildcard or SAN certificates for public/internal endpoints.
-
 
 HAProxy configuration
 ---------------------
@@ -79,7 +77,7 @@ We need to make adjustments to each HAProxy service definition to:
   .. code:: yaml
 
       haproxy_keystone_service_overrides:
-        haproxy_backend_only: True
+        haproxy_backend_only: true
         haproxy_map_entries:
           - name: base_domain
             entries:
@@ -87,7 +85,7 @@ We need to make adjustments to each HAProxy service definition to:
               - "identity.{{ internal_lb_vip_address }} keystone_service-back"
 
       haproxy_nova_api_compute_service_overrides:
-        haproxy_backend_only: True
+        haproxy_backend_only: true
         haproxy_map_entries:
           - name: base_domain
             entries:
@@ -95,12 +93,11 @@ We need to make adjustments to each HAProxy service definition to:
               - "compute.{{ internal_lb_vip_address }} nova_api_os_compute-back"
 
       haproxy_nova_novnc_console_service_overrides:
-        haproxy_backend_only: True
+        haproxy_backend_only: true
         haproxy_map_entries:
           - name: base_domain
             entries:
               - "novnc.{{ external_lb_vip_address }} nova_novnc_console-back"
-
 
 Service configuration
 ---------------------
@@ -126,7 +123,6 @@ Below you can find an example for defining endpoints for Keystone and Nova:
     nova_service_adminuri: "{{ openstack_service_adminuri_proto }}://compute.{{ internal_lb_vip_address }}"
     nova_novncproxy_base_uri: "{{ nova_novncproxy_proto }}://novnc.{{ external_lb_vip_address }}"
 
-
 Using Let's Encrypt
 -------------------
 
@@ -139,7 +135,7 @@ So your Let's Encrypt configuration may look like this:
 
 .. code:: yaml
 
-    haproxy_ssl_letsencrypt_enable: True
+    haproxy_ssl_letsencrypt_enable: true
     haproxy_ssl_letsencrypt_email: "root@{{ external_lb_vip_address }}"
     haproxy_ssl_letsencrypt_domains:
       - "{{ external_lb_vip_address }}"
@@ -171,7 +167,6 @@ example below:
         - "identity.{{ internal_lb_vip_address }}"
         - "compute.{{ internal_lb_vip_address }}"
 
-
 You also might want to adjust HSTS headers defined by
 ``haproxy_security_headers_csp`` variable. While default rules do allow
 subdomains out of the box, you might want to restrict records a bit more to
@@ -193,7 +188,6 @@ disallow access on arbitrary ports.
       - "{{ external_lb_vip_address }}
     haproxy_security_frame_ancestors_records:
       - "{{ external_lb_vip_address }}
-
 
 Configuring path-based endpoints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,7 +215,6 @@ Good example of exceptions which do not support path-based endpoints at the mome
 are VNC consoles for VMs (to be implemented with
 `blueprint <https://blueprints.launchpad.net/nova/+spec/novnc-base-url-respect-extra-params>`_),
 Magnum (`bug report <https://launchpad.net/bugs/2083168>`) and Ceph Rados Gateway.
-
 
 HAProxy configuration
 ---------------------
@@ -269,19 +262,18 @@ HAProxy map population with a respective condition, for example:
 .. code:: yaml
 
     haproxy_keystone_service_overrides:
-      haproxy_backend_only: True
+      haproxy_backend_only: true
       haproxy_map_entries:
         - name: base_regex
           entries:
             - "^/identity keystone_service-back"
 
     haproxy_nova_api_compute_service_overrides:
-      haproxy_backend_only: True
+      haproxy_backend_only: true
       haproxy_map_entries:
         - name: base_regex
           entries:
             - "^/compute nova_api_os_compute-back"
-
 
 Service configuration
 ---------------------
@@ -420,7 +412,6 @@ as an example:
         /compute/v2.1: oscomputeversion_v2
         /compute/v2/+: openstack_compute_api_v21_legacy_v2_compatible
         /compute/v2.1/+: openstack_compute_api_v21
-
 
 We suggest referring to each service api-paste.ini for more details
 on how to properly configure overrides.

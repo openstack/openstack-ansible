@@ -76,7 +76,6 @@ This functionality can be changed by overriding the list of headers in
 ``haproxy_security_headers`` variable in the
 ``/etc/openstack_deploy/user_variables.yml`` file.
 
-
 Content Security Policy (CSP)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -100,13 +99,12 @@ you use the ``Content-Security-Policy-Report-Only`` header, instead of
 but does not enforce the policy.
 
 To set the CSP policy to report only by overriding the
-``haproxy_security_headers_csp_report_only`` variable to ``True`` in the
+``haproxy_security_headers_csp_report_only`` variable to ``true`` in the
 ``/etc/openstack_deploy/user_variables.yml`` file:
 
 .. code-block:: yaml
 
-   haproxy_security_headers_csp_report_only: True
-
+   haproxy_security_headers_csp_report_only: true
 
 Reporting Violations
 --------------------

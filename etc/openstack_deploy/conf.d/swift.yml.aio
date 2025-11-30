@@ -13,7 +13,7 @@ global_overrides:
       - policy:
           name: default
           index: 0
-          default: True
+          default: true
 swift-proxy_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
