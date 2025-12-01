@@ -25,7 +25,7 @@ nova_serialconsoleproxy_port: 6083
 
 # Default nova console proxy types
 nova_console_type_mapping:
-  x86_64: "{{ nova_console_type | default('novnc') }}"
+  x86_64: novnc
   ppc64le: novnc
   aarch64: serialconsole
   disabled: disabled
