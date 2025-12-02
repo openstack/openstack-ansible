@@ -123,8 +123,12 @@ extensions = [
     'openstackdocstheme',
     'sphinx.ext.autodoc',
     'sphinx.ext.extlinks',
-    'sphinxcontrib.rsvgconverter'
+    'sphinxcontrib.rsvgconverter',
+    'sphinx_copybutton'
 ]
+
+# Remove the prompt text from lines
+copybutton_prompt_text = "# "
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
