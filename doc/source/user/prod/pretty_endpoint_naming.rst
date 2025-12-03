@@ -16,6 +16,15 @@ to custom ports which completely disables the ability to use them in such deploy
 In order to work around such limitations, starting from 2023.1 (Antelope) release,
 it is possible to have domain-based or path-based endpoints instead.
 
+.. warning::
+
+    After switching to domain or path-based endpoints, all internal and public
+    endpoints must be covered by valid TLS certificates. Otherwise communication
+    between OpenStack components may break. If TLS is not used for internal
+    traffic in your deployment, ensure that HAProxy is configured so that internal
+    requests are not redirected to HTTPS. This must be adjusted
+    manually by the operator.
+
 Configuring domain-based endpoints (recommended)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -99,6 +108,26 @@ We need to make adjustments to each HAProxy service definition to:
             entries:
               - "novnc.{{ external_lb_vip_address }} nova_novnc_console-back"
 
+Because the base frontend will use the domain map, ensure incoming requests
+to the external VIP are also routed properly to Horizon backend.
+
+Add the following overrides:
+
+.. code:: yaml
+
+    haproxy_horizon_service_overrides:
+      haproxy_backend_only: true
+      haproxy_map_entries:
+        - name: base_domain
+          entries:
+            - "{{ external_lb_vip_address }} horizon-back"
+
+Then reconfigure the HAProxy mappings:
+
+.. code-block:: bash
+
+    # openstack-ansible openstack.osa.horizon --tags haproxy-service-config
+
 Service configuration
 ---------------------
 
@@ -122,6 +151,17 @@ Below you can find an example for defining endpoints for Keystone and Nova:
     nova_service_internaluri: "{{ openstack_service_internaluri_proto }}://compute.{{ internal_lb_vip_address }}"
     nova_service_adminuri: "{{ openstack_service_adminuri_proto }}://compute.{{ internal_lb_vip_address }}"
     nova_novncproxy_base_uri: "{{ nova_novncproxy_proto }}://novnc.{{ external_lb_vip_address }}"
+
+After changing endpoint definitions for new domains, refresh the
+endpoint data across components starting from the utility host:
+
+.. code-block:: bash
+
+    # openstack-ansible openstack.osa.utility_host
+    # openstack-ansible openstack.osa.setup_openstack --tags <service>-config
+
+Under ``<service>`` include all deployed services such as neutron, cinder,
+glance, nova, horizon, etc.
 
 Using Let's Encrypt
 -------------------
