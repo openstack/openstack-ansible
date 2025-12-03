@@ -36,7 +36,7 @@ host.
 #. Change to the ``/etc/openstack_deploy`` directory.
 
 #. Copy the ``openstack_user_config.yml.example`` file to
-   ``openstack_user_config.yml``.
+   ``openstack_user_config.yml``
 
    .. code-block:: shell-session
 
@@ -233,7 +233,6 @@ about the available options.
    role documentation, user guides, and reference if you want a tailor
    made cloud.
 
-
 Infrastructure service roles
 ----------------------------
 
@@ -250,7 +249,6 @@ Infrastructure service roles
 - :role_docs:`repo_server <repo_server>`
 
 - :ansible_role_docs:`Zookeeper <zookeeper>`
-
 
 OpenStack service roles
 -----------------------
@@ -309,7 +307,6 @@ OpenStack service roles
 
 - :role_docs:`os_zun <os_zun>`
 
-
 Other roles
 -----------
 
@@ -339,7 +336,6 @@ Other roles
 
 - :ansible_role_docs:`uWSGI <uwsgi>`
 
-
 Configuring service credentials
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -354,7 +350,7 @@ of secrets.
 Adjust permissions on these files to restrict access by non-privileged
 users.
 
-The ``keystone_auth_admin_password`` option configures the ``admin`` tenant
+The ``keystone_auth_admin_password`` option configures the ``admin`` user
 password for both the OpenStack API and Dashboard access.
 
 We recommend that you use the ``pw-token-gen.py`` script to generate random
