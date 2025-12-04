@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added variable ``venv_install_tool`` which has default value of ``pip``.
+    You can define it to ``uv`` to leverage package installation inside of the
+    venv using ``uv`` tool instead of ``pip``.
+    Wheels build and venv creation is still managed via ``pip`` and ``venv``
+    respectively.

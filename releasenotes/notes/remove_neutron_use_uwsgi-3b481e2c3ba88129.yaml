@@ -1,0 +1,16 @@
+---
+
+deprecations:
+  - |
+    Variable ``neutron_use_uwsgi`` has been removed and has no effect, since
+    eventlet mode for ``neutron-server`` has been dropped in 2025.2 (Flamingo).
+    uWSGI is the only supported mode at the moment.
+
+upgrade:
+  - |
+    With removal of eventlet mode for ``neutron-server`` in Neutron, the only
+    supported mode for the service is uWSGI. All deployments using eventlet
+    will be migrated to uWSGI mode for ``neutron-server``. With that multiple
+    extra mandatory services will be started together with ``neutron-server``,
+    like ``neutron-rpc-server``, ``neutron-periodic-workers`` and
+    ``neutron-ovn-maintenance-worker`` for OVN-based deployments.

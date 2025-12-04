@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added coordination support to the Aodh service. In case
+    zookeeper is present in deployment, service will be configured to
+    use it for coordination.
+    Operators are able to supply arbitrary coordination url via
+    ``aodh_coordination_url`` variable.

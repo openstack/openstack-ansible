@@ -1,0 +1,9 @@
+---
+
+deprecations:
+  - |
+    Variable ``octavia_legacy_policy`` was removed and has no effect anymore.
+    In case you was using the variable and it was set to ``True``, you can
+    incorporate policy changes this variable was implementing to your
+    ``octavia_policy_overrides``. You may find rules controlled by this
+    variable via the `link <https://opendev.org/openstack/openstack-ansible-os_octavia/src/commit/8d4a94382127f9065ec493800f9a5ceda0154e1a/vars/main.yml#L90-L97>`_

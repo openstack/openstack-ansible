@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Added support for ``condition`` key for ``ceph_extra_components`` mapping,
+    which could be used to define a more narrow conditions when component
+    should be having ceph mappings.
+  - |
+    Introduced variable ``ceph_cinder_backup_enabled`` which can be manually
+    overriden to enable provisionment of Ceph client to ``cinder-backup``
+    service. Previously logic for this has been hardcoded and not easily
+    overridable.
