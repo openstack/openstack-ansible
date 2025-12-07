@@ -157,6 +157,12 @@ Install the source and dependencies for the deployment host.
 
        # git clone -b |latest_tag| \https://opendev.org/openstack/openstack-ansible /opt/openstack-ansible
 
+.. warning::
+
+   The value of ``|latest_tag|`` might not match the highest available tag.
+   You can verify the latest stable release by checking the tag list here:
+   `OpenStack-Ansible Tags <https://opendev.org/openstack/openstack-ansible/tags>`_.
+
    If opendev.org can not be accessed to run git clone, github.com can be used
    as an alternative repo:
 
