@@ -35,9 +35,9 @@ import yaml
 # Variables to override
 target_name = 'openstack-ansible'
 description = 'OpenStack-Ansible deploys OpenStack environments using Ansible.'
-previous_series_name = '2025.1 (Epoxy)'
-previous_slurp_name = None
-current_series_name = '2025.2 (Flamingo)'
+previous_series_name = '2025.2 (Flamingo)'
+previous_slurp_name = '2025.1 (Epoxy)'
+current_series_name = '2026.1 (Gazpacho)'
 
 # General information about the project.
 project = 'OpenStack-Ansible'
