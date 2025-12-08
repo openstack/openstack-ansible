@@ -1,0 +1,17 @@
+---
+upgrade:
+  - |
+    In order to configure SPICE frontend/backend on the loadbalancer use
+    ``nova_console_type_mapping`` instead of ``nova_console_type``.
+
+    For example:
+
+    .. code-block:: yaml
+
+      nova_console_type_mapping:
+        x86_64: spice
+        ppc64le: novnc
+        aarch64: serialconsole
+
+    Variable ``nova_console_type`` is compute-specific and is not used to
+    calculate configuration for the Load Balancer.
