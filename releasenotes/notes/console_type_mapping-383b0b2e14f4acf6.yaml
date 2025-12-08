@@ -1,0 +1,12 @@
+---
+features:
+  - |
+    Intorduced new variable ``nova_console_type_mapping`` which defines
+    default console types per architecture. This variable is used to define
+    the default value of ``nova_console_type`` as well as generate available
+    ``nova_console_proxy_types``.
+fixes:
+  - |
+    Logic of defining and configuration of all available console types has
+    been revamped and improved, to ensure that consoles will be configured
+    based of available compute architectures in the deployment.
