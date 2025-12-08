@@ -95,6 +95,7 @@ function determine_distro {
     export DISTRO_ID="${ID}"
     export DISTRO_NAME="${NAME}"
     export DISTRO_VERSION_ID=${VERSION_ID}
+    export DISTRO_FAMILY="${ID_LIKE:-""} ${ID}"
 }
 
 function ssh_key_create {
@@ -193,12 +194,12 @@ function gate_job_exit_tasks {
 function gate_log_requirements {
   # ensure packages are installed to get instance info
   determine_distro
-  case ${DISTRO_ID} in
-      ubuntu|debian)
+  case ${DISTRO_FAMILY} in
+      *"debian"*)
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get -y install iproute2 net-tools parallel
           ;;
-      rocky|centos|rhel)
+      *"rhel"*)
           dnf -y install epel-release
           sed -i 's/\[epel\]/&\nincludepkgs=parallel/' /etc/yum.repos.d/epel.repo
           dnf -y --enablerepo=epel install iproute parallel
@@ -321,12 +322,12 @@ function get_instance_info {
   ip link show > "/openstack/log/instance-info/links_${TS}.log" || true
 
   determine_distro
-  case ${DISTRO_ID} in
-      rocky|rhel)
+  case ${DISTRO_FAMILY} in
+      *"rhel"*)
           rpm -qa | sort > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
-      ubuntu|debian)
+      *"debian"*)
           dpkg-query --list > \
             "/openstack/log/instance-info/host_packages_info_${TS}.log" || true
           ;;
