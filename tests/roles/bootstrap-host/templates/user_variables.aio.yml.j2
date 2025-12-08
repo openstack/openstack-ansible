@@ -134,7 +134,8 @@ nova_metadata_workers: 1
 nova_scheduler_workers: 1
 
 ## Neutron
-neutron_rpc_workers: 1
+neutron_rpc_workers: {{ (_neutron_plugin_driver != 'ml2.ovn') | ternary('1', '0') }}
+neutron_use_rpc: {{ (_neutron_plugin_driver != 'ml2.ovn') }}
 neutron_metadata_workers: 1
 neutron_api_workers: 1
 neutron_api_threads: 2
