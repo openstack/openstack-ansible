@@ -26,6 +26,14 @@ A minor upgrade typically requires the following steps:
 
       # cd /opt/openstack-ansible
 
+#. Fetch the latest updates from the remote repository to ensure all
+   branches and tags are up to date before proceeding with the minor
+   version upgrade:
+
+   .. code-block:: bash
+
+      # git fetch
+
 #. Ensure that your OpenStack-Ansible code is on the latest
    |current_release_formal_name| tagged release:
 
