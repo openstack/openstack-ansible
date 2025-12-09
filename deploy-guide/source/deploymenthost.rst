@@ -44,7 +44,6 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
        # apt update
 
-
 #. Upgrade the system packages and kernel:
 
    .. code-block:: shell-session
@@ -153,15 +152,16 @@ Install the source and dependencies for the deployment host.
 #. Clone the latest stable release of the OpenStack-Ansible Git repository in
    the ``/opt/openstack-ansible`` directory:
 
+   .. note::
+
+      The value of |latest_tag| might not match the highest available tag.
+      If you are not using the master branch, you should verify the latest
+      stable release for your branch by checking the full tag list here:
+      `OpenStack-Ansible Tags <https://opendev.org/openstack/openstack-ansible/tags>`_
+
    .. parsed-literal::
 
        # git clone -b |latest_tag| \https://opendev.org/openstack/openstack-ansible /opt/openstack-ansible
-
-.. warning::
-
-   The value of ``|latest_tag|`` might not match the highest available tag.
-   You can verify the latest stable release by checking the tag list here:
-   `OpenStack-Ansible Tags <https://opendev.org/openstack/openstack-ansible/tags>`_.
 
    If opendev.org can not be accessed to run git clone, github.com can be used
    as an alternative repo:
@@ -176,7 +176,6 @@ Install the source and dependencies for the deployment host.
    .. code-block:: shell-session
 
        # scripts/bootstrap-ansible.sh
-
 
 Configure Docker with Alpine
 ============================
