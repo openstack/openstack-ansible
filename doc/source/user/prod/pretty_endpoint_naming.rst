@@ -128,6 +128,42 @@ Then reconfigure the HAProxy mappings:
 
     # openstack-ansible openstack.osa.horizon --tags haproxy-service-config
 
+When configuring domain-based endpoints, it is important to ensure that domain
+map entries are evaluated in the correct order. HAProxy processes map entries
+sequentially, and the first matching entry wins. Because of this, a generic
+domain such as ``{{ external_lb_vip_address }}`` can override more specific
+subdomains like ``identity.<domain>`` or ``compute.<domain>`` if it appears
+earlier in the map file.
+
+To guarantee correct routing, assign an ``order`` value to each map entry block
+so that more specific service domains are processed before generic ones.
+Lower values take precedence (Horizon's default order is 98).
+
+Example:
+
+.. code:: yaml
+
+    haproxy_keystone_service_overrides:
+      haproxy_backend_only: true
+      haproxy_map_entries:
+        - name: base_domain
+          order: 10
+          entries:
+            - "identity.{{ external_lb_vip_address }} keystone_service-back"
+            - "identity.{{ internal_lb_vip_address }} keystone_service-back"
+
+    haproxy_horizon_service_overrides:
+      haproxy_backend_only: true
+      haproxy_map_entries:
+        - name: base_domain
+          order: 20
+          entries:
+            - "{{ external_lb_vip_address }} horizon-back"
+
+In this configuration, Keystone map entries (order 10) are evaluated before
+the Horizon domain (order 20), ensuring that subdomains route to the correct
+backend.
+
 Service configuration
 ---------------------
 
