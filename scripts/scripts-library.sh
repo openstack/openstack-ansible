@@ -56,12 +56,6 @@ fi
 # Build ansible-runtime venv
 function build_ansible_runtime_venv {
     # All distros have a python-virtualenv > 13.
-    # - Centos 8 Stream has 15.1, which holds pip 9.0.1, setuptools 28.8, wheel 0.29
-    # - openSUSE 42.3 has 13.1.2, which holds pip 7.1.2, setuptools 18.2, wheel 0.24.
-    #   See also: https://build.opensuse.org/package/show/openSUSE%3ALeap%3A42.3/python-virtualenv
-    # - Ubuntu Xenial has 15.0.1, holding pip 8.1.1, setuptools 20.3, wheel 0.29
-    #   See also: https://packages.ubuntu.com/xenial/python-virtualenv
-
     ${PYTHON_EXEC_PATH} -m venv /opt/ansible-runtime --clear
 
     # The vars used to prepare the Ansible runtime venv
