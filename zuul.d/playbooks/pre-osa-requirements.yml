@@ -115,7 +115,7 @@
           vars:
             content_var:
               collections: |-
-                {% set collections = [] %}
+                {% set collections = osa_extra_ansible_collections | default([]) %}
                 {% for result in zuul_collections.results %}
                 {%   if result.stat.exists %}
                 {%     set _ = collections.append({
