@@ -42,6 +42,7 @@ _normalize_collection_playbook_paths(){
 
         # Remove ".yml" extension (if present)
         path=${path%.yml}
+        path=${path%.yaml}
 
         # Replace slashes with dots
         path=${path//\//.}
@@ -83,7 +84,7 @@ _openstack_ansible() {
     elif [[ "$prev" == "-l" ]] || [[ "$prev" == "--limit" ]]; then
         completions=$(_ansible_hosts_inventory | grep -i "${cur}")
     else
-        playbooks=$(find ${COLLECTION_PATH} -type f -name "*.yml" | grep playbooks)
+        playbooks=$(find ${COLLECTION_PATH} -type f \( -name "*.yml" -o -name "*.yaml" \) | grep playbooks)
         completions=$(_normalize_collection_playbook_paths ${playbooks[@]} | grep -i "${cur}")
     fi
     COMPREPLY=($(compgen -W '${completions}' -- ${cur}))
