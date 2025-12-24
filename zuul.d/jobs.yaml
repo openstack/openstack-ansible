@@ -402,6 +402,8 @@
     name: openstack-ansible-deploy-aio_ceph-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
+    vars:
+      ansible_package: "ansible-core<2.19"
 
 - job:
     name: openstack-ansible-deploy-aio_nfs-ubuntu-noble

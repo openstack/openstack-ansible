@@ -174,7 +174,7 @@ else
   pushd "${OSA_CLONE_DIR}/playbooks"
     # Disable Ansible color output
     export ANSIBLE_NOCOLOR=1
-    export ANSIBLE_GATHER_SUBSET="${ANSIBLE_GATHER_SUBSET:-!all,min}"
+    export ANSIBLE_GATHER_SUBSET=${ANSIBLE_GATHER_SUBSET:-'!all,min,processor_count'}
 
     # Create ansible logging directory
     mkdir -p ${ANSIBLE_LOG_DIR}
@@ -189,14 +189,14 @@ else
 
     # Prepare the hosts
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
-    openstack-ansible setup-hosts.yml -e osa_gather_facts=False
+    openstack-ansible setup-hosts.yml -e '{"osa_gather_facts": false}'
 
     # Log some data about the instance and the rest of the system
     log_instance_info
 
     if [[ $SCENARIO =~ "hosts" ]]; then
       # Verify our hosts setup and do not continue with openstack/infra part
-      openstack-ansible healthcheck-hosts.yml -e osa_gather_facts=False
+      openstack-ansible healthcheck-hosts.yml -e '{"osa_gather_facts": false}'
       exit $?
     fi
 
@@ -212,19 +212,19 @@ else
 
     # Prepare the infrastructure
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
-    openstack-ansible setup-infrastructure.yml -e osa_gather_facts=False
+    openstack-ansible setup-infrastructure.yml -e '{"osa_gather_facts": false}'
 
     # Log some data about the instance and the rest of the system
     log_instance_info
 
     if [[ $SCENARIO =~ "infra" && ! $ACTION =~ "upgrade"  ]]; then
       # Verify our infra setup and do not continue with openstack part
-      openstack-ansible healthcheck-infrastructure.yml -e osa_gather_facts=False
+      openstack-ansible healthcheck-infrastructure.yml -e '{"osa_gather_facts": false}'
     fi
 
     # Setup OpenStack
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
-    openstack-ansible setup-openstack.yml -e osa_gather_facts=False ${OPENSTACK_SETUP_EXTRA_ARGS:-}
+    openstack-ansible setup-openstack.yml -e '{"osa_gather_facts": false}' ${OPENSTACK_SETUP_EXTRA_ARGS:-}
 
     # Log some data about the instance and the rest of the system
     log_instance_info
@@ -281,7 +281,7 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
 
     if [[ $SCENARIO =~ "infra" ]]; then
       # Verify our infra setup after upgrade
-      openstack-ansible ${OSA_CLONE_DIR}/playbooks/healthcheck-infrastructure.yml -e osa_gather_facts=False
+      openstack-ansible ${OSA_CLONE_DIR}/playbooks/healthcheck-infrastructure.yml -e '{"osa_gather_facts": false}'
     fi
 
 fi
