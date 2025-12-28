@@ -260,7 +260,7 @@ function log_instance_info {
 }
 
 function get_repos_info {
-  for i in /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/yum.conf /etc/yum.repos.d/* /etc/zypp/repos.d/*; do
+  for i in /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/dnf/dnf.conf /etc/yum.repos.d/*; do
     if [ -f "${i}" ]; then
       echo -e "\n$i"
       cat $i
