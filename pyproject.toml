@@ -1,3 +1,44 @@
 [build-system]
 requires = ["pbr>=6.1.1"]
 build-backend = "pbr.build"
+
+[project]
+name = "openstack-ansible"
+description = "Ansible playbooks for deploying OpenStack"
+readme = "README.rst"
+license = "Apache-2.0"
+license-files = ["LICENSE.txt"]
+authors = [
+    {name = "OpenStack", email = "openstack-discuss@lists.openstack.org"},
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: POSIX :: Linux",
+]
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+Homepage = "https://docs.openstack.org/openstack-ansible/latest/"
+"Bug Tracker" = "https://bugs.launchpad.net/openstack-ansible/"
+Repository = "https://opendev.org/openstack/openstack-ansible"
+"Release notes" = "https://docs.openstack.org/releasenotes/openstack-ansible/"
+
+[project.optional-dependencies]
+releases = [
+    "ruamel.yaml>=0.18",
+    "Jinja2>=3.0",
+]
+
+[project.scripts]
+openstack-ansible-inventory = "osa_toolkit.generate:main"
+openstack-ansible-inventory-manage = "osa_toolkit.manage:main"
+openstack-ansible-releases = "osa_toolkit.releasing:main"
+
+[tool.setuptools]
+packages = [
+    "osa_toolkit"
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
