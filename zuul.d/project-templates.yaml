@@ -45,13 +45,13 @@
       jobs:
         - openstack-ansible-deploy-aio_lxc-centos-9-stream:
             voting: false
-        - openstack-ansible-deploy-aio_lxc-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_lxc-rockylinux-9
         - openstack-ansible-deploy-aio_lxc-debian-bullseye
         - openstack-ansible-deploy-aio_lxc-debian-bookworm
         - openstack-ansible-deploy-aio_lxc-ubuntu-jammy
@@ -83,10 +83,8 @@
       jobs:
         - openstack-ansible-deploy-infra_lxc-centos-9-stream:
             voting: false
-        - openstack-ansible-deploy-infra_lxc-rockylinux-9:
-            voting: false
-        - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-infra_lxc-rockylinux-9
+        - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
@@ -94,6 +92,8 @@
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-infra_lxc-rockylinux-9
+        - openstack-ansible-deploy-infra_lxc_tls-rockylinux-9
         - openstack-ansible-deploy-infra_lxc-debian-bullseye
         - openstack-ansible-deploy-infra_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_lxc-ubuntu-jammy
@@ -107,12 +107,12 @@
     name: openstack-ansible-deploy-infra_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-infra_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-infra_distro_lxc-debian-bookworm
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-jammy
 
@@ -120,12 +120,12 @@
     name: openstack-ansible-deploy-hosts_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_lxc-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-hosts_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_lxc-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc-ubuntu-jammy
@@ -137,13 +137,13 @@
     name: openstack-ansible-deploy-hosts_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_metal-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bullseye
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-hosts_metal-rockylinux-9
         - openstack-ansible-deploy-hosts_metal-debian-bullseye
         - openstack-ansible-deploy-hosts_metal-debian-bookworm
         - openstack-ansible-deploy-hosts_metal-ubuntu-jammy
@@ -155,11 +155,11 @@
     name: openstack-ansible-deploy-hosts_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-hosts_distro_lxc-rockylinux-9
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-jammy
 
 - project-template:
@@ -178,11 +178,9 @@
         - openstack-ansible-deploy-aio_metal-debian-bookworm
         - openstack-ansible-deploy-aio_metal-centos-9-stream:
             voting: false
-        - openstack-ansible-deploy-aio_metal-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-aio_metal-rockylinux-9
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
-        - openstack-ansible-deploy-aio_metal_tls-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-jammy
         - openstack-ansible-upgrade_2023.1-aio_metal-rockylinux-9:
@@ -194,8 +192,10 @@
       jobs:
         - openstack-ansible-deploy-aio_metal-debian-bullseye
         - openstack-ansible-deploy-aio_metal-debian-bookworm
+        - openstack-ansible-deploy-aio_metal-rockylinux-9
         - openstack-ansible-deploy-aio_metal-ubuntu-jammy
         - openstack-ansible-deploy-aio_metal_haqueues-ubuntu-jammy
+        - openstack-ansible-deploy-aio_metal_tls-rockylinux-9
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-jammy
 
 - project-template:
@@ -204,13 +204,13 @@
       jobs:
         - openstack-ansible-deploy-aio_telemetry_metal-centos-9-stream:
             voting: false
-        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bullseye
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
     gate:
       jobs:
+        - openstack-ansible-deploy-aio_telemetry_metal-rockylinux-9
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bullseye
         - openstack-ansible-deploy-aio_telemetry_metal-debian-bookworm
         - openstack-ansible-deploy-aio_telemetry_metal-ubuntu-jammy
@@ -219,8 +219,7 @@
     name: openstack-ansible-deploy-aio_distro_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-aio_distro_metal-rockylinux-9
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-jammy
     experimental:
       jobs:
@@ -289,8 +288,7 @@
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
-        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9:
-            voting: false
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
     gate:
       jobs:
         - openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-jammy
@@ -300,6 +298,7 @@
         - openstack-ansible-deploy-hosts_lxc_btrfs-debian-bookworm
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bullseye
         - openstack-ansible-deploy-hosts_lxc_overlayfs-debian-bookworm
+        - openstack-ansible-deploy-hosts_lxc_overlayfs-rockylinux-9
 
 - project-template:
     name: openstack-ansible-deploy-guide-jobs
