@@ -221,7 +221,7 @@ Upgrade Ceph
 
 With each OpenStack-Ansible version we define default Ceph client version
 that will be installed on Glance/Cinder/Nova hosts and used by these services.
-If you want to preserve the previous version of the ceph client during an
+If you want to preserve the previous version of the Ceph client during an
 OpenStack-Ansible upgrade, you will need to override a variable
 ``ceph_stable_release`` in your user_variables.yml
 
@@ -229,7 +229,7 @@ If Ceph has been deployed as part of an OpenStack-Ansible deployment
 using the roles maintained by the `Ceph-Ansible`_ project you will also need
 to upgrade the Ceph version. Each OpenStack-Ansible release is tested only with
 specific Ceph-Ansible release and Ceph upgrades are not checked in any
-Openstack-Ansible integration tests. So we do not test or guarantee an
+OpenStack-Ansible integration tests. So we do not test or guarantee an
 upgrade path for such deployments. In this case tests should be done in a
 lab environment before upgrading.
 
