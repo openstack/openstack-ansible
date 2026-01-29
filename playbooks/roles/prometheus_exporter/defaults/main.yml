@@ -18,4 +18,4 @@ node_exporter_collector_dir: /var/lib/node_exporter/collectors
 prometheus_collectors:
   Ubuntu:
     - { name: "gpu_capacity", filending: "py", pre_script: ". /root/openrc && ", minute: "*/5" }
-    - { name: "billing_summary", filending: "sh", pre_script: ". /root/openrc && ", minute: "1" }
+    - { name: "billing_summary", filending: "py", pre_script: ". /root/openrc && ", minute: "1" }

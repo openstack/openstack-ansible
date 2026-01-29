@@ -1,0 +1,87 @@
+{% if venv_tag is defined %}
+#!/openstack/venvs/utility-{{ venv_tag }}/bin/python3
+{% else %}
+#!/usr/bin/env python3
+{% endif %}
+
+import os
+import json
+from keystoneauth1 import loading
+from keystoneauth1 import session
+from keystoneclient.v3 import client as ks_client
+from cloudkittyclient import client as ck_client
+from datetime import datetime,timedelta
+
+def get_session():
+  loader = loading.get_plugin_loader('password')
+  # Get user settings from environment variables
+  # https://docs.openstack.org/keystoneauth/yoga/plugin-options.html#password
+  auth = loader.load_from_options(
+    auth_url            = os.environ.get('OS_AUTH_URL'),
+    user_domain_name    = os.environ.get('OS_USER_DOMAIN_NAME'),
+    username            = os.environ.get('OS_USERNAME'),
+    project_domain_name = os.environ.get('OS_PROJECT_DOMAIN_NAME'),
+    password            = os.environ.get('OS_PASSWORD'),
+    project_name        = os.environ.get('OS_PROJECT_NAME'),
+  )
+
+  sess = session.Session(auth=auth)
+  return sess
+
+# Verify that environment variables are loaded
+if 'OS_AUTH_URL' not in os.environ:
+  raise Exception("Expecting to find OS_AUTH_URL in os.environ, but none found.")
+
+if "test" in os.environ.get('OS_AUTH_URL'):
+  group="ops2test"
+else:
+  group="ops2"
+
+# Create a session for keystone and cloudkitty
+ks_sess = get_session()
+ck_sess = get_session()
+ks = ks_client.Client(session=ks_sess)
+ck = ck_client.Client('1', session=ck_sess)
+
+# Measure one hour 4 hours back as there is a delay in metrics
+begin_time=datetime.now() - timedelta(hours = 5)
+begin_time_formatted=begin_time.strftime('%Y-%m-%d %H:00:00')
+end_time=datetime.now() - timedelta(hours = 4)
+end_time_formatted=end_time.strftime('%Y-%m-%d %H:00:00')
+
+# Get rating summary for all tenants, grouped by tenant
+try:
+  rating_summary_proj=ck.report.get_summary(begin=begin_time_formatted,end=end_time_formatted,all_tenants=True,groupby=['tenant_id'])
+except Exception:
+  raise Exception("Failed to get rating summary by project")
+rating_sum_proj=rating_summary_proj['summary']
+
+# Get rating summary for overall usage
+rating_summary=ck.report.get_summary(begin=begin_time_formatted,end=end_time_formatted,all_tenants=True)
+rating_sum=rating_summary['summary']
+
+# Get all projects from keystone
+projects=ks.projects.list()
+
+# Combine the keystone and rating summary objects by matching tenant_id in rating_sum_proj with the keystone project id
+project_by_id = {project.id: project for project in projects}
+merged_ratings = [
+    {**rating, **vars(project_by_id[rating['tenant_id']])}
+    for rating in rating_sum_proj
+    if rating['tenant_id'] in project_by_id
+]
+
+# Create prometheus metric for overall usage
+print(f"openstack_rating_summary{{group=\"{group}\" {rating_sum[0]['rate']}")
+
+# For each project with ratings, create prometheus metrics
+for item in merged_ratings:
+  # Not billable by default, unless description contains Billing account
+  billable=False
+  if "Billing account" in item['description']:
+    billable=True
+  try:
+    print(f"openstack_rating_summary_by_project{{group=\"{group}\",project_id=\"{item['tenant_id']}\",project_name=\"{item['name']}\",billable=\"{billable}\",enabled=\"{item['enabled']}\"}} {item['rate']}")
+  except Exception:
+    print(f"Failed to create metric for {item}")
+    pass
