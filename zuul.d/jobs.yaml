@@ -271,6 +271,7 @@
       - name: openstack/ironic
       - name: openstack/ironic-inspector
       - name: openstack/magnum
+      - name: openstack/magnum-capi-helm
       - name: openstack/masakari
       - name: openstack/masakari-monitors
       - name: openstack/mistral
@@ -359,6 +360,7 @@
       - ^playbooks\/haproxy(-install)?\.yml
       - ^playbooks\/utility(-install|_host)\.yml
       - ^playbooks\/zookeeper-(-install)?\.yml
+      - ^playbooks\/k8s-(-install)?\.yml
 
 # Running linters check
 

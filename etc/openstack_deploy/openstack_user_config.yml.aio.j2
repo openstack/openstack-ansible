@@ -228,7 +228,7 @@ repo_infra_hosts:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}
 
-{% if 'zookeeper' in bootstrap_host_scenarios_expanded %}
+{% if 'zookeeper' in bootstrap_host_scenarios_expanded or 'infra' in bootstrap_host_scenarios_expanded %}
 coordination_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
@@ -236,5 +236,16 @@ coordination_hosts:
 {% if 'infra' in bootstrap_host_scenarios_expanded %}
     affinity:
       zookeeper_container: 3
+{% endif %}
+{% endif %}
+
+{% if 'k8s' in bootstrap_host_scenarios_expanded or 'infra' in bootstrap_host_scenarios_expanded %}
+cluster_api_hosts:
+  aio1:
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}
+{% if 'infra' in bootstrap_host_scenarios_expanded %}
+    affinity:
+      k8s_container: 3
 {% endif %}
 {% endif %}
