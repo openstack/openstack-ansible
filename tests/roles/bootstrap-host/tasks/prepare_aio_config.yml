@@ -160,9 +160,6 @@
     - src: user_variables_ceph.yml.j2
       dest: user_variables_ceph.yml
       condition: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
-    - src: user_variables_translations.yml.j2
-      dest: user_variables_translations.yml
-      condition: "{{ 'translations' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_barbican.yml.j2
       dest: user_variables_barbican.yml
       condition: "{{ 'barbican' in bootstrap_host_scenarios_expanded }}"
