@@ -166,6 +166,9 @@
     - src: user_variables_blazar.yml.j2
       dest: user_variables_blazar.yml
       condition: "{{ 'blazar' in bootstrap_host_scenarios_expanded }}"
+    - src: user_variables_freezer.yml.j2
+      dest: user_variables_freezer.yml
+      condition: "{{ 'freezer' in bootstrap_host_scenarios_expanded }}"
     - src: user_variables_magnum.yml.j2
       dest: user_variables_magnum.yml
       condition: "{{ 'magnum' in bootstrap_host_scenarios_expanded }}"
@@ -197,13 +200,20 @@
       dest: user_variables_tls.yml
       condition: "{{ 'tls' in bootstrap_host_scenarios_expanded }}"
 
-- name: Copy modified cinder-volume env.d file for ceph scenario
+- name: Copy modified env.d files for scenarios
   ansible.builtin.copy:
-    src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
-    dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: "0644"
   when:
-    - "'ceph' in bootstrap_host_scenarios_expanded"
+    - item.condition | default(true)
+  with_items:
+    - src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/cinder-volume.yml.container.example"
+      dest: "/etc/openstack_deploy/env.d/cinder-volume.yml"
+      condition: "{{ 'ceph' in bootstrap_host_scenarios_expanded }}"
+    - src: "{{ playbook_dir }}/../etc/openstack_deploy/env.d/freezer-scheduler.yml.utility.example"
+      dest: "/etc/openstack_deploy/env.d/freezer-scheduler.yml"
+      condition: "{{ 'freezer' in bootstrap_host_scenarios_expanded }}"
 
 - name: Create user-space overrides
   ansible.builtin.lineinfile:

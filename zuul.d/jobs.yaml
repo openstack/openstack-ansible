@@ -68,6 +68,7 @@
       - name: openstack/openstack-ansible-os_blazar
       - name: openstack/openstack-ansible-os_ceilometer
       - name: openstack/openstack-ansible-os_cinder
+      - name: openstack/openstack-ansible-os_freezer
       - name: openstack/openstack-ansible-os_designate
       - name: openstack/openstack-ansible-os_glance
       - name: openstack/openstack-ansible-os_gnocchi
@@ -196,6 +197,7 @@
       - name: openstack/openstack-ansible-os_cloudkitty
       - name: openstack/openstack-ansible-os_cinder
       - name: openstack/openstack-ansible-os_designate
+      - name: openstack/openstack-ansible-os_freezer
       - name: openstack/openstack-ansible-os_glance
       - name: openstack/openstack-ansible-os_gnocchi
       - name: openstack/openstack-ansible-os_heat
@@ -237,6 +239,9 @@
       - name: openstack/cinder
       - name: openstack/cloudkitty
       - name: openstack/cloudkitty-dashboard
+      - name: openstack/freezer
+      - name: openstack/freezer-api
+      - name: openstack/freezer-web-ui
       - name: openstack/designate
       - name: openstack/designate-dashboard
       - name: openstack/glance
@@ -288,6 +293,7 @@
       - name: openstack/cinder-tempest-plugin
       - name: openstack/cloudkitty-tempest-plugin
       - name: openstack/designate-tempest-plugin
+      - name: openstack/freezer-tempest-plugin
       - name: openstack/glance-tempest-plugin
       - name: openstack/heat-tempest-plugin
       - name: openstack/ironic-tempest-plugin

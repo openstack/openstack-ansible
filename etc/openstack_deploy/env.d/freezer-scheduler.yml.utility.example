@@ -1,0 +1,9 @@
+---
+# This file contains an example to show how to deploy
+# the freezer-scheduler service to run inside of the utility container.
+
+container_skel:
+  utility_container:
+    contains:
+      - utility
+      - freezer_scheduler
