@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 08.12.2025 ###
+### HEAD as of 04.02.2026 ###
 
 tempest_git_repo: "{{ openstack_opendev_base_url }}/openstack/tempest"
-tempest_git_install_branch: 0fb92d6d06e4201d836c3b7bae583a2a029497d6
+tempest_git_install_branch: 7ee3b8125d69d6bfa7eeba670967de603e5f4b0b
 tempest_git_track_branch: master
 
 tempest_plugin_barbican_git_repo: "{{ openstack_opendev_base_url }}/openstack/barbican-tempest-plugin"
-tempest_plugin_barbican_git_install_branch: debd1648449976dd92d9df165af19e11bd43424a
+tempest_plugin_barbican_git_install_branch: 82a83c0c759e0cc168022bc03ca3461fe3417358
 tempest_plugin_barbican_git_track_branch: master
 
 tempest_plugin_blazar_git_repo: "{{ openstack_opendev_base_url }}/openstack/blazar-tempest-plugin"
@@ -32,7 +32,7 @@ tempest_plugin_cinder_git_install_branch: 058e172729cde892e61ee65c931d5defc0d3d8
 tempest_plugin_cinder_git_track_branch: master
 
 tempest_plugin_cloudkitty_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty-tempest-plugin"
-tempest_plugin_cloudkitty_git_install_branch: 2c80f80e02c5accd099187ea762c8f8389bd7905
+tempest_plugin_cloudkitty_git_install_branch: b67854bf8c8f2f41f008a9b339ed6daba427028a
 tempest_plugin_cloudkitty_git_track_branch: master
 
 tempest_plugin_designate_git_repo: "{{ openstack_opendev_base_url }}/openstack/designate-tempest-plugin"
@@ -40,7 +40,7 @@ tempest_plugin_designate_git_install_branch: 88fc51f6327a4b8ac50078380d0fc91eca7
 tempest_plugin_designate_git_track_branch: master
 
 tempest_plugin_glance_git_repo: "{{ openstack_opendev_base_url }}/openstack/glance-tempest-plugin"
-tempest_plugin_glance_git_install_branch: be482976001ba5e946029ddd0e3fe8ee1852568d
+tempest_plugin_glance_git_install_branch: 54889708741080bd7d7119730a68873ca51d686c
 tempest_plugin_glance_git_track_branch: master
 
 tempest_plugin_heat_git_repo: "{{ openstack_opendev_base_url }}/openstack/heat-tempest-plugin"
@@ -48,11 +48,11 @@ tempest_plugin_heat_git_install_branch: 67df0de82d4d4ea2bdfcbd10c5d1ed4813f3779b
 tempest_plugin_heat_git_track_branch: master
 
 tempest_plugin_ironic_git_repo: "{{ openstack_opendev_base_url }}/openstack/ironic-tempest-plugin"
-tempest_plugin_ironic_git_install_branch: 4d55945d520fd9c514c2f9983dca520925a30df9
+tempest_plugin_ironic_git_install_branch: a56ef1f6e4a853360dec6b22507241f7dfea88c3
 tempest_plugin_ironic_git_track_branch: master
 
 tempest_plugin_keystone_git_repo: "{{ openstack_opendev_base_url }}/openstack/keystone-tempest-plugin"
-tempest_plugin_keystone_git_install_branch: 97d6de342fc0b7487c2dc99765c4717850758afc
+tempest_plugin_keystone_git_install_branch: 1f48fefa4d6cbf8a473944fb2d92166cb70bd7fc
 tempest_plugin_keystone_git_track_branch: master
 
 tempest_plugin_magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-tempest-plugin"
@@ -60,11 +60,11 @@ tempest_plugin_magnum_git_install_branch: e42f390a87658598d55655818bbd87836a2475
 tempest_plugin_magnum_git_track_branch: master
 
 tempest_plugin_manila_git_repo: "{{ openstack_opendev_base_url }}/openstack/manila-tempest-plugin"
-tempest_plugin_manila_git_install_branch: 283b664c8be0655bcf370bce10c851cf8dacd2c6
+tempest_plugin_manila_git_install_branch: 3f76739525905fc34792d9c2490f3546c3af75b2
 tempest_plugin_manila_git_track_branch: master
 
 tempest_plugin_neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-tempest-plugin"
-tempest_plugin_neutron_git_install_branch: a664f75019c5ab751fde36fe30ca2a9856400f86
+tempest_plugin_neutron_git_install_branch: b2d8265389e728ca5604758cd37ec98427400eb9
 tempest_plugin_neutron_git_track_branch: master
 
 tempest_plugin_novajoin_git_repo: "{{ openstack_opendev_base_url }}/x/novajoin-tempest-plugin"
@@ -72,7 +72,7 @@ tempest_plugin_novajoin_git_install_branch: d4a39ceb0f636de6a5b07b99a5a04a7a272d
 tempest_plugin_novajoin_git_track_branch: master
 
 tempest_plugin_octavia_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-tempest-plugin"
-tempest_plugin_octavia_git_install_branch: 32b3716676ce34583003ac01689c9e0d79963bee
+tempest_plugin_octavia_git_install_branch: b4ca1d798e99d11443c720b0691fb8e2befa7f87
 tempest_plugin_octavia_git_track_branch: master
 
 tempest_plugin_telemetry_git_repo: "{{ openstack_opendev_base_url }}/openstack/telemetry-tempest-plugin"
@@ -80,7 +80,7 @@ tempest_plugin_telemetry_git_install_branch: dcd19b0198fcdc55c149d545a52923f4b88
 tempest_plugin_telemetry_git_track_branch: master
 
 tempest_plugin_trove_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove-tempest-plugin"
-tempest_plugin_trove_git_install_branch: ac0e75b1b64e8b14e66c7395bb51bead8b43458c
+tempest_plugin_trove_git_install_branch: 13c53e4157df14e37a7626bb53500b01cdd97d22
 tempest_plugin_trove_git_track_branch: master
 
 tempest_plugin_zaqar_git_repo: "{{ openstack_opendev_base_url }}/openstack/zaqar-tempest-plugin"
@@ -92,5 +92,5 @@ tempest_plugin_zun_git_install_branch: d8595f07c74f1314f15beb8e42ca68d2b552a036
 tempest_plugin_zun_git_track_branch: master
 
 rally_openstack_git_repo: "{{ openstack_opendev_base_url }}/openstack/rally-openstack"
-rally_openstack_git_install_branch: c3c6de98043b5de9dc903952954cf6f5a2c38896
+rally_openstack_git_install_branch: f8dbd04fe5a1edd8f7de016270f9b6d086df7918
 rally_openstack_git_track_branch: master
