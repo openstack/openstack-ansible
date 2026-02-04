@@ -69,6 +69,7 @@ def make_config():
     # Allow access here so we can populate the dictionary.
     global _BASE_CONFIG
 
+    os.makedirs(TARGET_DIR, exist_ok=True)
     _BASE_CONFIG = tools.make_example_config(AIO_CONFIG_FILE, CONFD)
 
     tools.write_example_config(USER_CONFIG_FILE, _BASE_CONFIG)
@@ -83,6 +84,7 @@ def tearDownModule():
     # This file should only be removed after all tests are run,
     # thus it is excluded from cleanup.
     os.remove(USER_CONFIG_FILE)
+    os.rmdir(TARGET_DIR)
 
 
 def cleanup():
@@ -1350,7 +1352,7 @@ class TestLxcHosts(TestConfigCheckBase):
         inventory = get_inventory()
         # insert compute1 into lxc_hosts, which mimicks bug behavior
         inventory['lxc_hosts']['hosts'].append('compute1')
-        faked_path = INV_DIR
+        faked_path = TARGET_DIR
 
         with mock.patch('osa_toolkit.filesystem.load_inventory') as inv_mock:
             inv_mock.return_value = (inventory, faked_path)
@@ -1367,7 +1369,7 @@ class TestLxcHosts(TestConfigCheckBase):
 
         self.assertNotIn('lxc_hosts', inventory.keys())
 
-        faked_path = INV_DIR
+        faked_path = TARGET_DIR
         with mock.patch('osa_toolkit.filesystem.load_inventory') as inv_mock:
             inv_mock.return_value = (inventory, faked_path)
             new_inventory = get_inventory()
