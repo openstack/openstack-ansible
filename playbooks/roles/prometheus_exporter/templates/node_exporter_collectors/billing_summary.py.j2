@@ -72,7 +72,7 @@ merged_ratings = [
 ]
 
 # Create prometheus metric for overall usage
-print(f"openstack_rating_summary{{group=\"{group}\" {rating_sum[0]['rate']}")
+print(f"openstack_rating_summary{{ '{{' }}group=\"{group}\"{{ '}}' }} {rating_sum[0]['rate']}")
 
 # For each project with ratings, create prometheus metrics
 for item in merged_ratings:
@@ -81,7 +81,7 @@ for item in merged_ratings:
   if "Billing account" in item['description']:
     billable=True
   try:
-    print(f"openstack_rating_summary_by_project{{group=\"{group}\",project_id=\"{item['tenant_id']}\",project_name=\"{item['name']}\",billable=\"{billable}\",enabled=\"{item['enabled']}\"}} {item['rate']}")
+    print(f"openstack_rating_summary_by_project{{ '{{' }}group=\"{group}\",project_id=\"{item['tenant_id']}\",project_name=\"{item['name']}\",billable=\"{billable}\",enabled=\"{item['enabled']}\"{{ '}}' }} {item['rate']}")
   except Exception:
     print(f"Failed to create metric for {item}")
     pass
