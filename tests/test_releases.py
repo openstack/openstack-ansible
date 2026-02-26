@@ -2,6 +2,7 @@ import io
 import unittest
 from unittest.mock import patch
 from osa_toolkit import releasing
+from datetime import datetime
 from prettytable import PrettyTable
 from ruamel.yaml import YAML
 from packaging import requirements
@@ -110,6 +111,128 @@ class TestReleasing(unittest.TestCase):
             "https://github.com/openstack/openstack-ansible.git", "newton-eol"
         )
         self.assertEqual(sha, "bf565c6ae34bb4343b4d6b486bd9b514de370b0a")
+
+    @patch('osa_toolkit.releasing.get_sha_from_ref')
+    @patch('osa_toolkit.releasing.j2_template')
+    def test_process_upstream_repos(self, mock_j2_template, mock_get_sha):
+        """
+        Tests the `_process_upstream_repos` generator.
+        """
+        # Mock the Jinja2 template rendering
+        mock_template = unittest.mock.Mock()
+        mock_template.render.return_value = 'http://example.com/repo.git'
+        mock_j2_template.return_value = mock_template
+
+        mock_get_sha.return_value = 'new_sha_123'
+        repos = {
+            'project1': {
+                'url': '{{ openstack_opendev_base_url }}/project1',
+                'trackbranch': 'master'
+            },
+            'project2': {
+                'url': '{{ openstack_opendev_base_url }}/project2',
+                'trackbranch': 'None'
+            }
+        }
+
+        results = list(releasing._process_upstream_repos(repos))
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0], ('project1', 'new_sha_123'))
+        mock_get_sha.assert_called_once_with('http://example.com/repo.git', 'master')
+
+    @patch('osa_toolkit.releasing.copy_role_releasenotes')
+    @patch('osa_toolkit.releasing.clone_role')
+    @patch('osa_toolkit.releasing.get_sha_from_ref')
+    def test_process_roles(self, mock_get_sha, mock_clone_role, mock_copy_reno):
+        """
+        Tests the `_process_roles` generator.
+        """
+        mock_get_sha.return_value = 'new_sha_for_role'
+
+        mock_commit_datetime = datetime(2024, 1, 10)
+        mock_repo = unittest.mock.Mock()
+        mock_repo.head.object.committed_datetime = mock_commit_datetime
+        mock_repo.working_dir = '/tmp/somedir'
+        mock_clone_role.return_value = mock_repo
+
+        all_roles = [
+            {
+                'name': 'role1',
+                'src': 'http://example.com/role1.git',
+                'version': 'old_sha',
+                'trackbranch': 'master',
+                'shallow_since': '2024-01-01'
+            },
+            {
+                'name': 'role2',
+                'src': 'http://example.com/role2.git',
+                'version': 'master',
+                'trackbranch': 'master'
+            },
+            {
+                'name': 'role3',
+                'src': 'http://example.com/role3.git',
+                'version': 'fixed_sha',
+                'trackbranch': 'None'
+            }
+        ]
+        openstack_roles = [all_roles[0]]
+
+        clone_path = '/tmp/fake_clone_path'
+        # Test a standard bump
+        results = list(releasing._process_ansible_role_requirements(all_roles, openstack_roles, False, False, clone_path))
+        self.assertEqual(results[0]['version'], 'new_sha_for_role')
+        self.assertEqual(results[0]['shallow_since'], '2024-01-09')
+        self.assertEqual(results[1]['version'], 'master')
+        self.assertEqual(results[2]['version'], 'fixed_sha')
+        mock_clone_role.assert_called()
+        mock_copy_reno.assert_called()
+
+        # Test milestone freeze
+        mock_get_sha.reset_mock()
+        results = list(releasing._process_ansible_role_requirements(all_roles, openstack_roles, True, False, clone_path))
+        self.assertEqual(results[0]['version'], 'new_sha_for_role')
+        self.assertEqual(results[0]['shallow_since'], '2024-01-09')
+        self.assertEqual(mock_get_sha.call_count, 2)
+
+        # Test milestone unfreeze
+        results = list(releasing._process_ansible_role_requirements(all_roles, openstack_roles, False, True, clone_path))
+        self.assertEqual(results[0]['version'], 'master')
+        self.assertEqual(results[1]['version'], 'master')
+
+    @patch('osa_toolkit.releasing.clone_role')
+    def test_process_collections(self, mock_clone_role):
+        """
+        Tests the `_process_collections` generator.
+        """
+        mock_tag1 = unittest.mock.Mock()
+        mock_tag1.name = '1.0.0'
+        mock_tag2 = unittest.mock.Mock()
+        mock_tag2.name = '2.1.0'
+        mock_tag3 = unittest.mock.Mock()
+        mock_tag3.name = '2.0.0'
+        mock_invalid_tag = unittest.mock.Mock()
+        mock_invalid_tag.name = 'not-a-version'
+
+        mock_repo = unittest.mock.Mock()
+        mock_repo.tags = [mock_tag1, mock_tag2, mock_tag3, mock_invalid_tag]
+        mock_clone_role.return_value = mock_repo
+
+        collections = [
+            {'source': 'http://example.com/collection1.git', 'type': 'git', 'version': '1.0.0'},
+            {'source': 'community.general', 'type': 'galaxy', 'version': '3.0.0'}
+        ]
+
+        clone_path = '/tmp/fake_clone_path'
+        results = list(releasing._process_collection_requirements(collections, clone_path))
+
+        self.assertEqual(len(results), 2)
+        # First collection should be updated to the highest tag version
+        self.assertEqual(results[0]['version'], '2.1.0')
+        # Second collection should be unchanged
+        self.assertEqual(results[1]['version'], '3.0.0')
+        mock_clone_role.assert_called_once_with('http://example.com/collection1.git', unittest.mock.ANY)
 
 
 if __name__ == '__main__':

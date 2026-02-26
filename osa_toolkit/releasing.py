@@ -237,6 +237,30 @@ def print_requirements_state(pins, latest_versions, constraints_versions):
     print(table)
 
 
+def _process_upstream_repos(repos):
+    """Generator to process upstream repos and yield updated data.
+
+    :param repos: Dictionary of repositories to process.
+    :yields: tuple of (project_name, new_sha)
+    """
+    for project, projectdata in repos.items():
+        # a _git_track_branch string of "None" means no tracking, which means
+        # do not update (as there is no branch to track)
+        project_url = j2_template(projectdata["url"]).render(BASE_URI_MAPPING)
+        if projectdata["trackbranch"] != "None":
+            print(
+                "Bumping project %s on its %s branch"
+                % (project_url, projectdata["trackbranch"])
+            )
+            sha = get_sha_from_ref(project_url, projectdata["trackbranch"])
+            yield project, sha
+        else:
+            print(
+                "Skipping project %s branch %s"
+                % (project_url, projectdata["trackbranch"])
+            )
+
+
 def bump_upstream_repos_shas(path):
     """ Processes all the yaml files in the path by updating their upstream repos shas
     :param path: String containing the location of the yaml files to update
@@ -270,24 +294,11 @@ def bump_upstream_repos_sha_file(filename):
 
     repos = build_repos_dict(repofiledata)
     changed = False
-    for project, projectdata in repos.items():
-        # a _git_track_branch string of "None" means no tracking, which means
-        # do not update (as there is no branch to track)
-        project_url = j2_template(projectdata["url"]).render(BASE_URI_MAPPING)
-        if projectdata["trackbranch"] != "None":
-            print(
-                "Bumping project %s on its %s branch"
-                % (project_url, projectdata["trackbranch"])
-            )
-            sha = get_sha_from_ref(project_url, projectdata["trackbranch"])
-            if repofiledata[project + "_git_install_branch"] != sha:
-                repofiledata[project + "_git_install_branch"] = sha
-                changed = True
-        else:
-            print(
-                "Skipping project %s branch %s"
-                % (project_url, projectdata["trackbranch"])
-            )
+
+    for project, new_sha in _process_upstream_repos(repos):
+        if repofiledata[project + "_git_install_branch"] != new_sha:
+            repofiledata[project + "_git_install_branch"] = new_sha
+            changed = True
 
     if changed:
         write_data_to_file(repofiledata, filename)
@@ -366,6 +377,71 @@ def unfreeze_ansible_role_requirements_file(filename=""):
     )
 
 
+def _process_ansible_role_requirements(all_roles, openstack_roles, milestone_freeze, milestone_unfreeze, clone_root_path):
+    """Generator to process roles and yield updated role data.
+
+    :param all_roles: list of all roles to process.
+    :param openstack_roles: list of openstack roles.
+    :param milestone_freeze: boolean, True if freezing for a milestone.
+    :param milestone_unfreeze: boolean, True if unfreezing from a milestone.
+    :yields: updated role dictionary.
+    """
+    for role in all_roles:
+        trackbranch = role.get("trackbranch")
+        if not trackbranch or trackbranch.lower() == "none":
+            print(
+                "Skipping role %s branch" % role["name"]
+            )
+            yield role
+            continue
+
+        copyreleasenotes = False
+        shallow_since = role.get("shallow_since")
+
+        # We don't want to copy config_template renos even if it's an openstack
+        # role, as it's not branched the same way.
+        if role in openstack_roles and (not role["src"].endswith("config_template")):
+            copyreleasenotes = True
+
+        # Freeze sha by checking its trackbranch value
+        # Do not freeze sha if trackbranch is None
+        if trackbranch:
+            if milestone_unfreeze:
+                print(f"Unfreeze {trackbranch} role")
+                role["version"] = trackbranch
+                yield role
+                continue
+            # Do nothing when trackbranch and version are same and not freezing
+            elif trackbranch == role.get("version") and not milestone_freeze:
+                print("Version and trackbranch equal, skipping...")
+                yield role
+                continue
+
+            role_head_sha = get_sha_from_ref(role["src"], trackbranch)
+            role["version"] = role_head_sha
+            print(f"Bumped role {role['name']} to sha {role['version']}")
+
+            # Copy the release notes `Also handle the release notes
+            # If frozen, no need to copy release notes.
+            if copyreleasenotes or shallow_since:
+                role_repo = clone_role(
+                    role["src"],
+                    clone_root_path,
+                    branch=role_head_sha,
+                    track_branch=trackbranch,
+                    depth="1"
+                )
+                if copyreleasenotes:
+                    print("Copying %s's release notes" % role["name"])
+                    copy_role_releasenotes(role_repo.working_dir, "./")
+                if shallow_since:
+                    role_head = role_repo.head.object
+                    head_timestamp = role_head.committed_datetime
+                    head_datetime = head_timestamp - timedelta(days=1)
+                    role["shallow_since"] = head_datetime.strftime('%Y-%m-%d')
+        yield role
+
+
 def update_ansible_role_requirements_file(
     filename="", milestone_freeze=False, milestone_unfreeze=False
 ):
@@ -378,82 +454,29 @@ def update_ansible_role_requirements_file(
 
     openstack_roles, external_roles, all_roles = sort_roles(filename)
 
-    clone_root_path = tempfile.mkdtemp()
+    try:
+        clone_root_path = tempfile.mkdtemp()
+        updated_roles = _process_ansible_role_requirements(
+                all_roles, openstack_roles, milestone_freeze, milestone_unfreeze, clone_root_path
+        )
+    except Exception:
+        if os.path.isdir(clone_root_path):
+            shutil.rmtree(clone_root_path)
+        raise
+    else:
+        shutil.rmtree(clone_root_path)
 
-    for role in all_roles:
-        trackbranch = role.get("trackbranch")
-        if not trackbranch or trackbranch.lower() == "none":
-            print(
-                "Skipping role %s branch" % role["name"]
-            )
-            continue
-
-        copyreleasenotes = False
-
-        shallow_since = role.get("shallow_since")
-
-        # We don't want to copy config_template renos even if it's an openstack
-        # role, as it's not branched the same way.
-        if role in openstack_roles and (not role["src"].endswith("config_template")):
-            copyreleasenotes = True
-
-        # Freeze sha by checking its trackbranch value
-        # Do not freeze sha if trackbranch is None
-        if trackbranch:
-            try:
-                if milestone_unfreeze:
-                    print(f"Unfreeze {trackbranch} role")
-                    role["version"] = trackbranch
-                    continue
-                # Do nothing when trackbranch and version are same and not freezing
-                elif trackbranch == role.get("version") and not milestone_freeze:
-                    print("Version and trackbranch equal, skipping...")
-                    continue
-
-                role_head_sha = get_sha_from_ref(role["src"], trackbranch)
-                role["version"] = role_head_sha
-                print(f"Bumped role {role['name']} to sha {role['version']}")
-
-                # Copy the release notes `Also handle the release notes
-                # If frozen, no need to copy release notes.
-                if copyreleasenotes or shallow_since:
-                    role_repo = clone_role(
-                        role["src"],
-                        clone_root_path,
-                        branch=role_head_sha,
-                        track_branch=trackbranch,
-                        depth="1"
-                    )
-                    if copyreleasenotes:
-                        print("Copying %s's release notes" % role["name"])
-                        copy_role_releasenotes(role_repo.working_dir, "./")
-                    if shallow_since:
-                        role_head = role_repo.head.object
-                        head_timestamp = role_head.committed_datetime
-                        head_datetime = head_timestamp - timedelta(days=1)
-                        role["shallow_since"] = head_datetime.strftime('%Y-%m-%d')
-                    shutil.rmtree(role_repo.working_dir)
-            except Exception:
-                # Cleanup in case of error
-                if os.path.isdir(clone_root_path):
-                    shutil.rmtree(clone_root_path)
-                raise
-
-    shutil.rmtree(clone_root_path)
     print("Overwriting ansible-role-requirements")
-    write_data_to_file(all_roles, filename)
+    write_data_to_file(list(updated_roles), filename)
 
 
-def update_ansible_collection_requirements(filename=''):
-    clone_root_path = tempfile.mkdtemp()
-    yaml = YAML()  # use ruamel.yaml to keep comments
-    with open(filename, "r") as arryml:
-        yaml_data = arryml.read()
+def _process_collection_requirements(collections, clone_root_path):
+    """Generator to process collections and yield updated collection data.
 
-    all_requirements = yaml.load(_update_head_date(yaml_data))
-    all_collections = all_requirements.get('collections')
-
-    for collection in all_collections:
+    :param collections: list of all collections to process.
+    :yields: updated collection dictionary.
+    """
+    for collection in collections:
         collection_type = collection.get('type')
         if collection_type == 'git' and collection["version"] != 'master':
             collection_repo = clone_role(
@@ -467,8 +490,24 @@ def update_ansible_collection_requirements(filename=''):
                 except version.InvalidVersion:
                     continue
             collection['version'] = str(max(collection_versions))
+        yield collection
 
-    all_requirements['collections'] = all_collections
+
+def update_ansible_collection_requirements(filename=''):
+    yaml = YAML()  # use ruamel.yaml to keep comments
+    with open(filename, "r") as arryml:
+        yaml_data = arryml.read()
+
+    all_requirements = yaml.load(_update_head_date(yaml_data))
+
+    clone_root_path = tempfile.mkdtemp()
+    try:
+        all_requirements['collections'] = list(
+            _process_collection_requirements(all_requirements.get('collections'), clone_root_path)
+        )
+    finally:
+        shutil.rmtree(clone_root_path)
+
     print("Overwriting ansible-collection-requirements")
     write_data_to_file(all_requirements, filename)
 
