@@ -42,6 +42,7 @@ COMMON_ETC_LOG_NAMES="apt \
     clusterapi \
     corosync \
     ceph \
+    default \
     dnf \
     etcd \
     exports \
@@ -63,6 +64,7 @@ COMMON_ETC_LOG_NAMES="apt \
     nginx \
     openstack_deploy \
     openvswitch \
+    ovn \
     pacemaker \
     pip.conf \
     qpid-dispatch \
