@@ -32,6 +32,7 @@ For in-depth technical information, see the :ref:`reference-guide`.
    l3pods/example.rst
    l3pods/multi_az.rst
    ceph/full-deploy.rst
+   ceph/ceph-aio.rst
    ceph/swift.rst
    ceph/ceilometer.rst
    security/index.rst
