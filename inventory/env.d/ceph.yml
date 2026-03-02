@@ -14,79 +14,79 @@
 # limitations under the License.
 
 component_skel:
-  ceph-mon:
+  ceph_mon:
     belongs_to:
       - ceph_all
-  ceph-osd:
+  ceph_osd:
     belongs_to:
       - ceph_all
-  ceph-rgw:
+  ceph_rgw:
     belongs_to:
       - ceph_all
-  ceph-mds:
+  ceph_mds:
     belongs_to:
       - ceph_all
-  ceph-nfs:
+  ceph_nfs:
     belongs_to:
       - ceph_all
 
 container_skel:
-  ceph-mon_container:
+  ceph_mon_container:
     belongs_to:
-      - ceph-mon_containers
+      - ceph_mon_containers
     contains:
-      - ceph-mon
-  ceph-osd_container:
+      - ceph_mon
+  ceph_osd_container:
     belongs_to:
-      - ceph-osd_containers
+      - ceph_osd_containers
     contains:
-      - ceph-osd
+      - ceph_osd
     properties:
       is_metal: true
-  ceph-rgw_container:
+  ceph_rgw_container:
     belongs_to:
-      - ceph-rgw_containers
+      - ceph_rgw_containers
     contains:
-      - ceph-rgw
-  ceph-mds_container:
+      - ceph_rgw
+  ceph_mds_container:
     belongs_to:
-      - ceph-mds_containers
+      - ceph_mds_containers
     contains:
-      - ceph-mds
-  ceph-nfs_container:
+      - ceph_mds
+  ceph_nfs_container:
     belongs_to:
-      - ceph-nfs_containers
+      - ceph_nfs_containers
     contains:
-      - ceph-nfs
+      - ceph_nfs
 
 physical_skel:
-  ceph-mon_containers:
+  ceph_mon_containers:
     belongs_to:
       - all_containers
-  ceph-mon_hosts:
+  ceph_mon_hosts:
     belongs_to:
       - hosts
-  ceph-osd_containers:
+  ceph_osd_containers:
     belongs_to:
       - all_containers
-  ceph-osd_hosts:
+  ceph_osd_hosts:
     belongs_to:
       - hosts
-  ceph-rgw_containers:
+  ceph_rgw_containers:
     belongs_to:
       - all_containers
-  ceph-rgw_hosts:
+  ceph_rgw_hosts:
     belongs_to:
       - hosts
-  ceph-mds_containers:
+  ceph_mds_containers:
     belongs_to:
       - all_containers
-  ceph-mds_hosts:
+  ceph_mds_hosts:
     belongs_to:
       - hosts
-  ceph-nfs_containers:
+  ceph_nfs_containers:
     belongs_to:
       - all_containers
-  ceph-nfs_hosts:
+  ceph_nfs_hosts:
     belongs_to:
       - hosts

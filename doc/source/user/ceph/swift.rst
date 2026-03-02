@@ -7,7 +7,7 @@ OpenStack-Ansible gives you the option of deploying Ceph Object Gateway
 
 In particular, the ``openstack.osa.ceph_rgw_install`` playbook
 (which includes ``openstack.osa.ceph_rgw_keystone_setup``) will deploy
-radosgw to any ``ceph-rgw`` hosts, and create a corresponding Keystone
+radosgw to any ``ceph_rgw`` hosts, and create a corresponding Keystone
 ``object-store`` service catalog entry. The service endpoints do
 contain the ``AUTH_%(tenant_id)s`` prefix just like in native Swift,
 so public read ACLs and temp URLs will work just like they do in
@@ -25,9 +25,9 @@ is an example configuration snippet:
 
 .. note::
 
-   Mentioned below overrides are default ones and will be applied to `ceph-rgw` group
+   Mentioned below overrides are default ones and will be applied to `ceph_rgw` group
 
-.. literalinclude:: ../../../../inventory/group_vars/ceph-rgw.yml
+.. literalinclude:: ../../../../inventory/group_vars/ceph_rgw.yml
 
 You may also want to add the ``rgw_dns_name`` option if you want to
 enable bucket hostnames with the S3 API.

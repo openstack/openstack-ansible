@@ -181,6 +181,55 @@ class GroupConflict(Exception):
     pass
 
 
+def _check_ip_conflict_on_merge(existing_group, new_group):
+    """Check for IP conflicts when merging two host groups.
+
+    :param existing_group: ``dict`` The group already in the config.
+    :param new_group: ``dict`` The group to be merged.
+    :raises: MultipleIpForHostError
+    """
+    for hostname, entries in new_group.items():
+        if hostname in existing_group:
+            existing_ip = existing_group[hostname].get('ip')
+            new_ip = entries.get('ip')
+            if existing_ip and new_ip and existing_ip != new_ip:
+                raise MultipleIpForHostError(hostname, existing_ip, new_ip)
+
+
+def _normalize_user_config(raw_config):
+    """Normalize group names in user config and merge dashed/underscored names
+
+    This function iterates through the raw configuration, normalizes group
+    names by replacing dashes with underscores, and merges groups that become
+    duplicates after normalization.
+
+    If a group with a dash and a group with an underscore (which would result
+    in the same name) are both defined as host groups (dictionaries),
+    their hosts are merged. During the merge, it checks for IP address
+    conflicts for any host defined in both groups.
+
+    For non-dictionary values, the last-seen value for a given normalized
+    key will overwrite previous ones.
+
+    :param raw_config: ``dict`` The user configuration loaded from files.
+    :returns: A ``dict`` with normalized and merged configuration.
+    :raises: MultipleIpForHostError
+    """
+    normalized_config = {}
+    for key, value in raw_config.items():
+        normalized_key = key.replace('-', '_')
+        if normalized_key in normalized_config:
+            existing_value = normalized_config[normalized_key]
+            if isinstance(existing_value, dict) and isinstance(value, dict):
+                _check_ip_conflict_on_merge(existing_value, value)
+                existing_value.update(value)
+            else:
+                normalized_config[normalized_key] = value
+        else:
+            normalized_config[normalized_key] = value
+    return normalized_config
+
+
 def _hosts_in_group(group, inventory):
     """Generator that flattens nested inventory data.
 
@@ -326,6 +375,7 @@ def _append_to_host_groups(inventory, container_type, assignment, host_type,
         r'\g<group>_all',
         container_type
     )
+    physical_group_type = physical_group_type.replace('-', '_')
     if physical_group_type not in inventory:
         logger.debug("Added %s group to inventory", physical_group_type)
         inventory[physical_group_type] = {'hosts': []}
@@ -415,6 +465,7 @@ def _add_container_hosts(assignment, config, container_group, container_type,
         r'\g<group>_hosts',
         container_type
     )
+    physical_host_type = physical_host_type.replace('-', '_')
     container_name = re.sub(r'_', '-', f'{container_group}')
     # If the physical host type is not in config return
     if physical_host_type not in config:
@@ -469,7 +520,7 @@ def _add_container_hosts(assignment, config, container_group, container_type,
             )
 
         physical_host = inventory['_meta']['hostvars'][host_type]
-        container_host_type = '{}-host_containers'.format(host_type)
+        container_host_type = '{}_host_containers'.format(host_type)
         if 'container_types' not in physical_host:
             physical_host['container_types'] = container_host_type
         elif physical_host['container_types'] != container_host_type:
@@ -818,7 +869,7 @@ def container_skel_load(container_skel, inventory, config):
             )
             for host_type in inventory[physical_host_type]['hosts']:
                 container_mapping = inventory[key]['children']
-                host_type_containers = '{}-host_containers'.format(host_type)
+                host_type_containers = '{}_host_containers'.format(host_type)
                 if host_type_containers in inventory:
                     du.append_if(array=container_mapping,
                                  item=host_type_containers)
@@ -864,7 +915,7 @@ def container_skel_load(container_skel, inventory, config):
 
         for group in p_net.get('group_binds', list()):
             _add_additional_networks(
-                key=group,
+                key=group.replace('-', '_'),
                 inventory=inventory,
                 ip_q=ip_from_q,
                 q_name=q_name,
@@ -1211,10 +1262,11 @@ def generate(config=None,
         _prepare_debug_logger()
 
     try:
-        user_defined_config = filesys.load_user_configuration(config)
+        raw_user_defined_config = filesys.load_user_configuration(config)
     except filesys.MissingDataSource as ex:
         raise SystemExit(ex)
 
+    user_defined_config = _normalize_user_config(raw_user_defined_config)
     base_env_dir = environment
     base_env = filesys.load_environment(base_env_dir, {})
     environment = filesys.load_environment(config, base_env)

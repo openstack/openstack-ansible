@@ -37,8 +37,8 @@ component_skel:
 container_skel:
   nova_api_container:
     belongs_to:
-      - compute-infra_containers
-      - os-infra_containers
+      - compute_infra_containers
+      - os_infra_containers
     contains:
       - nova_api_metadata
       - nova_api_os_compute
@@ -48,8 +48,8 @@ container_skel:
   nova_compute_container:
     belongs_to:
       - compute_containers
-      - kvm-compute_containers
-      - qemu-compute_containers
+      - kvm_compute_containers
+      - qemu_compute_containers
     contains:
       - neutron_openvswitch_agent
       - neutron_sriov_nic_agent
@@ -60,10 +60,10 @@ container_skel:
 
 
 physical_skel:
-  compute-infra_containers:
+  compute_infra_containers:
     belongs_to:
       - all_containers
-  compute-infra_hosts:
+  compute_infra_hosts:
     belongs_to:
       - hosts
   compute_containers:
@@ -72,15 +72,15 @@ physical_skel:
   compute_hosts:
     belongs_to:
       - hosts
-  kvm-compute_containers:
+  kvm_compute_containers:
     belongs_to:
       - all_containers
-  kvm-compute_hosts:
+  kvm_compute_hosts:
     belongs_to:
       - hosts
-  qemu-compute_containers:
+  qemu_compute_containers:
     belongs_to:
       - all_containers
-  qemu-compute_hosts:
+  qemu_compute_hosts:
     belongs_to:
       - hosts

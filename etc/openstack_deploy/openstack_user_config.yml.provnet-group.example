@@ -129,7 +129,7 @@ global_overrides:
 ###
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts:
+shared_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -138,7 +138,7 @@ shared-infra_hosts:
     ip: 172.29.236.13
 
 # repository (apt cache, python packages, etc)
-repo-infra_hosts:
+repo_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -171,7 +171,7 @@ identity_hosts:
     ip: 172.29.236.13
 
 # cinder api services
-storage-infra_hosts:
+storage_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -214,7 +214,7 @@ image_hosts:
           options: "_netdev,auto"
 
 # placement
-placement-infra_hosts:
+placement_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -223,7 +223,7 @@ placement-infra_hosts:
     ip: 172.29.236.13
 
 # nova api, conductor, etc services
-compute-infra_hosts:
+compute_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -259,7 +259,7 @@ network_hosts:
     ip: 172.29.236.13
 
 # ceilometer (telemetry data collection)
-metering-infra_hosts:
+metering_infra_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -268,7 +268,7 @@ metering-infra_hosts:
     ip: 172.29.236.13
 
 # aodh (telemetry alarm service)
-metering-alarm_hosts:
+metering_alarm_hosts:
   infra1:
     ip: 172.29.236.11
   infra2:
@@ -293,7 +293,7 @@ compute_hosts:
     ip: 172.29.236.17
 
 # ceilometer compute agent (telemetry data collection)
-metering-compute_hosts:
+metering_compute_hosts:
   compute1:
     ip: 172.29.236.16
   compute2:

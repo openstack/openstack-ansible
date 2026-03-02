@@ -10,12 +10,12 @@ component_skel:
 container_skel:
   zun_api_container:
     belongs_to:
-      - zun-infra_containers
+      - zun_infra_containers
     contains:
       - zun_api
   zun_compute_container:
     belongs_to:
-      - zun-compute_containers
+      - zun_compute_containers
     contains:
       - neutron_openvswitch_agent
       - neutron_sriov_nic_agent
@@ -24,15 +24,15 @@ container_skel:
       is_metal: true
 
 physical_skel:
-  zun-compute_containers:
+  zun_compute_containers:
     belongs_to:
     - all_containers
-  zun-compute_hosts:
+  zun_compute_hosts:
     belongs_to:
     - hosts
-  zun-infra_containers:
+  zun_infra_containers:
     belongs_to:
     - all_containers
-  zun-infra_hosts:
+  zun_infra_hosts:
     belongs_to:
     - hosts

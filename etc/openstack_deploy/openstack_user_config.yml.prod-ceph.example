@@ -72,8 +72,8 @@ global_overrides:
           - cinder_volume
           - manila_share
           - nova_compute
-          - ceph-mon
-          - ceph-osd
+          - ceph_mon
+          - ceph_osd
 
 ###
 ### Infrastructure
@@ -94,7 +94,7 @@ compute_hosts: &compute_hosts
   compute2:
     ip: 172.29.236.17
 
-ceph-osd_hosts:
+ceph_osd_hosts:
   osd1:
     ip: 172.29.236.18
   osd2:
@@ -103,22 +103,22 @@ ceph-osd_hosts:
     ip: 172.29.236.20
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts: *infrastructure_hosts
+shared_infra_hosts: *infrastructure_hosts
 
 # zookeeper
 coordination_hosts: *infrastructure_hosts
 
-# ceph-mon containers
-ceph-mon_hosts: *infrastructure_hosts
+# ceph_mon containers
+ceph_mon_hosts: *infrastructure_hosts
 
-# ceph-mds containers
-ceph-mds_hosts: *infrastructure_hosts
+# ceph_mds containers
+ceph_mds_hosts: *infrastructure_hosts
 
 # ganesha-nfs hosts
-ceph-nfs_hosts: *infrastructure_hosts
+ceph_nfs_hosts: *infrastructure_hosts
 
 # repository (apt cache, python packages, etc)
-repo-infra_hosts: *infrastructure_hosts
+repo_infra_hosts: *infrastructure_hosts
 
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
@@ -133,7 +133,7 @@ load_balancer_hosts: *infrastructure_hosts
 identity_hosts: *infrastructure_hosts
 
 # cinder api services
-storage-infra_hosts: *infrastructure_hosts
+storage_infra_hosts: *infrastructure_hosts
 
 # cinder volume hosts (Ceph RBD-backed)
 storage_hosts: *infrastructure_hosts
@@ -142,10 +142,10 @@ storage_hosts: *infrastructure_hosts
 image_hosts: *infrastructure_hosts
 
 # placement
-placement-infra_hosts: *infrastructure_hosts
+placement_infra_hosts: *infrastructure_hosts
 
 # nova api, conductor, etc services
-compute-infra_hosts: *infrastructure_hosts
+compute_infra_hosts: *infrastructure_hosts
 
 # heat
 orchestration_hosts: *infrastructure_hosts
@@ -157,17 +157,17 @@ dashboard_hosts: *infrastructure_hosts
 network_hosts: *infrastructure_hosts
 
 # ceilometer (telemetry data collection)
-metering-infra_hosts: *infrastructure_hosts
+metering_infra_hosts: *infrastructure_hosts
 
 # aodh (telemetry alarm service)
-metering-alarm_hosts: *infrastructure_hosts
+metering_alarm_hosts: *infrastructure_hosts
 
 # gnocchi (telemetry metrics storage)
 metrics_hosts: *infrastructure_hosts
 
 # manila (share service)
-manila-infra_hosts: *infrastructure_hosts
-manila-data_hosts: *infrastructure_hosts
+manila_infra_hosts: *infrastructure_hosts
+manila_data_hosts: *infrastructure_hosts
 
 # ceilometer compute agent (telemetry data collection)
-metering-compute_hosts: *compute_hosts
+metering_compute_hosts: *compute_hosts

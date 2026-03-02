@@ -69,7 +69,7 @@ There are multiple complications related to organizing storage where the storage
 First, there is only a single controller in any given Availability
 Zone, while multiple copies of ``cinder_volume`` needs to be run for
 each storage provider for High Availability. As ``cinder_volume`` needs
-access to storage network, one of the best places for it are ``ceph-mon``
+access to storage network, one of the best places for it are ``ceph_mon``
 hosts.
 
 Another challenge is to organize shared storage for Glance Images, as

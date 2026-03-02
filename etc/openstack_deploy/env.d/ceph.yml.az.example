@@ -3,51 +3,51 @@ component_skel:
   # Ceph MON
   ceph_mon_az1:
     belongs_to:
-      - ceph-mon
+      - ceph_mon
       - ceph_all
       - az1_all
   ceph_mon_az2:
     belongs_to:
-      - ceph-mon
+      - ceph_mon
       - ceph_all
       - az2_all
   ceph_mon_az3:
     belongs_to:
-      - ceph-mon
+      - ceph_mon
       - ceph_all
       - az3_all
 
   # Ceph OSD
   ceph_osd_az1:
     belongs_to:
-      - ceph-osd
+      - ceph_osd
       - ceph_all
       - az1_all
   ceph_osd_az2:
     belongs_to:
-      - ceph-osd
+      - ceph_osd
       - ceph_all
       - az2_all
   ceph_osd_az3:
     belongs_to:
-      - ceph-osd
+      - ceph_osd
       - ceph_all
       - az3_all
 
   # Ceph RGW
   ceph_rgw_az1:
     belongs_to:
-      - ceph-rgw
+      - ceph_rgw
       - ceph_all
       - az1_all
   ceph_rgw_az2:
     belongs_to:
-      - ceph-rgw
+      - ceph_rgw
       - ceph_all
       - az2_all
   ceph_rgw_az3:
     belongs_to:
-      - ceph-rgw
+      - ceph_rgw
       - ceph_all
       - az3_all
 

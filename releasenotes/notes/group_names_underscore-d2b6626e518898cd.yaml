@@ -1,0 +1,38 @@
+---
+prelude: >
+  Group definitions for OpenStack-Ansible were changed by replacing dashes
+  with underscores. Please check the ``Upgrade`` section for more detatails
+  on how this affects you.
+upgrade:
+  - |
+    Group ``metering-group_container`` has been renamed to
+    ``ceilometer_compute_container`` for general consistency across
+    group naming logic
+  - |
+    All OpenStack-Ansible groups, conf.d and openstack_user_config.yml
+    definitions were renamed by replacing all existing dashes with
+    underscores.
+    This change was made in order to comply with Ansible groups naming
+    convention, which has been introduced back in Ansible 2.8.
+    While old definitions should work after the upgrade, it is still
+    recommended to replace group names with underscores inside of the
+    ``openstack_user_config.yml`` and conf.d files, as well as the
+    ``openstack_inventory.json``, as the dynamic_inventory will not perform
+    the conversion. Please note, that old group names can be also referenced
+    in ``openstack_user_config.yml`` inside of the``provider_networks`` ->
+    ``group_binds``. So please ensure, that network bindings are also updated
+    and contain group names only with underscores in their names.
+    Ansible will issue a warning in case invalid group names are present in
+    the ``openstack_inventory.json``, but will proceed with the replacement
+    of dashes with underscores.
+    You can ignore these warning messages and return the previous behavior
+    by adding ``ANSIBLE_TRANSFORM_INVALID_GROUP_CHARS=ignore`` to
+    ``/etc/openstack_deploy/user.rc`` or silence warnings and accept conversion
+    to the new group names by adding
+    ``ANSIBLE_TRANSFORM_INVALID_GROUP_CHARS=silently`` to the
+    ``/etc/openstack_deploy/user.rc``.
+    Change of the value for ANSIBLE_TRANSFORM_INVALID_GROUP_CHARS may affect
+    environments, where deploy hosts are also used actively to run 3rd party
+    Ansible roles and playbooks.
+    You can read more about the variable and it's effect on
+    `Ansible Community Documentation <https://docs.ansible.com/projects/ansible/latest/reference_appendices/config.html#transform-invalid-group-chars>`_

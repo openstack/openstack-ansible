@@ -22,7 +22,7 @@ component_skel:
 container_skel:
   swift_remote_container:
     belongs_to:
-      - swift-remote_containers
+      - swift_remote_containers
     contains:
       - swift_remote
     properties:
@@ -30,9 +30,9 @@ container_skel:
 
 
 physical_skel:
-  swift-remote_containers:
+  swift_remote_containers:
     belongs_to:
       - remote_containers
-  swift-remote_hosts:
+  swift_remote_hosts:
     belongs_to:
       - remote

@@ -22,15 +22,15 @@ component_skel:
 container_skel:
   repo_container:
     belongs_to:
-      - repo-infra_containers
+      - repo_infra_containers
     contains:
       - pkg_repo
 
 
 physical_skel:
-  repo-infra_hosts:
+  repo_infra_hosts:
     belongs_to:
       - hosts
-  repo-infra_containers:
+  repo_infra_containers:
     belongs_to:
       - all_containers

@@ -22,15 +22,15 @@ component_skel:
 container_skel:
   placement_container:
     belongs_to:
-      - os-infra_containers
-      - placement-infra_containers
+      - os_infra_containers
+      - placement_infra_containers
     contains:
       - placement_api
 
 physical_skel:
-  placement-infra_containers:
+  placement_infra_containers:
     belongs_to:
       - all_containers
-  placement-infra_hosts:
+  placement_infra_hosts:
     belongs_to:
       - hosts

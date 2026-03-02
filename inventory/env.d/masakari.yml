@@ -27,28 +27,28 @@ component_skel:
 container_skel:
   masakari_api_container:
     belongs_to:
-      - masakari-infra_containers
+      - masakari_infra_containers
     contains:
       - masakari_engine
       - masakari_api
   masakari_monitors_container:
     belongs_to:
-      - masakari-monitor_containers
+      - masakari_monitor_containers
     contains:
       - masakari_monitor
     properties:
       is_metal: true
 
 physical_skel:
-  masakari-monitor_containers:
+  masakari_monitor_containers:
     belongs_to:
     - all_containers
-  masakari-monitor_hosts:
+  masakari_monitor_hosts:
     belongs_to:
     - hosts
-  masakari-infra_containers:
+  masakari_infra_containers:
     belongs_to:
     - all_containers
-  masakari-infra_hosts:
+  masakari_infra_hosts:
     belongs_to:
     - hosts

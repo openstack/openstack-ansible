@@ -16,7 +16,7 @@ component_skel:
 container_skel:
   aodh_container:
     belongs_to:
-      - metering-alarm_containers
+      - metering_alarm_containers
     contains:
       - aodh_api
       - aodh_listener
@@ -24,9 +24,9 @@ container_skel:
       - aodh_alarm_notifier
 
 physical_skel:
-  metering-alarm_containers:
+  metering_alarm_containers:
     belongs_to:
     - all_containers
-  metering-alarm_hosts:
+  metering_alarm_hosts:
     belongs_to:
     - hosts

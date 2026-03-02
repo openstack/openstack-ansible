@@ -16,12 +16,12 @@
 ceph_client_package_state: "{{ package_state }}"
 
 ## ceph-ansible configuration
-mon_group_name: ceph-mon
+mon_group_name: ceph_mon
 mgr_group_name: "{{ mon_group_name }}"
-osd_group_name: ceph-osd
-rgw_group_name: ceph-rgw
-mds_group_name: ceph-mds
-nfs_group_name: ceph-nfs
+osd_group_name: ceph_osd
+rgw_group_name: ceph_rgw
+mds_group_name: ceph_mds
+nfs_group_name: ceph_nfs
 
 # NOTE: Ubuntu 24.04 at the moment does not have a community repository and Ceph is only installable from UCA or native repository
 #       Values of origin/source are overriden for Ubuntu 24.04 explicitly to ensure seamless installation out of the box

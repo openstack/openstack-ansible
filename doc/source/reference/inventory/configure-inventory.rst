@@ -180,32 +180,32 @@ In order to achieve that we need:
 
    .. code-block:: yaml
 
-     az1-infra_hosts: &infra_az1
+     az1_infra_hosts: &infra_az1
        az1-infra1:
          ip: 172.39.123.11
 
-     az2-infra_hosts: &infra_az2
+     az2_infra_hosts: &infra_az2
        az2-infra2:
          ip: 172.39.123.12
 
-     az3-infra_hosts: &infra_az3
+     az3_infra_hosts: &infra_az3
        az3-infra3:
          ip: 172.39.123.13
 
-     shared-infra_hosts: &controllers
+     shared_infra_hosts: &controllers
        <<: *infra_az1
        <<: *infra_az2
        <<: *infra_az3
 
-     az1-compute_hosts: &computes_az1
+     az1_compute_hosts: &computes_az1
        az1-compute01:
          ip: 172.39.123.100
 
-     az2-compute_hosts: &computes_az2
+     az2_compute_hosts: &computes_az2
        az2-compute01:
          ip: 172.39.123.150
 
-     az3-compute_hosts: &computes_az3
+     az3_compute_hosts: &computes_az3
        az3-compute01:
          ip: 172.39.123.200
 
@@ -281,12 +281,12 @@ When OpenStack-Ansible generates its dynamic inventory, the affinity
 setting determines how many containers of a similar type are deployed on a
 single physical host.
 
-Using ``shared-infra_hosts`` as an example, consider this
+Using ``shared_infra_hosts`` as an example, consider this
 ``openstack_user_config.yml`` configuration:
 
 .. code-block:: yaml
 
-    shared-infra_hosts:
+    shared_infra_hosts:
       infra1:
         ip: 172.29.236.101
       infra2:
@@ -294,7 +294,7 @@ Using ``shared-infra_hosts`` as an example, consider this
       infra3:
         ip: 172.29.236.103
 
-Three hosts are assigned to the ``shared-infra_hosts`` group,
+Three hosts are assigned to the ``shared_infra_hosts`` group,
 OpenStack-Ansible ensures that each host runs a single database container,
 a single Memcached container, and a single RabbitMQ container. Each host has
 an affinity of 1 by default,  which means that each host runs one of each
@@ -306,7 +306,7 @@ your ``openstack_user_config.yml`` file would look as follows:
 
 .. code-block:: yaml
 
-    shared-infra_hosts:
+    shared_infra_hosts:
       infra1:
         affinity:
           rabbit_mq_container: 0
@@ -356,7 +356,7 @@ Example:
 
 .. code-block:: yaml
 
-    shared-infra_hosts:
+    shared_infra_hosts:
       infra1:
         ip: 192.168.0.101
         management_ip: 172.29.236.101

@@ -14,16 +14,16 @@
 # limitations under the License.
 
 component_skel:
-  octavia-api:
+  octavia_api:
     belongs_to:
       - octavia_all
-  octavia-worker:
+  octavia_worker:
     belongs_to:
       - octavia_all
-  octavia-housekeeping:
+  octavia_housekeeping:
     belongs_to:
       - octavia_all
-  octavia-health-manager:
+  octavia_health_manager:
     belongs_to:
       - octavia_all
 
@@ -31,17 +31,17 @@ component_skel:
 container_skel:
   octavia_server_container:
     belongs_to:
-      - octavia-infra_containers
+      - octavia_infra_containers
     contains:
-      - octavia-api
-      - octavia-worker
-      - octavia-housekeeping
-      - octavia-health-manager
+      - octavia_api
+      - octavia_worker
+      - octavia_housekeeping
+      - octavia_health_manager
 
 physical_skel:
-  octavia-infra_containers:
+  octavia_infra_containers:
     belongs_to:
       - all_containers
-  octavia-infra_hosts:
+  octavia_infra_hosts:
     belongs_to:
       - hosts

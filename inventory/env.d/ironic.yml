@@ -34,13 +34,13 @@ component_skel:
 container_skel:
   ironic_api_container:
     belongs_to:
-      - ironic-infra_containers
+      - ironic_infra_containers
     contains:
       - ironic_api
       - ironic_conductor
   ironic_compute_container:
     belongs_to:
-      - ironic-compute_containers
+      - ironic_compute_containers
     contains:
       - ironic_compute
       - ironic_console
@@ -49,26 +49,26 @@ container_skel:
       is_metal: false
   ironic_inspector_container:
     belongs_to:
-      - ironic-inspector_containers
+      - ironic_inspector_containers
     contains:
       - ironic_inspector
 
 physical_skel:
-  ironic-infra_containers:
+  ironic_infra_containers:
     belongs_to:
       - all_containers
-  ironic-infra_hosts:
+  ironic_infra_hosts:
     belongs_to:
       - hosts
-  ironic-compute_containers:
+  ironic_compute_containers:
     belongs_to:
       - all_containers
-  ironic-compute_hosts:
+  ironic_compute_hosts:
     belongs_to:
       - hosts
-  ironic-inspector_containers:
+  ironic_inspector_containers:
     belongs_to:
       - all_containers
-  ironic-inspector_hosts:
+  ironic_inspector_hosts:
     belongs_to:
       - hosts

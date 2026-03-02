@@ -1,9 +1,9 @@
 ---
-zun-infra_hosts:
+zun_infra_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}
-zun-compute_hosts:
+zun_compute_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}

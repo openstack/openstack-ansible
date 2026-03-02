@@ -24,14 +24,14 @@ component_skel:
 container_skel:
   magnum_container:
     belongs_to:
-      - magnum-infra_containers
+      - magnum_infra_containers
     contains:
       - magnum
 
 physical_skel:
-  magnum-infra_containers:
+  magnum_infra_containers:
     belongs_to:
       - all_containers
-  magnum-infra_hosts:
+  magnum_infra_hosts:
     belongs_to:
       - hosts

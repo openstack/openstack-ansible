@@ -29,7 +29,7 @@ container_skel:
   heat_api_container:
     belongs_to:
       - orchestration_containers
-      - os-infra_containers
+      - os_infra_containers
     contains:
       - heat_api_cfn
       - heat_api

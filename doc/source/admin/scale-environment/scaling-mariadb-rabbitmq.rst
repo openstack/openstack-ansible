@@ -467,7 +467,7 @@ Assuming, you currently have a config like the one below in your
       control03:
         ip: 172.29.236.13
 
-    shared-infra_hosts: *control_hosts
+    shared_infra_hosts: *control_hosts
 
 Convert it to something like this:
 
@@ -494,7 +494,7 @@ Convert it to something like this:
         ip: 172.29.236.23
 
 In the example above we de-couple each service that is part of the
-`shared-infra_hosts` and define them separately, along with providing MariaDB
+`shared_infra_hosts` and define them separately, along with providing MariaDB
 its new destination host.
 
 * Create the container on the new infra node:
@@ -586,7 +586,7 @@ this:
 
 .. note::
 
-   Ensure that you don’t have more generic shared-infra_hosts defined.
+   Ensure that you don’t have more generic shared_infra_hosts defined.
 
 Now we need to manually re-generate the inventory and ensure that a new
 record was mapped to our infra01:

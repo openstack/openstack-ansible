@@ -289,11 +289,11 @@ pod4_hosts: &pod4
     ip: 172.29.245.11
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts: &controllers
+shared_infra_hosts: &controllers
   <<: [*pod1, *pod2, *pod3]
 
 # repository (apt cache, python packages, etc)
-repo-infra_hosts: *controllers
+repo_infra_hosts: *controllers
 
 # load balancer
 # Ideally the load balancer should not use the Infrastructure hosts.
@@ -308,7 +308,7 @@ load_balancer_hosts: *controllers
 identity_hosts: *controllers
 
 # cinder api services
-storage-infra_hosts: *controllers
+storage_infra_hosts: *controllers
 
 # glance
 # The settings here are repeated for each infra host.
@@ -345,7 +345,7 @@ image_hosts:
           options: "_netdev,auto"
 
 # nova api, conductor, etc services
-compute-infra_hosts: *controllers
+compute_infra_hosts: *controllers
 
 # heat
 orchestration_hosts: *controllers
@@ -357,10 +357,10 @@ dashboard_hosts: *controllers
 network_hosts: *controllers
 
 # ceilometer (telemetry data collection)
-metering-infra_hosts: *controllers
+metering_infra_hosts: *controllers
 
 # aodh (telemetry alarm service)
-metering-alarm_hosts: *controllers
+metering_alarm_hosts: *controllers
 # gnocchi (telemetry metrics storage)
 metrics_hosts: *controllers
 
@@ -368,7 +368,7 @@ metrics_hosts: *controllers
 compute_hosts: *pod4
 
 # ceilometer compute agent (telemetry data collection)
-metering-compute_hosts: *pod4
+metering_compute_hosts: *pod4
 
 # cinder volume hosts (NFS-backed)
 # The settings here are repeated for each infra host.
