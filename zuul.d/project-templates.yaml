@@ -342,7 +342,7 @@
         - build-openstack-deploy-guide:
             files: &deploy-guide-triggers
               - .gitreview
-              - ^deploy-guide/.*
+              - ^doc/source/deploy-guide/.*
               - ansible-role-requirements.yml
               - bindep.txt
               - doc/requirements.txt
@@ -351,6 +351,7 @@
             vars: &deploy-guide-vars
               tox_pdf_envlist: deploy-guide-pdf-docs
               tox_skip_pdf: false
+              sphinx_build_dir: doc/source/deploy-guide/build
               sphinx_pdf_files:
                 - "deploy-guide-{{ zuul.project.short_name }}.pdf"
     gate:
