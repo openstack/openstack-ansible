@@ -1,20 +1,19 @@
-================================================
-Using radosgw as a drop-in replacement for Swift
-================================================
+======================================================================
+Using Ceph Object Gateway (radosgw) as a drop-in replacement for Swift
+======================================================================
 
-OpenStack-Ansible gives you the option of deploying radosgw as a
-drop-in replacement for native OpenStack Swift.
+OpenStack-Ansible gives you the option of deploying Ceph Object Gateway
+(radosgw) as a drop-in replacement for native OpenStack Swift.
 
-In particular, the ``ceph-rgw-install.yml`` playbook (which includes
-``ceph-rgw-keystone-setup.yml``) will deploy radosgw to any
-``ceph-rgw`` hosts, and create a corresponding Keystone
+In particular, the ``openstack.osa.ceph_rgw_install`` playbook
+(which includes ``openstack.osa.ceph_rgw_keystone_setup``) will deploy
+radosgw to any ``ceph-rgw`` hosts, and create a corresponding Keystone
 ``object-store`` service catalog entry. The service endpoints do
 contain the ``AUTH_%(tenant_id)s`` prefix just like in native Swift,
 so public read ACLs and temp URLs will work just like they do in
 Swift.
 
 By default, OSA enables *only* the Swift API in radosgw.
-
 
 Adding S3 API support
 ~~~~~~~~~~~~~~~~~~~~~
