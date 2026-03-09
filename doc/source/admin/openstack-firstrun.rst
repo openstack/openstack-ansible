@@ -1,5 +1,5 @@
 ==============================
-Verify OpenStack-Ansible cloud
+Verify OpenStack-Ansible Cloud
 ==============================
 
 This chapter is intended to document basic OpenStack operations to
