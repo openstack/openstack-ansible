@@ -135,6 +135,18 @@ the OpenStack API and dashboard, as an administrator.
       | feb20ed4-4346-4ad9-b50c-41efd784f2e9 | L3 agent             | aio1-neutron-agents-container-2b0569d5 | nova              | :-)   | UP    | neutron-l3-agent          |
       +--------------------------------------+----------------------+----------------------------------------+-------------------+-------+-------+---------------------------+
 
+   If your using OVN (with compute nodes as gateway) it can look like this:
+
+   .. code::
+
+      $ openstack network agent list
+      +--------------------------------------+------------------------------+-----------+-------------------+-------+-------+----------------------------+
+      | ID                                   | Agent Type                   | Host      | Availability Zone | Alive | State | Binary                     |
+      +--------------------------------------+------------------------------+-----------+-------------------+-------+-------+----------------------------+
+      | 585902cc-7727-4f42-9f1c-f385ff2582c7 | OVN Controller Gateway agent | compute01 | nova              | :-)   | UP    | ovn-controller             |
+      | e6074935-dac1-5ad2-85e5-d93a76f8bed6 | OVN Metadata agent           | compute01 | nova              | :-)   | UP    | neutron-ovn-metadata-agent |
+      +--------------------------------------+------------------------------+-----------+-------------------+-------+-------+----------------------------+
+
 #. Run an OpenStack command to ensure the block storage services are
    working (depends on your configuration).
    For example:
