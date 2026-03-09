@@ -293,11 +293,6 @@ openstack_hosts_package_state: latest
 
 ## Octavia
 {% if 'octavia' in bootstrap_host_scenarios_expanded %}
-# Enable Octavia V2 API/standalone
-octavia_v2: True
-# Disable Octavia V1 API
-octavia_v1: False
-
 octavia_management_net_subnet_cidr: {{ lbaas_network }}
 octavia_management_net_subnet_allocation_pools: {{ lbaas_network | ansible.utils.nthhost('110') }}-{{ lbaas_network | ansible.utils.nthhost('-10') }}
 
