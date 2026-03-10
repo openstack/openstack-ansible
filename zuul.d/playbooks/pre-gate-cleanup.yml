@@ -18,7 +18,7 @@
   become: true
   become_user: root
   tasks:
-    - name: Remove package excludes for yum/dnf
+    - name: Remove package excludes for dnf
       ansible.builtin.lineinfile:
         dest: '/etc/dnf/dnf.conf'
         regexp: "^exclude="

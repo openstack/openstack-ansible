@@ -50,7 +50,7 @@ OpenStack-Ansible deploys the following infrastructure components:
   * A Git repository that contains a copy of the source code that is used
     to prepare the packages for all OpenStack services
   * Python wheels for all services that are deployed in the environment
-  * An apt/yum proxy cache that is used to cache distribution packages
+  * An apt/dnf proxy cache that is used to cache distribution packages
     installed in the environment
 
 * Load balancer
