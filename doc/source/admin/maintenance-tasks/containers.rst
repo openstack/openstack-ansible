@@ -52,33 +52,30 @@ modifying the ``/etc/openstack_deploy/openstack_user_config.yml`` file.
    configuration to create the new containers, and install the
    appropriate services.
 
-   For example, run the **openstack-ansible lxc-containers-create.yml
-   rabbitmq-install.yml** commands from the
-   ``openstack-ansible/playbooks`` repository to complete the scaling
+   For example, run the **openstack.osa.containers_lxc_destroy** with
+   ``rabbimq-install`` tag  from the ``openstack-ansible-plugins``
+   repository to complete the scaling
    process described in the example above:
 
    .. code::
 
-      $ cd openstack-ansible/playbooks
-      $ openstack-ansible lxc-containers-create.yml rabbitmq-install.yml
+      $ openstack-ansible openstack.osa.containers_lxc_destroy --tags rabbitmq-install
 
 Destroy and recreate containers
 -------------------------------
 
 Resolving some issues may require destroying a container, and rebuilding
 that container from the beginning. It is possible to destroy and
-re-create a container with the ``lxc-containers-destroy.yml`` and
-``lxc-containers-create.yml`` commands. These Ansible scripts reside in the
-``openstack-ansible/playbooks`` repository.
+re-create a container with the ``openstack.osa.containers_lxc_destroy`` and
+``openstack.osa.containers_lxc_create`` commands. These Ansible playbooks reside in the
+`Openstack-Ansible plugins <https://opendev.org/openstack/openstack-ansible-plugins>`_ repository.
 
-#. Navigate to the ``openstack-ansible`` directory.
-
-#. Run the **openstack-ansible lxc-containers-destroy.yml** commands,
+#. Run the **openstack-ansible openstack.osa.containers_lxc_destroy** commands,
    specifying the target containers and the container to be destroyed.
 
    .. code::
 
-      $ openstack-ansible lxc-containers-destroy.yml --limit "CONTAINER_NAME"
-      $ openstack-ansible lxc-containers-create.yml --limit "CONTAINER_NAME"
+      $ openstack-ansible openstack.osa.containers_lxc_destroy --limit "CONTAINER_NAME"
+      $ openstack-ansible openstack.osa.containers_lxc_destroy --limit "CONTAINER_NAME"
 
 #. Replace ``CONTAINER_NAME`` with the target container.
