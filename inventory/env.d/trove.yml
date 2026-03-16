@@ -31,7 +31,7 @@ component_skel:
 container_skel:
   trove_api_container:
     belongs_to:
-      - trove-infra_containers
+      - trove_infra_containers
     contains:
       - trove_api
       - trove_conductor
@@ -39,9 +39,9 @@ container_skel:
 
 
 physical_skel:
-  trove-infra_containers:
+  trove_infra_containers:
     belongs_to:
       - all_containers
-  trove-infra_hosts:
+  trove_infra_hosts:
     belongs_to:
       - hosts

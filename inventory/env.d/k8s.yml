@@ -21,14 +21,14 @@ component_skel:
 container_skel:
   k8s_container:
     belongs_to:
-      - cluster-api_containers
+      - cluster_api_containers
     contains:
       - k8s_capi
 
 physical_skel:
-  cluster-api_containers:
+  cluster_api_containers:
     belongs_to:
       - all_containers
-  cluster-api_hosts:
+  cluster_api_hosts:
     belongs_to:
       - hosts

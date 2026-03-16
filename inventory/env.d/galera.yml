@@ -23,7 +23,7 @@ container_skel:
   galera_container:
     belongs_to:
       - database_containers
-      - shared-infra_containers
+      - shared_infra_containers
     contains:
       - galera
 

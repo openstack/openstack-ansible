@@ -121,9 +121,9 @@ global_overrides:
 {% else %}
           - neutron_ovn_gateway
 {% endif %}
-          - octavia-worker
-          - octavia-housekeeping
-          - octavia-health-manager
+          - octavia_worker
+          - octavia_housekeeping
+          - octavia_health_manager
 {% endif %}
 {% if 'ironic' in bootstrap_host_scenarios_expanded %}
     - network:
@@ -186,8 +186,8 @@ global_overrides:
           - nova_compute
           - manila_share
           - swift_proxy
-          - ceph-mon
-          - ceph-osd
+          - ceph_mon
+          - ceph_osd
 
 # keystone
 identity_hosts:
@@ -204,7 +204,7 @@ identity_hosts:
 {% endif %}
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts:
+shared_infra_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}
@@ -215,7 +215,7 @@ shared-infra_hosts:
       rabbit_mq_container: 3
 {% endif %}
 
-repo-infra_hosts:
+repo_infra_hosts:
   aio1:
 {% if bootstrap_host_install_method == 'distro' %}
     affinity:

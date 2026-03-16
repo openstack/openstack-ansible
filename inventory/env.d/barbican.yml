@@ -21,14 +21,14 @@ component_skel:
 container_skel:
   barbican_container:
     belongs_to:
-      - key-manager_containers
+      - key_manager_containers
     contains:
       - barbican_api
 
 physical_skel:
-  key-manager_containers:
+  key_manager_containers:
     belongs_to:
       - all_containers
-  key-manager_hosts:
+  key_manager_hosts:
     belongs_to:
       - hosts

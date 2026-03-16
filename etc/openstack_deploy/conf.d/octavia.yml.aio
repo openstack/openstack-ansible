@@ -1,5 +1,5 @@
 # The controller host that the octavia control plane will be run on
-octavia-infra_hosts:
+octavia_infra_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}

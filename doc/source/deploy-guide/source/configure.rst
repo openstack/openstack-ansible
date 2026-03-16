@@ -72,7 +72,7 @@ host.
 
 The configuration in the ``openstack_user_config.yml`` file defines which hosts
 run the containers and services deployed by OpenStack-Ansible. For
-example, hosts listed in the ``shared-infra_hosts`` section run containers for
+example, hosts listed in the ``shared_infra_hosts`` section run containers for
 many of the shared services that your OpenStack environment requires. Some of
 these services include databases, Memcached, and RabbitMQ. Several other
 host types contain other types of containers, and all of these are listed
@@ -111,11 +111,11 @@ the br-mgmt container management bridge on each target host.
    br-mgmt interface, please, refer to the `guide <https://docs.openstack.org/openstack-ansible/latest/reference/inventory/configure-inventory.html#having-ssh-network-different-from-openstack-management-network>`_.
 
 #. Configure a list containing at least three infrastructure
-   target hosts in the ``shared-infra_hosts`` section:
+   target hosts in the ``shared_infra_hosts`` section:
 
    .. code-block:: yaml
 
-      shared-infra_hosts:
+      shared_infra_hosts:
         infra01:
           ip: INFRA01_IP_ADDRESS
         infra02:
@@ -139,25 +139,25 @@ the br-mgmt container management bridge on each target host.
 
    .. code-block:: yaml
 
-      network-infra_hosts:
+      network_infra_hosts:
         infra01:
           ip: INFRA01_IP_ADDRESS
         infra02: ...
 
-      network-northd_hosts:
+      network_northd_hosts:
         infra01:
           ip: INFRA01_IP_ADDRESS
         infra02: ...
 
    When deploying OpenStack with OVN, it's essential to properly configure
-   ``network-gateway_hosts`` depending on your network architecture. There are
+   ``network_gateway_hosts`` depending on your network architecture. There are
    two typical scenarios:
 
    Scenario 1: DVR with gateway on compute nodes:
 
    .. code-block:: yaml
 
-      network-gateway_hosts:
+      network_gateway_hosts:
         compute01:
           ip: COMPUTE01_IP_ADDRESS
         compute02: ...
@@ -166,7 +166,7 @@ the br-mgmt container management bridge on each target host.
 
    .. code-block:: yaml
 
-      network-gateway_hosts:
+      network_gateway_hosts:
         network01:
           ip: NETWORK01_IP_ADDRESS
         network02: ...
@@ -182,11 +182,11 @@ the br-mgmt container management bridge on each target host.
         compute02: ...
 
 #. Configure a list containing at least one repository target host in
-   the ``repo-infra_hosts`` section:
+   the ``repo_infra_hosts`` section:
 
    .. code-block:: yaml
 
-      repo-infra_hosts:
+      repo_infra_hosts:
         infra01:
           ip: INFRA01_IP_ADDRESS
         infra02:

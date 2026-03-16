@@ -78,9 +78,9 @@ global_overrides:
         net_name: "lbaas"
         group_binds:
           - neutron_openvswitch_agent
-          - octavia-worker
-          - octavia-housekeeping
-          - octavia-health-manager
+          - octavia_worker
+          - octavia_housekeeping
+          - octavia_health_manager
     - network:
         container_bridge: "br-bmaas"
         container_type: "veth"
@@ -124,11 +124,11 @@ global_overrides:
           - swift_proxy
 
 # galera, memcache, rabbitmq, utility
-shared-infra_hosts:
+shared_infra_hosts:
   aio1:
     ip: 172.29.236.100
 
-repo-infra_hosts:
+repo_infra_hosts:
   aio1:
     ip: 172.29.236.100
 

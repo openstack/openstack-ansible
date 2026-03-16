@@ -99,7 +99,7 @@ Example:
 
 .. code-block:: shell-session
 
-   # openstack-ansible haproxy-install.yml --tags haproxy-service-config
+   # openstack-ansible openstack.osa.haproxy --tags haproxy-service-config
 
 ceph
 ----
@@ -112,7 +112,7 @@ Example:
 
 .. code-block:: shell-session
 
-   # openstack-ansible ceph-install.yml --tags ceph
+   # openstack-ansible openstack.osa.ceph_install --tags ceph
 
 uwsgi
 -----

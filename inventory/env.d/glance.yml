@@ -23,7 +23,7 @@ container_skel:
   glance_container:
     belongs_to:
       - image_containers
-      - os-infra_containers
+      - os_infra_containers
     contains:
       - glance_api
 

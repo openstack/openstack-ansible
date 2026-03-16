@@ -34,7 +34,7 @@ the ``conf.d/`` directory is identical to the syntax used in the
 ``openstack_user_config.yml`` file.
 
 In these files, the target hosts are listed under one or more
-headings, such as ``shared-infra_hosts`` or ``storage_hosts``, which serve as
+headings, such as ``shared_infra_hosts`` or ``storage_hosts``, which serve as
 Ansible group mappings. These groups map to the physical
 hosts.
 
@@ -66,11 +66,11 @@ groups, that define where each service deploys. By reviewing files within the
 in the default layout.
 
 For example, the ``shared-infra.yml`` file defines a container group,
-``shared-infra_containers``, as a subset of the ``all_containers``
-inventory group. The ``shared- infra_containers`` container group is
-mapped to the ``shared-infra_hosts`` host group. All of the service
-components in the ``shared-infra_containers`` container group are
-deployed to each target host in the ``shared-infra_hosts host`` group.
+``shared_infra_containers``, as a subset of the ``all_containers``
+inventory group. The ``shared_infra_containers`` container group is
+mapped to the ``shared_infra_hosts`` host group. All of the service
+components in the ``shared_infra_containers`` container group are
+deployed to each target host in the ``shared_infra_hosts host`` group.
 
 Within a ``physical_skel`` section, the OpenStack-Ansible dynamic inventory
 expects to find a pair of keys. The first key maps to items in the
@@ -79,7 +79,7 @@ expects to find a pair of keys. The first key maps to items in the
 
 To continue the example, the ``memcache.yml`` file defines the
 ``memcache_container`` container group. This group is a subset of the
-``shared-infra_containers`` group, which is itself a subset of
+``shared_infra_containers`` group, which is itself a subset of
 the ``all_containers`` inventory group.
 
 .. note::

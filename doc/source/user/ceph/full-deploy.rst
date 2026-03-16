@@ -10,7 +10,7 @@ the Ceph backend for images, volumes, and instances.
 
 This example environment has the following characteristics:
 
-* Three infrastructure (control plane) hosts with ceph-mon containers
+* Three infrastructure (control plane) hosts with ``ceph_mon`` containers
 * Two compute hosts
 * Three Ceph OSD storage hosts
 * One log aggregation host
@@ -63,10 +63,11 @@ integration in three ways:
   No ssh access by OpenStack-Ansible is required to the ceph cluster.
 * deploying a ceph cluster as part of the OpenStack-Ansible deployment
   by using the roles maintained by the `Ceph-Ansible`_ project. Deployers
-  can enable the ``ceph-install.yml`` playbook by adding hosts to the
-  ``ceph-mon_hosts`` and ``ceph-osd_hosts`` groups in
-  ``openstack_user_config.yml``. In order to enable ``ceph-rgw-install.yml``
-  playbook you need to add ``ceph-rgw_hosts`` in ``openstack_user_config.yml``.
+  can enable the ``openstack.osa.ceph_install`` playbook by adding hosts to
+  the ``ceph_mon_hosts`` and ``ceph_osd_hosts`` groups in
+  ``openstack_user_config.yml``. In order to enable
+  ``openstack.osa.ceph_rgw_install`` playbook you need to add
+  ``ceph_rgw_hosts`` in ``openstack_user_config.yml``.
 
 .. note::
 

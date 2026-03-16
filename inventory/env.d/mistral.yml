@@ -30,7 +30,7 @@ component_skel:
 container_skel:
   mistral_container:
     belongs_to:
-      - mistral-infra_containers
+      - mistral_infra_containers
     contains:
       - mistral_api
       - mistral_engine
@@ -38,9 +38,9 @@ container_skel:
       - mistral_notifier
 
 physical_skel:
-  mistral-infra_containers:
+  mistral_infra_containers:
     belongs_to:
       - all_containers
-  mistral-infra_hosts:
+  mistral_infra_hosts:
     belongs_to:
       - hosts

@@ -12,10 +12,10 @@ container_skel:
   ceilometer_central_container:
     properties:
       is_metal: true
-  ceph-mon_container:
+  ceph_mon_container:
     properties:
       is_metal: true
-  ceph-rgw_container:
+  ceph_rgw_container:
     properties:
       is_metal: true
   cinder_api_container:
@@ -72,7 +72,7 @@ container_skel:
   memcached_container:
     properties:
       is_metal: true
-  metering-compute_container:
+  metering_compute_container:
     properties:
       is_metal: true
   mistral_container:

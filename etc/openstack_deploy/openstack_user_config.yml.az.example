@@ -214,7 +214,7 @@ az3_hosts:
 shared_infra_hosts: &controllers
   <<: [*controller_az1, *controller_az2, *controller_az3]
 
-repo-infra_hosts: *controllers
+repo_infra_hosts: *controllers
 memcaching_hosts: *controllers
 database_hosts: *controllers
 mq_hosts: *controllers
@@ -222,11 +222,11 @@ operator_hosts: *controllers
 identity_hosts: *controllers
 image_hosts: *controllers
 dashboard_hosts: *controllers
-compute-infra_hosts: *controllers
-placement-infra_hosts: *controllers
-storage-infra_hosts: *controllers
-network-infra_hosts: *controllers
-network-northd_hosts: *controllers
+compute_infra_hosts: *controllers
+placement_infra_hosts: *controllers
+storage_infra_hosts: *controllers
+network_infra_hosts: *controllers
+network_northd_hosts: *controllers
 coordination_hosts: *controllers
 
 compute_hosts: &computes
@@ -238,7 +238,7 @@ pinned_compute_hosts:
 shared_compute_hosts:
   <<: [*shared_computes_az1, *shared_computes_az2, *shared_computes_az3]
 
-network-gateway_hosts: *computes
+network_gateway_hosts: *computes
 
 storage_hosts: &storage
   <<: [*storage_az1, *storage_az2, *storage_az3]

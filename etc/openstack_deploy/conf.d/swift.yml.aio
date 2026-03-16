@@ -14,7 +14,7 @@ global_overrides:
           name: default
           index: 0
           default: true
-swift-proxy_hosts:
+swift_proxy_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}

@@ -299,7 +299,7 @@
 #
 # --------
 #
-# Level: shared-infra_hosts (required)
+# Level: shared_infra_hosts (required)
 # List of target hosts on which to deploy shared infrastructure services
 # including the Galera SQL database cluster, RabbitMQ, and Memcached. Recommend
 # three minimum target hosts for these services.
@@ -315,7 +315,7 @@
 #
 # Define three shared infrastructure hosts:
 #
-# shared-infra_hosts:
+# shared_infra_hosts:
 #   infra1:
 #     ip: 172.29.236.101
 #   infra2:
@@ -325,10 +325,10 @@
 #
 # --------
 #
-# Level: repo-infra_hosts (required)
+# Level: repo_infra_hosts (required)
 # List of target hosts on which to deploy the package repository. Recommend
 # minimum three target hosts for this service. Typically contains the same
-# target hosts as the 'shared-infra_hosts' level.
+# target hosts as the 'shared_infra_hosts' level.
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.
@@ -341,7 +341,7 @@
 #
 # Define three package repository hosts:
 #
-# repo-infra_hosts:
+# repo_infra_hosts:
 #   infra1:
 #     ip: 172.29.236.101
 #   infra2:
@@ -370,10 +370,10 @@
 #
 # --------
 #
-# Level: os-infra_hosts (required)
+# Level: os_infra_hosts (required)
 # List of target hosts on which to deploy the glance API, nova API, heat API,
 # and horizon. Recommend three minimum target hosts for these services.
-# Typically contains the same target hosts as 'shared-infra_hosts' level.
+# Typically contains the same target hosts as 'shared_infra_hosts' level.
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.
@@ -386,7 +386,7 @@
 #
 # Define three OpenStack infrastructure hosts:
 #
-# os-infra_hosts:
+# os_infra_hosts:
 #   infra1:
 #     ip: 172.29.236.101
 #   infra2:
@@ -399,7 +399,7 @@
 # Level: identity_hosts (required)
 # List of target hosts on which to deploy the keystone service. Recommend
 # three minimum target hosts for this service. Typically contains the same
-# target hosts as the 'shared-infra_hosts' level.
+# target hosts as the 'shared_infra_hosts' level.
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.
@@ -425,7 +425,7 @@
 # Level: network_hosts (required)
 # List of target hosts on which to deploy neutron services. Recommend three
 # minimum target hosts for this service. Typically contains the same target
-# hosts as the 'shared-infra_hosts' level.
+# hosts as the 'shared_infra_hosts' level.
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.
@@ -447,12 +447,12 @@
 #     ip: 172.29.236.103
 #
 # If you want to deploy neutron agents to different set of hosts (net nodes)
-# rather then neutron API, you should define 'network-infra_hosts' and
-# 'network-agent_hosts' instead.
+# rather then neutron API, you should define 'network_infra_hosts' and
+# 'network_agent_hosts' instead.
 #
 # Example:
 #
-# network-infra_hosts:
+# network_infra_hosts:
 #   infra1:
 #     ip: 172.29.236.101
 #   infra2:
@@ -460,7 +460,28 @@
 #   infra3:
 #     ip: 172.29.236.103
 #
-# network-agent_hosts:
+# NOTE: network_agent_hosts is not applicable for OVN ML2 driver.
+#       They are mainly used for ML2 OVS driver.
+#
+# network_agent_hosts:
+#   net1:
+#     ip: 172.29.236.201
+#   net2:
+#     ip: 172.29.236.202
+#   net3:
+#     ip: 172.29.236.203
+#
+# For the ML2 OVN scenario, you need to define following groups instead:
+#
+# network_northd_hosts:
+#   infra1:
+#     ip: 172.29.236.101
+#   infra2:
+#     ip: 172.29.236.102
+#   infra3:
+#     ip: 172.29.236.103
+#
+# network_gateway_hosts:
 #   net1:
 #     ip: 172.29.236.201
 #   net2:
@@ -508,16 +529,16 @@
 #
 # Define an OpenStack compute host:
 #
-# ironic-compute_hosts:
-#   ironic-infra1:
+# ironic_compute_hosts:
+#   ironic_infra1:
 #     ip: 172.29.236.121
 #
 # --------
 #
-# Level: storage-infra_hosts (required)
+# Level: storage_infra_hosts (required)
 # List of target hosts on which to deploy the cinder API. Recommend three
 # minimum target hosts for this service. Typically contains the same target
-# hosts as the 'shared-infra_hosts' level.
+# hosts as the 'shared_infra_hosts' level.
 #
 #   Level: <value> (required, string)
 #   Hostname of a target host.
@@ -530,7 +551,7 @@
 #
 # Define three OpenStack storage infrastructure hosts:
 #
-# storage-infra_hosts:
+# storage_infra_hosts:
 #   infra1:
 #     ip: 172.29.236.101
 #   infra2:

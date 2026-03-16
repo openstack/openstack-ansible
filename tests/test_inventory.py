@@ -133,7 +133,7 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
     inventory = None
 
     expected_groups = [
-        'aio1-host_containers',
+        'aio1_host_containers',
         'all',
         'all_containers',
         'adjutant_all',
@@ -157,30 +157,31 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ceilometer_agent_compute',
         'ceilometer_agent_notification',
         'ceilometer_central_container',
+        'ceilometer_compute_container',
         'ceph_all',
-        'ceph-mon_all',
-        'ceph-mon_containers',
-        'ceph-mon_container',
-        'ceph-mon_hosts',
-        'ceph-mon',
-        'ceph-mds',
-        'ceph-mds_containers',
-        'ceph-mds_container',
-        'ceph-mds_hosts',
-        'ceph-osd_all',
-        'ceph-osd_containers',
-        'ceph-osd_container',
-        'ceph-osd_hosts',
-        'ceph-osd',
-        'ceph-rgw_all',
-        'ceph-rgw_containers',
-        'ceph-rgw_container',
-        'ceph-rgw_hosts',
-        'ceph-rgw',
-        'ceph-nfs',
-        'ceph-nfs_containers',
-        'ceph-nfs_container',
-        'ceph-nfs_hosts',
+        'ceph_mon_all',
+        'ceph_mon_containers',
+        'ceph_mon_container',
+        'ceph_mon_hosts',
+        'ceph_mon',
+        'ceph_mds',
+        'ceph_mds_containers',
+        'ceph_mds_container',
+        'ceph_mds_hosts',
+        'ceph_osd_all',
+        'ceph_osd_containers',
+        'ceph_osd_container',
+        'ceph_osd_hosts',
+        'ceph_osd',
+        'ceph_rgw_all',
+        'ceph_rgw_containers',
+        'ceph_rgw_container',
+        'ceph_rgw_hosts',
+        'ceph_rgw',
+        'ceph_nfs',
+        'ceph_nfs_containers',
+        'ceph_nfs_container',
+        'ceph_nfs_hosts',
         'cinder_all',
         'cinder_api',
         'cinder_api_container',
@@ -195,14 +196,14 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'cloudkitty_engine',
         'rating_hosts',
         'rating_all',
-        'cluster-api_all',
-        'cluster-api_containers',
-        'cluster-api_hosts',
+        'cluster_api_all',
+        'cluster_api_containers',
+        'cluster_api_hosts',
         'coordination_containers',
         'coordination_hosts',
-        'compute-infra_all',
-        'compute-infra_containers',
-        'compute-infra_hosts',
+        'compute_infra_all',
+        'compute_infra_containers',
+        'compute_infra_hosts',
         'compute_all',
         'compute_containers',
         'compute_hosts',
@@ -255,9 +256,9 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'image_all',
         'image_containers',
         'image_hosts',
-        'ironic-infra_all',
-        'ironic-infra_containers',
-        'ironic-infra_hosts',
+        'ironic_infra_all',
+        'ironic_infra_containers',
+        'ironic_infra_hosts',
         'ironic_all',
         'ironic_api',
         'ironic_api_container',
@@ -265,61 +266,61 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'ironic_console',
         'ironic_compute',
         'ironic_compute_container',
-        'ironic-compute_containers',
-        'ironic-compute_all',
-        'ironic-compute_hosts',
-        'ironic-inspector_all',
+        'ironic_compute_containers',
+        'ironic_compute_all',
+        'ironic_compute_hosts',
+        'ironic_inspector_all',
         'ironic_inspector',
-        'ironic-inspector_containers',
-        'ironic-inspector_hosts',
+        'ironic_inspector_containers',
+        'ironic_inspector_hosts',
         'ironic_inspector_container',
         'ironic_neutron_agent',
         'k8s_all',
         'k8s_capi',
         'k8s_container',
-        'key-manager_containers',
-        'key-manager_hosts',
-        'key-manager_all',
+        'key_manager_containers',
+        'key_manager_hosts',
+        'key_manager_all',
         'keystone',
         'keystone_all',
         'keystone_container',
-        'kvm-compute_containers',
-        'kvm-compute_hosts',
+        'kvm_compute_containers',
+        'kvm_compute_hosts',
         'lxc_hosts',
         'magnum',
-        'magnum-infra_all',
-        'magnum-infra_containers',
-        'magnum-infra_hosts',
+        'magnum_infra_all',
+        'magnum_infra_containers',
+        'magnum_infra_hosts',
         'magnum_all',
         'magnum_container',
         'manila_all',
         'manila_api',
         'manila_container',
         'manila_data',
-        'manila-data_all',
+        'manila_data_all',
         'manila_data_container',
-        'manila-data_containers',
-        'manila-data_hosts',
-        'manila-infra_all',
-        'manila-infra_containers',
-        'manila-infra_hosts',
+        'manila_data_containers',
+        'manila_data_hosts',
+        'manila_infra_all',
+        'manila_infra_containers',
+        'manila_infra_hosts',
         'manila_scheduler',
         'manila_share',
         'masakari_all',
         'masakari_api',
         'masakari_api_container',
         'masakari_engine',
-        'masakari-infra_all',
-        'masakari-infra_containers',
-        'masakari-infra_hosts',
+        'masakari_infra_all',
+        'masakari_infra_containers',
+        'masakari_infra_hosts',
         'masakari_monitor',
-        'masakari-monitor_all',
-        'masakari-monitor_containers',
+        'masakari_monitor_all',
+        'masakari_monitor_containers',
         'masakari_monitors_container',
-        'masakari-monitor_hosts',
-        'mistral-infra_all',
-        'mistral-infra_containers',
-        'mistral-infra_hosts',
+        'masakari_monitor_hosts',
+        'mistral_infra_all',
+        'mistral_infra_containers',
+        'mistral_infra_hosts',
         'mistral_all',
         'mistral_container',
         'mistral_api',
@@ -329,23 +330,23 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'mano_all',
         'mano_containers',
         'mano_hosts',
-        'octavia-infra_hosts',
+        'octavia_infra_hosts',
         'octavia_all',
-        'octavia-api',
+        'octavia_api',
         'octavia_server_container',
-        'octavia-worker',
-        'octavia-housekeeping',
-        'octavia-health-manager',
-        'octavia-infra_containers',
-        'octavia-infra_all',
-        'placement-infra_all',
-        'placement-infra_containers',
-        'placement-infra_hosts',
+        'octavia_worker',
+        'octavia_housekeeping',
+        'octavia_health_manager',
+        'octavia_infra_containers',
+        'octavia_infra_all',
+        'placement_infra_all',
+        'placement_infra_containers',
+        'placement_infra_hosts',
         'placement_all',
         'placement_container',
         'placement_api',
-        'qemu-compute_containers',
-        'qemu-compute_hosts',
+        'qemu_compute_containers',
+        'qemu_compute_hosts',
         'reservation_all',
         'reservation_containers',
         'reservation_hosts',
@@ -354,24 +355,23 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'trove_conductor',
         'trove_taskmanager',
         'trove_api_container',
-        'trove-infra_containers',
-        'trove-infra_hosts',
-        'trove-infra_all',
+        'trove_infra_containers',
+        'trove_infra_hosts',
+        'trove_infra_all',
         'memcached',
         'memcached_all',
         'memcached_container',
         'memcaching_containers',
         'memcaching_hosts',
-        'metering-alarm_all',
-        'metering-alarm_containers',
-        'metering-alarm_hosts',
-        'metering-compute_all',
-        'metering-compute_container',
-        'metering-compute_containers',
-        'metering-compute_hosts',
-        'metering-infra_all',
-        'metering-infra_containers',
-        'metering-infra_hosts',
+        'metering_alarm_all',
+        'metering_alarm_containers',
+        'metering_alarm_hosts',
+        'metering_compute_all',
+        'metering_compute_containers',
+        'metering_compute_hosts',
+        'metering_infra_all',
+        'metering_infra_containers',
+        'metering_infra_hosts',
         'metrics_all',
         'metrics_containers',
         'metrics_hosts',
@@ -380,12 +380,12 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'network_all',
         'network_containers',
         'network_hosts',
-        'network-agent_containers',
-        'network-agent_hosts',
-        'network-gateway_containers',
-        'network-gateway_hosts',
-        'network-infra_containers',
-        'network-infra_hosts',
+        'network_agent_containers',
+        'network_agent_hosts',
+        'network_gateway_containers',
+        'network_gateway_hosts',
+        'network_infra_containers',
+        'network_infra_hosts',
         'neutron_agent',
         'neutron_agents_container',
         'neutron_all',
@@ -394,8 +394,8 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'neutron_l3_agent',
         'neutron_metadata_agent',
         'neutron_metering_agent',
-        'network-northd_containers',
-        'network-northd_hosts',
+        'network_northd_containers',
+        'network_northd_hosts',
         'neutron_openvswitch_agent',
         'neutron_ovn_controller',
         'neutron_ovn_gateway',
@@ -419,8 +419,8 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'orchestration_all',
         'orchestration_containers',
         'orchestration_hosts',
-        'os-infra_containers',
-        'os-infra_hosts',
+        'os_infra_containers',
+        'os_infra_hosts',
         'pkg_repo',
         'rabbit_mq_container',
         'rabbitmq',
@@ -430,10 +430,10 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'registration_hosts',
         'remote',
         'remote_containers',
-        'repo-infra_all',
-        'repo-infra_containers',
-        'repo-infra_hosts',
-        'repo-infra_all',
+        'repo_infra_all',
+        'repo_infra_containers',
+        'repo_infra_hosts',
+        'repo_infra_all',
         'repo_all',
         'repo_container',
         'skyline',
@@ -442,20 +442,20 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'skyline_dashboard_containers',
         'skyline_dashboard_hosts',
         'skyline_dashboard_all',
-        'shared-infra_all',
-        'shared-infra_containers',
-        'shared-infra_hosts',
-        'storage-infra_all',
-        'storage-infra_containers',
-        'storage-infra_hosts',
+        'shared_infra_all',
+        'shared_infra_containers',
+        'shared_infra_hosts',
+        'storage_infra_all',
+        'storage_infra_containers',
+        'storage_infra_hosts',
         'storage_all',
         'storage_containers',
         'storage_hosts',
-        'swift-proxy_all',
-        'swift-proxy_containers',
-        'swift-proxy_hosts',
-        'swift-remote_containers',
-        'swift-remote_hosts',
+        'swift_proxy_all',
+        'swift_proxy_containers',
+        'swift_proxy_hosts',
+        'swift_remote_containers',
+        'swift_remote_hosts',
         'swift_acc',
         'swift_acc_container',
         'swift_all',
@@ -484,16 +484,16 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         'zookeeper',
         'zookeeper_all',
         'zookeeper_container',
-        'zun-infra_all',
-        'zun-infra_containers',
-        'zun-infra_hosts',
+        'zun_infra_all',
+        'zun_infra_containers',
+        'zun_infra_hosts',
         'zun_all',
         'zun_api',
         'zun_api_container',
         'zun_compute',
-        'zun-compute_containers',
-        'zun-compute_hosts',
-        'zun-compute_all',
+        'zun_compute_containers',
+        'zun_compute_hosts',
+        'zun_compute_all',
         'zun_compute_container',
     ]
 
@@ -774,7 +774,7 @@ class TestConfigChecks(TestConfigCheckBase):
         # Even with the same hash seed, different OSes get different results,
         # eg. local OS X vs gate's Linux
         config = collections.OrderedDict()
-        config['shared-infra_hosts'] = {
+        config['shared_infra_hosts'] = {
             'host1': {
                 'ip': '192.168.1.1'
             }
@@ -817,7 +817,7 @@ class TestConfigChecks(TestConfigCheckBase):
         # Even with the same hash seed, different OSes get different results,
         # eg. local OS X vs gate's Linux
         config = collections.OrderedDict()
-        config['shared-infra_hosts'] = {
+        config['shared_infra_hosts'] = {
             'host1': {
                 'ip': '192.168.1.1'
             }
@@ -836,7 +836,7 @@ class TestConfigChecks(TestConfigCheckBase):
 
     def test_correct_hostname_ip_map(self):
         config = {
-            'shared-infra_hosts': {
+            'shared_infra_hosts': {
                 'host1': {
                     'ip': '192.168.1.1'
                 }
@@ -1332,7 +1332,7 @@ class TestLxcHosts(TestConfigCheckBase):
         self.assertEqual(1, len(inventory['lxc_hosts']['hosts']))
 
     def test_lxc_hosts_members(self):
-        self.add_host('shared-infra_hosts', 'aio2', '172.29.236.101')
+        self.add_host('shared_infra_hosts', 'aio2', '172.29.236.101')
         inventory = get_inventory()
         self.assertIn('aio2', inventory['lxc_hosts']['hosts'])
         self.assertIn('aio1', inventory['lxc_hosts']['hosts'])
@@ -1383,7 +1383,7 @@ class TestLxcHosts(TestConfigCheckBase):
         """
         ansible_host_address = '172.20.0.101'
         management_address = '172.29.236.101'
-        self.add_host('shared-infra_hosts', 'aio2', ansible_host_address, management_address)
+        self.add_host('shared_infra_hosts', 'aio2', ansible_host_address, management_address)
         inventory = get_inventory()
         hostvars = inventory['_meta']['hostvars']['aio2']
         self.assertEqual(ansible_host_address, hostvars['ansible_host'])
@@ -1608,7 +1608,7 @@ class TestNestsGroups(TestConfigCheckBase):
         self.assertEqual(nest_hosts_expected, nest_hosts)
 
     def test_nest_containers(self):
-        host_containers_group = 'aio1-host_containers'
+        host_containers_group = 'aio1_host_containers'
         nest_containers_expected = set([host_containers_group])
         nest_containers = set(self.inventory['nest_containers']['children'])
         # Ensure we have only lxc_hosts in children
@@ -1617,6 +1617,148 @@ class TestNestsGroups(TestConfigCheckBase):
         self.assertIn(host_containers_group, self.inventory)
         # Ensure that host-containers group is not empty
         self.assertTrue(len(self.inventory[host_containers_group]['hosts']) > 0)
+
+
+class TestGroupNameNormalization(TestConfigCheckBase):
+
+    def test_dashed_group_is_normalized(self):
+        """
+        Test that a group with a dash is normalized to an underscore.
+        """
+        self.add_config_key('my-test_hosts', {})
+        self.add_host('my-test_hosts', 'testhost1', '10.0.0.1')
+        self.write_config()
+
+        inventory = get_inventory()
+
+        # The normalized group should exist
+        self.assertIn('my_test_hosts', inventory)
+        # The original dashed group should not exist
+        self.assertNotIn('my-test_hosts', inventory)
+        # The host should be in the normalized group
+        self.assertIn('testhost1', inventory['my_test_hosts']['hosts'])
+
+    def test_dashed_and_underscored_groups_are_merged(self):
+        """
+        Test that hosts from dashed and underscored groups are merged.
+        """
+        # Add a group with a dash
+        self.add_config_key('merge-test_hosts', {})
+        self.add_host('merge-test_hosts', 'host-dash', '10.0.0.2')
+
+        # Add the "same" group with an underscore
+        self.add_config_key('merge_test_hosts', {})
+        self.add_host('merge_test_hosts', 'host-underscore', '10.0.0.3')
+        self.write_config()
+
+        inventory = get_inventory()
+
+        # The normalized group should exist
+        self.assertIn('merge_test_hosts', inventory)
+        # The original dashed group should not exist
+        self.assertNotIn('merge-test_hosts', inventory)
+
+        # Both hosts should be in the merged group
+        hosts = inventory['merge_test_hosts']['hosts']
+        self.assertIn('host-dash', hosts)
+        self.assertIn('host-underscore', hosts)
+        self.assertEqual(len(hosts), 2)
+
+    def test_merge_groups_with_ip_conflict_raises_error(self):
+        """
+        Test that merging groups with a host IP conflict raises an error.
+        """
+        # Add a group with a dash
+        self.add_config_key('conflict-test_hosts', {})
+        self.add_host('conflict-test_hosts', 'conflicthost', '10.0.0.4')
+
+        # Add the "same" group with an underscore, and a host with the same
+        # name but different IP.
+        self.add_config_key('conflict_test_hosts', {})
+        self.add_host('conflict_test_hosts', 'conflicthost', '10.0.0.5')
+        self.write_config()
+
+        with self.assertRaises(di.MultipleIpForHostError) as context:
+            get_inventory()
+
+        expected_msg = ("Host conflicthost has both 10.0.0.4 and 10.0.0.5 "
+                        "assigned")
+        self.assertEqual(str(context.exception), expected_msg)
+
+    def test_storage_infra_normalization_and_container_creation(self):
+        """
+        Test that `storage-infra_hosts` is treated as `storage_infra_hosts`
+        and that containers are generated correctly.
+        """
+        inventory = get_inventory()
+
+        self.assertIn('storage_infra_hosts', inventory)
+        self.assertNotIn('storage-infra_hosts', inventory)
+        self.assertIn('aio1', inventory['storage_infra_hosts']['hosts'])
+
+
+class TestProviderNetworkGroupBindNormalization(TestConfigCheckBase):
+    def setUp(self):
+        super(TestProviderNetworkGroupBindNormalization, self).setUp()
+        self.env_path = os.path.join(TARGET_DIR, 'env.d/my-test.yml')
+        self._create_test_env()
+
+        self.add_config_key('my_test_group_hosts', {})
+        self.add_host('my_test_group_hosts', 'testhost1', '10.10.10.10')
+        self.add_provider_network('test_net', '192.168.100.0/24')
+
+        pns = self.user_defined_config['global_overrides']['provider_networks']
+
+        new_pn = {
+            'network': {
+                'ip_from_q': 'test_net',
+                'is_management_address': True,
+                'container_bridge': 'br-test',
+                'container_interface': 'eth-test',
+                'container_type': 'veth',
+                'group_binds': [
+                    'my-test-group_all'
+                ]
+            }
+        }
+        pns.append(new_pn)
+
+        self.write_config()
+        self.inventory = get_inventory()
+
+    def tearDown(self):
+        super(TestProviderNetworkGroupBindNormalization, self).tearDown()
+        os.remove(self.env_path)
+        os.rmdir(os.path.dirname(self.env_path))
+
+    def _create_test_env(self):
+        data = """
+            physical_skel:
+              my_test_group_hosts:
+                belongs_to:
+                  - my_test_group_all
+        """
+        env = yaml.safe_load(data)
+        env_dir = os.path.dirname(self.env_path)
+        if not os.path.exists(env_dir):
+            os.mkdir(env_dir)
+        with open(self.env_path, 'w') as f:
+            f.write(yaml.safe_dump(env))
+
+    def test_group_bind_is_normalized(self):
+        """
+        Test that a dashed group name in group_binds is normalized.
+        """
+        hostvars = self.inventory['_meta']['hostvars']['testhost1']
+        container_networks = hostvars['container_networks']
+
+        self.assertIn('test_net_address', container_networks)
+
+        net_details = container_networks['test_net_address']
+        self.assertEqual(net_details['bridge'], 'br-test')
+        self.assertNotIn('interface', net_details.keys())
+        self.assertEqual(net_details['address'], '10.10.10.10')
+
 
 if __name__ == '__main__':
     unittest.main(catchbreak=True)
