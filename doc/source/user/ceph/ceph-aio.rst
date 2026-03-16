@@ -34,7 +34,7 @@ Enabling the AIO Ceph Scenario
 
 Prepare the host as described in the standard AIO quickstart guide.
 
-Before running the aio bootstrap script, set the scenario variable to enable
+Before running the AIO bootstrap script, set the scenario variable to enable
 the Ceph-enabled layout:
 
 .. code-block:: console
