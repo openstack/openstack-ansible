@@ -63,7 +63,7 @@ haproxy_security_headers:
   - "http-response set-header Strict-Transport-Security \"max-age={{ haproxy_security_headers_max_age }}; includeSubDomains;\""
   - 'http-response set-header X-Content-Type-Options "nosniff"'
   - 'http-response set-header Referrer-Policy "same-origin"'
-  - 'http-response set-header Permissions-Policy "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), navigation-override=(self), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self), gamepad=(), speaker-selection=()"'
+  - 'http-response set-header Permissions-Policy "accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(), usb=(), xr-spatial-tracking=(), clipboard-read=(self), clipboard-write=(self), gamepad=()"'
 
 haproxy_security_txt_service:
   haproxy_backend_only: true
