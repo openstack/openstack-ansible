@@ -144,7 +144,7 @@
     name: openstack-ansible-tox-molecule
     parent: tox-molecule
     vars:
-      tox_environment:
+      tox_environment: &molecule_tox_env
         TEST_BRANCH: "{{ zuul.branch }}"
         OSA_TEST_REQUIREMENTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible/test-requirements.txt"
         TOX_CONSTRAINTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt"
@@ -533,6 +533,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: ubuntu-systemd:noble
 
@@ -669,6 +670,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: ubuntu-systemd:jammy
 
@@ -773,6 +775,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: centos-systemd:stream9
 
@@ -826,6 +829,7 @@
     nodeset: osa-nested-virt-noble
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: centos-systemd:stream10
 
@@ -896,6 +900,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: debian-systemd:bookworm
 
@@ -1033,6 +1038,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/rockylinux
         DOCKER_IMAGE_TAG: rockylinux:9-ubi-init
 
@@ -1043,6 +1049,7 @@
     parent: openstack-ansible-tox-molecule
     vars:
       tox_environment:
+        <<: *molecule_tox_env
         DOCKER_REGISTRY: quay.io/rockylinux
         DOCKER_IMAGE_TAG: rockylinux:10-ubi-init
 
