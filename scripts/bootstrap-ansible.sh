@@ -183,18 +183,19 @@ echo "openstack-ansible wrapper created."
 # NOTE(cloudnull): When bootstrapping we don't want ansible to interact
 #                  with our plugins by default. This change will force
 #                  ansible to ignore our plugins during this process.
+export ANSIBLE_INVENTORY="${OSA_CLONE_DIR}/inventory/inventory.ini"
 export ANSIBLE_LIBRARY="${OSA_CLONE_DIR}/playbooks/library"
 export ANSIBLE_LOOKUP_PLUGINS="/dev/null"
 export ANSIBLE_FILTER_PLUGINS="/dev/null"
 export ANSIBLE_ACTION_PLUGINS="/dev/null"
 export ANSIBLE_CALLBACK_PLUGINS="/dev/null"
-export ANSIBLE_CALLBACKS_ENABLED="/dev/null"
+unset ANSIBLE_CALLBACKS_ENABLED
 export ANSIBLE_TEST_PLUGINS="/dev/null"
 export ANSIBLE_VARS_PLUGINS="/dev/null"
 export ANSIBLE_STRATEGY_PLUGINS="/dev/null"
 export ANSIBLE_CONFIG="none-ansible.cfg"
 export ANSIBLE_COLLECTIONS_PATH="/etc/ansible"
-export ANSIBLE_TRANSPORT="smart"
+export ANSIBLE_TRANSPORT="local"
 export ANSIBLE_STRATEGY="linear"
 export LC_ALL="${LC_ALL:-C.UTF-8}"
 
@@ -210,12 +211,12 @@ if ([ -f "${ANSIBLE_ROLE_FILE}" ] || [ -f "${USER_ROLE_FILE}" ]) && [[ -z "${SKI
 fi
 popd
 
+unset ANSIBLE_INVENTORY
 unset ANSIBLE_LIBRARY
 unset ANSIBLE_LOOKUP_PLUGINS
 unset ANSIBLE_FILTER_PLUGINS
 unset ANSIBLE_ACTION_PLUGINS
 unset ANSIBLE_CALLBACK_PLUGINS
-unset ANSIBLE_CALLBACKS_ENABLED
 unset ANSIBLE_TEST_PLUGINS
 unset ANSIBLE_VARS_PLUGINS
 unset ANSIBLE_STRATEGY_PLUGINS
