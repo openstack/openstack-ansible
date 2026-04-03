@@ -229,6 +229,7 @@ magnum_wsgi_processes: 1
 magnum_conductor_workers: 1
 
 {% if 'metal' in bootstrap_host_scenarios %}
+venv_install_tool: uv
 venv_wheel_build_enable: false
 {% endif %}
 
