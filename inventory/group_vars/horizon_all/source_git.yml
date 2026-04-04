@@ -40,6 +40,11 @@ designate_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/design
 designate_dashboard_git_install_branch: 5610dab9e2077d03967937499b34b61ef3462012
 designate_dashboard_git_track_branch: stable/2026.1
 
+## Horizon Freezer dashboard plugin
+freezer_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/freezer-web-ui"
+freezer_dashboard_git_install_branch: master
+freezer_dashboard_git_track_branch: master
+
 ## Horizon Heat dashboard plugin
 heat_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/heat-dashboard"
 heat_dashboard_git_install_branch: e66b5fe0e46f64528eca73b90d15bdc2e9b82d1e

@@ -1,0 +1,50 @@
+---
+# Copyright 2026, Cleura AB.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+component_skel:
+  freezer_api:
+    belongs_to:
+      - freezer_all
+  freezer_scheduler:
+    belongs_to:
+      - freezer_all
+
+container_skel:
+  freezer_api_container:
+    belongs_to:
+      - backup_infra_containers
+    contains:
+      - freezer_api
+  freezer_scheduler_container:
+    belongs_to:
+      - backup_runner_containers
+    contains:
+      - freezer_scheduler
+
+
+physical_skel:
+  backup_infra_containers:
+    belongs_to:
+      - all_containers
+  backup_infra_hosts:
+    belongs_to:
+      - hosts
+
+  backup_runner_containers:
+    belongs_to:
+      - all_containers
+  backup_runner_hosts:
+    belongs_to:
+      - all_containers
