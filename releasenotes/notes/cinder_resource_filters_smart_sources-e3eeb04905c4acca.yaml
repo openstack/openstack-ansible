@@ -1,0 +1,13 @@
+---
+upgrade:
+  - |
+    ``os_cinder`` role uses an upstream version of
+    ``resource_filters.json``, and local template is no longer part
+    of the role.
+    All overrides defined through ``cinder_resource_filters_overrides``
+    are applied on top of the upstream version.
+fixes:
+  - |
+    Fixed creation of ``OS::Cinder::Volume`` with constrained
+    ``cinder.vtype`` using Heat through update of
+    ``resource_filters.json`` for Cinder.
