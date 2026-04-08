@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed an issue in Horizon where user sessions could be unexpectedly
+    invalidated due to memoization and cache handling when using
+    memcached-backed session storage.
