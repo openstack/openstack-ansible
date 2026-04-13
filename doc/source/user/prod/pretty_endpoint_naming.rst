@@ -189,7 +189,7 @@ Below you can find an example for defining endpoints for Keystone and Nova:
     nova_novncproxy_base_uri: "{{ nova_novncproxy_proto }}://novnc.{{ external_lb_vip_address }}"
 
 After changing endpoint definitions for new domains, refresh the
-endpoint data across components starting with the utility host playbook:
+endpoint data across components starting with the utility_host playbook:
 
 .. code-block:: bash
 
