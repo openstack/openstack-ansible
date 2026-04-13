@@ -416,3 +416,143 @@ filesystem, the ``requirements_git_repo`` should start with ``file://``.
 
 Finally, run the ``repo-install.yml`` playbook to upload these modified
 constraints to your repo host(s).
+
+Overriding Python dependencies for services in OpenStack-Ansible
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are two main ways to change the version/source of a Python package for
+an OpenStack service managed by OpenStack-Ansible:
+
+.. warning::
+
+   Overriding system- or service-level Python dependencies should be done with care:
+    - Always document your changes and their rationale (security fix, local feature, etc.)
+    - Plan periodic review/removal of overrides after upgrade or once patches are upstreamed.
+    - Validate carefully as such overrides can impact stability, upgrades, and maintenance.
+
+Override with a released version (PyPI)
+---------------------------------------
+
+You can force a service to use a specific official PyPI version of a dependency by copying
+the internal constraints file, editing it to set the desired package version,
+and then using it for the service.
+
+.. code-block:: yaml
+
+    <service>_upper_constraints_url: "{{ openstack_repo_url }}/constraints/upper_constraints-xx.txt"
+
+Apply the override
+^^^^^^^^^^^^^^^^^^
+
+Redeploy the affected service with:
+
+.. code-block:: bash
+
+    openstack-ansible openstack.osa.repo
+    openstack-ansible openstack.osa.<service> -e "venv_rebuild=true"
+
+.. note::
+
+   Running the ``openstack.osa.repo`` playbook is necessary to make the
+   constraint file available to the service, as it copies the file from
+   ``/etc/openstack_deploy/upper-constraints`` into the repo host(s).
+
+Override with a commit/branch
+-----------------------------
+
+Override file: ``/etc/openstack_deploy/user_xx.yml`` using a Git source :
+
+.. code-block:: yaml
+
+    xx_user_pip_packages:
+      - "git+https://github.com/openstack/<package_name>@SHA_commit"
+
+    xx_git_constraints: "{{ lookup('file', '/etc/openstack_deploy/upper-constraints/upper_constraints_' + requirements_git_install_branch + '.txt').split('\n') | reject('match', '^(<package_name>)=') | list }}"
+
+    <service>_user_pip_packages: "{{ xx_user_pip_packages }}"
+    <service>_git_constraints: "{{ xx_git_constraints }}"
+
+Apply the override
+^^^^^^^^^^^^^^^^^^
+
+Redeploy the affected service with:
+
+.. code-block:: bash
+
+    openstack-ansible openstack.osa.<service> -e "venv_rebuild=true"
+
+Files involved and verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+After deployment, verify install in the relevant venv, e.g.:
+
+.. code-block:: bash
+
+    source /openstack/venvs/<service>/bin/activate
+    pip show <your_package>
+
+Check constraint/requirements files inside the venv for correctness.
+
+Example
+-------
+
+Applying a CVE patch to keystonemiddleware (override the Python package)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Override with a released version (PyPI)
+
+You can force a service to use a specific official PyPI version of
+a dependency, e.g. :
+
+.. code-block:: yaml
+
+    keystone_upper_constraints_url: "{{ openstack_repo_url }}/constraints/upper_constraints-fixe-keystonemiddleware.txt"
+
+* Apply the override
+
+Redeploy the affected service with:
+
+.. code-block:: bash
+
+    openstack-ansible openstack.osa.repo
+    openstack-ansible openstack.osa.keystone -e "venv_rebuild=true"
+
+* Override with a commit/branch (unreleased patch, feature, or fix)
+
+Suppose you need to urgently patch for `CVE-2026-22797 <https://vulmon.com/vulnerabilitydetails?qid=CVE-2026-22797>`_ not released yet.
+
+Override file: ``/etc/openstack_deploy/user_zz-ossa-2026.1.yml``
+
+.. code-block:: yaml
+
+    ossa_2026_1_user_pip_packages:
+      - "git+https://github.com/openstack/keystonemiddleware@52acf50ca54b4db7f905f0d45736b6eb25ecf3b5"
+
+    ossa_2026_1_git_constraints: "{{ lookup('file', '/etc/openstack_deploy/upper-constraints/upper_constraints_' + requirements_git_install_branch + '.txt').split('\n') | reject('match', '^(keystonemiddleware)=') | list }}"
+
+    keystone_user_pip_packages: "{{ ossa_2026_1_user_pip_packages }}"
+    keystone_git_constraints: "{{ ossa_2026_1_git_constraints }}"
+
+* Apply the override
+
+Redeploy the affected service with:
+
+.. code-block:: bash
+
+    openstack-ansible openstack.osa.keystone -e "venv_rebuild=true"
+
+Check with:
+
+.. code-block:: bash
+
+    source /openstack/venvs/keystone/bin/activate
+    pip show keystonemiddleware
+
+More information and upstream references
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+source-overrides_.
+
+`Example upstream CVE patch (KeystoneMiddleware Gerrit) <https://review.opendev.org/c/openstack/keystonemiddleware/+/973499>`_
+
+.. _source-overrides: https://docs.openstack.org/openstack-ansible/latest/user/source-overrides/index.html
