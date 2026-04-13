@@ -71,6 +71,9 @@ Swift-compatible object storage endpoint. This allows Ceph RADOS Gateway
 to act as a replacement for Swift and to be used as the object storage
 backend in the AIO environment.
 
+Once configured, Object Storage will also be available to users through
+both the Skyline and Horizon dashboards.
+
 For more details about using Ceph as a Swift replacement, see:
 
 `Using Ceph for Swift-compatible Object Storage <https://docs.openstack.org/openstack-ansible/latest/user/ceph/swift.html>`_
