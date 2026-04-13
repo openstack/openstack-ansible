@@ -46,7 +46,7 @@ come up with a more complex design which is aimed at solving the following issue
 To address these challenges, the following changes to the basic design were made:
 
 * Leverage DNS Round Robin (an A/AAAA record per AZ) for Public API
-* Define Internal API FQDN through /etc/hosts overrides, which are unique per
+* Define Internal API FQDN through ``/etc/hosts`` overrides, which are unique per
   Availability Zone
 * Define 6 Keepalived instances: 3 for public and 3 for internal Virtual IP
   addresses (VIPs)
@@ -88,7 +88,7 @@ the instance create API call. The problem with that behavior, is that Nova
 will attempt to Live Migrate or re-schedule instances without an Availability
 Zone in ``request_specs`` to other AZs, which will result in failure, as
 ``cross_az_attach`` is disabled. You can read more about this in a
-Nova `bug report <https://bugs.launchpad.net/nova/+bug/2047182>`_
+Nova `bug report <https://bugs.launchpad.net/nova/+bug/2047182>`_.
 In order to work around this Bug you need to set a ``default_schedule_zone``
 for Nova and Cinder, which will ensure AZ always being defined in
 ``request_specs``. You can also go further and define an actual
@@ -230,8 +230,8 @@ Above example will create following groups:
 
 * ``azN_hosts`` which will contain only bare metal nodes
 * ``azN_containers`` that will contain all containers that are spawned on
-    bare metal nodes, that are part of the pod.
-* ``azN_all`` that will contain `azN_hosts` and `azN_containers` members
+  bare metal nodes, that are part of the pod
+* ``azN_all`` that will contain ``azN_hosts`` and ``azN_containers`` members
 
 We also need to define a complete new set of groups for Ceph, to deploy multiple
 independent instances of it.
@@ -315,7 +315,7 @@ and pinned CPUs) you need to create a file
     nova_cpu_allocation_ratio: 1.0
     nova_ram_allocation_ratio: 1.0
 
-Rest of variables can be defined in ``/etc/openstack_deploy/user_variables.yml``
+Rest of variables can be defined in ``/etc/openstack_deploy/user_variables.yml``,
 but a lot of them will be referencing ``az_name`` variable, so it's presence
 (along with corresponding groups) are vital for this scenario.
 
