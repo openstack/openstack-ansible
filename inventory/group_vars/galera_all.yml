@@ -23,10 +23,6 @@ galera_container_bind_mounts:
   - bind_dir_path: "/var/lib/mysql"
     mount_path: "/openstack/{{ inventory_hostname }}"
 
-# Disable PrivateDevices for MariaDB on CentOS
-# See https://bugs.launchpad.net/openstack-ansible/+bug/1697531 for details.
-galera_disable_privatedevices: "{{ not is_metal }}"
-
 # By default galera_monitoring xinetd app is open to 0.0.0.0/0
 # This makes sure the monitoring is only restricted to the necessary nodes:
 # the load balancers, and the galera nodes.
