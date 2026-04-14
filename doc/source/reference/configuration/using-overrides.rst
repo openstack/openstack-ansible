@@ -460,7 +460,7 @@ Redeploy the affected service with:
 Override with a commit/branch
 -----------------------------
 
-Override file: ``/etc/openstack_deploy/user_xx.yml`` using a Git source :
+Override file: ``/etc/openstack_deploy/user_xx.yml`` using a Git source:
 
 .. code-block:: yaml
 
