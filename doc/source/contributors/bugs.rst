@@ -1,6 +1,6 @@
-==============================
-OpenStack-Ansible Bug Handling
-==============================
+============
+Bug Handling
+============
 
 .. _bug_reporting:
 
@@ -28,18 +28,21 @@ criteria are met:
 
 Bug Tags
 ^^^^^^^^
+
 If the reported needs fixing in a branch in addition to master, add a
 '\<release\>-backport-potential' tag (e.g. ``liberty-backport-potential``).
 There are predefined tags that will auto-complete.
 
 Status
 ^^^^^^
+
 Please leave the **status** of an issue alone until someone confirms it or
 a member of the bugs team triages it. While waiting for the issue to be
 confirmed or triaged the status should remain as **New**.
 
 Importance
 ^^^^^^^^^^
+
 Should only be touched if it is a Blocker/Gating issue. If it is, please
 set to **High**, and only use **Critical** if you have found a bug that
 can take down whole infrastructures. Once the importance has been changed
@@ -61,7 +64,7 @@ prioritised. Triage should help ensure we appropriately manage all
 reported issues - bugs as well as improvements and feature requests."
 (Source: `Moodle bug triage`_)
 
-.. _Moodle bug triage: https://docs.moodle.org/dev/Bug_triage
+.. _Moodle bug triage: https://moodledev.io/general/development/process/triage
 
 Reported bugs need confirmation, prioritization, and ensure they do not
 go stale. If you care about OpenStack stability but are not wanting to

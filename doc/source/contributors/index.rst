@@ -22,11 +22,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   project-onboarding
+   contributing
    bugs
-   contribute
    code-rules
    testing
    periodic-work
    core-reviewers
-   distributions
