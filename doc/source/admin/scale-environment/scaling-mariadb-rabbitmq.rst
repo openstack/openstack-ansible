@@ -266,7 +266,7 @@ In file  ``/etc/openstack_deploy/group_vars/galera.yml``:
 
   .. code-block:: console
 
-     # openstack-ansible playbooks/setup-hosts.yml --limit neutron-mq_hosts,neutron-database_hosts,neutron_rabbitmq,neutron_galera
+     # openstack-ansible openstack.osa.setup_hosts --limit neutron-mq_hosts,neutron-database_hosts,neutron_rabbitmq,neutron_galera
 
 * Deploy clusters:
 
@@ -274,13 +274,13 @@ In file  ``/etc/openstack_deploy/group_vars/galera.yml``:
 
     .. code-block:: console
 
-       openstack-ansible playbooks/galera-install.yml --limit neutron_galera
+       openstack-ansible openstack.osa.galera_server --limit neutron_galera
 
   * RabbitMQ:
 
     .. code-block:: console
 
-       openstack-ansible playbooks/rabbitmq-install.yml --limit neutron_rabbitmq
+       openstack-ansible openstack.osa.rabbitmq_server --limit neutron_rabbitmq
 
 Migrating the service to use new clusters
 -----------------------------------------
@@ -304,7 +304,7 @@ to the neutron_server group only. You can use the following command for that:
 
 .. code-block:: console
 
-   # openstack-ansible playbooks/os-neutron-install.yml --limit neutron_server --tags common-db
+   # openstack-ansible openstack.osa.neutron --limit neutron_server --tags common-db
 
 Once we have a database prepared, we need to disable HAProxy backends that
 proxy traffic to the API of the service in order to prevent any user or
@@ -541,7 +541,7 @@ taking any actions against the current setup:
 
 .. code-block:: console
 
-   # ./scripts/inventory-manage.py -l | grep rabbitmq
+   # openstack-ansible-inventory-manage -l | grep rabbitmq
    | control01_rabbit_mq_container-a3a802ac  | None     | rabbitmq   | control01          | None           | 172.29.239.49  | None                 |
    | control02_rabbit_mq_container-51f6cf7c  | None     | rabbitmq   | control02          | None           | 172.29.236.82  | None                 |
    | control03_rabbit_mq_container-b30645d9  | None     | rabbitmq   | control03          | None           | 172.29.238.23  | None                 |
@@ -562,13 +562,13 @@ the following ad-hoc for that:
 
   .. code-block:: console
 
-     # openstack-ansible playbooks/lxc-containers-destroy.yml --limit control01_rabbit_mq_container-a3a802ac
+     # openstack-ansible openstack.osa.containers_lxc_destroy --limit control01_rabbit_mq_container-a3a802ac
 
 * And remove it from the inventory:
 
   .. code-block:: console
 
-     # ./scripts/inventory-manage.py -r control01_rabbit_mq_container-a3a802ac
+     # openstack-ansible-inventory-manage -r control01_rabbit_mq_container-a3a802ac
 
 Now you need to re-configure ``openstack_user_config`` similar to how it was done
 for MariaDB. The resulting record at this stage for RabbitMQ should look like
@@ -597,7 +597,7 @@ record was mapped to our infra01:
 
    ...
 
-   # ./scripts/inventory-manage.py -l | grep rabbitmq
+   # openstack-ansible-inventory-manage -l | grep rabbitmq
 
    | control02_rabbit_mq_container-51f6cf7c  | None     | rabbitmq   | control02          | None           | 172.29.236.82  | None                 |
    | control03_rabbit_mq_container-b30645d9  | None     | rabbitmq   | control03          | None           | 172.29.238.23  | None                 |
@@ -621,13 +621,13 @@ one now:
 
   .. code-block:: console
 
-     # openstack-ansible playbooks/lxc-containers-create.yml --limit infra01,rabbitmq
+     # openstack-ansible openstack.osa.containers_lxc_create --limit infra01,rabbitmq
 
 * And install RabbitMQ to the new container and ensure it’s part of the cluster:
 
   .. code-block:: console
 
-     # openstack-ansible playbooks/rabbitmq-install.yml
+     # openstack-ansible openstack.osa.rabbitmq_server
 
 * Once the cluster is re-established, it’s worth to clean-up cluster status
   with regards to the old container name still being considered as “Disk Node”,
@@ -688,13 +688,13 @@ Extending the cluster is quite trivial. For that, you need to:
 
    .. code-block:: console
 
-      # openstack-ansible playbooks/lxc-containers-create.yml --limit infra01,infra02,galera
+      # openstack-ansible openstack.osa.containers_lxc_create --limit infra01,infra02,galera
 
 #. Deploy MariaDB there and add it to the cluster:
 
    .. code-block:: console
 
-      # openstack-ansible playbooks/galera-install.yml
+      # openstack-ansible openstack.osa.galera_server
 
 #. Ensure the cluster is healthy with the following ad-hoc:
 
@@ -730,13 +730,13 @@ To add more members to the RabbitMQ cluster execute the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible playbooks/lxc-containers-create.yml --limit infra01,infra02,rabbitmq
+      # openstack-ansible openstack.osa.containers_lxc_create --limit infra01,infra02,rabbitmq
 
 #. Deploy RabbitMQ on the new host and enroll it to the cluster:
 
    .. code-block:: console
 
-      # openstack-ansible playbooks/rabbitmq-install.yml
+      # openstack-ansible openstack.osa.rabbitmq_server
 
 #. Once a new RabbitMQ container is deployed, you need to make all services aware
    of its existence by re-configuring them. For that, you can either run individual
@@ -744,7 +744,7 @@ To add more members to the RabbitMQ cluster execute the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible playbooks/os-<service>-install.yml –tags <service>-config
+      # openstack-ansible openstack.osa.<service> --tags <service>-config
 
 Where <service> is a service name, like neutron, nova, cinder, etc. Another
 way around would be to fire up setup-openstack.yml but it will take quite some
