@@ -57,6 +57,7 @@
         # ZUUL_SRC_PATH is used by tests/roles/bootstrap-host
         # symlink the zuul roles into /openstack/src
         ZUUL_SRC_PATH: "{{ _zuul_src_path }}"
+        ZUUL_VARS_FILE: "{{ zuul_user_vars_file }}"
         SCENARIO: "{{ scenario }}"
         ACTION: "{{ action }}"
         INSTALL_METHOD: "{{ install_method }}"

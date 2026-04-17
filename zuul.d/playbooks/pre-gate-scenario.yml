@@ -19,7 +19,7 @@
     install_methods:
       - distro
       - source
-    zuul_user_vars_file: "{{ ansible_env.HOME }}/osa-job-vars.yml"
+    zuul_user_vars_file: "{{ ansible_facts.env.HOME }}/osa-job-vars.yml"
   tasks:
     - name: Dynamically create scenario if not set
       ansible.builtin.set_fact:
@@ -118,6 +118,7 @@
       vars:
         zuul_helper_var:
           zuul: "{{ zuul }}"
+          zuul_vars: "{{ zuul_job_vars | default({}) }}"
         zuul_site_mirror_info_helper_var:
           zuul_site_mirror_info: "{{ zuul_site_mirror_info | default({}) }}"
       ansible.builtin.template:

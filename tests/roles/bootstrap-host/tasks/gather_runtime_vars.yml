@@ -34,3 +34,10 @@
     - name: Set nodepool environment variables fact
       ansible.builtin.set_fact:
         nodepool_vars: "{{ nodepool_env.stdout | from_yaml }}"
+
+- name: Attempt to load custom var file (if exists)
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ aio_vars_file | default(ansible_facts.env.ZUUL_VARS_FILE) }}"
+      skip: true
