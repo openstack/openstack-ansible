@@ -16,6 +16,7 @@
 ### HEAD as of 08.04.2026 ###
 
 ## Magnum service
+# NOTE: We want to avoid regression brought by https://review.opendev.org/c/openstack/magnum/+/981084
 magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum"
-magnum_git_install_branch: 075f62e8172b366b70854bc2dc1908ab5f60632a
-magnum_git_track_branch: stable/2025.1
+magnum_git_install_branch: 20.0.1
+magnum_git_track_branch: None
