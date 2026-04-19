@@ -26,7 +26,9 @@ For more information about the major upgrade process, see
 
 .. warning::
 
-   |upgrade_warning| Test this on a development environment first.
+   Upgrading to master is not recommended. Master is under heavy
+   development, and is not stable. Test this on a development environment
+   first.
 
 .. _upgrading-by-using-a-script:
 
