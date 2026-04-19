@@ -20,7 +20,7 @@
       tags:
         - check-operating-system
   when:
-    - (check_operating_system | default(True)) | bool
+    - (check_operating_system | default(true)) | bool
   tags:
     - check-operating-system
 

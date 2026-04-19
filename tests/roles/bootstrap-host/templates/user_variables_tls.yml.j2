@@ -17,12 +17,12 @@
 openstack_service_publicuri_proto: https
 openstack_service_adminuri_proto: https
 openstack_service_internaluri_proto: https
-galera_require_secure_transport: True
-haproxy_ssl: True
-haproxy_ssl_all_vips: True
-rabbitmq_management_ssl: True
-openstack_service_backend_ssl: True
-openstack_service_accept_both_protocols: True
+galera_require_secure_transport: true
+haproxy_ssl: true
+haproxy_ssl_all_vips: true
+rabbitmq_management_ssl: true
+openstack_service_backend_ssl: true
+openstack_service_accept_both_protocols: true
 # Keep keystone proto set to 'http'. This way we can ensure that
 # `openstack_service_accept_both_protocols` works as expected.
 keystone_service_publicuri_proto: http
@@ -33,9 +33,9 @@ keystone_service_internaluri_proto: http
 openstack_service_publicuri_proto: http
 openstack_service_adminuri_proto: http
 openstack_service_internaluri_proto: http
-haproxy_ssl: False
-haproxy_ssl_all_vips: False
-rabbitmq_management_ssl: False
-openstack_service_backend_ssl: False
-openstack_service_accept_both_protocols: False
+haproxy_ssl: false
+haproxy_ssl_all_vips: false
+rabbitmq_management_ssl: false
+openstack_service_backend_ssl: false
+openstack_service_accept_both_protocols: false
 {% endif %}

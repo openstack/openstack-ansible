@@ -148,7 +148,7 @@ bootstrap_host_ip_path: "{{ bootstrap_host_network_utils[ansible_facts['pkg_mgr'
 # This does not run by default, but gate-check-commit and the OSA gate jobs
 # enable this because it is needed for RAX nodepool instances
 bootstrap_host_data_disk_device_detect: "{{ lookup('env', 'BOOTSTRAP_HOST_DETECT_DATA_DISK') |
-                                            default(False, True) }}"
+                                            default(false, true) }}"
 
 # Specify the secondary disk device to use. When the data disk is in use, no NOT
 # set the full path to the device. IE: "/dev/xvde" should be "xvde".

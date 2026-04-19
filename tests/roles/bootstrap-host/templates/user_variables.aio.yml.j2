@@ -14,7 +14,7 @@
 # limitations under the License.
 
 ## General options
-debug: True
+debug: true
 
 ## Installation method for OpenStack services
 install_method: "{{ bootstrap_host_install_method }}"
@@ -97,7 +97,7 @@ cinder_wsgi_threads: 1
 cinder_wsgi_buffer_size: 16384
 cinder_osapi_volume_workers_max: 1
 
-## cloudkitty
+## CloudKitty
 cloudkitty_wsgi_processes: 1
 cloudkitty_wsgi_threads: 1
 
@@ -118,7 +118,7 @@ manila_wsgi_threads: 1
 manila_osapi_share_workers: 2
 manila_wsgi_buffer_size: 65535
 
-## mistral
+## Mistral
 mistral_wsgi_processes: 1
 mistral_wsgi_threads: 1
 
@@ -264,12 +264,12 @@ lxc_container_bind_mounts:
     container_directory: "/opt/cache/files"
 
 ## Always setup tempest, the resources for it, then execute tests
-tempest_install: yes
-tempest_run: yes
-rally_install: yes
+tempest_install: true
+tempest_run: true
+rally_install: true
 
 # Do a gateway ping test once the tempest role creates it
-tempest_network_ping_gateway: yes
+tempest_network_ping_gateway: true
 
 {% if nodepool_dir.stat.exists %}
 # Copy /etc/pip.conf into containers to get mirrors for wheels
