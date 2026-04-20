@@ -39,14 +39,31 @@ extra_include_project() {
 # reasons
 #
 # retired projects
-exclude_project openstack-ansible-os_freezer
+exclude_project openstack-ansible-galera_client
+exclude_project openstack-ansible-nspawn_hosts
+exclude_project openstack-ansible-nspawn_container_create
+exclude_project openstack-ansible-os_almanach
+exclude_project openstack-ansible-os_congress
+exclude_project openstack-ansible-os_karbor
+exclude_project openstack-ansible-os_molteniron
+exclude_project openstack-ansible-os_monasca
+exclude_project openstack-ansible-os_monasca-agent
+exclude_project openstack-ansible-os_monasca-ui
+exclude_project openstack-ansible-os_murano
+exclude_project openstack-ansible-os_panko
+exclude_project openstack-ansible-os_sahara
+exclude_project openstack-ansible-os_searchlight
+exclude_project openstack-ansible-os_senlin
 exclude_project openstack-ansible-os_swift_sync
+exclude_project openstack-ansible-os_zaqar
+exclude_project openstack-ansible-pip_install
 exclude_project openstack-ansible-pip_lock_down
 exclude_project openstack-ansible-py_from_git
+exclude_project openstack-ansible-repo_build
+exclude_project openstack-ansible-rsyslog_client
+exclude_project openstack-ansible-rsyslog_server
 exclude_project openstack-ansible-security
-# integrated is where we are so we know it's maintained
-exclude_project openstack-ansible
-#
+
 ############## END OF EXCLUDED PROJECTS ###############
 
 ############## INCLUDED PROJECTS ######################
@@ -54,14 +71,17 @@ exclude_project openstack-ansible
 # List of additional projects that need to be included for various
 # reasons
 #
-# ansible-hardening. Used by AIO in favor of the retired
-# openstack-ansible-security
 extra_include_project ansible-config_template
 extra_include_project ansible-hardening
+extra_include_project ansible-role-frrouting
+extra_include_project ansible-role-httpd
+extra_include_project ansible-role-pki
 extra_include_project ansible-role-python_venv_build
 extra_include_project ansible-role-systemd_mount
 extra_include_project ansible-role-systemd_networkd
 extra_include_project ansible-role-systemd_service
+extra_include_project ansible-role-uwsgi
+extra_include_project ansible-role-zookeeper
 ############## END OF INCLUDED PROJECTS ###############
 
 # Replace spaces with newlines as expected by grep -F
