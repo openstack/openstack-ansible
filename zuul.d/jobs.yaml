@@ -446,6 +446,11 @@
     nodeset: ubuntu-noble
 
 - job:
+    name: openstack-ansible-deploy-aio_tls-ubuntu-noble
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-noble
+
+- job:
     name: openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
@@ -715,6 +720,11 @@
 
 - job:
     name: openstack-ansible-deploy-aio_metal-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
+    name: openstack-ansible-deploy-aio_tls-rockylinux-10
     parent: openstack-ansible-deploy-aio
     nodeset: osa-rockylinux-10
 
