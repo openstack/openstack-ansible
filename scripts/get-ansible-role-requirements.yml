@@ -51,7 +51,7 @@
         state: absent
       when:
         - ((item.path | default(role_path_default) ~ '/' ~ item.name | default(item.src | basename) ~ '/.git') is not directory) or
-          (lookup('env', 'DROP_ROLE_DIRS') | bool is true)
+          (lookup('env', 'DROP_ROLE_DIRS') is truthy)
       with_items: "{{ clone_roles }}"
 
     - name: Ensure the default roles directory exists
@@ -94,7 +94,7 @@
     required_roles: "{{ lookup('file', role_file) | from_yaml }}"
     role_file: "{{ playbook_dir }}/../ansible-role-requirements.yml"
     role_path_default: '/etc/ansible/roles'
-    user_roles: "{{ lookup('file', user_role_path, errors='ignore') | default([], true) | from_yaml }}"
+    user_roles: "{{ lookup('file', user_role_path, errors='ignore') | default('', true) | from_yaml }}"
     user_role_path: "{{ config_dir ~ '/' ~ (user_role_file | default('')) }}"
     git_clone_retries: 2
     git_clone_retry_delay: 5
