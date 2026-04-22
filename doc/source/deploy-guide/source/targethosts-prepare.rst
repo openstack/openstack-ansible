@@ -89,8 +89,8 @@ Configure Ubuntu
 
 #. Reboot the host to activate the changes and use the new kernel.
 
-Configure CentOS Stream / Rocky Linux
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS Stream / Rocky Linux / AlmaLinux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #. Upgrade the system packages and kernel:
 

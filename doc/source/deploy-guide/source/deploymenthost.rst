@@ -61,8 +61,8 @@ Before you begin, we recommend upgrading your system packages and kernel.
 
 #. Configure NTP to synchronize with a suitable time source.
 
-Configure CentOS Stream / Rocky Linux
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configure CentOS Stream / Rocky Linux / AlmaLinux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install additional software packages and configure Network Time Protocol (NTP).
 Before you begin, we recommend upgrading your system packages and kernel.
