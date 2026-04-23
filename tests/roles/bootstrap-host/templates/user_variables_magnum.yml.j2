@@ -13,6 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+{% if 'k8s' in bootstrap_host_scenarios_expanded %}
+# Tempest alongside capi testing takes too long
+tempest_install: False
+functional_test_k8s_version: "{{ zuul_vars.kubernetes_version | default(undef()) }}"
+{%   if 'vexxhost' in bootstrap_host_scenarios_expanded %}
+magnum_k8s_driver: "vexxhost"
+post_setup_openstack_hook: /etc/ansible/roles/os_magnum/tests/functional_test.yml
+{%   elif 'azimuth' in bootstrap_host_scenarios_expanded %}
+magnum_k8s_driver: "azimuth"
+{%   endif %}
+{% else %}
+magnum_k8s_driver: "heat"
 magnum_glance_images:
   - name: fedora-coreos-latest
     disk_format: qcow2
@@ -70,3 +82,5 @@ tempest_tempest_conf_overrides_magnum:
     master_flavor_id: m1.magnum
     flavor_id: s1.magnum
     image_id: fedora-coreos-latest
+
+{% endif %}

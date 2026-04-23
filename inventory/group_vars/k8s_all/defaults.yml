@@ -1,0 +1,55 @@
+---
+# Copyright 2026, BBC R&D
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Pick a range of addresses for cilium that do not collide with anything else
+cilium_ipv4_cidr: 172.29.200.0/22
+
+# Set a clusterctl version. Supported list can be found in defaults:
+# https://github.com/adriacloud/ansible-collection-kubernetes/blob/main/roles/clusterctl/defaults/main.yml
+clusterctl_version: 1.12.3
+cluster_api_version: 1.12.3
+cluster_api_infrastructure_provider: openstack
+cluster_api_infrastructure_version: 0.14.1
+
+# wire OSA group, host and network addresses into k8s deployment
+kubelet_hostname: "{{ ansible_facts['hostname'] | lower }}"
+kubelet_node_ip: "{{ management_address }}"
+kubernetes_control_plane_group: k8s_container
+kubernetes_hostname: "{{ internal_lb_vip_address }}"
+kubernetes_non_init_namespace: true
+
+# Define k8s version for the control cluster
+kubernetes_version: 1.35.2
+
+# Define LXC container overrides
+lxc_container_config_list: "{{ ((hostvars[physical_host]['ansible_facts']['os_family'] | lower) == 'debian') | ternary(['lxc.apparmor.profile=unconfined'], []) }}"
+
+lxc_container_mount_auto:
+  - "proc:rw"
+  - "sys:rw"
+
+# Set this manually, or kube-proxy will try to do this - not possible
+# in a non-init namespace and will fail in LXC
+openstack_host_nf_conntrack_max: 1572864
+
+# OSA containers dont run ssh by default so cannot use synchronize
+upload_helm_chart_method: copy
+
+# Run ansible modules in a venv on the target hosts
+ansible_collection_kubernetes_target_venv: /opt/mcapi_ansible_venv
+
+# Enable periodic cluster API state collection (note: this is not a guaranteed functional backup)
+# See https://cluster-api.sigs.k8s.io/clusterctl/commands/move
+cluster_api_backups_enabled: False

@@ -19,3 +19,11 @@
 magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum"
 magnum_git_install_branch: 1b8f1b9ba0051203841100d3ce244ba832741c68
 magnum_git_track_branch: stable/2026.1
+
+magnum_capi_vexxhost_git_repo: "{{ openstack_github_base_url }}/vexxhost/magnum-cluster-api"
+magnum_capi_vexxhost_git_install_branch: v0.36.0
+magnum_capi_vexxhost_git_track_branch: None
+
+magnum_capi_azimuth_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-capi-helm"
+magnum_capi_azimuth_git_install_branch: d60ae3f89cd925a7097082facfd9c140ea8cf9a2
+magnum_capi_azimuth_git_track_branch: master
