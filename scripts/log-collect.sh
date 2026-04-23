@@ -170,6 +170,10 @@ store_artifacts /openstack/log/ansible-logging/ "${WORKING_DIR}/logs/ansible"
 store_artifacts /openstack/log/ "${WORKING_DIR}/logs/openstack"
 store_artifacts /var/log/ "${WORKING_DIR}/logs/host"
 
+# Gather Zuul specific scenario and job variables if they exist
+store_artifacts /home/zuul/ "${WORKING_DIR}/zuul-info" "osa-gate-scenario.yml"
+store_artifacts /home/zuul/ "${WORKING_DIR}/zuul-info" "osa-job-vars.yml"
+
 # Build the ARA static html report if required
 if [[ "$ARA_REPORT_TYPE" == "html" ]]; then
     echo "Generating ARA static html report."
