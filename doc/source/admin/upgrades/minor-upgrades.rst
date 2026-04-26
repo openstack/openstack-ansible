@@ -63,8 +63,7 @@ A minor upgrade typically requires the following steps:
 
    .. code-block:: console
 
-      # openstack-ansible -e rabbitmq_upgrade=true \
-      openstack.osa.setup_infrastructure
+      # openstack-ansible openstack.osa.setup_infrastructure -e rabbitmq_upgrade=true
 
 #. Update all OpenStack services:
 
