@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 08.04.2026 ###
+### HEAD as of 05.05.2026 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: 70cc63f96a4a393d9ebe7304097e8e94acf5960d
+horizon_git_install_branch: d20febaffc7fd7c6d9d3e9be076382d4bc7819ad
 horizon_git_track_branch: stable/2025.2
 
 ## Adjutant dashboard plugin
@@ -32,7 +32,7 @@ barbican_dashboard_git_track_branch: master
 
 ## Cloudkitty dashboard plugin
 cloudkitty_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty-dashboard"
-cloudkitty_dashboard_git_install_branch: 6efad66dcd530028129aadef4a9289ff55d5b85b
+cloudkitty_dashboard_git_install_branch: a9adcbae28128f97e59bf1b8f322776f326149e8
 cloudkitty_dashboard_git_track_branch: stable/2025.2
 
 ## Horizon Designate dashboard plugin
@@ -62,12 +62,12 @@ masakari_dashboard_git_track_branch: stable/2025.2
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove-dashboard"
-trove_dashboard_git_install_branch: b2082772ee8fa8025203e5bfd6927c3aa206a799
+trove_dashboard_git_install_branch: 3e68ad10d26247632feda7c5ce547cdec1993126
 trove_dashboard_git_track_branch: stable/2025.2
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-dashboard"
-octavia_dashboard_git_install_branch: d582833a1eb9f6b09fa7e24547c5d55c4bf34eeb
+octavia_dashboard_git_install_branch: 4cf7db728dae3b3e704595546f07ef09c6e41029
 octavia_dashboard_git_track_branch: stable/2025.2
 
 ## Horizon Neutron VPNaaS dashboard plugin
