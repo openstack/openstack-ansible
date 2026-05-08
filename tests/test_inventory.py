@@ -503,6 +503,16 @@ class TestAnsibleInventoryFormatConstraints(unittest.TestCase):
         self.assertIsNotNone(hostvars, "hostvars missing from _meta")
         self.assertIsInstance(hostvars, dict, "hostvars is not a dict")
 
+    def test_physical_host_addr_matches_ansible_host(self):
+        hostvars = self.inventory['_meta']['hostvars']
+        for host, vars in hostvars.items():
+            phys_host = vars.get('physical_host')
+            if phys_host and phys_host in hostvars:
+                self.assertEqual(
+                    vars.get('physical_host_addr'),
+                    hostvars[phys_host].get('ansible_host'),
+                    f"Host {host} has incorrect physical_host_addr mapping to {phys_host}")
+
     def test_group_vars_all(self):
         group_vars_all = self.inventory['all']
         self.assertIsNotNone(group_vars_all,
@@ -1021,6 +1031,15 @@ class TestEnsureInventoryUptoDate(unittest.TestCase):
 
         for required_key in di.REQUIRED_HOSTVARS:
             self.assertIn(required_key, self.host_vars['host1'])
+
+    def test_populating_physical_host_addr(self):
+        self.host_vars['phys1'] = {'ansible_host': '1.2.3.4'}
+        self.host_vars['cont1'] = {'physical_host': 'phys1'}
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertIn('physical_host_addr', self.host_vars['cont1'])
+        self.assertEqual(self.host_vars['cont1']['physical_host_addr'], '1.2.3.4')
 
     def test_missing_container_name(self):
         self.host_vars['host1'] = {}
