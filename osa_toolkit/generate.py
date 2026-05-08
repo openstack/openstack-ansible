@@ -52,6 +52,7 @@ REQUIRED_HOSTVARS = [
     'container_name',
     'container_networks',
     'physical_host',
+    'physical_host_addr',
     'component'
 ]
 
@@ -336,6 +337,7 @@ def _build_container_hosts(container_affinity, container_hosts, type_and_name,
                 'management_address': address,
                 'container_name': container_host_name,
                 'physical_host': host_type,
+                'physical_host_addr': hostvars[host_type].get('ansible_host'),
                 'physical_host_group': physical_host_type,
                 'component': assignment
             })
@@ -999,6 +1001,12 @@ def _ensure_inventory_uptodate(inventory, container_skel):
     for hostname, _vars in host_vars.items():
         if 'container_name' not in _vars:
             _vars['container_name'] = hostname
+
+        # Populate physical_host_addr if physical_host is known
+        physical_host = _vars.get('physical_host')
+        if physical_host and physical_host in host_vars:
+            _vars['physical_host_addr'] = host_vars[physical_host].get(
+                'ansible_host')
 
         for rh in REQUIRED_HOSTVARS:
             if rh not in _vars:

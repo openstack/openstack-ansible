@@ -1,0 +1,14 @@
+---
+upgrade:
+  - |
+    In order to ensure consistent behavior for connection towards LXC hosts,
+    a new variable ``physical_host_addr`` has been added to
+    ``openstack_inventory.json`` for all LXC containers.
+    This variable points to the ``ansible_host`` address of parent LXC host,
+    and will be used by connection plugin.
+fixes:
+  - |
+    Fixes regression, where connection to LXC hosts was attempted through the
+    management network while targetting LXC containers.
+    This was affecting deployments with split SSH and Management networks, and
+    deploy host did not have access to the Management network.
