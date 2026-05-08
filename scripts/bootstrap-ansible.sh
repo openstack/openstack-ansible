@@ -57,7 +57,7 @@ export OSA_CLONE_DIR="$(pwd)"
 ANSIBLE_ROLE_FILE="$(readlink -f "${ANSIBLE_ROLE_FILE}")"
 ANSIBLE_COLLECTION_FILE="$(readlink -f "${ANSIBLE_COLLECTION_FILE}")"
 OSA_INVENTORY_PATH="$(readlink -f inventory)"
-OSA_ANSIBLE_PYTHON_INTERPRETER="auto"
+OSA_ANSIBLE_PYTHON_INTERPRETER="auto_silent"
 
 # Create the ssh dir if needed
 ssh_key_create
