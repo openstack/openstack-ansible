@@ -548,6 +548,17 @@
         DOCKER_REGISTRY: quay.io/gotmax23
         DOCKER_IMAGE_TAG: ubuntu-systemd:noble
 
+# Ubuntu 26.04 jobs
+
+- job:
+    name: openstack-ansible-tox-molecule-ubuntu-resolute
+    parent: openstack-ansible-tox-molecule
+    vars:
+      tox_environment:
+        <<: *molecule_tox_env
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: ubuntu-systemd:resolute
+
 # CentOS Stream 10
 
 - job:
