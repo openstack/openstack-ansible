@@ -165,7 +165,10 @@ After that you can proceed with standard OpenStack upgrade steps:
 This command is the same setting up hosts on a new installation. The
 ``galera_all`` and ``rabbitmq_all`` host groups are excluded to prevent
 reconfiguration and restarting of any of those containers as they need to
-be updated, but not restarted.
+be updated, but not restarted. The ``-e package_state=latest`` flag tells
+the roles to upgrade only the distribution packages they explicitly
+manage to the newest available versions — this is not equivalent to a
+full ``apt upgrade`` or ``dnf upgrade`` of the host or container.
 
 Once that is complete, upgrade the final host groups with the flag to prevent
 container restarts.
