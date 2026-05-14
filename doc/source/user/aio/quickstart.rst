@@ -122,7 +122,8 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 12 (bookworm), Debian 13 (trixie), Ubuntu 24.04 (Noble Numbat),
+   Debian 12 (bookworm), Debian 13 (trixie),
+   Ubuntu 24.04 (Noble Numbat), Ubuntu 26.04 (Resolute Raccoon),
    CentOS 10 Stream and derivatives of RHEL 10 such as Rocky Linux
    or AlmaLinux.
 
@@ -417,7 +418,7 @@ dropdown in the top-right corner and select ``OpenStack RC File``.
    other hosts. The name and location of the generated certificate are
    configured by the ``pki_authorities`` and ``pki_trust_store_location``
    variables respectively, which are used by the ``pki`` role provided by
-   `ansible-role-pki`__. On an Ubuntu 24.04 host, these will default to
+   `ansible-role-pki`__. On an Ubuntu host, these will default to
    ``ExampleCorpRoot`` and ``/usr/local/share/ca-certificates``, respectively.
    For example:
 
