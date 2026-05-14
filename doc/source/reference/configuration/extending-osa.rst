@@ -65,7 +65,7 @@ The environment variables set would use
 Adding new or overriding roles in your OpenStack-Ansible installation
 ---------------------------------------------------------------------
 
-By default OpenStack-Ansible uses its `ansible-role-requirements`_ file
+By default, OpenStack-Ansible uses its `ansible-role-requirements`_ file
 to fetch the roles it requires for the installation process.
 
 The roles will be fetched into the standard ``ANSIBLE_ROLES_PATH``,
@@ -96,8 +96,45 @@ in ``ansible-role-requirements.yml``, and roles with matching ``name`` key
 will override those in ``ansible-role-requirements.yml``. In case when
 ``src`` key is not defined bootstrap script will skip cloning such roles.
 
+Mapping of roles for override happens by the ``name`` key for the role,
+so it is important to keep the role name the same as in
+``ansible-role-requirements.yml`` if you want to update the source or version
+of the role. You have to execute ``./scripts/bootstrap-ansible.sh`` whenever you update
+``user-role-requirements.yml`` file to pull in the new versions.
+
 It is easy for a deployer to keep this file under their own version
 control and out of the OpenStack-Ansible tree.
+
+
+Override examples
+^^^^^^^^^^^^^^^^^
+
+* Update source location or the version of the role, defined in
+  ``ansible-role-requirements.yml``
+
+  .. code-block:: yaml
+
+    - name: os_ironic
+      scm: git
+      src: https://github.com/openstack/openstack-ansible-os_ironic
+      version: master
+
+* Use a patchset (unmerged, but existing change) for the role.
+  SHA and refspec can be taken from the Gerrit.
+
+  .. code-block:: yaml
+
+    - name: os_ironic
+      scm: git
+      src: https://opendev.org/openstack/openstack-ansible-os_ironic
+      refspec: refs/changes/09/835709/3
+      version: 6cf41cfa26128b64c422f22a103a8bc98b857f26
+
+* Skip role from being cloned/installed
+
+  .. code-block:: yaml
+
+    - name: os_ironic
 
 Adding new or overriding collections in your OpenStack-Ansible installation
 ---------------------------------------------------------------------------
