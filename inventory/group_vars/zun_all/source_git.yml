@@ -15,10 +15,12 @@
 
 ### HEAD as of 25.02.2026 ###
 
+# NOTE: We use 2026.2 version of Zun to include the oslo_db fix
+#       https://review.opendev.org/c/openstack/zun/+/982362
 ## Zun service
 zun_git_repo: "{{ openstack_opendev_base_url }}/openstack/zun"
-zun_git_install_branch: 95325049a9635f2db8e6a1a924a4e82708f222f3
-zun_git_track_branch: stable/2026.1
+zun_git_install_branch: 875abe2692500886c1cee352c58a5d427b03ca15
+zun_git_track_branch: master
 
 ## Zun kuryr service
 zun_kuryr_git_repo: "{{ openstack_opendev_base_url }}/openstack/kuryr-libnetwork"
