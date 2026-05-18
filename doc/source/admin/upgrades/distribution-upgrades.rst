@@ -170,11 +170,11 @@ Deploying Infrastructure Hosts
 
 #. Clearing out stale information
 
-   #. Removing stale ansible-facts
+   #. Removing stale Ansible facts
 
       .. code:: console
 
-         rm /etc/openstack_deploy/ansible-facts/${REINSTALLED_HOST}*
+         rm /etc/openstack_deploy/ansible_facts/${REINSTALLED_HOST}*
 
       (* because we're deleting all container facts for the host as well)
 
@@ -335,11 +335,11 @@ Deploying Compute and Network Hosts
 
 #. Reinstall a host's operating system
 
-#. Clear out stale ansible-facts
+#. Clear out stale Ansible facts
 
    .. code:: console
 
-      rm /etc/openstack_deploy/ansible-facts/${REINSTALLED_HOST}*
+      rm /etc/openstack_deploy/ansible_facts/${REINSTALLED_HOST}*
 
    (* because we're deleting all container facts for the host as well)
 
