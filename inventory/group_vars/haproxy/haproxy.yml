@@ -284,6 +284,10 @@ haproxy_keystone_service:
   haproxy_service_enabled: "{{ groups['keystone_all'] is defined and groups['keystone_all'] | length > 0 }}"
   haproxy_backend_server_options:
     - "maxconn {{ keystone_wsgi_processes | default(9) // 3 }}"
+  haproxy_frontend_raw:
+    - "stick-table type ip size 200k expire 300s store http_err_rate(60s)"
+    - "http-request track-sc0 src"
+    - "http-request deny deny_status 429 if { sc_http_err_rate(0) ge 5 }"
 
 haproxy_letsencrypt_service:
   haproxy_service_name: letsencrypt
