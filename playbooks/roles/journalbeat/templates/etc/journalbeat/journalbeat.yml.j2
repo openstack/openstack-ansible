@@ -61,6 +61,15 @@ queue:
     flush.min_events: 2048
     flush.timeout: 1s
 
+{% if ansible_distribution_major_version | int >= 22 %}
+# Neccessary to run filebeat on ubuntu 22.04
+seccomp:
+  default_action: allow
+  syscalls:
+  - action: allow
+    names:
+    - rseq
+{% endif %}
 
 #================================ Outputs =====================================
 
