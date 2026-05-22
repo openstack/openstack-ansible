@@ -185,3 +185,14 @@
         - prepare-aio-config
   tags:
     - always
+
+# Prepare local OpenBao server
+- include_tasks: prepare_openbao.yml
+  when:
+    - "'openbao' in bootstrap_host_scenarios_expanded"
+  args:
+    apply:
+      tags:
+        - openbao
+  tags:
+    - always

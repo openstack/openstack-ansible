@@ -1,0 +1,94 @@
+---
+# Copyright 2025, Cleura AB.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+openstack_pki_backend: hashi_vault
+pki_hashi_vault_host: http://127.0.0.1:8200
+pki_hashi_vault_login: osa
+
+openstack_pki_authorities:
+# standalone
+ - name: "ExampleCorpRootStandalone"
+   backend: "standalone"
+   provider: selfsigned
+   basic_constraints: "CA:TRUE"
+   cn: "Example Corp Root Standalone CA"
+   email_address: "pki@example.com"
+   country_name: "GB"
+   state_or_province_name: "England"
+   organization_name: "Example Corporation"
+   organizational_unit_name: "IT Security"
+   key_usage:
+     - digitalSignature
+     - cRLSign
+     - keyCertSign
+   ttl: "3650d"
+ - name: "ExampleCorpIntermediateStandalone"
+   backend: "standalone"
+   provider: ownca
+   basic_constraints: "CA:TRUE,pathlen:0"
+   cn: "Example Corp Openstack Infrastructure Intermediate Standalone CA"
+   email_address: "pki@example.com"
+   country_name: "GB"
+   state_or_province_name: "England"
+   organization_name: "Example Corporation"
+   organizational_unit_name: "IT Security"
+   key_usage:
+     - digitalSignature
+     - cRLSign
+     - keyCertSign
+   ttl: "3650d"
+   signed_by: "ExampleCorpRootStandalone"
+# vault
+ - name: "ExampleCorpRoot"
+   backend: "hashi_vault"
+   basic_constraints: "CA:TRUE"
+   cn: "Example Corp Root CA"
+   email_address: "pki@example.com"
+   country_name: "GB"
+   state_or_province_name: "England"
+   organization_name: "Example Corporation"
+   organizational_unit_name: "IT Security"
+   key_usage:
+     - digitalSignature
+     - cRLSign
+     - keyCertSign
+   ttl: "3650d"
+   vault_path: pki_root
+ - name: "ExampleCorpIntermediate"
+   backend: "hashi_vault"
+   basic_constraints: "CA:TRUE,pathlen:0"
+   cn: "Example Corp Openstack Infrastructure Intermediate CA"
+   email_address: "pki@example.com"
+   country_name: "GB"
+   state_or_province_name: "England"
+   organization_name: "Example Corporation"
+   organizational_unit_name: "IT Security"
+   key_usage:
+     - digitalSignature
+     - cRLSign
+     - keyCertSign
+   ttl: "3650d"
+   signed_by: pki_root
+   vault_path: pki_int
+
+#install the root CA certificate on all hosts and containers
+openstack_pki_install_ca:
+ - name: "ExampleCorpRootStandalone"
+ - name: "ExampleCorpRoot"
+
+# Enabling standalone backend for placement service to ensure that
+# OpenStack can utilize multiple backends simultaneously.
+placement_pki_backend: standalone
+placement_pki_intermediate_cert_name: ExampleCorpIntermediateStandalone
