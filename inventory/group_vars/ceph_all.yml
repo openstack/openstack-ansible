@@ -18,6 +18,10 @@ ceph_container_bind_mounts:
   - bind_dir_path: "/var/lib/ceph"
     mount_path: "/openstack/{{ inventory_hostname }}"
 
+ceph_conf_overrides_generic:
+  global:
+    auth_allow_insecure_global_id_reclaim: false
+
 ceph_conf_overrides_log:
   global:
     log_to_syslog: true
@@ -32,7 +36,14 @@ ceph_conf_overrides_manila:
 # To extend ceph_conf_overrides use the ceph_conf_overrides_custom which will
 # combine any ceph_conf_overrides with other RGW specific overrides.
 ceph_conf_overrides_custom: {}
-ceph_conf_overrides: "{{ (ceph_conf_overrides_rgw | default({})) | combine(ceph_conf_overrides_manila, recursive=true) | combine(ceph_conf_overrides_custom, recursive=true) | combine(ceph_conf_overrides_log, recursive=true) }}"
+ceph_conf_overrides: >-
+  {{
+    (ceph_conf_overrides_rgw | default({})) | combine(
+      ceph_conf_overrides_manila, recursive=true) | combine(
+        ceph_conf_overrides_custom, recursive=true) | combine(
+          ceph_conf_overrides_log, recursive=true) | combine(
+            ceph_conf_overrides_generic, recursive=true)
+  }}
 
 # Disable the NFS gateway PPA and package install by default as it is not
 # needed.
