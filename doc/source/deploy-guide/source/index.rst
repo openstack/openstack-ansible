@@ -1,5 +1,3 @@
-:orphan:
-
 ==================================
 OpenStack-Ansible Deployment Guide
 ==================================
