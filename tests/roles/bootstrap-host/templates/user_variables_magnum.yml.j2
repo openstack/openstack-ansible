@@ -16,7 +16,9 @@
 {% if 'k8s' in bootstrap_host_scenarios_expanded %}
 # Tempest alongside capi testing takes too long
 tempest_install: False
-functional_test_k8s_version: "{{ zuul_vars.kubernetes_version | default(undef()) }}"
+{%   if zuul_vars.kubernetes_version | default('') | length > 0 %}
+functional_test_k8s_version: "{{ zuul_vars.kubernetes_version }}"
+{%   endif %}
 {%   if 'vexxhost' in bootstrap_host_scenarios_expanded %}
 magnum_k8s_driver: "vexxhost"
 post_setup_openstack_hook: /etc/ansible/roles/os_magnum/tests/functional_test.yml
