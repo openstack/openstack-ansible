@@ -101,7 +101,7 @@ Configure CentOS Stream / Rocky Linux / AlmaLinux
 #. Disable SELinux. Edit ``/etc/sysconfig/selinux``, make sure that
    ``SELINUX=enforcing`` is changed to ``SELINUX=disabled``.
 
-   # For RHEL distributions starting from version 9 the recommended
+     For RHEL distributions starting from version 9 the recommended
      way to disable SELinux is via the boot loader using grubby:
 
      .. code-block:: shell-session
