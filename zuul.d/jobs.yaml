@@ -449,6 +449,11 @@
     nodeset: ubuntu-noble
 
 - job:
+    name: openstack-ansible-deploy-aio_metal_openbao-ubuntu-noble
+    parent: openstack-ansible-deploy-aio
+    nodeset: ubuntu-noble
+
+- job:
     name: openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble

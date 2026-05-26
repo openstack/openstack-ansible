@@ -279,6 +279,15 @@
         - openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
 
 - project-template:
+    name: openstack-ansible-deploy-openbao-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_openbao-ubuntu-noble
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_openbao-ubuntu-noble
+
+- project-template:
     name: openstack-ansible-deploy-proxy-jobs
     check:
       jobs:
