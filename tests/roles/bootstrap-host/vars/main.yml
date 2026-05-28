@@ -35,21 +35,29 @@ _lxc_container_backing_store: |-
 # as part of the scenario
 bootstrap_host_scenarios_expanded: |-
   {# Keystone is included in every scenario #}
-  {% set scenario_list = bootstrap_host_scenarios + ['keystone', 'haproxy'] %}
-  {% if ['aio'] | intersect(bootstrap_host_scenarios) | length > 0 %}
+  {% set scenario_list = bootstrap_host_scenarios + ['haproxy', 'repo', 'utility'] %}
+  {% if 'aio' in bootstrap_host_scenarios or 'infra' in bootstrap_host_scenarios %}
+  {%   set _ = scenario_list.extend(['keystone', 'rabbitmq', 'galera', 'memcached'])  %}
+  {% endif %}
+  {% if 'aio' in bootstrap_host_scenarios %}
   {#   Base services deployed with aio scenario #}
   {%   set _ = scenario_list.extend(['cinder', 'glance', 'neutron', 'nova', 'placement', 'horizon']) %}
   {% endif %}
   {# Service additions based on scenario presence #}
-  {% if ('capi' in bootstrap_host_scenarios) %}
+  {% if ('capi' in bootstrap_host_scenarios or 'k8sHA' in bootstrap_host_scenarios) %}
   {%   set _ = scenario_list.extend(['k8s'])  %}
   {% endif %}
   {% if 'cloudkitty' in bootstrap_host_scenarios %}
   {%   set _ = scenario_list.extend(['ceilometer', 'gnocchi']) %}
   {% endif %}
   {% if 'designate' in bootstrap_host_scenarios or
-        ('validate' in bootstrap_host_scenarios and ('integrated' in bootstrap_host_scenarios or 'plugins' in bootstrap_host_scenarios)) %}
+        'infra' in bootstrap_host_scenarios or
+        ('validate' in bootstrap_host_scenarios and ('integrated' in bootstrap_host_scenarios or 'plugins' in bootstrap_host_scenarios))
+         %}
   {%   set _ = scenario_list.extend(['zookeeper']) %}
+  {% endif %}
+  {% if 'infra' in bootstrap_host_scenarios %}
+  {%   set _ = scenario_list.extend(['galera', 'rabbitmq', 'memcached'])  %}
   {% endif %}
   {% if 'ironic' in bootstrap_host_scenarios or
         'freezer' in bootstrap_host_scenarios %}

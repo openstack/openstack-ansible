@@ -81,6 +81,22 @@
         - openstack-ansible-upgrade_2025.1-aio_metal-ubuntu-noble
 
 - project-template:
+    name: openstack-ansible-deploy-k8sHA_lxc-jobs
+    check:
+      jobs:
+        - openstack-ansible-deploy-k8sHA_lxc-ubuntu-noble
+        - openstack-ansible-deploy-k8sHA_lxc-rockylinux-10
+        - openstack-ansible-deploy-k8sHA_lxc-debian-trixie
+    gate:
+      jobs:
+        - openstack-ansible-deploy-k8sHA_lxc-ubuntu-noble
+        - openstack-ansible-deploy-k8sHA_lxc-rockylinux-10
+        - openstack-ansible-deploy-k8sHA_lxc-debian-trixie
+    periodic:
+      jobs:
+        - openstack-ansible-deploy-k8sHA_lxc-ubuntu-noble
+
+- project-template:
     name: openstack-ansible-deploy-infra_lxc-jobs
     check:
       jobs:
