@@ -30,6 +30,16 @@ For more information about the major upgrade process, see
    development, and is not stable. Test this on a development environment
    first.
 
+.. note::
+
+    Please, make sure you have read through `release notes <https://docs.openstack.org/releasenotes/openstack-ansible/>`_
+    for the respective release. The automated playbook mentioned below does
+    not automate all possible changes, and it's up to operator to ensure
+    the state of their configuration before proceeding with the upgrade.
+
+    In case you are skipping releases through the SLURP policy, make sure
+    you have also checked release notes for the skipped release as well.
+
 .. _upgrading-by-using-a-script:
 
 Upgrading by using a script
@@ -135,16 +145,36 @@ more information.
     # openstack-ansible openstack.osa.upgrade.deploy_config_changes
 
 
-.. note::
+Rename group name definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    With upgrade to 2024.2 (Dalmatian) release and beyond, usage of RabbitMQ
-    Quorum Queues is mandatory to ensure high availability of queues. If you
-    had previously set ``oslomsg_rabbit_quorum_queues: false``, please
-    consider migrating before continuing with this upgrade which uses RabbitMQ
-    4.x.
+In OpenStack-Ansible 2026.1 (Gazpacho), the group_name definitions has been
+renamed to replace dashes (``-``) with underscores (``_``) in order to align
+with Ansible's naming convention for group_names.
 
-    Please, check `RabbitMQ maintenance <https://docs.openstack.org/openstack-ansible/latest/admin/maintenance-tasks.html#migrate-between-ha-and-quorum-queues>`_
-    for more information about switching between Quourum and HA Queues.
+Despite a series of changes were made to ``openstack-ansible-inventory`` to
+support backwards compatibility, it is highly recommended to ensure your
+definitions in `openstack_user_config.yml` and `conf.d` files do not contain
+underscores.
+
+Currently, `ANSIBLE_TRANSFORM_INVALID_GROUP_CHARS <https://docs.ansible.com/projects/ansible/latest/reference_appendices/config.html#transform-invalid-group-chars>`_
+value is set to ``always``, which will instruct Ansible to automatically
+transform the group names and issue a warning on a startup.
+In case you need to preserve prior behavior, consider adding ``ANSIBLE_TRANSFORM_INVALID_GROUP_CHARS=ignore``
+to the `/etc/openstack_deploy/user.rc` file.
+
+Magnum deployment with CAPI driver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Prior to the 2026.1 (Gazpacho) release, OpenStack-Ansible was offering
+Magnum Cluster API driver deployment, through series of manual steps
+described in OPS repository.
+For 2026.1 (Gazpacho) release Magnum Cluster API deployment has been
+integrated with the os_magnum roles and many of previously manually
+applied overrides are no longer needed.
+
+Please, refer to the `Magnum CAPI migration documentaion <https://docs.openstack.org/openstack-ansible-ops/latest/mcapi.html>`_
+for more details regarding the upgrade process.
 
 Upgrade hosts
 ~~~~~~~~~~~~~
