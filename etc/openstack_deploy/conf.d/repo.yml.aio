@@ -1,0 +1,13 @@
+---
+repo_infra_hosts:
+  aio1:
+{% if bootstrap_host_install_method == 'distro' %}
+    affinity:
+      repo_container: 0
+{% endif %}
+{% if 'infra' in bootstrap_host_scenarios_expanded %}
+    affinity:
+      repo_container: 3
+{% endif %}
+    ip: {{ bootstrap_host_public_address }}
+    management_ip: {{ bootstrap_host_management_address }}

@@ -263,6 +263,7 @@ lxc_container_bind_mounts:
   - host_directory: "/opt/cache/files"
     container_directory: "/opt/cache/files"
 
+{% if 'keystone' in bootstrap_host_scenarios_expanded %}
 ## Always setup tempest, the resources for it, then execute tests
 tempest_install: true
 tempest_run: true
@@ -270,6 +271,7 @@ rally_install: true
 
 # Do a gateway ping test once the tempest role creates it
 tempest_network_ping_gateway: true
+{% endif %}
 
 {% if nodepool_dir.stat.exists %}
 # Copy /etc/pip.conf into containers to get mirrors for wheels

@@ -492,6 +492,11 @@
     nodeset: ubuntu-noble
 
 - job:
+    name: openstack-ansible-deploy-k8sHA_lxc-ubuntu-noble
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: ubuntu-noble
+
+- job:
     name: openstack-ansible-deploy-hosts_lxc-ubuntu-noble
     parent: openstack-ansible-deploy-aio-hosts
     nodeset: ubuntu-noble
@@ -718,6 +723,11 @@
     nodeset: osa-rockylinux-10
 
 - job:
+    name: openstack-ansible-deploy-k8sHA_lxc-rockylinux-10
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-rockylinux-10
+
+- job:
     name: openstack-ansible-deploy-aio_metal-rockylinux-10
     parent: openstack-ansible-deploy-aio
     nodeset: osa-rockylinux-10
@@ -778,6 +788,16 @@
 
 - job:
     name: openstack-ansible-deploy-infra_lxc-debian-trixie
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-debian-trixie
+    vars:
+      mirror_fqdn: deb.debian.org
+      pypi_mirror: https://pypi.org/simple
+      pypi_fqdn:
+      wheel_mirror:
+
+- job:
+    name: openstack-ansible-deploy-k8sHA_lxc-debian-trixie
     parent: openstack-ansible-deploy-aio-infra
     nodeset: osa-debian-trixie
     vars:
