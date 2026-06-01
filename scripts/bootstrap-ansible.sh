@@ -65,24 +65,10 @@ ssh_key_create
 # Determine the distribution which the host is running on
 determine_distro
 
-# Install the python interpreters
+# Install the python interpreters and the base packages
 case ${DISTRO_FAMILY} in
     *"rhel"*)
-        dnf -y install python3 python3-devel python3-libselinux
-        ;;
-    *"debian"*)
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get -y install \
-          python3 python3-dev \
-          python3-minimal python3-apt \
-          python3-venv
-        ;;
-esac
-
-# Install the base packages
-case ${DISTRO_FAMILY} in
-    *"rhel"*)
-        dnf -y install \
+        dnf -y install python3 python3-devel python3-libselinux \
           git-core /usr/bin/curl gcc gcc-c++ nc \
           systemd-devel pkgconf \
           openssl-devel libffi-devel \
@@ -91,12 +77,16 @@ case ${DISTRO_FAMILY} in
     *"debian"*)
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get -y install \
+          python3 python3-dev \
+          python3-minimal python3-apt \
+          python3-venv \
           git-core curl gcc \
           libssl-dev libffi-dev \
           libsystemd-dev pkg-config \
           wget sudo
         ;;
 esac
+
 
 # Ensure we use the HTTPS/HTTP proxy with pip if it is specified
 if [ -n "$HTTPS_PROXY" ]; then
