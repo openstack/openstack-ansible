@@ -285,8 +285,10 @@ haproxy_keystone_service:
   haproxy_backend_server_options:
     - "maxconn {{ keystone_wsgi_processes | default(9) // 3 }}"
   haproxy_frontend_raw:
+    - "acl elastx_src src 100.80.0.0/22 100.80.4.0/22 100.80.8.0/22 88.80.0.0/20 91.197.40.0/22 185.24.132.0/22 185.141.30.0/23 192.121.20.0/24 192.121.165.0/24 212.237.144.0/22 212.237.148.0/22 217.61.244.0/22 2a07:2180::/29"
     - "stick-table type ip size 200k expire 300s store http_err_rate(60s)"
     - "http-request track-sc0 src"
+    - "http-request allow if elastx_src"
     - "http-request deny deny_status 429 if { sc_http_err_rate(0) ge 5 }"
 
 haproxy_letsencrypt_service:
