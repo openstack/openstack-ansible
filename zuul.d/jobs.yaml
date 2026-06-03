@@ -559,6 +559,147 @@
 # Ubuntu 26.04 jobs
 
 - job:
+    name: openstack-ansible-deploy-aio_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_ceph-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_nfs-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_proxy-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_stepca-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade_2025.1-aio_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_stepca-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_tls-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_metal_tls-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-upgrade-aio_metal_tls-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-aio_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-upgrade-infra_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-ubuntu-resolute
+    timeout: 10800
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc_stepca-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-infra_lxc_tls-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_telemetry_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_metal-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: osa-ubuntu-resolute
+    voting: false
+
+- job:
+    name: openstack-ansible-deploy-aio_distro_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-distro
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-infra_distro_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-infra
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_distro_lxc-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio-hosts
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_zfs-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_btrfs-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
+    name: openstack-ansible-deploy-hosts_lxc_overlayfs-ubuntu-resolute
+    parent: openstack-ansible-deploy-aio
+    nodeset: osa-ubuntu-resolute
+
+- job:
     name: openstack-ansible-tox-molecule-ubuntu-resolute
     parent: openstack-ansible-tox-molecule
     vars:
