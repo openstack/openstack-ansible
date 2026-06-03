@@ -121,11 +121,15 @@ install_method: source
 ## are always subject to change and updates regarding security will become your problem from this
 ## point on. Pinning can be done based on a package version, release, or origin. Use "*" in the
 ## package name to indicate that you want to pin all package to a particular constraint.
-# apt_pinned_packages:
-#   - { package: "lxc", version: "1.0.7-0ubuntu0.1" }
-#   - { package: "libvirt-bin", version: "1.2.2-0ubuntu13.1.9" }
-#   - { package: "rabbitmq-server", origin: "www.rabbitmq.com" }
-#   - { package: "*", release: "MariaDB" }
+## apt pins to apply to all hosts in the deployment the default is to make ceph packages from
+## UCA lower priority than those from the ubuntu distro repo.
+#openstack_hosts_apt_pinned_packages:
+#   - package: "src:ceph"
+#     origin: "ubuntu-cloud.archive.canonical.com"
+#     priority: 400
+#   - package: "python3-pluggy"
+#     release: Canonical,n={{ ansible_facts['lsb']['codename'] }}-updates/{{ openstack_distrib_code_name | lower }}
+#     priority: 400
 
 
 ## Environment variable settings
