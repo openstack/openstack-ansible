@@ -524,9 +524,7 @@ def sort_roles(ansible_role_requirements_file):
     external_roles = []
     openstack_roles = []
     for role in all_roles:
-        if role["src"].startswith("https://git.openstack.org/") or (
-            role["src"].startswith("https://opendev.org/openstack/")
-        ):
+        if role["src"].startswith("https://opendev.org/openstack/"):
             openstack_roles.append(role)
         else:
             external_roles.append(role)
