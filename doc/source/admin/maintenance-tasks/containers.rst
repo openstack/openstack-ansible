@@ -68,7 +68,7 @@ Resolving some issues may require destroying a container, and rebuilding
 that container from the beginning. It is possible to destroy and
 re-create a container with the ``openstack.osa.containers_lxc_destroy`` and
 ``openstack.osa.containers_lxc_create`` commands. These Ansible playbooks reside in the
-`Openstack-Ansible plugins <https://opendev.org/openstack/openstack-ansible-plugins>`_ repository.
+`OpenStack-Ansible plugins <https://opendev.org/openstack/openstack-ansible-plugins>`_ repository.
 
 #. Run the **openstack-ansible openstack.osa.containers_lxc_destroy** commands,
    specifying the target containers and the container to be destroyed.
