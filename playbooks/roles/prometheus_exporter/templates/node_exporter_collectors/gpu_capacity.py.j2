@@ -89,6 +89,8 @@ for flavor in flavors:
     for server in servers:
       server_dict = server.to_dict()
       #print(f"Server ID: {server_dict['id']}, Server Name: {server_dict['name']}, Flavor: {flavor_dict['name']}, Host: {server_dict['OS-EXT-SRV-ATTR:host']}, AZ: {server_dict['OS-EXT-AZ:availability_zone']}")
+      if not server_dict['OS-EXT-AZ:availability_zone'] or not server_dict['OS-EXT-SRV-ATTR:host']:
+        continue
       if server_dict['OS-EXT-AZ:availability_zone'] not in vm_count[flavor_dict['name']]:
         vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']] = {}
       if not server_dict['OS-EXT-SRV-ATTR:host'] in vm_count[flavor_dict['name']][server_dict['OS-EXT-AZ:availability_zone']]:
@@ -105,6 +107,8 @@ for flavor in gpu_flavors:
       else:
         print(f"openstack_gpu_capacity_max_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2\",hostname=\"{host}\"{{ '}}' }} {compute_count[flavor][az][host]}")
   for az in vm_count[flavor]:
+    if az not in compute_count[flavor]:
+      continue
     for host in compute_count[flavor][az]:
       if "test" in host:
         print(f"openstack_gpu_capacity_running_vms{{ '{{' }}aggregate=\"{flavor}\",availability_zone=\"{az}\",group=\"ops2test\",hostname=\"{host}\"{{ '}}' }} {vm_count[flavor][az][host]}")
