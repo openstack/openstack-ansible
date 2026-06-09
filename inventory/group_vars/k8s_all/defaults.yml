@@ -18,10 +18,10 @@ cilium_ipv4_cidr: 172.29.200.0/22
 
 # Set a clusterctl version. Supported list can be found in defaults:
 # https://github.com/adriacloud/ansible-collection-kubernetes/blob/main/roles/clusterctl/defaults/main.yml
-clusterctl_version: 1.12.3
-cluster_api_version: 1.12.3
+clusterctl_version: 1.13.2
+cluster_api_version: 1.13.2
 cluster_api_infrastructure_provider: openstack
-cluster_api_infrastructure_version: 0.14.1
+cluster_api_infrastructure_version: 0.14.4
 
 # wire OSA group, host and network addresses into k8s deployment
 kubelet_hostname: "{{ ansible_facts['hostname'] | lower }}"
@@ -31,7 +31,7 @@ kubernetes_hostname: "{{ internal_lb_vip_address }}"
 kubernetes_non_init_namespace: true
 
 # Define k8s version for the control cluster
-kubernetes_version: 1.35.2
+kubernetes_version: 1.36.1
 
 # Define LXC container overrides
 lxc_container_config_list: "{{ ((hostvars[physical_host]['ansible_facts']['os_family'] | lower) == 'debian') | ternary(['lxc.apparmor.profile=unconfined'], []) }}"
