@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 08.04.2026 ###
+### HEAD as of 09.06.2026 ###
 
 ## Magnum service
-# NOTE: We want to avoid regression brought by https://review.opendev.org/c/openstack/magnum/+/981084
 magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum"
-magnum_git_install_branch: 20.0.1
-magnum_git_track_branch: None
+magnum_git_install_branch: 907b8427132069d447cdd63f6dbe10d125138d1f
+magnum_git_track_branch: stable/2025.1
