@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    OVN version for EL-based distros is upgraded to 25.09
+  - |
+    Due to OVN packaging specifics on EL-based distros, in order to perform
+    the upgrade of packages, OVN needs to be uninstalled first.
+    This process may lead to connectivity issues on workloads, so needs to
+    be performed with caution.

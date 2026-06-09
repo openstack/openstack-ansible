@@ -1,0 +1,7 @@
+---
+fixes:
+  - |
+    Skyline deployment logic for YARN builds in multinode environments
+    has been fixed.
+    Though, it still relies on wheels build, and may mis-behave in case
+    of running with ``-e venv_wheel_build_enable=false``

@@ -1,0 +1,7 @@
+---
+deprecations:
+  - |
+    Variable ``rabbitmq_gpg_keys`` was removed and does not have any effect
+    anymore.
+    GPG keys defenition are part of ``rabbitmq_repo`` and
+    ``rabbitmq_erlang_repo`` for both Debian and RedHat.

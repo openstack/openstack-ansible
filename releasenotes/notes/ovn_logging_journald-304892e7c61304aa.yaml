@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Introduced variable ``neutron_ovn_log_parameters`` to control the log
+    destination and verbosity for OVN service. By default logging is performed
+    only to the journald.
+fixes:
+  - |
+    OVN is now properly logging to journald instead separate log files.
+    This fixes issue with OVN log files not being managed and rotated,
+    which leads to excessive disk consumption.

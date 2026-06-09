@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Usage of custom ``zookeeper_cluster_address_hostvars_key`` has been fixed
+    for the ``zookeeper`` role. Previously it still attempted to use
+    ``ansible_host`` variable in multiple places.

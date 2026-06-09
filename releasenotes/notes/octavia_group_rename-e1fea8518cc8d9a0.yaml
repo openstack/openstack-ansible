@@ -1,0 +1,12 @@
+---
+
+upgrade:
+  - |
+    Group names for Octavia were changed by replacing dashes
+    with underscores in order to align with all other services.
+    Following changes in group names were made:
+
+      * octavia-api -> octavia_api
+      * octavia-worker -> octavia_worker
+      * octavia-housekeeping -> octavia_housekeeping
+      * octavia-health-manager -> octavia_health_manager

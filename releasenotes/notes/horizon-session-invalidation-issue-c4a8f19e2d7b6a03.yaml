@@ -1,0 +1,11 @@
+---
+issues:
+  - |
+    A known issue exists in Horizon where user sessions may be unexpectedly
+    invalidated due to internal memoization and cache handling behavior.
+
+    As a temporary mitigation, operators may configure Horizon to use the
+    cookie-based session backend by setting the
+    horizon_session_engine option to
+    django.contrib.sessions.backends.signed_cookies instead of a memcached
+    session storage backend.

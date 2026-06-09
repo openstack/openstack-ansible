@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    RabbitMQ was upgraded to version 4.2.7.
+upgrade:
+  - |
+    During upgrade of RabbitMQ to 4.2 series, a migration from mnesia to
+    khepri database is going to be perofromed through enabling ``khepri_db``
+    feature flag. You can learn more details about the migration
+    in `RabbitMQ Documentation <https://www.rabbitmq.com/docs/metadata-store/how-to-enable-khepri>`_

@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Support is added for the 'reference_group' provider_networks parameter
+    when identifying which net_names and VLAN ranges can be accessed by
+    specific hosts. This targets deployments which make use of external
+    routed provider networks.
+upgrade:
+  - |
+    Note that 'reference_group' in provider_networks now impacts Neutron agent
+    configuration. If net_names or VLAN ranges are defined alongside a
+    'reference_group', these will only be applied to hosts which exist in the
+    'reference_group'. If 'reference_group' was not used previously then the
+    behaviour will be unchanged. This only applies to 'flat' or 'vlan' network
+    types.

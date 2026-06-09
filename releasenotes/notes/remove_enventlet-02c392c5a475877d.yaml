@@ -1,0 +1,9 @@
+---
+
+upgrade:
+  - |
+    Glance API can now be run only with uWSGI mode. In case you currently run
+    Glance in eventlet mode, it will be switched to uWSGI during the upgrade.
+deprecations:
+  - |
+    Variable ``glance_use_uwsgi`` was removed and has no effect anymore.

@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    A variable ``post_metal_configuration_hook`` is introduced, which can
+    be used to define a hookable playbook which will execute right after
+    configuration of metal host in perfromed inside of ``openstack_hosts``
+    role.
+    This might be a handy for downstream customizations to happen, as
+    networkd, mounts, services and kernel modules are already configured
+    at this point, but LXC containers are not yet created.

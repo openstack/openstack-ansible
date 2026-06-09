@@ -1,0 +1,13 @@
+---
+
+upgrade:
+  - |
+    Format of the ``trove_guest_ssh_security_group_extra_rules`` has changed.
+    Now, according to it's name, the variable expects to recieve a list of
+    rules, which will be added to the Trove management security group.
+
+fixes:
+  - |
+    Fixed behavior of ``trove_guest_ssh_security_group_extra_rules``, as it
+    used to expect list of extra security groups to be defined, instead of
+    extending management security group with user rules.
