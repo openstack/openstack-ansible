@@ -37,7 +37,6 @@ cinder_storage_availability_zone: "{{ az_name }}"
 
 # Glance to use Swift as a backend
 glance_default_store: swift
-glance_use_uwsgi: false
 
 # Neutron variables
 neutron_availability_zone: "{{ az_name }}"
