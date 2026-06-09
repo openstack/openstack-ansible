@@ -10,6 +10,7 @@ import yaml
 from systemd import journal
 from collections import defaultdict
 
+
 # ----------------------------------------------------------------------
 # load ansible-role-requirements.yml
 def get_ansible_role_names():
@@ -47,8 +48,8 @@ def get_container_journals():
         s = subprocess.run(['lxc-info', '--pid', '--no-humanize', container_name], stdout=subprocess.PIPE)
         info['pid'] = s.stdout.decode('utf-8').strip()
 
-        if(len(info['pid']) == 0):
-          continue
+        if len(info['pid']) == 0:
+            continue
 
         info['etc_dir'] = "/proc/" + str(info['pid']) + "/root/etc"
 
@@ -65,6 +66,10 @@ def get_container_journals():
 # ----------------------------------------------------------------------
 def demux_one_journal(j):
     print("Gathering journals from " + j['name'])
+
+    working_dir = j['working_dir']
+    service_names = j['service_names']
+    timestamp = j['timestamp']
 
     # open the journal from a specific directory, or use the host journal
     if 'journal_dir' in j:
@@ -144,43 +149,47 @@ def init_signal():
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
-# ----------------------------------------------------------------------
-# always collect the host journal, first in the list as it's probably
-# the largest
-host_journal = [{}]
-host_journal[0]['name'] = 'host'
+if __name__ == "__main__":
+    # always collect the host journal, first in the list as it's probably the largest
+    host_journal = [{}]
+    host_journal[0]['name'] = 'host'
 
-journals = []
-journals = journals + host_journal
-journals = journals + get_container_journals()
+    journals = []
+    journals = journals + host_journal
+    journals = journals + get_container_journals()
 
-print(journals)
+    print(journals)
 
-# common log names are passed as the trailing arguments
-if len(sys.argv) > 2:
-  common_log_names = sys.argv[2::]
-else:
-  common_log_names = []
+    # common log names are passed as the trailing arguments
+    if len(sys.argv) > 2:
+        common_log_names = sys.argv[2::]
+    else:
+        common_log_names = []
 
-service_names = set(common_log_names + get_ansible_role_names())
-print("Service names to search for " + str(service_names))
+    service_names = set(common_log_names + get_ansible_role_names())
+    print("Service names to search for " + str(service_names))
 
-if os.getenv('WORKING_DIR') is not None:
-    working_dir = os.getenv('WORKING_DIR')
-else:
-    working_dir = os.getcwd()
+    if os.getenv('WORKING_DIR') is not None:
+        working_dir = os.getenv('WORKING_DIR')
+    else:
+        working_dir = os.getcwd()
 
-if os.getenv('TS') is not None:
-    timestamp = os.getenv('TS')
-else:
-    timestamp = datetime.datetime.now().strftime('%H-%M-%S')
+    if os.getenv('TS') is not None:
+        timestamp = os.getenv('TS')
+    else:
+        timestamp = datetime.datetime.now().strftime('%H-%M-%S')
 
-p = multiprocessing.Pool(multiprocessing.cpu_count(), init_signal)
-journal_success = p.map(demux_one_journal, journals)
-p.close()
+    for j in journals:
+        j['working_dir'] = working_dir
+        j['service_names'] = service_names
+        j['timestamp'] = timestamp
 
-success = all(i for i in journal_success)
-if success:
-    print("Journal collection Success!")
-else:
-    print("Error during journal collection")
+    p = multiprocessing.Pool(multiprocessing.cpu_count(), init_signal)
+    journal_success = p.map(demux_one_journal, journals)
+    p.close()
+
+    success = all(i for i in journal_success)
+    if success:
+        print("Journal collection Success!")
+    else:
+        print("Error during journal collection")
