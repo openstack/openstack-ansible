@@ -1,0 +1,6 @@
+---
+other:
+  - |
+    Default value of ``httpd_custom_log_format`` has changed to include
+    ``%{X-Forwarded-For}i`` by default. When header is not present, it will
+    be logged as an extra ``"-"``.

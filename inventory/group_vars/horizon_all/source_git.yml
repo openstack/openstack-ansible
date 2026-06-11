@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 26.03.2026 ###
+### HEAD as of 11.06.2026 ###
 
 ## Horizon service
 horizon_git_repo: "{{ openstack_opendev_base_url }}/openstack/horizon"
-horizon_git_install_branch: f7fa75299f73f74c4ee00daae409611ff7ebace2
+horizon_git_install_branch: 8bc1d945a5dde085e191aebfb50e94eefd5323f9
 horizon_git_track_branch: stable/2026.1
 
 ## Adjutant dashboard plugin
@@ -32,7 +32,7 @@ barbican_dashboard_git_track_branch: master
 
 ## Cloudkitty dashboard plugin
 cloudkitty_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/cloudkitty-dashboard"
-cloudkitty_dashboard_git_install_branch: 6bc404aca75f0fae1dc110da55cade818b934feb
+cloudkitty_dashboard_git_install_branch: 63f34435dd60d37c9d35cbc2b86048fcea56d381
 cloudkitty_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Designate dashboard plugin
@@ -57,7 +57,7 @@ ironic_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Magnum dashboard plugin
 magnum_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-ui"
-magnum_dashboard_git_install_branch: eb667d50ee7b2894c3d687373ee1d76bcc448649
+magnum_dashboard_git_install_branch: fb03371ec7070de3e5b69d09df38e36e7980b1af
 magnum_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Masakari dashboard plugin
@@ -67,17 +67,17 @@ masakari_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Trove dashboard plugin
 trove_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/trove-dashboard"
-trove_dashboard_git_install_branch: 17852e4a3bc739f003bed6f07414592ce8de3828
+trove_dashboard_git_install_branch: 4d8e72c34579808114b8cd0d67b086add48cdf1d
 trove_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Octavia dashboard plugin
 octavia_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/octavia-dashboard"
-octavia_dashboard_git_install_branch: 0bfcd6464b79ce29de807226c06b9e712828bff2
+octavia_dashboard_git_install_branch: 0b50985cb12ee1c8917e51f38d0119b57fee1104
 octavia_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Neutron VPNaaS dashboard plugin
 neutron_vpnaas_dashboard_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas-dashboard"
-neutron_vpnaas_dashboard_git_install_branch: 6868f76807ac311a9304fc34037ce2c879e099a3
+neutron_vpnaas_dashboard_git_install_branch: 1f57481b5d036813c552d6fb36f1b4ebe700f840
 neutron_vpnaas_dashboard_git_track_branch: stable/2026.1
 
 ## Horizon Neutron FWaaS dashboard plugin

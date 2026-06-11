@@ -1,0 +1,29 @@
+---
+upgrade:
+  - |
+    The new default value for ``manila_service_type`` was set to 'shared-file-system',
+    to align with official manila service type.
+  - |
+    The new default value for ``manila_enable_v2_api`` was set to ``false`` due to the
+    removal of v1 API. ``manila_service_*`` variables are referring to v2 API now.
+    It means that 'sharev2' endpoint will disappear after the upgrade. Set
+    ``manila_enable_v2_api`` to ``true`` to keep it present in service catalog.
+deprecations:
+  - |
+    Due to the removal of v1 API, ``manila_service_*`` variables are referring to
+    v2 API now.
+    ``manila_service_v2_*`` variables are not needed anymore and they are considered
+    as deprecated:
+
+      -  `manila_enable_v2_api`
+      -  `manila_service_v2_name`
+      -  `manila_service_v2_port`
+      -  `manila_service_v2_proto`
+      -  `manila_service_v2_type`
+      -  `manila_service_v2_description`
+      -  `manila_service_v2_publicuri`
+      -  `manila_service_v2_publicurl`
+      -  `manila_service_v2_adminuri`
+      -  `manila_service_v2_adminurl`
+      -  `manila_service_v2_internaluri`
+      -  `manila_service_v2_internalurl`

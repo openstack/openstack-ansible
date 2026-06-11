@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    Implemented variable ``glusterfs_clear_peers`` which can be used to
+    clean-up stale peers along with their bricks.
+    It is useful during OS upgrades or re-installs on the peers, when
+    glusterfs metadata is not preserved.

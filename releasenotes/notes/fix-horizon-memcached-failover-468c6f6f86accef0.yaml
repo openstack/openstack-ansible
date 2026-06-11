@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed Horizon returning HTTP 500 when a memcached node becomes
+    unreachable. Horizon session cache now bypasses dead nodes instead
+    of raising a connection error, keeping the dashboard operational.

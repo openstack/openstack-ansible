@@ -1,0 +1,15 @@
+---
+
+upgrade:
+  - |
+    Variables ``_oslomsg_configure_rpc`` and ``_oslomsg_configure_notify``
+    renamed to ``_oslomsg_rpc_configure`` and ``_oslomsg_notify_configure``
+    corresponsively to align variables naming convention in the role.
+
+    Old variable names are not used or respected anymore.
+
+deprecations:
+  - |
+    Variables ``_oslomsg_configure_rpc`` and ``_oslomsg_configure_notify`` are
+    deprecated in favor of ``_oslomsg_rpc_configure`` and
+    ``_oslomsg_notify_configure``.

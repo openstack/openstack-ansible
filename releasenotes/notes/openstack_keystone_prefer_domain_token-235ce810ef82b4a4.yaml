@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    Added new configuration option ``horizon_keystone_prefer_domain_token``
+    that defaults to ``true``. When multidomain support is enabled and user
+    has any roles in a domain, Horizon will mostly attempt to use domain
+    scope for calls to Keystone. This behavior does not work properly with
+    some policy combinations.

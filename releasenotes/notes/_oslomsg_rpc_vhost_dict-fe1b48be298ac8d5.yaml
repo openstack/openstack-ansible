@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Variables ``_oslomsg_rpc_vhost`` and ``_oslomsg_notify_vhost`` for mq_setup
+    role are now a list of mappings, which means you can manage multiple vhosts
+    within same role include. You can provide `state` and `name` keys for
+    vhosts.
+    For backwards compatability variables stil can be supplied as a string but
+    this behaviour is deprecated and will be removed in the future.
+deprecations:
+  - |
+    Definition of variables ``_oslomsg_rpc_vhost`` and
+    ``_oslomsg_notify_vhost`` as a string is deprecated in favor of list of
+    mappings.

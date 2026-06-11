@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Now you can supply ``role`` as list of mappings inside ``_service_users``,
+    where you can supply `name` and `state` keys.
+    State `absent` will result in revoking role assignment from the user.

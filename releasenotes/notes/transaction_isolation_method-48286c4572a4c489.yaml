@@ -1,0 +1,11 @@
+---
+features:
+  - |
+    Introduced variable ``galera_transaction_isolation`` which is effective
+    only for MariaDB >= 11.1. Defaults to ``READ-COMMITTED``.
+fixes:
+  - |
+    For MariaDB 11.1 and higher, a parameter ``transaction_isolation`` is
+    defined explicitly and set to ``READ-COMMITTED`` in order to avoid race
+    conditions when multiple instances of a service are trying to read at the
+    same time.

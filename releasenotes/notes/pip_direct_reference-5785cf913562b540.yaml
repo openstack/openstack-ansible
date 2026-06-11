@@ -1,0 +1,15 @@
+---
+features:
+  - |
+    Added support of the `Direct References <https://packaging.python.org/en/latest/specifications/version-specifiers/#direct-references>`
+    for python packages defined as part of ``venv_pip_packages``.
+upgrade:
+  - |
+    It is recommended to replace all packages containing ``#egg``
+    fragemnt with `Direct References <https://packaging.python.org/en/latest/specifications/version-specifiers/#direct-references>`
+    during the upgrade.
+deprecations:
+  - |
+    Using ``#egg=`` fragments as part of the path for
+    ``venv_pip_packages`` is deprecated and will be removed
+    in the future.

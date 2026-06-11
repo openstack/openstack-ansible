@@ -1,0 +1,7 @@
+---
+features:
+  - |
+    With deprecation and removal of ``ANSIBLE_GATHER_SUBSET``, a new Ansible
+    variable ``osa_gather_subset`` was implemented to replace it.
+    ``ANSIBLE_GATHER_SUBSET`` is still respected and is used as a fallback in
+    case ``osa_gather_subset`` is not defined.

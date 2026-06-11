@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 26.03.2026 ###
+### HEAD as of 11.06.2026 ###
 
 ## Neutron service
 neutron_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron"
-neutron_git_install_branch: eb9dd526a3c4ba0ffbb69d06cc387c86ca755d42
+neutron_git_install_branch: 88d6c7979d29676bb7a4e5a7b174bb78d60b1011
 neutron_git_track_branch: stable/2026.1
 
 neutron_vpnaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-vpnaas"
@@ -25,7 +25,7 @@ neutron_vpnaas_git_install_branch: 261f874756197543419488fe503711559d0e36ca
 neutron_vpnaas_git_track_branch: stable/2026.1
 
 neutron_fwaas_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-fwaas"
-neutron_fwaas_git_install_branch: 7d2445d2877d98db12ef9ef464c795aa3f164f15
+neutron_fwaas_git_install_branch: a356af56940d8d12ccbc05f64d2268fb3ff3550c
 neutron_fwaas_git_track_branch: stable/2026.1
 
 neutron_dynamic_routing_git_repo: "{{ openstack_opendev_base_url }}/openstack/neutron-dynamic-routing"
@@ -41,7 +41,7 @@ networking_sfc_git_install_branch: e62e6ff15bb6ba44a1c36b097b9eb5a84d7c3cef
 networking_sfc_git_track_branch: stable/2026.1
 
 networking_generic_switch_git_repo: "{{ openstack_opendev_base_url}}/openstack/networking-generic-switch"
-networking_generic_switch_git_install_branch: 03badc7b6abe9333b50c7bb215dff6dae81ce14f
+networking_generic_switch_git_install_branch: 5ea92d6835225731c1bd7024d01d17a4d2a7179f
 networking_generic_switch_git_track_branch: stable/2026.1
 
 networking_nsx_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsx"
@@ -49,11 +49,11 @@ networking_nsx_git_install_branch: 715cb5fc1174b9226f043e49ffd389add44f070a
 networking_nsx_git_track_branch: master
 
 networking_nsxlib_git_repo: "{{ openstack_opendev_base_url }}/x/vmware-nsxlib"
-networking_nsxlib_git_install_branch: 948a72da034acdd74a08eded88aa19b080e40927
+networking_nsxlib_git_install_branch: 315a42f28e8a9e0e75773dbd8263bc11a72288df
 networking_nsxlib_git_track_branch: master
 
 networking_baremetal_git_repo: "{{ openstack_opendev_base_url }}/openstack/networking-baremetal"
-networking_baremetal_git_install_branch: a9ae05b9b42395991cfc828fbc53b96643daeee5
+networking_baremetal_git_install_branch: 35b81c0bae30210d15670cc888ed6e1b3d5ffe89
 networking_baremetal_git_track_branch: stable/2026.1
 
 networking_ovn_bgp_git_repo: "{{ openstack_opendev_base_url }}/openstack/ovn-bgp-agent"

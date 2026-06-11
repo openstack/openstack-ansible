@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    Added a new variable ``trove_guest_swift_endpoint_type`` which is set to
+    ``public`` by default. This intends to replace the
+    ``trove_guest_swift_url`` variable by fetching endpoint URL from
+    keystone, rather then have it defined inside of guests config.
+
+upgrade:
+  - |
+    From now own ``trove_guest_swift_url`` default value is an empty string.
+    Is this case, ``swift_url`` will be ommited from guest agent config, and
+    replaced with a ``swift_endpoint_type`` value instead, which is defined
+    via ``trove_guest_swift_endpoint_type``.

@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The legacy ``service:`` wrapper in ``haproxy_service_configs`` is no longer
+    supported. Only the flat service definition format is accepted. Ensure all
+    service entries are updated before upgrading.

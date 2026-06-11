@@ -1,0 +1,17 @@
+---
+features:
+  - |
+    Introduced variable ``venv_build_requirements`` which contains the list
+    of tools required to build packages, such as ``setuptools``, ``wheels``,
+    ``pbr``, etc.
+  - |
+    Introduced variable ``venv_default_pip_build_args`` which contains default
+    arguments expected by the role which are passed to ``pip wheel``.
+
+other:
+  - |
+    The ``python_venv_build`` role is not using build isolation provided by PIP
+    for the installed packages and built wheels. The ``--no-build-isolation``
+    is passed to both ``pip install`` and ``pip wheel`` command.
+    Please, ensure all required tools are present in ``venv_build_requirements``
+    for successfull installation.
