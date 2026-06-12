@@ -1,0 +1,32 @@
+---
+prelude: >
+    Magnum Cluster API drivers support have been promoted from the OPS
+    repository to the ``os_magnum`` role.
+    Please reffer to the `upgrade guide <https://docs.openstack.org/openstack-ansible/2026.1/admin/upgrades/major-upgrades.html>`
+    and `os_magnum documentation <https://docs.openstack.org/openstack-ansible-os_magnum/2026.1/>`_
+    for more details on required steps for migration.
+features:
+  - |
+    Added series of CAPI driver-specific variables to the ``os_magnum`` role
+    in order to allow driver version selection for deployment.
+  - |
+    Introduced variable ``magnum_k8s_driver``, with possible options:
+
+      * heat - current default, removed in 2026.2
+      * azimuth - CAPI HELM driver, relying heavily on HELM charts
+                  which are maintained by Azimuth Cloud.
+      * vexxhost - Magnum CAPI driver maintained by Vexxhost.
+deprecations:
+  - |
+    Magnum Heat driver has been deprecated by the community in 2025.1 and is
+    removed early in 2026.2 release.
+    Current release (2026.1) is the last release where Heat driver is available,
+    and operators should consider migration to one of the CAPI drivers available.
+upgrade:
+  - |
+    In case you was already using Magnum CAPI functionality prior to this release,
+    you will need to take several extra steps in order to migrate from standalone
+    OPS repository to the integrated way of deploying supporting k8s cluster
+    and CAPI drivers.
+    Please reffer to the upgrade guide and ``os_magnum`` role documentation for
+    more details.
