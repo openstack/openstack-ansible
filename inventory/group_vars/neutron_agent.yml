@@ -20,8 +20,8 @@
 neutron_dhcp_config:
   dhcp-ignore: "tag:!known"
 
-lxc_container_config_list:
-  - "lxc.apparmor.profile=unconfined"
+lxc_container_config_list: "{{ ((hostvars[physical_host]['ansible_facts']['os_family'] | lower) == 'debian') | ternary(['lxc.apparmor.profile=unconfined'], []) }}"
+
 
 # Ensure that all neutron agent containers get a fixed mac address
 lxc_container_fixed_mac: true
