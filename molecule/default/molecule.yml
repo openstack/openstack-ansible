@@ -10,7 +10,7 @@ driver:
 
 platforms:
   - name: "integrated-${MOLECULE_SCENARIO_NAME}"
-    image: "${DOCKER_REGISTRY:-quay.io/gotmax23}/${DOCKER_IMAGE_TAG:-debian-systemd:bookworm}"
+    image: "${DOCKER_REGISTRY:-quay.io/gotmax23}/${DOCKER_IMAGE_TAG:-debian-systemd:trixie}"
     command: ${DOCKER_COMMAND:-""}
     pre_build_image: true
     privileged: true
