@@ -122,7 +122,7 @@ version.
 
 .. note::
    The |current_release_formal_name| release is only compatible with
-   Debian 12 (bookworm), Debian 13 (trixie),
+   Debian 13 (trixie),
    Ubuntu 24.04 (Noble Numbat), Ubuntu 26.04 (Resolute Raccoon),
    CentOS 10 Stream and derivatives of RHEL 10 such as Rocky Linux
    or AlmaLinux.
