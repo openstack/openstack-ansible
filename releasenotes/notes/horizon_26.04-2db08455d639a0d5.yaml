@@ -1,0 +1,9 @@
+---
+
+fixes:
+  - |
+    Horizon deployment for Ubuntu 26.04 has been fixed by upgrading
+    installed Django version to 5.2.8 release.
+    In case you are upgrading from 33.0.0 release of OpenStack-Ansible,
+    you will have to run ``openstack-ansible openstack.osa.repo --tags repo_server-config``
+    before executing ``openstack-ansible openstack.osa.horizon -e venv_rebuild=true``.
