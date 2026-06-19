@@ -1,0 +1,850 @@
+# Soonyeul Park <ardentpark@gmail.com>, 2018. #zanata
+# Soonyeul Park <ardentpark@gmail.com>, 2019. #zanata
+# hyobin kim <hb.kim@okestro.com>, 2025. #zanata
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenStack-Ansible\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-16 20:06+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2025-04-14 08:59+0000\n"
+"Last-Translator: hyobin kim <hb.kim@okestro.com>\n"
+"Language-Team: Korean (South Korea)\n"
+"Language: ko_KR\n"
+"X-Generator: Zanata 4.3.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+
+msgid ""
+"**NOTE:** This fix is partially applied for existing OpenStack-Ansible "
+"deployments. See the upgrade section of the release notes for the work "
+"required to fully apply the fix."
+msgstr ""
+"**참고:** 이 수정은 기존의 OpenStack-Ansible 배포에 부분적으로 적용됩니다. 수"
+"정 사항을 완전히 적용하는데 필요한 작업은 릴리즈 노트의 업그레이드 섹션을 참"
+"고하십시오."
+
+msgid ""
+"**This is a breaking change for existing CentOS deployments.** The ``yum`` "
+"package manager will have errors when it finds that certain packages that it "
+"installed from EPEL are no longer available.  Deployers may need to rebuild "
+"container or reinstall packages to complete this change."
+msgstr ""
+"**이는 기존 CentOS 배포를 위한 주요 변경사항입니다.** ``yum`` 패키지 관리자에"
+"는 EPEL에서 설치한 특정 패키지를 더 이상 사용할 수 없다는 에러가 있을 것입니"
+"다. 배포자는 이 변경을 완료하기 위해 컨테이너를 재구성하거나 패키지를 재설치"
+"해야 할 것입니다."
+
+msgid ""
+"**lxc_cache_validate_certs**: Removed because the Ansible ``get_url`` module "
+"is no longer used."
+msgstr ""
+"**lxc_cache_validate_certs**: Ansible의 ``get_url`` 모듈이 더 이상 사용되지 "
+"않기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_base_delete**: Removed because the cache will be refreshed "
+"upon role execution."
+msgstr ""
+"**lxc_container_base_delete**: 역할 실행시 캐시가 갱신될 것이기 때문에 제거되"
+"었습니다."
+
+msgid ""
+"**lxc_container_caches**: Removed because the container create process will "
+"build a cached image based on the host OS."
+msgstr ""
+" **lxc_container_caches**: 프로세스를 생성한 컨테이너가 호스트 OS에 기반한 캐"
+"시된 이미지를 구성할 것이기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_release**: Removed because image is now tied with the host "
+"operating system."
+msgstr ""
+"**lxc_container_release**: 이미지가 이제 호스트 운영체제와 연결되었기 때문에 "
+"제거되었습니다."
+
+msgid ""
+"**lxc_container_template**: Removed because the template option is now "
+"contained within the operating system specific variable file loaded at "
+"runtime."
+msgstr ""
+"**lxc_container_template**: 템플릿 옵션이 이제 런타임 시 로드된 운영체제 특"
+"정 변수파일 내에 있기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_template_main_apt_repo**: Removed because this option is now "
+"being set within the cache creation process and is no longer needed here."
+msgstr ""
+"**lxc_container_template_main_apt_repo**: 이 옵션은 이제 캐시 생성 프로세스 "
+"내에 설정되며 더 이상 필요하지 않기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_cache_download_template_options*. The deprecation filter was not used "
+"because the values provided from this option have been fundamentally changed "
+"and potentially old overrides will cause problems."
+msgstr ""
+"**lxc_container_template_options**: 이 옵션은 "
+"*lxc_cache_download_template_options*로 이름이 변경되었습니다. 이 옵션에서 제"
+"공되는 값들 자체가 변경되었고 이전의 값들을 사용하는 것이 문제를 야기할 수 있"
+"으므로 미사용 필터는 사용되지 않았습니다."
+
+msgid ""
+"**lxc_container_template_options**: This option was renamed to "
+"*lxc_container_download_template_options*. The deprecation filter was not "
+"used because the values provided from this option have been fundamentally "
+"changed and old overrides will cause problems."
+msgstr ""
+"**lxc_container_template_options**: 이 옵션은 "
+"*lxc_container_download_template_options* 로 이름이 변경되었습니다. 이 옵션에"
+"서 제공되는 값들 자체가 변경되었고 이전의 값들을 사용하는 것이 문제를 야기할 "
+"수 있으므로 미사용 필터는 사용되지 않았습니다."
+
+msgid ""
+"**lxc_container_template_security_apt_repo**: Removed because this option is "
+"now being set within the cache creation process and is no longer needed here."
+msgstr ""
+"**lxc_container_template_security_apt_repo**: 이 옵션은 이제 캐시 생성 프로세"
+"스 내에 설정되며 더 이상 필요하지 않기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_user_name**: Removed because the default users are no longer "
+"created when the cached image is created."
+msgstr ""
+"**lxc_container_user_name**: 캐시된 이미지가 생성될 때 기본 사용자가 더 이상 "
+"생성되지 않기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_user_password**: Removed because the default lxc container "
+"user is no longer created by the lxc container template."
+msgstr ""
+"**lxc_container_user_password**: 기본 lxc 컨테이너 사용자가 더 이상 lxc 컨테"
+"이너 템플릿에 의해 생성되지 않기 때문에 제거되었습니다."
+
+msgid ""
+"**lxc_container_user_password**: Removed because the default users are no "
+"longer created when the cached image is created."
+msgstr ""
+"**lxc_container_user_password**: 캐시된 이미지가 생성될 때 기본 사용자가 더 "
+"이상 생성되지 않기 때문에 제거되었습니다."
+
+msgid "12.0.10"
+msgstr "12.0.10"
+
+msgid "12.0.11"
+msgstr "12.0.11"
+
+msgid "12.0.12"
+msgstr "12.0.12"
+
+msgid "12.0.13"
+msgstr "12.0.13"
+
+msgid "12.0.14"
+msgstr "12.0.14"
+
+msgid "12.0.15"
+msgstr "12.0.15"
+
+msgid "12.0.16"
+msgstr "12.0.16"
+
+msgid "12.0.6"
+msgstr "12.0.6"
+
+msgid "12.0.7"
+msgstr "12.0.7"
+
+msgid "12.0.8"
+msgstr "12.0.8"
+
+msgid "12.0.9"
+msgstr "12.0.9"
+
+msgid "12.1.0"
+msgstr "12.1.0"
+
+msgid "12.2.0"
+msgstr "12.2.0"
+
+msgid "12.2.2"
+msgstr "12.2.2"
+
+msgid "12.2.4"
+msgstr "12.2.4"
+
+msgid "12.2.5"
+msgstr "12.2.5"
+
+msgid "13.0.0"
+msgstr "13.0.0"
+
+msgid "13.0.1"
+msgstr "13.0.1"
+
+msgid "13.1.0"
+msgstr "13.1.0"
+
+msgid "13.1.1"
+msgstr "13.1.1"
+
+msgid "13.1.2"
+msgstr "13.1.2"
+
+msgid "13.1.3"
+msgstr "13.1.3"
+
+msgid "13.1.4"
+msgstr "13.1.4"
+
+msgid "13.2.0"
+msgstr "13.2.0"
+
+msgid "13.3.0"
+msgstr "13.3.0"
+
+msgid "13.3.1"
+msgstr "13.3.1"
+
+msgid "13.3.13"
+msgstr "13.3.13"
+
+msgid "13.3.2"
+msgstr "13.3.2"
+
+msgid "13.3.3"
+msgstr "13.3.3"
+
+msgid "13.3.4"
+msgstr "13.3.4"
+
+msgid "13.3.5"
+msgstr "13.3.5"
+
+msgid "13.3.6"
+msgstr "13.3.6"
+
+msgid "13.3.7"
+msgstr "13.3.7"
+
+msgid "13.3.8"
+msgstr "13.3.8"
+
+msgid "13.3.9"
+msgstr "13.3.9"
+
+msgid "14.0.0"
+msgstr "14.0.0"
+
+msgid "14.0.2"
+msgstr "14.0.2"
+
+msgid "14.0.3"
+msgstr "14.0.3"
+
+msgid "14.0.5"
+msgstr "14.0.5"
+
+msgid "14.0.6"
+msgstr "14.0.6"
+
+msgid "14.0.7"
+msgstr "14.0.7"
+
+msgid "14.0.8"
+msgstr "14.0.8"
+
+msgid "14.1.0"
+msgstr "14.1.0"
+
+msgid "14.1.1"
+msgstr "14.1.1"
+
+msgid "14.2.0"
+msgstr "14.2.0"
+
+msgid "14.2.1"
+msgstr "14.2.1"
+
+msgid "14.2.10"
+msgstr "14.2.10"
+
+msgid "14.2.11"
+msgstr "14.2.11"
+
+msgid "14.2.12"
+msgstr "14.2.12"
+
+msgid "14.2.15"
+msgstr "14.2.15"
+
+msgid "14.2.16"
+msgstr "14.2.16"
+
+msgid "14.2.16-7"
+msgstr "14.2.16-7"
+
+msgid "14.2.2"
+msgstr "14.2.2"
+
+msgid "14.2.3"
+msgstr "14.2.3"
+
+msgid "14.2.4"
+msgstr "14.2.4"
+
+msgid "14.2.5"
+msgstr "14.2.5"
+
+msgid "14.2.6"
+msgstr "14.2.6"
+
+msgid "14.2.7"
+msgstr "14.2.7"
+
+msgid "14.2.8"
+msgstr "14.2.8"
+
+msgid "14.2.9"
+msgstr "14.2.9"
+
+msgid "15.0.0"
+msgstr "15.0.0"
+
+msgid "15.1.0"
+msgstr "15.1.0"
+
+msgid "15.1.1"
+msgstr "15.1.1"
+
+msgid "15.1.10"
+msgstr "15.1.10"
+
+msgid "15.1.11"
+msgstr "15.1.11"
+
+msgid "15.1.12"
+msgstr "15.1.12"
+
+msgid "15.1.13"
+msgstr "15.1.13"
+
+msgid "15.1.14"
+msgstr "15.1.14"
+
+msgid "15.1.15"
+msgstr "15.1.15"
+
+msgid "15.1.16"
+msgstr "15.1.16"
+
+msgid "15.1.17"
+msgstr "15.1.17"
+
+msgid "15.1.2"
+msgstr "15.1.2"
+
+msgid "15.1.20"
+msgstr "15.1.20"
+
+msgid "15.1.21"
+msgstr "15.1.21"
+
+msgid "15.1.22"
+msgstr "15.1.22"
+
+msgid "15.1.23"
+msgstr "15.1.23"
+
+msgid "15.1.28-10"
+msgstr "15.1.28-10"
+
+msgid "15.1.3"
+msgstr "15.1.3"
+
+msgid "15.1.4"
+msgstr "15.1.4"
+
+msgid "15.1.5"
+msgstr "15.1.5"
+
+msgid "15.1.6"
+msgstr "15.1.6"
+
+msgid "15.1.7"
+msgstr "15.1.7"
+
+msgid "15.1.8"
+msgstr "15.1.8"
+
+msgid "15.1.9"
+msgstr "15.1.9"
+
+msgid "16.0.0"
+msgstr "16.0.0"
+
+msgid "16.0.1"
+msgstr "16.0.1"
+
+msgid "16.0.10"
+msgstr "16.0.10"
+
+msgid "16.0.11"
+msgstr "16.0.11"
+
+msgid "16.0.12"
+msgstr "16.0.12"
+
+msgid "16.0.13"
+msgstr "16.0.13"
+
+msgid "16.0.14"
+msgstr "16.0.14"
+
+msgid "16.0.15"
+msgstr "16.0.15"
+
+msgid "16.0.16"
+msgstr "16.0.16"
+
+msgid "16.0.19"
+msgstr "16.0.19"
+
+msgid "16.0.2"
+msgstr "16.0.2"
+
+msgid "16.0.24"
+msgstr "16.0.24"
+
+msgid "16.0.25"
+msgstr "16.0.25"
+
+msgid "16.0.3"
+msgstr "16.0.3"
+
+msgid "16.0.4"
+msgstr "16.0.4"
+
+msgid "16.0.5"
+msgstr "16.0.5"
+
+msgid "16.0.6"
+msgstr "16.0.6"
+
+msgid "16.0.7"
+msgstr "16.0.7"
+
+msgid "16.0.8"
+msgstr "16.0.8"
+
+msgid "16.0.9"
+msgstr "16.0.9"
+
+msgid "17.0.0"
+msgstr "17.0.0"
+
+msgid "17.0.1"
+msgstr "17.0.1"
+
+msgid "17.0.2"
+msgstr "17.0.2"
+
+msgid "17.0.3"
+msgstr "17.0.3"
+
+msgid "17.0.4"
+msgstr "17.0.4"
+
+msgid "17.0.5"
+msgstr "17.0.5"
+
+msgid "17.0.6"
+msgstr "17.0.6"
+
+msgid "17.0.7"
+msgstr "17.0.7"
+
+msgid "17.0.8"
+msgstr "17.0.8"
+
+msgid "17.1.0"
+msgstr "17.1.0"
+
+msgid "17.1.1"
+msgstr "17.1.1"
+
+msgid "17.1.11"
+msgstr "17.1.11"
+
+msgid "17.1.4"
+msgstr "17.1.4"
+
+msgid "17.1.5"
+msgstr "17.1.5"
+
+msgid "17.1.6"
+msgstr "17.1.6"
+
+msgid "17.1.7"
+msgstr "17.1.7"
+
+msgid "17.1.8"
+msgstr "17.1.8"
+
+msgid "17.1.9"
+msgstr "17.1.9"
+
+msgid "18.0.0"
+msgstr "18.0.0"
+
+msgid "18.1.0"
+msgstr "18.1.0"
+
+msgid "18.1.1"
+msgstr "18.1.1"
+
+msgid "18.1.15"
+msgstr "18.1.15"
+
+msgid "18.1.3"
+msgstr "18.1.3"
+
+msgid "18.1.4"
+msgstr "18.1.4"
+
+msgid "18.1.5"
+msgstr "18.1.5"
+
+msgid "18.1.6"
+msgstr "18.1.6"
+
+msgid "18.1.8"
+msgstr "18.1.8"
+
+msgid "19.0.0"
+msgstr "19.0.0"
+
+msgid "19.0.10"
+msgstr "19.0.10"
+
+msgid "19.0.2"
+msgstr "19.0.2"
+
+msgid "19.0.4"
+msgstr "19.0.4"
+
+msgid "19.0.7"
+msgstr "19.0.7"
+
+msgid "19.1.1"
+msgstr "19.1.1"
+
+msgid "19.1.2"
+msgstr "19.1.2"
+
+msgid "19.1.7"
+msgstr "19.1.7"
+
+msgid "20.0.0"
+msgstr "20.0.0"
+
+msgid "20.0.2"
+msgstr "20.0.2"
+
+msgid "20.1.0"
+msgstr "20.1.0"
+
+msgid "20.1.1"
+msgstr "20.1.1"
+
+msgid "20.1.2"
+msgstr "20.1.2"
+
+msgid "20.2.0"
+msgstr "20.2.0"
+
+msgid "2023.1 Series Release Notes"
+msgstr "2023.1 시리즈 릴리즈 노트"
+
+msgid "2023.2 Series Release Notes"
+msgstr "2023.2 시리즈 릴리즈 노트"
+
+msgid "2024.1 Series Release Notes"
+msgstr "2024.1 시리즈 릴리즈 노트"
+
+msgid "2024.2 Series Release Notes"
+msgstr "2024.2 시리즈 릴리즈 노트"
+
+msgid "21.0.0"
+msgstr "21.0.0"
+
+msgid "21.2.0"
+msgstr "21.2.0"
+
+msgid "21.2.1"
+msgstr "21.2.1"
+
+msgid "21.2.10"
+msgstr "21.2.10"
+
+msgid "21.2.3"
+msgstr "21.2.3"
+
+msgid "21.2.5"
+msgstr "21.2.5"
+
+msgid "22.0.0"
+msgstr "22.0.0"
+
+msgid "22.0.1"
+msgstr "22.0.1"
+
+msgid "22.1.0"
+msgstr "22.1.0"
+
+msgid "22.1.1"
+msgstr "22.1.1"
+
+msgid "22.1.2"
+msgstr "22.1.2"
+
+msgid "22.2.0"
+msgstr "22.2.0"
+
+msgid "22.3.0"
+msgstr "22.3.0"
+
+msgid "22.3.1"
+msgstr "22.3.1"
+
+msgid "22.3.2"
+msgstr "22.3.2"
+
+msgid "22.4.0"
+msgstr "22.4.0"
+
+msgid "23.0.0"
+msgstr "23.0.0"
+
+msgid "23.1.0"
+msgstr "23.1.0"
+
+msgid "23.1.1"
+msgstr "23.1.1"
+
+msgid "23.2.0"
+msgstr "23.2.0"
+
+msgid "23.3.0"
+msgstr "23.3.0"
+
+msgid "23.4.0"
+msgstr "23.4.0"
+
+msgid "24.0.0"
+msgstr "24.0.0"
+
+msgid "24.0.1"
+msgstr "24.0.1"
+
+msgid "24.2.0"
+msgstr "24.2.0"
+
+msgid "24.3.0"
+msgstr "24.3.0"
+
+msgid "24.4.0"
+msgstr "24.4.0"
+
+msgid "24.4.3"
+msgstr "24.4.3"
+
+msgid "24.5.0"
+msgstr "24.5.0"
+
+msgid "24.5.1"
+msgstr "24.5.1"
+
+msgid "24.6.0"
+msgstr "24.6.0"
+
+msgid "25.0.0"
+msgstr "25.0.0"
+
+msgid "25.1.0"
+msgstr "25.1.0"
+
+msgid "25.2.0"
+msgstr "25.2.0"
+
+msgid "25.3.0"
+msgstr "25.3.0"
+
+msgid "25.3.1"
+msgstr "25.3.1"
+
+msgid "25.4.0"
+msgstr "25.4.0"
+
+msgid "25.5.0"
+msgstr "25.5.0"
+
+msgid "25.6.0"
+msgstr "25.6.0"
+
+msgid "26.0.0"
+msgstr "26.0.0"
+
+msgid "26.0.1"
+msgstr "26.0.1"
+
+msgid "26.1.2"
+msgstr "26.1.2"
+
+msgid "26.2.0"
+msgstr "26.2.0"
+
+msgid "26.3.0"
+msgstr "26.3.0"
+
+msgid "26.4.0"
+msgstr "26.4.0"
+
+msgid "26.5.0"
+msgstr "26.5.0"
+
+msgid "26.5.2"
+msgstr "26.5.2"
+
+msgid "27.0.0"
+msgstr "27.0.0"
+
+msgid "27.1.0"
+msgstr "27.1.0"
+
+msgid "27.2.0"
+msgstr "27.2.0"
+
+msgid "27.3.0"
+msgstr "27.3.0"
+
+msgid "27.4.0"
+msgstr "27.4.0"
+
+msgid "27.4.2"
+msgstr "27.4.2"
+
+msgid "27.4.3"
+msgstr "27.4.3"
+
+msgid "27.5.0"
+msgstr "27.5.0"
+
+msgid "27.5.1"
+msgstr "27.5.1"
+
+msgid "27.6.0"
+msgstr "27.6.0"
+
+msgid "27.6.1"
+msgstr "27.6.1"
+
+msgid "28.0.0"
+msgstr "28.0.0"
+
+msgid "28.0.1"
+msgstr "28.0.1"
+
+msgid "28.2.0"
+msgstr "28.2.0"
+
+msgid "28.2.1"
+msgstr "28.2.1"
+
+msgid "28.3.0"
+msgstr "28.3.0"
+
+msgid "28.3.1"
+msgstr "28.3.1"
+
+msgid "28.4.0"
+msgstr "28.4.0"
+
+msgid "28.4.2"
+msgstr "28.4.2"
+
+msgid "29.0.0"
+msgstr "29.0.0"
+
+msgid "29.0.1"
+msgstr "29.0.1"
+
+msgid "29.0.2"
+msgstr "29.0.2"
+
+msgid "29.1.0"
+msgstr "29.1.0"
+
+msgid "29.2.0"
+msgstr "29.2.0"
+
+msgid "29.2.2"
+msgstr "29.2.2"
+
+msgid "30.0.0"
+msgstr "30.0.0"
+
+msgid "30.0.2"
+msgstr "30.0.2"
+
+msgid "Current Series Release Notes"
+msgstr "현재 시리즈 릴리즈 노트"
+
+msgid "Liberty Series Release Notes"
+msgstr "Liberty 시리즈 릴리즈 노트"
+
+msgid "Mitaka Series Release Notes"
+msgstr "Mitaka 시리즈 릴리즈 노트"
+
+msgid "Newton Series Release Notes"
+msgstr "Newton 시리즈 릴리즈 노트"
+
+msgid "Ocata Series Release Notes"
+msgstr "Ocata 시리즈 릴리즈 노트"
+
+msgid "OpenStack-Ansible Release Notes"
+msgstr "OpenStack-Ansible 릴리즈 노트"
+
+msgid "Pike Series Release Notes"
+msgstr "Pike 시리즈 릴리즈 노트"
+
+msgid "Queens Series Release Notes"
+msgstr "Queens 시리즈 릴리즈 노트"
+
+msgid "Rocky Series Release Notes"
+msgstr "Rocky 시리즈 릴리즈 노트"
+
+msgid "Stein Series Release Notes"
+msgstr "Stein 시리즈 릴리즈 노트"
+
+msgid "Train Series Release Notes"
+msgstr "Train 시리즈 릴리즈 노트"
+
+msgid "Ussuri Series Release Notes"
+msgstr "Ussuri 시리즈 릴리즈 노트"
+
+msgid "Victoria Series Release Notes"
+msgstr "Victoria 시리즈 릴리즈 노트"
+
+msgid "Wallaby Series Release Notes"
+msgstr "Wallaby 시리즈 릴리즈 노트"
+
+msgid "Xena Series Release Notes"
+msgstr "Xena 시리즈 릴리즈 노트"
+
+msgid "Yoga Series Release Notes"
+msgstr "Yoga 시리즈 릴리즈 노트"
+
+msgid "Zed Series Release Notes"
+msgstr "Zed 시리즈 릴리즈 노트"
