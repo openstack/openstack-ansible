@@ -149,7 +149,7 @@ elif [[ "${ACTION}" == "linters" ]]; then
     else
       ROLE_DIR="${OSA_CLONE_DIR}"
       ${VENV_BIN_DIR}/ansible-lint playbooks/ --exclude /etc/ansible/roles
-      ansible-playbook --syntax-check --list-tasks playbooks/setup-everything.yml
+      ansible-playbook --syntax-check --list-tasks openstack.osa.setup_everything
     fi
 
     # Run bashate
@@ -189,14 +189,14 @@ else
 
     # Prepare the hosts
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-hosts.log"
-    openstack-ansible setup-hosts.yml -e '{"osa_gather_facts": false}'
+    openstack-ansible openstack.osa.setup_hosts -e '{"osa_gather_facts": false}'
 
     # Log some data about the instance and the rest of the system
     log_instance_info
 
     if [[ $SCENARIO =~ "hosts" ]]; then
       # Verify our hosts setup and do not continue with openstack/infra part
-      openstack-ansible healthcheck-hosts.yml -e '{"osa_gather_facts": false}'
+      openstack-ansible openstack.osa.healthcheck.hosts -e '{"osa_gather_facts": false}'
       exit $?
     fi
 
@@ -205,26 +205,26 @@ else
     . /etc/environment
     set +a
 
-    # Once setup-hosts is complete, we should gather facts for everything
+    # Once setup_hosts is complete, we should gather facts for everything
     # (now including containers) so that the fact cache is complete for the
     # remainder of the run.
     ansible -m setup -a "gather_subset=${ANSIBLE_GATHER_SUBSET}" all 1>${ANSIBLE_LOG_DIR}/facts-all.log
 
     # Prepare the infrastructure
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-infrastructure.log"
-    openstack-ansible setup-infrastructure.yml -e '{"osa_gather_facts": false}'
+    openstack-ansible openstack.osa.setup_infrastructure -e '{"osa_gather_facts": false}'
 
     # Log some data about the instance and the rest of the system
     log_instance_info
 
     if [[ $SCENARIO =~ "infra" && ! $ACTION =~ "upgrade"  ]]; then
       # Verify our infra setup and do not continue with openstack part
-      openstack-ansible healthcheck-infrastructure.yml -e '{"osa_gather_facts": false}'
+      openstack-ansible openstack.osa.healthcheck.infrastructure -e '{"osa_gather_facts": false}'
     fi
 
     # Setup OpenStack
     export ANSIBLE_LOG_PATH="${ANSIBLE_LOG_DIR}/setup-openstack.log"
-    openstack-ansible setup-openstack.yml -e '{"osa_gather_facts": false}' ${OPENSTACK_SETUP_EXTRA_ARGS:-}
+    openstack-ansible openstack.osa.setup_openstack -e '{"osa_gather_facts": false}' ${OPENSTACK_SETUP_EXTRA_ARGS:-}
 
     # Log some data about the instance and the rest of the system
     log_instance_info
@@ -281,7 +281,7 @@ if [[ "${ACTION}" =~ "upgrade" ]]; then
 
     if [[ $SCENARIO =~ "infra" ]]; then
       # Verify our infra setup after upgrade
-      openstack-ansible ${OSA_CLONE_DIR}/playbooks/healthcheck-infrastructure.yml -e '{"osa_gather_facts": false}'
+      openstack-ansible openstack.osa.healthcheck.infrastructure -e '{"osa_gather_facts": false}'
     fi
 
 fi
