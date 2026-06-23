@@ -275,8 +275,8 @@ lab environment before upgrading.
     running them during OpenStack upgrades.
     If you have ``upgrade_ceph_packages: true`` in your user variables or
     provided ``-e upgrade_ceph_packages=true`` as argument and run
-    ``setup-infrastructure.yml`` this will result in Ceph package being upgraded
-    as well.
+    ``openstack.osa.setup_infrastructure`` this will result in Ceph package being
+    upgraded as well.
 
 In order to upgrade Ceph in the deployment you will need to run:
 
