@@ -24,6 +24,7 @@ cluster_api_infrastructure_provider: openstack
 cluster_api_infrastructure_version: 0.14.4
 
 # wire OSA group, host and network addresses into k8s deployment
+kube_vip_enabled: false
 kubelet_hostname: "{{ ansible_facts['hostname'] | lower }}"
 kubelet_node_ip: "{{ management_address }}"
 kubernetes_control_plane_group: k8s_container
