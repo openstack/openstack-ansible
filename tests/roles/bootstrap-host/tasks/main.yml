@@ -85,10 +85,22 @@
         dest: '/openstack/src'
         state: link
 
-    - name: Create override for zuul git server to local repos
+    - name: Generate overrides for git install branches based on Depends-On
+      vars:
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
+      override_git_branches:
+        repo_path: "{{ playbook_dir }}/.."
+        zuul_items: "{{ zuul['items'] | default(omit) }}"
+      register: git_branch_overrides
+      delegate_to: localhost
+
+    - name: Create override for zuul git server to local repos and install branches
       ansible.builtin.copy:
         content: |
           openstack_opendev_base_url: "file:///openstack/src/opendev.org"
+          {% for var, val in (git_branch_overrides.overrides | default({})).items() | sort %}
+          {{ var }}: "{{ val }}"
+          {% endfor %}
         dest: "/etc/openstack_deploy/user_variables_zuulrepos.yml"
         mode: "0644"
 
