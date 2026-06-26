@@ -71,15 +71,11 @@
     check:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-10
-        - openstack-ansible-upgrade_2025.1-aio_metal-rockylinux-10
         - openstack-ansible-upgrade-aio_metal-ubuntu-noble
-        - openstack-ansible-upgrade_2025.1-aio_metal-ubuntu-noble
     gate:
       jobs:
         - openstack-ansible-upgrade-aio_metal-rockylinux-10
-        - openstack-ansible-upgrade_2025.1-aio_metal-rockylinux-10
         - openstack-ansible-upgrade-aio_metal-ubuntu-noble
-        - openstack-ansible-upgrade_2025.1-aio_metal-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-k8sHA_lxc-jobs
@@ -218,9 +214,7 @@
         - openstack-ansible-deploy-aio_metal-ubuntu-resolute
         - openstack-ansible-deploy-aio_metal_tls-ubuntu-noble
         - openstack-ansible-upgrade-aio_metal-rockylinux-10
-        - openstack-ansible-upgrade_2025.1-aio_metal-rockylinux-10
         - openstack-ansible-upgrade-aio_metal-ubuntu-noble
-        - openstack-ansible-upgrade_2025.1-aio_metal-ubuntu-noble
         - openstack-ansible-upgrade-aio_metal_tls-ubuntu-noble
     gate:
       jobs:
