@@ -20,6 +20,7 @@
       - distro
       - source
     zuul_user_vars_file: "{{ ansible_facts.env.HOME }}/osa-job-vars.yml"
+    zuul_gate_scenario_file: "{{ ansible_facts.env.HOME }}/osa-gate-scenario.yml"
   tasks:
     - name: Dynamically create scenario if not set
       ansible.builtin.set_fact:
@@ -111,6 +112,12 @@
         dest: "{{ zuul.executor.work_root }}/osa-gate-scenario.yml"
         mode: "0644"
       delegate_to: localhost
+
+    - name: Log the gate check configuration to a vars file on target host
+      ansible.builtin.template:
+        src: osa-gate-scenario.yml.j2
+        dest: "{{ zuul_gate_scenario_file }}"
+        mode: "0644"
 
     # Other playbooks can consume this vars file to access the
     # Zuul job variables, see https://zuul-ci.org/docs/zuul/reference/jobs.html#user-jobs-job-variables
