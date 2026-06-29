@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Fixed OVN clusterization bug caused by defining ``leader_node`` as a bool
+    This was causing ``Setup OVN cluster using primary node`` task to fail
+    with "'bool' object is not iterable".
