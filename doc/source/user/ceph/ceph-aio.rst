@@ -95,3 +95,71 @@ A healthy cluster should report three OSDs up and the monitor in quorum.
 
 For production deployments, use dedicated Ceph nodes with proper storage
 devices, redundancy, and failure domain design, see :ref:`production-ceph-environment-config`.
+
+Enabling Ceph dashboard
+=======================
+
+The ``ceph-mgr`` role installs ``ceph-mgr-dashboard`` and enables the
+dashboard module by default, but does not finish configuring it. The
+steps below complete the setup.
+
+Run the ``ceph`` commands on a monitor host (``aio1`` on an all-in-one or
+ceph-mon container) as a user with the cluster admin keyring.
+
+#. Configure the module. The simplest option is plain HTTP, which leaves
+   dashboard traffic (including the admin login) unencrypted and is only
+   suitable on a trusted network:
+
+   .. code-block:: console
+
+      # ceph config set mgr mgr/dashboard/ssl false
+
+   Operators who require encryption can instead keep SSL enabled and load a
+   certificate (self-signed or their own):
+
+   .. code-block:: console
+
+      # ceph config set mgr mgr/dashboard/ssl true
+      # ceph config-key set mgr/dashboard/crt -i dashboard.crt
+      # ceph config-key set mgr/dashboard/key -i dashboard.key
+
+#. Restart the module to apply the change:
+
+   .. code-block:: console
+
+      # ceph mgr module disable dashboard
+      # ceph mgr module enable dashboard
+
+#. Create a dashboard user. Recent releases require the password from a file
+   via ``-i``. Use ``administrator`` for full access or ``read-only`` for a
+   view-only account:
+
+   .. code-block:: console
+
+      # echo 'SecretPassword' > /tmp/dash_pw
+      # ceph dashboard ac-user-create admin -i /tmp/dash_pw administrator
+      # shred -u /tmp/dash_pw
+
+#. Expose the dashboard through the load balancer by adding an HAProxy
+   service in ``/etc/openstack_deploy/user_variables.yml`` (match
+   ``haproxy_port`` to the port set above):
+
+   .. code-block:: yaml
+
+      haproxy_extra_services:
+        - haproxy_service_name: ceph-dashboard
+          haproxy_backend_nodes:
+            - name: "{{ groups[mon_group_name][0] }}"
+              ip_addr: "{{ hostvars[groups[mon_group_name][0]]['ansible_facts']['br_storage']['ipv4']['address'] }}"
+          haproxy_port: 8443
+          haproxy_balance_type: http
+
+#. Apply it with:
+
+   .. code-block:: console
+
+      # openstack-ansible openstack.osa.haproxy -t haproxy-config
+
+The dashboard is then reachable on the external load balancer address, for
+example ``http://<external_lb_vip_address>:8443`` (use ``https`` if SSL was
+left enabled). Log in with the account created above.
