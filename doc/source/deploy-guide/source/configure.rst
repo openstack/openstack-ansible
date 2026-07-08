@@ -267,6 +267,8 @@ OpenStack service roles
 
 - :role_docs:`os_designate <os_designate>`
 
+- :role_docs:`os_freezer <os_freezer>`
+
 - :role_docs:`os_glance <os_glance>`
 
 - :role_docs:`os_gnocchi <os_gnocchi>`
@@ -341,7 +343,7 @@ Configuring service credentials
 
 Configure credentials for each service in the
 ``/etc/openstack_deploy/user_secrets.yml`` file. Consider using the
-`Ansible Vault <http://docs.ansible.com/playbooks_vault.html>`_ feature to
+`Ansible Vault <https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html>`_ feature to
 increase security by encrypting any files that contain credentials. You
 can leverage `osa_ops.encrypt_secrets collection <https://docs.openstack.org/openstack-ansible-ops/latest/encrypt_secrets.html>`_
 to automate simplify the process of encryption and further management
