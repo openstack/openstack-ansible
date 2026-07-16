@@ -38,12 +38,11 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
 
 4) Run the OpenStack-Ansible playbooks to deploy the required services.
 
-5) Add HW_ARCH_XXXX Trait to Every Compute Host in OpenStack.
+5) Confirm the HW_ARCH_XXXX trait on every compute host in OpenStack.
 
-   Although most CPU hardware traits such as instruction set extensions are
-   detected and handled automatically in OpenStack, CPU architecture is not.
-   It is necessary to manually add an architecture trait to the resource provider
-   corresponding to every compute host. The required traits are:
+   The Nova libvirt driver reports a CPU architecture trait on the resource
+   provider of each compute host automatically, derived from the host CPU
+   architecture. The traits are:
 
    HW_ARCH_X86_64 for x86_64 Intel and AMD CPUs
 
@@ -51,10 +50,23 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
 
    (see: https://docs.openstack.org/os-traits/latest/reference/traits.html)
 
+   This behaviour is available since the 2023.2 (Bobcat) release
+   (see: https://bugs.launchpad.net/nova/+bug/2062425), so the trait does not
+   normally need to be added by hand. Confirm that the expected trait is
+   present:
+
     .. code:: bash
 
       openstack resource provider list
+      openstack resource provider list --required HW_ARCH_X86_64
+      openstack resource provider list --required HW_ARCH_AARCH64
       openstack resource provider trait list <uuid-of-compute-host>
+
+   If the trait is missing, for example when using a virt driver that does not
+   report it, add it manually:
+
+    .. code:: bash
+
       openstack resource provider trait set --trait <existing-trait-1> --trait <existing-trait-2> ... --trait HW_ARCH_xxxxx <uuid-of-compute-host>
 
     .. note::
@@ -96,7 +108,7 @@ Example - adding ``aarch64`` nodes to an ``x86_64`` deployment
      The ``image_metadata_prefilter`` only looks at the HW_ARCH_XXX traits on compute hosts
      and finds hardware that matches the required architecture. This only happens
      when the ``hw_architecture`` property is present on an image, and only if the
-     required traits are manually added to compute hosts.
+     required traits are set to compute hosts (see step 5).
 
      The ``image_properties_default_architecture`` is used by the ImagePropertiesFilter
      which examines all the architectures supported by QEMU on each compute host; this
