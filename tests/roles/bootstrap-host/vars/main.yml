@@ -51,6 +51,7 @@ bootstrap_host_scenarios_expanded: |-
   {%   set _ = scenario_list.extend(['ceilometer', 'gnocchi']) %}
   {% endif %}
   {% if 'designate' in bootstrap_host_scenarios or
+        'freezer' in bootstrap_host_scenarios or
         'infra' in bootstrap_host_scenarios or
         ('validate' in bootstrap_host_scenarios and ('integrated' in bootstrap_host_scenarios or 'plugins' in bootstrap_host_scenarios))
          %}
