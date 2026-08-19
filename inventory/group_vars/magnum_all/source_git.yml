@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-### HEAD as of 19.06.2026 ###
+### HEAD as of 19.08.2026 ###
 
 ## Magnum service
 magnum_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum"
-magnum_git_install_branch: 7fdd0e2ca07f76d5149b71233157efccc3deb21d
+magnum_git_install_branch: 23a43e879d5ea72e80f211212567450fe60805d5
 magnum_git_track_branch: master
 
 magnum_capi_vexxhost_git_repo: "{{ openstack_github_base_url }}/vexxhost/magnum-cluster-api"
@@ -25,5 +25,5 @@ magnum_capi_vexxhost_git_install_branch: v0.36.6
 magnum_capi_vexxhost_git_track_branch: None
 
 magnum_capi_azimuth_git_repo: "{{ openstack_opendev_base_url }}/openstack/magnum-capi-helm"
-magnum_capi_azimuth_git_install_branch: a8b82c2480a286a10b60ecc1d94c6cd9f1d01823
+magnum_capi_azimuth_git_install_branch: 3301c01240e606d70d7191a75c89db0c660a5ff9
 magnum_capi_azimuth_git_track_branch: master
