@@ -369,6 +369,7 @@
             files: &deploy-guide-triggers
               - .gitreview
               - ^doc/source/deploy-guide/.*
+              - ^doc/source/locale/.*/LC_MESSAGES/doc-deploy-guide.po
               - ansible-role-requirements.yml
               - bindep.txt
               - doc/requirements.txt
