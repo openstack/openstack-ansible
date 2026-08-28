@@ -7,11 +7,11 @@ Abstract
 OpenStack-Ansible provides Ansible playbooks and roles for the deployment and
 configuration of an OpenStack environment.
 
-2024.2 (Dalmatian): Maintained
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2024.2 (Dalmatian): End-of-Life
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenStack-Ansible 2024.2 (Dalmatian) was first released with the 30.0.0 tag on
-December 2, 2024.
+OpenStack-Ansible 2024.2 (Dalmatian) has reached it's End-of-Life on
+August 28, 2026.
 
 .. toctree::
    :maxdepth: 1

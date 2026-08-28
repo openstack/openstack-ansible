@@ -18,6 +18,7 @@
     parent: base
     description: |
       Global parent for integrated OpenStack-Ansible tests
+    override-checkout: 2024.2-eol
     pre-run:
       - zuul.d/playbooks/pre-gate-cleanup.yml
       - zuul.d/playbooks/pre-gate-scenario.yml
