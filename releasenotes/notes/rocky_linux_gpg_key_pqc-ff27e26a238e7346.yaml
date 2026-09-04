@@ -1,0 +1,12 @@
+---
+fixes:
+  - |
+    Starting August 11 2026, Rocky Linux team have issued a new PQC GPG key.
+    This key is automatically added to all LXC images of Rocky Linux that are
+    built after this date.
+    However, ``ansible.builtin.rpm_key`` until ansible-core<=2.21 is not
+    capable of dealing with PQC GPG keys, resulting in a failure to
+    read them, failing with ``gpg: packet(6) with unknown version 6``.
+    This version does remove the new GPG key from the system, while ensuring
+    presence of old GPG key on all hosts and containers to prevent any
+    possible failures during ``ansible.builtin.rpm_key`` execution.

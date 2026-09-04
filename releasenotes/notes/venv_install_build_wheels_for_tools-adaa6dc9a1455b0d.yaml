@@ -1,0 +1,7 @@
+---
+
+fixes:
+  - |
+    Now wheels are also build for pip/setuptools/wheels, so venv installation
+    should not require any connectivity to index, thus allowing to set
+    ``venv_pip_install_args: "--no-index"`` for air-gapped environments.

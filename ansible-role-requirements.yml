@@ -20,15 +20,15 @@
 - name: pki
   src: https://opendev.org/openstack/ansible-role-pki
   scm: git
-  version: 5959be376ef82b83c6a49434bcb6941ce2f892dd
+  version: a67a8b4f4093f08c6628ecc1fe75d2628d6fd2e4
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-29'
 - name: python_venv_build
   src: https://opendev.org/openstack/ansible-role-python_venv_build
   scm: git
-  version: 4ecc8c849c5c05e20e216d574bca90d59d9d8a45
+  version: 0e803e49e0345f4486519c79a233ddff7d2da4e3
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-24'
 - name: systemd_mount
   src: https://opendev.org/openstack/ansible-role-systemd_mount
   scm: git
@@ -68,27 +68,27 @@
 - name: ceph_client
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-ceph_client
-  version: 9d4e5a37c3edc4824acfa388ec948ee00daeb9c5
+  version: 4c0e7bf379c24c85e8726c58d6d9b5e3f5c39427
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-16'
+  shallow_since: '2026-09-21'
 - name: galera_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-galera_server
-  version: 96e95f715e7ceb7b27240239494a2d627ce052a8
+  version: 20ef5af9c90d4dffab8a7cf03bc988ee74fbaea5
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-09'
+  shallow_since: '2026-10-05'
 - name: haproxy_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-haproxy_server
-  version: a3ed5a45242fc9a3a469171d5d904cd0fe27d4a0
+  version: c6515f110c8ebdce16af2ffcae7acd1a99afe885
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-10-04'
 - name: lxc_container_create
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_container_create
-  version: e1f284aa7ef1d72290e42f9fe573181d8d4577c0
+  version: d3142faa87bdc3686c765c88ce7134c2208e90ee
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-01'
 - name: lxc_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-lxc_hosts
@@ -98,15 +98,15 @@
 - name: memcached_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-memcached_server
-  version: b3e4898bbdf0b87ae404b477274dfdfb64762ba8
+  version: ff9846f07fd2c36a7330327006f93d4033324124
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-08-23'
 - name: openstack_hosts
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_hosts
-  version: acec2bd013773ca5d51f77731282d2dd995b8d71
+  version: 28f0d28cd268e1cb4d32818f2d0ab2aa5c2b9962
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-30'
 - name: openstack_openrc
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-openstack_openrc
@@ -140,9 +140,9 @@
 - name: os_ceilometer
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ceilometer
-  version: eb908148c2e817dc87244906e5dc1f6165c65f73
+  version: 7c8aff7169e7ef24d0693cd6e9939dd70fc64ab1
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-22'
 - name: os_cinder
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_cinder
@@ -176,21 +176,21 @@
 - name: os_gnocchi
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_gnocchi
-  version: 924d96ce2f7b913596b31f3d62aa5d50bc647166
+  version: 1241e6708c01e42ff6323ea58cc249219c32172a
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-08'
+  shallow_since: '2026-08-25'
 - name: os_heat
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_heat
-  version: 7ae69720cee663fd383f0e80133ee175b366bce8
+  version: b55c7a94d0b95e7812ccaa25dff18b913afe8bed
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-08-27'
 - name: os_horizon
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_horizon
-  version: 41f5884099bae84faa3dc88907c18ccc7e3698cc
+  version: 6acdb47111a809a588bfa259685482b7af60e2a5
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-09'
+  shallow_since: '2026-09-08'
 - name: os_ironic
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_ironic
@@ -200,15 +200,15 @@
 - name: os_keystone
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_keystone
-  version: 247f3ce0ea02fd545b8f88c10519b80f0dcce335
+  version: 824bb237debdc802f572a9ba18edcc1f961ca360
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-08-19'
 - name: os_magnum
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_magnum
-  version: 300ce04622cb09dd640fe54cf967072acccc21de
+  version: 5a6ea8863fa5eda2ff1c436fa85599f66b7af3b5
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-10'
+  shallow_since: '2026-09-20'
 - name: os_manila
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_manila
@@ -218,9 +218,9 @@
 - name: os_masakari
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_masakari
-  version: 123bfa629d1b81080fa49d2f44cb813af9b975b4
+  version: 456afe3abf2fcd6244b35aae2001b4b2efa38094
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-09-01'
 - name: os_mistral
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_mistral
@@ -230,9 +230,9 @@
 - name: os_neutron
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_neutron
-  version: a56decb7ba262b30b3e683d5dcfc986a550e9b4e
+  version: 2d45123b209fd82a766b424da49ebb3aacda3c1b
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-22'
+  shallow_since: '2026-10-04'
 - name: os_nova
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_nova
@@ -242,9 +242,9 @@
 - name: os_octavia
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_octavia
-  version: f0958afd5c80fb555c42f3bb672f061fad938c32
+  version: 30c9ea3213c33b5da9d3aec05d60744bd8edff9e
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-08-31'
 - name: os_placement
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_placement
@@ -260,9 +260,9 @@
 - name: os_skyline
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_skyline
-  version: ad18041772af3f350dfb93619389f8324eb630f2
+  version: 3186efd8d862016650f45ab31797b794fc1138c5
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-07'
+  shallow_since: '2026-08-27'
 - name: os_swift
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-os_swift
@@ -296,9 +296,9 @@
 - name: rabbitmq_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-rabbitmq_server
-  version: ba00a03a0e60118e454fc64f3f9bb5c9aed32b46
+  version: 1835b102f20f56cf4ec31d26918e7eba6cd45c94
   trackbranch: stable/2026.1
-  shallow_since: '2026-06-15'
+  shallow_since: '2026-08-30'
 - name: repo_server
   scm: git
   src: https://opendev.org/openstack/openstack-ansible-repo_server
@@ -333,6 +333,6 @@
 - name: ceph-ansible
   scm: git
   src: https://github.com/ceph/ceph-ansible
-  version: 55db2d8814705706cb75214f50457fde72061583
+  version: bac52577538ce42f22a340516cfe5d785f1b4293
   trackbranch: stable-9.0
-  shallow_since: '2026-05-11'
+  shallow_since: '2026-09-05'

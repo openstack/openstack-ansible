@@ -1,0 +1,8 @@
+---
+
+fixes:
+  - |
+    Fixes a bug, where orphaned members with same IP remained in OVN SB/NB
+    databases during OS upgrades.
+    This could lead to a point of loosing quorum due to unreachable orphans
+    outnumbering available and valid members.
