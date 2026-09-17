@@ -13,3 +13,8 @@ It explains operations such as managing images, instances, or networks.
    openstack-operations/managing-images
    openstack-operations/managing-instances
    openstack-operations/managing-networks
+
+.. toctree::
+   :maxdepth: 1
+
+   openstack-operations/building-windows-image
