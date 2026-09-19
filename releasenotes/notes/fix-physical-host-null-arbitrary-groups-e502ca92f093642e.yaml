@@ -1,0 +1,10 @@
+---
+fixes:
+  - |
+    Fixed the dynamic inventory generator leaving ``physical_host`` as
+    ``null`` for a bare-metal host that only belongs to a ``*_hosts`` group
+    with no matching ``env.d`` definition (for example a custom
+    ``log_hosts`` group added without a corresponding ``env.d`` file).
+    Such a host now correctly falls back to being its own physical host,
+    consistent with how every other bare-metal host in a properly-mapped
+    group is already resolved.
