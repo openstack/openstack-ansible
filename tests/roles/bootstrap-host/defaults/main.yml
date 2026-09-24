@@ -200,12 +200,6 @@ bootstrap_host_data_disk2_path: '/var/lib/lxc'
 # Set the install method for the deployment. Options are ['source', 'distro']
 bootstrap_host_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('source', true) }}"
 
-# step-ca
-step_ca_user: step
-step_ca_group: step
-step_ca_config_dir: "/etc/step-ca"
-step_ca_binary: /usr/bin/step-ca
-
 # openbao
 openbao_version: "2.5.3"
 openbao_architecture_mapping:

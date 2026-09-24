@@ -418,11 +418,6 @@
     nodeset: ubuntu-noble
 
 - job:
-    name: openstack-ansible-deploy-aio_stepca-ubuntu-noble
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-noble
-
-- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-noble
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
@@ -432,11 +427,6 @@
     parent: openstack-ansible-deploy-aio
     nodeset: ubuntu-noble
     timeout: 10800
-
-- job:
-    name: openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
-    parent: openstack-ansible-deploy-aio
-    nodeset: ubuntu-noble
 
 - job:
     name: openstack-ansible-deploy-aio_tls-ubuntu-noble
@@ -473,11 +463,6 @@
 
 - job:
     name: openstack-ansible-deploy-infra_lxc-ubuntu-noble
-    parent: openstack-ansible-deploy-aio-infra
-    nodeset: ubuntu-noble
-
-- job:
-    name: openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
     parent: openstack-ansible-deploy-aio-infra
     nodeset: ubuntu-noble
 
@@ -573,11 +558,6 @@
     nodeset: osa-ubuntu-resolute
 
 - job:
-    name: openstack-ansible-deploy-aio_stepca-ubuntu-resolute
-    parent: openstack-ansible-deploy-aio
-    nodeset: osa-ubuntu-resolute
-
-- job:
     name: openstack-ansible-deploy-aio_metal-ubuntu-resolute
     parent: openstack-ansible-deploy-aio
     nodeset: osa-ubuntu-resolute
@@ -587,11 +567,6 @@
     parent: openstack-ansible-deploy-aio
     nodeset: osa-ubuntu-resolute
     timeout: 10800
-
-- job:
-    name: openstack-ansible-deploy-aio_metal_stepca-ubuntu-resolute
-    parent: openstack-ansible-deploy-aio
-    nodeset: osa-ubuntu-resolute
 
 - job:
     name: openstack-ansible-deploy-aio_tls-ubuntu-resolute
@@ -623,11 +598,6 @@
 
 - job:
     name: openstack-ansible-deploy-infra_lxc-ubuntu-resolute
-    parent: openstack-ansible-deploy-aio-infra
-    nodeset: osa-ubuntu-resolute
-
-- job:
-    name: openstack-ansible-deploy-infra_lxc_stepca-ubuntu-resolute
     parent: openstack-ansible-deploy-aio-infra
     nodeset: osa-ubuntu-resolute
 

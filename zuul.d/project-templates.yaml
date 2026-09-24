@@ -103,7 +103,6 @@
         - openstack-ansible-deploy-infra_lxc_tls-rockylinux-10
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc-ubuntu-resolute
-        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     gate:
       jobs:
@@ -113,7 +112,6 @@
         - openstack-ansible-deploy-infra_lxc_tls-rockylinux-10
         - openstack-ansible-deploy-infra_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc-ubuntu-resolute
-        - openstack-ansible-deploy-infra_lxc_stepca-ubuntu-noble
         - openstack-ansible-deploy-infra_lxc_tls-ubuntu-noble
     periodic:
       jobs:
@@ -277,17 +275,6 @@
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-noble
-
-- project-template:
-    name: openstack-ansible-deploy-stepca-jobs
-    check:
-      jobs:
-        - openstack-ansible-deploy-aio_stepca-ubuntu-noble
-        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
-    gate:
-      jobs:
-        - openstack-ansible-deploy-aio_stepca-ubuntu-noble
-        - openstack-ansible-deploy-aio_metal_stepca-ubuntu-noble
 
 - project-template:
     name: openstack-ansible-deploy-openbao-jobs
