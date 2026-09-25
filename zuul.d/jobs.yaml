@@ -141,14 +141,14 @@
 - job:
     name: openstack-ansible-tox-molecule
     parent: tox-molecule
+    pre-run:
+      - zuul.d/playbooks/pre-molecule-requirements.yml
     vars:
       tox_environment: &molecule_tox_env
         TEST_BRANCH: "{{ zuul.branch }}"
         OSA_TEST_REQUIREMENTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/openstack-ansible/test-requirements.txt"
         TOX_CONSTRAINTS_FILE: "{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt"
-    required-projects:
-      - name: openstack/openstack-ansible
-      - name: openstack/requirements
+    required-projects: *r-p-no_services
 
 - job:
     name: openstack-ansible-deploy-aio-infra

@@ -1,0 +1,61 @@
+---
+# Copyright 2026, Cleura AB
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- name: Prepare Ansible requirements for molecule testing
+  hosts: "{{ pre_molecule_host | default('all[0]') }}"
+  vars:
+    _target_project_dir: >-
+      {{ (zuul is defined and zuul.project is defined and zuul.project.src_dir is defined) |
+         ternary(ansible_user_dir ~ '/' ~ zuul.project.src_dir, playbook_dir | dirname | dirname) }}
+    _zuul_projects: "{{ (zuul is defined and 'projects' in zuul) | ternary(zuul.projects.values() | list, []) }}"
+    _compat_requirements_files:
+      - requirements.yml
+      - tests/requirements.yml
+
+  tasks:
+    - name: Check for presence of ansible requirements files
+      ansible.builtin.stat:
+        path: "{{ _target_project_dir }}/{{ item }}"
+      register: _requirements_files_stat
+      loop: "{{ _compat_requirements_files }}"
+
+    - name: Read requirements files
+      ansible.builtin.slurp:
+        path: "{{ item.stat.path }}"
+      register: _requirements_files
+      loop: "{{ _requirements_files_stat.results | selectattr('stat.exists') | list }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: Replace remote git paths with local Zuul repositories
+      ansible.builtin.replace:
+        path: "{{ item.file }}"
+        regexp: '((?:src|source):\s*)(?:git\+)?https?://\S*?{{ item.project.name | regex_escape }}(?:\.git|/)?(?:[@#]\S+)?(?=\s|$)'
+        replace: '\g<1>git+file://{{ ansible_user_dir }}/{{ item.project.src_dir }}'
+      vars:
+        _requirements_matches: >-
+          {%- set matches = [] -%}
+          {%- for file in _requirements_files.results | default([]) -%}
+          {%-   set content = file.content | b64decode -%}
+          {%-   for project in _zuul_projects -%}
+          {%-     if project.name in content -%}
+          {%-       set _ = matches.append({'file': file.source, 'project': project}) -%}
+          {%-     endif -%}
+          {%-   endfor -%}
+          {%- endfor -%}
+          {{ matches }}
+      loop: "{{ _requirements_matches }}"
+      loop_control:
+        label: "{{ item.file | basename }} -> {{ item.project.name }}"
