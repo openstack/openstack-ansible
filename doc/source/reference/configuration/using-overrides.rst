@@ -301,22 +301,20 @@ file:
 Use this method for any files with the ``INI`` format for in OpenStack projects
 deployed in OpenStack-Ansible.
 
-Overriding .json files
+Overriding .yaml files
 ----------------------
 
 To implement access controls that are different from the ones in a standard
 OpenStack environment, you can adjust the default policies applied by services.
-Policy files are in a ``JSON`` format.
+Policy files are in a ``YAML`` format.
 
-For example, you might want to add the following policy in the ``policy.json``
+For example, you might want to add the following policy in the ``policy.yaml``
 file for the Identity service (keystone):
 
-.. code-block:: json
+.. code-block:: yaml
 
-    {
-        "identity:foo": "rule:admin_required",
-        "identity:bar": "rule:admin_required"
-    }
+    create_user: "role:admin"
+    delete_user: "role:admin"
 
 To do this, you use the following configuration entry in the
 ``/etc/openstack_deploy/user_variables.yml`` file:
@@ -324,17 +322,18 @@ To do this, you use the following configuration entry in the
 .. code-block:: yaml
 
     keystone_policy_overrides:
-      identity:foo: "rule:admin_required"
-      identity:bar: "rule:admin_required"
+      create_user: "role:admin"
+      delete_user: "role:admin"
+      list_projects: "role:admin or role:service or (role:reader and project_id:%(project_id)s)"
 
 .. note::
 
    The general format for the variable names used for overrides is
    ``<service>_policy_overrides``. For example, the variable name used in this
-   example to add a policy to the Identity service (keystone) ``policy.json`` file
+   example to add a policy to the Identity service (keystone) ``policy.yaml`` file
    is ``keystone_policy_overrides``.
 
-Use this method for any files with the ``JSON`` format in OpenStack projects
+Use this method for any files with the ``YAML`` format in OpenStack projects
 deployed in OpenStack-Ansible.
 
 To assist you in finding the appropriate variable name to use for
