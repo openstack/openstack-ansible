@@ -122,7 +122,7 @@ haproxy_letsencrypt_service:
 # RGW backend is defined here as it might be referring to an external ceph cluster via 'ceph_rgws'
 haproxy_ceph_rgw_service:
   haproxy_service_name: ceph-rgw
-  haproxy_backend_nodes: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(groups['ceph-rgw'], ceph_rgws) }}"
+  haproxy_backend_nodes: "{{ (groups[rgw_group_name] is defined and groups[rgw_group_name] | length > 0) | ternary(groups[rgw_group_name], ceph_rgws) }}"
   haproxy_ssl: "{{ haproxy_ssl }}"
   haproxy_ssl_all_vips: "{{ haproxy_ssl_all_vips }}"
   haproxy_balance_alg: source
@@ -132,10 +132,14 @@ haproxy_ceph_rgw_service:
     - send meth HEAD
     - expect rstatus 200|405
   # `openstack_service_backend_ssl` is not taken into account if ceph is installed independently.
-  haproxy_backend_ssl: "{{ ceph_rgw_backend_ssl | default((groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) | ternary(openstack_service_backend_ssl, False)) }}"
+  haproxy_backend_ssl: >-
+    {{
+      ceph_rgw_backend_ssl | default(
+        (groups[rgw_group_name] is defined and groups[rgw_group_name] | length > 0) | ternary(openstack_service_backend_ssl, False))
+    }}
   haproxy_backend_ca: "{{ ceph_rgw_haproxy_backend_ca | default(openstack_haproxy_backend_ca) }}"
   haproxy_accept_both_protocols: "{{ ceph_rgw_accept_both_protocols | default(openstack_service_accept_both_protocols) }}"
-  haproxy_service_enabled: "{{ (groups['ceph-rgw'] is defined and groups['ceph-rgw'] | length > 0) or (ceph_rgws | length > 0) }}"
+  haproxy_service_enabled: "{{ (groups[rgw_group_name] is defined and groups[rgw_group_name] | length > 0) or (ceph_rgws | length > 0) }}"
 
 haproxy_default_services:
   - "{{ haproxy_security_txt_service | combine(haproxy_security_txt_service_overrides | default({})) }}"
