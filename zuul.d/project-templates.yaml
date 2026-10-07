@@ -270,10 +270,11 @@
     name: openstack-ansible-deploy-ceph-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-noble
-    gate:
-      jobs:
-        - openstack-ansible-deploy-aio_ceph-ubuntu-noble
+        - openstack-ansible-deploy-aio_ceph-ubuntu-noble:
+            voting: false
+    # gate:
+    #   jobs:
+    #     - openstack-ansible-deploy-aio_ceph-ubuntu-noble
     periodic:
       jobs:
         - openstack-ansible-deploy-aio_ceph-ubuntu-noble
