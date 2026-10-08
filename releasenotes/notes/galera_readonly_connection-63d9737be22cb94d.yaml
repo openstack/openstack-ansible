@@ -1,0 +1,8 @@
+---
+features:
+  - |
+    When multiple instances of MariaDB instances are running in a Galera
+    cluster, which is a typical production deployment, a new HAProxy endpoint
+    is spawned on port ``3308`` to serve read-only requests from MariaDB.
+    You can disable that by setting
+    ``openstack_galera_readonly_connection_enabled: false``

@@ -46,7 +46,7 @@ galera_server_proxy_protocol_networks: >-
 
 # Galera sessions are long lived, so if we do endpoint maintenance we will
 # force kill the sessions to force a failover to the active endpoint.
-haproxy_shutdown_sessions: yes
+haproxy_shutdown_sessions: true
 
 haproxy_galera_allowlist_networks: "{{ haproxy_allowlist_networks }}"
 
@@ -62,7 +62,7 @@ haproxy_galera_service:
   haproxy_port: 3306
   haproxy_check_port: 9200
   haproxy_balance_type: tcp
-  haproxy_stick_table_enabled: False
+  haproxy_stick_table_enabled: false
   haproxy_timeout_client: 5000s
   haproxy_timeout_server: 5000s
   haproxy_backend_httpcheck_options:
@@ -72,5 +72,29 @@ haproxy_galera_service:
   haproxy_allowlist_networks: "{{ haproxy_galera_allowlist_networks }}"
   haproxy_service_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 0 }}"
 
+haproxy_galera_readonly_service:
+  haproxy_service_name: galera_readonly
+  haproxy_backend_nodes: "{{ (groups['galera_all'] | default([]))[1:] }}"
+  haproxy_backup_nodes: "{{ (groups['galera_all'] | default([]))[:1] }}"
+  haproxy_bind: >-
+    {{ [{
+          'address': haproxy_bind_internal_lb_vip_address | default(internal_lb_vip_address),
+          'interface': haproxy_bind_internal_lb_vip_interface | default('')
+    }] }}
+  haproxy_port: 3308
+  haproxy_backend_port: 3306
+  haproxy_check_port: 9200
+  haproxy_balance_type: tcp
+  haproxy_stick_table_enabled: false
+  haproxy_timeout_client: 5000s
+  haproxy_timeout_server: 5000s
+  haproxy_backend_httpcheck_options:
+    - 'send hdr User-Agent "osa-haproxy-healthcheck" meth HEAD'
+  haproxy_backend_server_options:
+    - "send-proxy-v2"
+  haproxy_allowlist_networks: "{{ haproxy_galera_allowlist_networks }}"
+  haproxy_service_enabled: "{{ openstack_galera_readonly_connection_enabled | bool }}"
+
 galera_haproxy_services:
   - "{{ haproxy_galera_service | combine(haproxy_galera_service_overrides | default({})) }}"
+  - "{{ haproxy_galera_readonly_service | combine(haproxy_galera_readonly_service_overrides | default({})) }}"

@@ -62,7 +62,10 @@ galera_address: "{{ internal_lb_vip_address }}"
 galera_root_user: "admin"
 
 # Disable SSL for CentOS distro path due to https://bugzilla.redhat.com/show_bug.cgi?id=2074555
-galera_use_ssl: "{{ not (ansible_facts['os_family'] | lower == 'redhat' and  install_method == 'distro') }}"
+galera_use_ssl: "{{ not (ansible_facts['os_family'] | lower == 'redhat' and install_method == 'distro') }}"
+
+# Enable extra endpoint to process reads
+openstack_galera_readonly_connection_enabled: "{{ groups['galera_all'] is defined and groups['galera_all'] | length > 1 }}"
 
 ## Memcached options
 memcached_port: 11211
