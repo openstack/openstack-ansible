@@ -1,0 +1,7 @@
+---
+upgrade:
+  - |
+    When Neutron is using ``ml2.ovn`` plugin and no extra
+    ``neutron_plugin_types`` are defined in config, traditional DHCP will be
+    disabled through ``enable_traditional_dhcp = False``.
+    This will disable RPC and API extension initialization for DHCP.

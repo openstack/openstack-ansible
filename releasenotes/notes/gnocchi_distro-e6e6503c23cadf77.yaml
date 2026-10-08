@@ -1,0 +1,13 @@
+---
+features:
+  - |
+    Added ``distro`` install method for Gnocchi. The method can be controlled
+    by ``gnocchi_install_method`` variable.
+
+upgrade:
+  - |
+    In case you are using ``distro`` install method and have a Gnocchi
+    deployed, you might need to re-create Gnocchi containers and re-deploy the
+    service in a rolling manner in order to ensure it's installed from distro
+    packages. Otherwise, override ``gnocchi_install_method: source`` to keep
+    the behavior.

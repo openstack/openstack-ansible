@@ -1,0 +1,10 @@
+---
+
+upgrade:
+  - |
+    On systems with HAProxy>=3.0 HTTP/2 is enabled by default for all
+    frontends with TLS.
+    This makes variable ``haproxy_frontend_h2`` value basically ignored,
+    as regardless of it, HTTP/2 will be enabled.
+    The behavior was changed, and when ``haproxy_frontend_h2`` is set to
+    ``false``, role explicitly will disable HTTP/2 by adding ``alpn http/1.1``

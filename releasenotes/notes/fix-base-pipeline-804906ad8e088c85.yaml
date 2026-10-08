@@ -1,0 +1,16 @@
+---
+upgrade:
+  - |
+    The folloging deprecated vars have been removed.
+
+    - ``ceilometer_sample_interval``
+    - ``ceilometer_meter_sample_interval``
+    - ``ceilometer_cpu_source_sample_interval``
+    - ``ceilometer_disk_source_sample_interval``
+    - ``ceilometer_network_source_sample_interval``
+
+fixes:
+  - |
+    Fixed the outdated base template content used when
+    ``ceilometer_pipeline_yaml_overrides`` is set. The previous content
+    included the transformers which were already removed from ceilometer.

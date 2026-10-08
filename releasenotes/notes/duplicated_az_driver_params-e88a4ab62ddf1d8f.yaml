@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    Removed duplicated ``router_scheduler_driver`` and
+    ``network_scheduler_driver`` parameters from ``neutron.conf``
+    file when more then a single Availability Zone exists.

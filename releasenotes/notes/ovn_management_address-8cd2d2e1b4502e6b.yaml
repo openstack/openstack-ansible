@@ -1,0 +1,8 @@
+---
+upgrade:
+  - |
+    OVN northd/southd address is now using ``management_address`` instead of
+    ``ansible_host``. While these are the same for most deployments, they
+    can be different. Please, double check that the new OVN DB connection
+    string remains intact before the upgrade, especially on ``metal``
+    environments, where SSH IP and OpenStack Management IP are differnet.

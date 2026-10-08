@@ -1,0 +1,15 @@
+---
+fixes:
+  - |
+    Fixed the ``*_user_content`` variables (``ceilometer_pipeline_user_content``,
+    ``ceilometer_polling_user_content``, ``ceilometer_event_pipeline_user_content``,
+    ``ceilometer_event_definitions_user_content``, ``ceilometer_data_meters_user_content``,
+    ``ceilometer_gnocchi_resources_user_content``, and
+    ``ceilometer_osprofiler_event_definitions_user_content``) wrapping their
+    Jinja2 expression in literal double quotes inside a YAML folded block
+    scalar (``>-``). Since a folded block scalar takes its content literally,
+    those quote characters ended up as part of the rendered value instead of
+    being stripped as YAML string delimiters, so custom user-supplied
+    Ceilometer YAML files were written to the target host wrapped in an
+    extra pair of double quotes, breaking YAML/JSON parsing of the deployed
+    file.
