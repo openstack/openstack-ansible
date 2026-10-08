@@ -1002,6 +1002,14 @@ def _ensure_inventory_uptodate(inventory, container_skel):
         if 'container_name' not in _vars:
             _vars['container_name'] = hostname
 
+        # A bare-metal host is its own physical host. If nothing in the
+        # container_skel walk assigned physical_host -- e.g. the host only
+        # belongs to a *_hosts group with no matching env.d definition --
+        # fall back to self-reference instead of leaving it unset, which
+        # would otherwise default to None a few lines below.
+        if _vars.get('is_metal') and not _vars.get('physical_host'):
+            _vars['physical_host'] = hostname
+
         # Populate physical_host_addr if physical_host is known
         physical_host = _vars.get('physical_host')
         if physical_host and physical_host in host_vars:

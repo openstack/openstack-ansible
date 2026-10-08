@@ -1081,6 +1081,38 @@ class TestEnsureInventoryUptoDate(unittest.TestCase):
         self.assertIsInstance(self.host_vars['host1']['container_networks'],
                               dict)
 
+    def test_metal_host_without_physical_host_self_references(self):
+        # Reproduces bug 2102132: a host that only belongs to a *_hosts
+        # group with no matching env.d definition never gets physical_host
+        # assigned by the container_skel walk, so it must not be left as
+        # None -- a bare-metal host is its own physical host.
+        self.host_vars['log1'] = {
+            'is_metal': True,
+            'physical_host_group': 'log_hosts',
+        }
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertEqual(self.host_vars['log1']['physical_host'], 'log1')
+
+    def test_metal_host_with_existing_physical_host_not_overwritten(self):
+        self.host_vars['ironic1'] = {
+            'is_metal': True,
+            'physical_host': 'other_host',
+        }
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertEqual(self.host_vars['ironic1']['physical_host'],
+                         'other_host')
+
+    def test_non_metal_host_without_physical_host_stays_none(self):
+        self.host_vars['container1'] = {}
+
+        di._ensure_inventory_uptodate(self.inv, self.env['container_skel'])
+
+        self.assertIsNone(self.host_vars['container1']['physical_host'])
+
     def test_populating_inventory_info(self):
         skel = self.env['container_skel']
 
