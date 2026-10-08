@@ -78,6 +78,14 @@ integration in three ways:
   <https://github.com/ceph/ceph-ansible/blob/master/group_vars/all.yml.sample>`_
   in the OpenStack-Ansible ``user_variables.yml`` file.
 
+You can also set ``crush_device_class`` in ``user_variables.yml``. This sets
+the CRUSH device class for all OSDs created with this method.
+Values must be a string, for example:
+
+.. code-block:: yaml
+
+   crush_device_class: ssd
+
 .. warning::
 
   Deploying ceph cluster as part of OpenStack-Ansible is not recommended since
