@@ -751,8 +751,8 @@
     vars:
       tox_environment:
         <<: *molecule_tox_env
-        DOCKER_REGISTRY: quay.io/rockylinux
-        DOCKER_IMAGE_TAG: rockylinux:10-ubi-init
+        DOCKER_REGISTRY: quay.io/gotmax23
+        DOCKER_IMAGE_TAG: rockylinux-systemd:10
 
 - job:
     name: openstack-ansible-deploy-aio_lxc-rockylinux-10
