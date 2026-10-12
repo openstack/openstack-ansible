@@ -173,7 +173,7 @@ applied.
 
 As you might have spotted, we are defining a default route for the container
 through eth20. However, by default all containers have their default route
-through eth0, which is a local LXC bridge where address is recieved through
+through eth0, which is a local LXC bridge where address is received through
 DHCP.
 In order to avoid a conflict, you need to ensure that the default route will not
 be set for eth0 inside the container. For that, create a file

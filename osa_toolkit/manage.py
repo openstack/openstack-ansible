@@ -17,6 +17,7 @@
 # (c) 2014, Kevin Carter <kevin.carter@rackspace.com>
 # (c) 2015, Major Hayden <major@mhtx.net>
 #
+
 """Returns data about containers and groups in tabular formats."""
 import argparse
 import json
@@ -267,7 +268,7 @@ def export_host_info(inventory):
     The exported data re-arranges variable data so that the keys are the host,
     and the values are hostvars and groups.
 
-    Two top level keys are present: 'hosts' and 'all'. 'hosts' is a dictonary
+    Two top level keys are present: 'hosts' and 'all'. 'hosts' is a dictionary
     of the host information. 'all' represents global data, mostly the load
     balancer and provider network values. It is taken from
     inventory['all']['vars'].
