@@ -506,7 +506,7 @@ its new destination host.
   .. note::
 
      New infra hosts should be prepared before this step (i.e., by running
-     ``setup-hosts.yml`` playbook against them).
+     ``openstack.osa.setup_hosts`` playbook against them).
 
 * Install MariaDB to this new container and add it to the cluster:
 
@@ -747,8 +747,8 @@ To add more members to the RabbitMQ cluster execute the following steps:
       # openstack-ansible openstack.osa.<service> --tags <service>-config
 
 Where <service> is a service name, like neutron, nova, cinder, etc. Another
-way around would be to fire up setup-openstack.yml but it will take quite some
-time to execute.
+way around would be to fire up ``openstack.osa.setup_openstack`` but it will
+take quite some time to execute.
 
 .. _scaling-osa-conclusion:
 

@@ -26,8 +26,8 @@ needed in an environment, it is possible to create additional nodes.
 
       # cd /opt/openstack-ansible
 
-#. To prepare new hosts and deploy containers on them run ``setup-hosts.yml``:
-   playbook with the ``limit`` argument.
+#. To prepare new hosts and deploy containers on them run
+   ``openstack.osa.setup_hosts`` playbook with the ``limit`` argument:
 
    .. code:: console
 
@@ -40,7 +40,8 @@ needed in an environment, it is possible to create additional nodes.
       # openstack-ansible openstack.osa.openstack_hosts_setup -e openstack_hosts_group=all --tags openstack_hosts-file
 
 #. Next we need to expand Galera/RabbitMQ clusters, which is done during
-   ``setup-infrastructure.yml``. So we will run this playbook without limits:
+   ``openstack.osa.setup_infrastructure``. So we will run this playbook
+   without limits:
 
    .. warning::
 
