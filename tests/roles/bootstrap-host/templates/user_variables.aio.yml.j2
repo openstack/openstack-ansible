@@ -169,6 +169,9 @@ tempest_tempest_conf_overrides_neutron:
 octavia_wsgi_threads: 1
 octavia_wsgi_processes: 1
 octavia_wsgi_buffer_size: 16384
+octavia_task_flow_max_workers: 1
+octavia_healthmanager_failover_threads: 1
+octavia_housekeeper_cert_rotate_threads: 1
 
 ## Heat
 heat_api_workers: 1
