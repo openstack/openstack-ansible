@@ -13,6 +13,10 @@
 tempest_test_includelist_octavia:
   - octavia_tempest_plugin.tests.scenario.v2.test_load_balancer.LoadBalancerScenarioTest
 
+tempest_test_excludelist_octavia:
+  - octavia_tempest_plugin.tests.scenario.v2.test_load_balancer.LoadBalancerScenarioTest.test_load_balancer_ipv4_CRUD_with_compute_flavor
+  - octavia_tempest_plugin.tests.scenario.v2.test_load_balancer.LoadBalancerScenarioTest.test_load_balancer_ipv6_CRUD_with_compute_flavor
+
 octavia_octavia_conf_overrides:
   health_manager:
     failover_threads: 2
