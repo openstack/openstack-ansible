@@ -1,0 +1,9 @@
+---
+upgrade:
+  - |
+    vault_path becomes additional field in pki_install_ca when hashi_vault
+    backend is used.
+fixes:
+  - |
+    Instead of resolving vault_path from pki_authorities we allow it to be
+    specified in pki_install_ca when hashi_vault is used.
