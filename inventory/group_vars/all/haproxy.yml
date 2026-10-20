@@ -22,6 +22,7 @@ haproxy_allowlist_networks:
   - 10.0.0.0/8
 
 haproxy_stick_table_allowlist_networks: "{{ haproxy_allowlist_networks }}"
+haproxy_wait_enabled: true
 
 # haproxy default stick table
 # returns 429 when more than 20 4xx responses per 10 second window

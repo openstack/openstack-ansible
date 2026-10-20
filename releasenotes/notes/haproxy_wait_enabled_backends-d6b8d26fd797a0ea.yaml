@@ -1,0 +1,10 @@
+---
+
+features:
+  - |
+    Introduced new variables ``haproxy_state_enabled`` and
+    ``haproxy_state_disabled``to control HAProxy waiting for backends depending
+    on the expected state. For instance, waiting state can be disabled when
+    play is moving backends to MAINT, but it will wait for OK state when
+    re-enabling them.
+    The ``haproxy_state_enabled`` is set to ``true`` by default.
