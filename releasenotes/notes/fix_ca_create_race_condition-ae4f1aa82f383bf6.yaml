@@ -1,0 +1,7 @@
+---
+
+fixes:
+  - |
+    Fixed a race condition, when PKI role with CA generation was run
+    or included from another role, and was running against multiple hosts
+    in the play.

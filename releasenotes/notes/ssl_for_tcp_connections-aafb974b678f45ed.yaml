@@ -1,0 +1,6 @@
+---
+fixes:
+  - |
+    HAProxy role now properly handles ``haproxy_ssl`` for
+    ``haproxy_balance_type: tcp`` by configuring TLS frontend and terminating
+    TLS for L4 TCP balancing.
