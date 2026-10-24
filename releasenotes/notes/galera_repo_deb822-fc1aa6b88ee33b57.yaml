@@ -1,0 +1,14 @@
+---
+features:
+  - |
+    The apt repository setup for the galera_server role is migrated to use
+    the deb822_repository ansible module rather than the legacy apt_key and
+    apt_repository modules. The format of the `galera_repo` role default
+    variable is changed to match the requirements of the new module, and
+    is now a list to allow multiple repositories to be configured if required.
+upgrade:
+  - |
+    The configuration of apt repositories for the galera_server role through
+    the `galera_repo` variable is changed to match the deb822_repository
+    ansible module. Any deployments that customise the galera_server repository
+    configuration should adjust their `galera_repo` override to suit.
