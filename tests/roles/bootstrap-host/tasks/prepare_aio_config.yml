@@ -75,13 +75,28 @@
   when:
     - nodepool_vars is defined
   block:
+    - name: Check for pip.conf presence
+      ansible.builtin.stat:
+        path: /etc/pip.conf
+      register: _pip_conf_file
+
+    - name: Read pip.conf
+      ansible.builtin.slurp:
+        src: /etc/pip.conf
+      register: _pip_conf
+      when:
+        - _pip_conf_file.stat.exists
+
     - name: Configure the OpenStack-Infra mirrors
       vars:
         _ubuntu_vars:
           apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
         _ubuntu_conditional_vars: "{{ (ansible_facts['distribution'] == 'Ubuntu') | ternary(_ubuntu_vars, {}) }}"
+        _pip_vars: "{{ (_pip_conf.content | default('')) | b64decode | community.general.from_ini }}"
+        _pip_conditional_vars: "{{ (_pip_conf_file.stat.exists) | ternary(_pip_vars, {}) }}"
         nodepool_overrides:
           openstack_hosts_centos_mirror_url: "{{ nodepool_vars.NODEPOOL_CENTOS_MIRROR }}"
+          openstack_pypi_url: "{{ _pip_conditional_vars.get('global', {}).get('index-url', 'https://pypi.org/simple') }}"
           # NOTE: EPEL10 mirrors are not around yet
           # centos_epel_mirror: "{{ nodepool_vars.NODEPOOL_EPEL_MIRROR }}"
           # galera_repo_host: "{{ nodepool_vars.NODEPOOL_MIRROR_HOST }}:8080"

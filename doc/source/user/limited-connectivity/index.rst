@@ -50,36 +50,30 @@ actively mirror the entire upstream PyPi repository, but this may require
 a significant amount of storage. Alternatively, a caching pip proxy can
 be used to retain local copies of only those packages which are required.
 
-In order to configure the deployment to use an alternative index, create
-the file `/etc/pip.conf` with the following content and ensure that it
-resides on all hosts in the environment.
+In order to configure the deployment to use an alternative index, you can
+define a variable pointing to your simple index:
 
-.. code-block:: shell-session
+.. code-block:: yaml
 
-   [global]
-   index-url = http://pip.example.org/simple
+   openstack_pypi_url: http://pip.example.org/simple
 
-In addition, it is necessary to configure easy_install to use an alternative
-index. easy_install is used instead of pip to install anything listed under
-setup_requires in setup.py during wheel builds. See https://pip.pypa.io/en/latest/cli/pip_install/
+It will be used as a fallback URL for the ``repo_server``, when wheels are
+being build. In production environment, this should be enough, as all other
+hosts and containers should be fetching packages from the ``repo_server``
+container.
 
-To configure easy_install to use an alternative index, create the file
-`/root/.pydistutils.cfg` with the following content.
-
-.. code-block:: shell-session
-
-   [easy_install]
-   index_url = https://pip.example.org/simple
-
-Then, in `/etc/openstack_deploy/user_variables.yml`, configure the deployment
-to copy these files from the host into the container cache image.
+In case of deploying third-party services that rely on custom ``pip.conf``
+for requirements installation, you need to manually provision a ``pip.conf``
+file on LXC hosts and instruct OpenStack-Ansible to pass the config file
+to related LXC containers. For that, you can set in
+``/etc/openstack_deploy/group_vars/${GROUP_NAME}.yml`` (where GROUP_NAME is
+a group where arbitrary software belongs to), following variable:
 
 .. code-block:: yaml
 
    # Copy these files from the host into the containers
    lxc_container_cache_files_from_host:
      - /etc/pip.conf
-     - /root/.pydistutils.cfg
 
 Distribution specific packages
 ------------------------------
