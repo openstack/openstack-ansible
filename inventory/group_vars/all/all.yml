@@ -33,6 +33,7 @@ openstack_venv_python_executable: "python3"
 
 ## Define default EPEL location
 centos_epel_mirror: https://dl.fedoraproject.org/pub/epel
+centos_epel_key: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_facts['distribution_major_version'] }}"
 
 ## Verbosity Options
 debug: False
