@@ -10,8 +10,3 @@ ironic_compute_hosts:
   aio1:
     ip: {{ bootstrap_host_public_address }}
     management_ip: {{ bootstrap_host_management_address }}
-
-ironic_inspector_hosts:
-  aio1:
-    ip: {{ bootstrap_host_public_address }}
-    management_ip: {{ bootstrap_host_management_address }}

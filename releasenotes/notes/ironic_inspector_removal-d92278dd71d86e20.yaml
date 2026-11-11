@@ -1,0 +1,14 @@
+---
+
+deprecations:
+  - |
+    Ironic Inspector has been retired in the 2025.2 release cycle.
+    While pre-retirement version was still available for installation
+    in OpenStack-Ansible, this possibility has been removed now in
+    favor of PXE Filter.
+upgrade:
+  - |
+    Ironic Inspector related defenitions in env.d (like
+    ``ironic_inspector_hosts``) are removed now and have no effect.
+    OpenStack-Ansible will not remove related hosts or groups from
+    the inventory.

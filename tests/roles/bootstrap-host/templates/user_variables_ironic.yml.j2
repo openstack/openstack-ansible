@@ -23,8 +23,10 @@ tempest_service_available_ironic: true
 tempest_service_available_neutron: true
 
 # (jamesdenton) Set defaults for AIO
-ironic_inspector_dhcp_pool_range: {{ bmaas_network | ansible.utils.nthhost('110') }} {{ bmaas_network | ansible.utils.nthhost('-10') }}
-ironic_inspector_dhcp_subnet: {{ bmaas_network }}
-ironic_inspector_dhcp_subnet_mask: {{ bmaas_network | ansible.utils.ipaddr('netmask') }}
-ironic_inspector_dhcp_gateway: {{ bmaas_network | ansible.utils.nthhost('1') }}
-ironic_inspector_dhcp_nameservers: {{ bmaas_network | ansible.utils.nthhost('1') }}
+ironic_pxe_filter_enabled: true
+ironic_auto_discovery_enabled: true
+ironic_dnsmasq_dhcp_range: {{ bmaas_network | ansible.utils.nthhost('110') }} {{ bmaas_network | ansible.utils.nthhost('-10') }}
+ironic_dnsmasq_gateway: {{ bmaas_network | ansible.utils.nthhost('1') }}
+ironic_dnsmasq_netmask: {{ bmaas_network | ansible.utils.ipaddr('netmask') }}
+
+ironic_dnsmasq_nameservers: {{ bmaas_network | ansible.utils.nthhost('1') }}
