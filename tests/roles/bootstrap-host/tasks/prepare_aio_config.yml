@@ -89,8 +89,8 @@
 
     - name: Configure the OpenStack-Infra mirrors
       vars:
-        _ubuntu_vars:
-          apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
+        _ubuntu_vars: {}
+          # apt_repo_url: "{{ nodepool_vars.NODEPOOL_UCA_MIRROR }}"
         _ubuntu_conditional_vars: "{{ (ansible_facts['distribution'] == 'Ubuntu') | ternary(_ubuntu_vars, {}) }}"
         _pip_vars: "{{ (_pip_conf.content | default('')) | b64decode | community.general.from_ini }}"
         _pip_conditional_vars: "{{ (_pip_conf_file.stat.exists) | ternary(_pip_vars, {}) }}"
