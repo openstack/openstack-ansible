@@ -136,7 +136,7 @@ global_overrides:
         net_name: "bmaas"
         group_binds:
           - ironic_api
-          - ironic_inspector
+          - ironic_conductor
 {% endif %}
 {% if 'ovs' in bootstrap_host_scenarios_expanded %}
     - network:

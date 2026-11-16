@@ -49,7 +49,6 @@ COMMON_ETC_LOG_NAMES="apt \
     gitconfig \
     haproxy \
     httpd \
-    ironic-inspector \
     iscsi \
     kubelet \
     letsencrypt \
