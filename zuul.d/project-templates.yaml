@@ -122,12 +122,10 @@
     check:
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-debian-trixie
-        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-resolute
     gate:
       jobs:
         - openstack-ansible-deploy-infra_distro_lxc-debian-trixie
-        - openstack-ansible-deploy-infra_distro_lxc-ubuntu-noble
         - openstack-ansible-deploy-infra_distro_lxc-ubuntu-resolute
 
 - project-template:
@@ -174,11 +172,9 @@
     name: openstack-ansible-deploy-hosts_distro_lxc-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-resolute
     gate:
       jobs:
-        - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-noble
         - openstack-ansible-deploy-hosts_distro_lxc-ubuntu-resolute
 
 - project-template:
@@ -186,7 +182,6 @@
     experimental:
       jobs:
         - openstack-ansible-deploy-aio_distro_lxc-debian-trixie
-        - openstack-ansible-deploy-aio_distro_lxc-ubuntu-noble
         - openstack-ansible-deploy-aio_distro_lxc-ubuntu-resolute
 
 - project-template:
@@ -245,11 +240,9 @@
     name: openstack-ansible-deploy-aio_distro_metal-jobs
     check:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-ubuntu-noble
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-resolute
     gate:
       jobs:
-        - openstack-ansible-deploy-aio_distro_metal-ubuntu-noble
         - openstack-ansible-deploy-aio_distro_metal-ubuntu-resolute
     experimental:
       jobs:
